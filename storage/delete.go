@@ -42,7 +42,9 @@ func DeleteAllLastClosedBlock() {
 }
 
 func DeleteOpenTx(transaction protocol.Transaction) {
+	OpentTxMutex.Lock()
 	delete(txMemPool, transaction.Hash())
+	OpentTxMutex.Unlock()
 }
 
 func DeleteINVALIDOpenTx(transaction protocol.Transaction) {
@@ -76,9 +78,11 @@ func DeleteClosedTx(transaction protocol.Transaction) {
 
 func DeleteAll() {
 	//Delete in-memory storage
+	OpentTxMutex.Lock()
 	for key := range txMemPool {
 		delete(txMemPool, key)
 	}
+	OpentTxMutex.Unlock()
 
 	//Delete disk-based storage
 	db.Update(func(tx *bolt.Tx) error {

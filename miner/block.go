@@ -545,7 +545,7 @@ func validate(b *protocol.Block, initialSetup bool) error {
 			}
 			//logger.Printf("Rolled back block: %vState:\n%v", block, getState())
 			logger.Printf("Rolled back block: %v", block)
-			logger.Printf("Total Transactions in this block: %v", -1*int(uint16(block.NrFundsTx) + uint16(block.NrAccTx) + uint16(block.NrConfigTx) + uint16(block.NrStakeTx)))
+			logger.Printf("Total Transactions in this block: %v", -2*int(uint16(block.NrFundsTx) + uint16(block.NrAccTx) + uint16(block.NrConfigTx) + uint16(block.NrStakeTx)))
 		}
 		for _, block := range blocksToValidate {
 			//Fetching payload data from the txs (if necessary, ask other miners).

@@ -110,6 +110,11 @@ func postValidateRollback(data blockData) {
 
 	CalculateBlockchainSize(-int(data.block.GetSize()))
 
+	logger.Printf("Size of Block %x: %v Bytes. At a rollback",
+		data.block.Hash[0:8], -int(data.block.GetSize()), data.block.GetHeaderSize(), data.block.GetBodySize(),
+		data.block.GetTxDataSize())
+
+
 	collectStatisticsRollback(data.block)
 
 	//For transactions we switch from closed to open. However, we do not write back blocks

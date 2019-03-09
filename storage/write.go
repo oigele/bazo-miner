@@ -5,6 +5,7 @@ import (
 	"github.com/boltdb/bolt"
 )
 
+
 func WriteOpenBlock(block *protocol.Block) (err error) {
 
 	err = db.Update(func(tx *bolt.Tx) error {
@@ -40,9 +41,10 @@ func WriteLastClosedBlock(block *protocol.Block) (err error) {
 
 //Changing the "tx" shortcut here and using "transaction" to distinguish between bolt's transactions
 func WriteOpenTx(transaction protocol.Transaction) {
-
+	OpentTxMutex.Lock()
 	txMemPool[transaction.Hash()] = transaction
 	PrintMemPoolSize()
+	OpentTxMutex.Unlock()
 }
 
 func WriteINVALIDOpenTx(transaction protocol.Transaction) {

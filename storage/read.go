@@ -80,7 +80,8 @@ func ReadReceivedBlockStash() (receivedBlocks []*protocol.Block){
 }
 
 func ReadOpenTx(hash [32]byte) (transaction protocol.Transaction) {
-
+	OpentTxMutex.Lock()
+	defer OpentTxMutex.Unlock()
 	return txMemPool[hash]
 }
 
@@ -97,9 +98,11 @@ func ReadINVALIDOpenTx(hash [32]byte) (transaction protocol.Transaction) {
 //Needed for the miner to prepare a new block
 func ReadAllOpenTxs() (allOpenTxs []protocol.Transaction) {
 
+	OpentTxMutex.Lock()
 	for key := range txMemPool {
 		allOpenTxs = append(allOpenTxs, txMemPool[key])
 	}
+	OpentTxMutex.Unlock()
 	return
 }
 

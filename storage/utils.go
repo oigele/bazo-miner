@@ -7,12 +7,17 @@ import (
 	"io"
 	"log"
 	"os"
+	"time"
 )
 
 func InitLogger() *log.Logger {
 
 	//Create a Log-file (Logger.Miner.log) and write all logger.printf(...) Statements into it. 
-	LogFile, err := os.OpenFile("LoggerMiner.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	//LogFile, err := os.OpenFile("LoggerMiner.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+
+	time.Now().Format("030405")
+	filename := "LoggerMiner"+time.Now().Format("150405")+".log"
+	LogFile, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)
 	}

@@ -3,6 +3,7 @@ package storage
 import (
 	"fmt"
 	"log"
+	"sync"
 	"time"
 
 	"github.com/bazo-blockchain/bazo-miner/protocol"
@@ -22,6 +23,7 @@ var (
 	averageTxSize float32 = 0
 	totalTransactionSize float32 = 0
 	nrClosedTransactions float32 = 0
+	OpentTxMutex = &sync.Mutex{}
 )
 
 const (
