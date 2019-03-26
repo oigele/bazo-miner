@@ -63,8 +63,9 @@ func getBlockSequences(newBlock *protocol.Block) (blocksToRollback, blocksToVali
 		//New chain is longer, rollback and validate new chain.
 		if len(blocksToRollback) != 0 {
 
-			logger.Printf("Rollback (blocks to rollback %d vs block of new chain %d)", len(blocksToRollback), len(newChain))
-			logger.Printf("ANCESTOR: %x", ancestor.Hash[0:8])
+			logger.Printf("ROLLBACK:  - Block %x belongs to a longer chain.", newChain[len(newChain)-1].Hash[0:8])
+			logger.Printf("           - blocks to rollback %d vs block of new chain %d", len(blocksToRollback), len(newChain))
+			logger.Printf("ANCESTOR:  - %x", ancestor.Hash[0:8])
 
 		}
 		return blocksToRollback, newChain, nil

@@ -101,6 +101,7 @@ func (block *Block) HashBlock() [32]byte {
 		block.ConflictingBlockHashWithoutTx2,
 		false,
 	}
+
 	return SerializeHashContent(blockHash)
 }
 

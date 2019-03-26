@@ -541,7 +541,7 @@ func AggregateTransactions(SortedAndSelectedFundsTx []protocol.Transaction, bloc
 		}
 
 		//Print aggregated Transaction
-		logger.Printf("%v", aggTx)
+		//logger.Printf("%v", aggTx)
 
 		//Add Aggregated transaction and write to open storage
 		addAggTxFinal(block, aggTx)
@@ -1398,7 +1398,6 @@ func validateState(data blockData, initialSetup bool) error {
 }
 
 func postValidate(data blockData, initialSetup bool) {
-	logger.Printf("Inside Validation for block %x --> Inside Postvalidation", data.block.Hash)
 	//The new system parameters get active if the block was successfully validated
 	//This is done after state validation (in contrast to accTx/fundsTx).
 	//Conversely, if blocks are rolled back, the system parameters are changed first.
@@ -1521,8 +1520,6 @@ func postValidate(data blockData, initialSetup bool) {
 		storage.DeleteAllLastClosedBlock()
 		storage.WriteLastClosedBlock(data.block)
 		}
-
-	logger.Printf("Inside Validation for block %x --> Inside Postvalidation --> END", data.block.Hash)
 }
 
 //Only blocks with timestamp not diverging from system time (past or future) more than one hour are accepted.

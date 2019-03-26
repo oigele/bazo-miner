@@ -39,9 +39,6 @@ func minerBroadcastService() {
 	for {
 		select {
 		case msg := <-minerBrdcstMsg:
-			if len(minerBrdcstMsg) > 0 {
-				logger.Printf("Inside MinerBrdCst: len(minerBrdcstMsg) = %v", len(minerBrdcstMsg))
-			}
 			go sendAndSearchMessages(msg)
 		}
 	}

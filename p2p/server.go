@@ -131,13 +131,15 @@ func listener(ipport string) {
 	for {
 		conn, err := listener.Accept()
 
+		if conn != nil {
+			conn.(*net.TCPConn).SetKeepAlive(true)
+			conn.(*net.TCPConn).SetKeepAlivePeriod(1 * time.Minute)
+		}
+
 		if err != nil {
 			logger.Printf("%v\n", err)
 			continue
 		}
-
-		conn.(*net.TCPConn).SetKeepAlive(true)
-		conn.(*net.TCPConn).SetKeepAlivePeriod(1 * time.Minute)
 
 		p := newPeer(conn, "", 0)
 		go handleNewConn(p)
@@ -158,7 +160,7 @@ func handleNewConn(p *peer) {
 
 func peerConn(p *peer) {
 	if p.peerType == PEERTYPE_MINER {
-		logger.Printf("Adding a new miner: %v\n", p.getIPPort())
+		//logger.Printf("Adding a new miner: %v\n", p.getIPPort())
 		neighborBrdcst()
 	} else if p.peerType == PEERTYPE_CLIENT {
 		//logger.Printf("Adding a new client: %v\n", p.getIPPort())
@@ -175,12 +177,12 @@ func peerConn(p *peer) {
 		header, payload, err := RcvData(p)
 		if err != nil {
 			if p.peerType == PEERTYPE_MINER {
-				logger.Printf("Miner disconnected: %v\n", err)
+				//logger.Printf("Miner disconnected: %v\n", err)
 				disconnect <- p
 
 				time.Sleep(time.Second)
 				if !peers.contains(p.getIPPort(), PEERTYPE_MINER) {
-					logger.Printf("Trying to imediately reconnect to %v", p.getIPPort())
+					//logger.Printf("Trying to imediately reconnect to %v", p.getIPPort())
 					p, err := initiateNewMinerConnection(p.getIPPort())
 					if err != nil || p == nil {
 						selfConnect := "Cannot self-connect"

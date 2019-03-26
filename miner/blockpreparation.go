@@ -119,7 +119,6 @@ func prepareBlock(block *protocol.Block) {
 		for _, missingTxcnt := range missingTxCntSender[sender.senderAddress].missingTransactions {
 
 			var missingTransaction protocol.Transaction
-
 			if receivedBlockInTheMeantime {
 				logger.Printf("Received Block in the Meantime --> Abort requesting missing Tx (1)")
 				break

@@ -36,7 +36,7 @@ func RcvData(p *peer) (header *Header, payload []byte, err error) {
 	}
 
 	if int(header.Len) > 800000 {
-		logger.Printf("Header.Len = %v --> Abort here to prevent an Out Of Memory Error", header.Len)
+		logger.Printf("Header.Len of %v is: %v --> Abort here to prevent an Out Of Memory Error", LogMapping[header.TypeID], header.Len)
 		return nil, nil, errors.New(fmt.Sprintf("Abort Receiving Data from %v to prevent Out Of Memory Error", p.getIPPort()))
 	}
 

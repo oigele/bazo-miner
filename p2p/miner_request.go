@@ -9,8 +9,6 @@ import (
 //func BlockReq(hash [32]byte, hashWithoutTx [32]byte) error {
 func BlockReq(hash [32]byte, hashWithoutTx [32]byte) error {
 
-	logger.Printf("Request Block %x, %x from the network", hash[0:8], hashWithoutTx[0:8])
-
 	payload := hash[:]
 	payloadTEMP := hashWithoutTx[:]
 
