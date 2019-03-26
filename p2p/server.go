@@ -136,8 +136,9 @@ func listener(ipport string) {
 			conn.(*net.TCPConn).SetKeepAlivePeriod(1 * time.Minute)
 		}
 
-		if err != nil {
+		if err != nil && conn != nil {
 			logger.Printf("%v\n", err)
+			conn.Close() //Probably closing the conn when failed...?
 			continue
 		}
 
