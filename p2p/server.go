@@ -131,13 +131,13 @@ func listener(ipport string) {
 	for {
 		conn, err := listener.Accept()
 
-		conn.(*net.TCPConn).SetKeepAlive(true)
-		conn.(*net.TCPConn).SetKeepAlivePeriod(1 * time.Minute)
-
 		if err != nil {
 			logger.Printf("%v\n", err)
 			continue
 		}
+
+		conn.(*net.TCPConn).SetKeepAlive(true)
+		conn.(*net.TCPConn).SetKeepAlivePeriod(1 * time.Minute)
 
 		p := newPeer(conn, "", 0)
 		go handleNewConn(p)

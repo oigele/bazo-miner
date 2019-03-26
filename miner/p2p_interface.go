@@ -29,23 +29,24 @@ func processBlock(payload []byte) {
 	var block *protocol.Block
 	block = block.Decode(payload)
 	logger.Printf("Inside processBlock --> len(BlockIn) = %v for block %x", len(p2p.BlockIn), block.Hash[0:8])
+
 	processBlockMutex.Lock()
 	//Block already confirmed and validated
 	if storage.ReadClosedBlock(block.Hash) != nil {
 		logger.Printf("Received block (%x) has already been validated.\n", block.Hash[0:8])
+		processBlockMutex.Unlock()
 		return
 	}
 
 	//Append received Block to stash
 	storage.WriteToReceivedStash(block)
-	processBlockMutex.Unlock()
 
 	//Start validation process
+
 	receivedBlockInTheMeantime = true
-	//logger.Printf("Inside Validation --> Validation of received Block %x", block.Hash)
-	logger.Printf("Inside Validation ---> Received Block: %x and start Validation now!", block.Hash)
+	logger.Printf("Start Validation of received Block %x", block.Hash[0:8])
 	err := validate(block, false)
-	logger.Printf("Inside Validation ---> End Validation received for block %x, %v", block.Hash, err)
+	logger.Printf("End Validation of received Block %x, %v", block.Hash[0:8])
 	receivedBlockInTheMeantime = false
 	if err == nil {
 		go broadcastBlock(block)
@@ -53,6 +54,7 @@ func processBlock(payload []byte) {
 	} else {
 		logger.Printf("Received block (%x) could not be validated: %v\n", block.Hash[0:8], err)
 	}
+	processBlockMutex.Unlock()
 }
 
 //p2p.BlockOut is a channel whose data get consumed by the p2p package
@@ -77,13 +79,9 @@ func broadcastVerifiedFundsTxs(txs []*protocol.FundsTx) {
 }
 
 func broadcastVerifiedAggTxsToOtherMiners(txs []*protocol.AggTx) {
-	//logger.Printf("Inside Validation for block --> Inside Postvalidation (11.1) %v", len(txs))
 	for _, tx := range txs {
-		//logger.Printf("Inside Validation for block --> Inside Postvalidation (11.1.1) %v", len(txs))
 		toBrdcst := p2p.BuildPacket(p2p.AGGTX_BRDCST, tx.Encode())
-		logger.Printf("Inside Validation for block --> Inside Postvalidation (11.1.2) %v", len(p2p.VerifiedTxsBrdcstOut))
 		p2p.VerifiedTxsBrdcstOut <- toBrdcst
-		//logger.Printf("Inside Validation for block --> Inside Postvalidation (11.1.3) %v", len(txs))
 	}
 }
 

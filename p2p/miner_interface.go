@@ -43,9 +43,12 @@ func forwardBlockBrdcstToMiner() {
 	for {
 		block := <-BlockOut
 		toBrdcst := BuildPacket(BLOCK_BRDCST, block)
+
+		//FABIO
 		if len(minerBrdcstMsg) > 0 {
 			logger.Printf("Inside forwardBlockBrdcstToMiner (1) len(minerBrdcstMsg) %v", len(minerBrdcstMsg))
 		}
+
 		minerBrdcstMsg <- toBrdcst
 	}
 }
@@ -67,6 +70,8 @@ func forwardVerifiedTxsToMiner() {
 func forwardVerifiedTxsBrdcstToMiner() {
 	for {
 		verifiedTx := <- VerifiedTxsBrdcstOut
+
+		//FABIO
 		if len(minerBrdcstMsg) > 0 {
 			logger.Printf("Inside ForwardVerifiedTxsBroadcast (1) len(minerBrdcstMsg) = %v", len(minerBrdcstMsg))
 		}
@@ -75,19 +80,14 @@ func forwardVerifiedTxsBrdcstToMiner() {
 }
 
 func forwardBlockToMiner(p *peer, payload []byte) {
-//	blockStashMutex.Lock()
-//	var block *protocol.Block
-//	block = block.Decode(payload)
-//	storage.WriteToReceivedStash(block)
-//	if !blockAlreadyReceived(storage.ReadReceivedBlockStash(),block.Hash){
-		if len(BlockIn) > 0 {
-			var block *protocol.Block
-			block = block.Decode(payload)
-			logger.Printf("Inside ForwardBlockToMiner --> len(BlockIn) = %v for block %x", len(BlockIn), block.Hash[0:8])
-		}
-		BlockIn <- payload
-//	}
-//	blockStashMutex.Unlock()
+
+	//FABIO
+	if len(BlockIn) > 0 {
+		var block *protocol.Block
+		block = block.Decode(payload)
+		logger.Printf("Inside ForwardBlockToMiner --> len(BlockIn) = %v for block %x", len(BlockIn), block.Hash[0:8])
+	}
+	BlockIn <- payload
 }
 
 //Checks if Tx Is in the received stash. If true, we received the transaction with a request already.
