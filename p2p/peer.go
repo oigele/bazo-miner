@@ -42,7 +42,7 @@ type peersStruct struct {
 	minerConns  map[*peer]bool
 	clientConns map[*peer]bool
 	peerMutex   sync.Mutex
-	closeChannelMutex sync.Mutex
+	peerServiceMutex sync.Mutex
 }
 
 func (peers peersStruct) contains(ipport string, peerType uint) bool {

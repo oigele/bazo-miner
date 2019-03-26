@@ -87,6 +87,7 @@ func (tx *AccTx) Hash() [32]byte {
 		tx.ContractVariables,
 	}
 
+	// With reflect.TypeOf(data).Size()
 	return SerializeHashContent(txHash)
 }
 

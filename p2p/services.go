@@ -21,12 +21,14 @@ func peerService() {
 	for {
 		select {
 		case p := <-register:
+			peers.peerServiceMutex.Lock()
 			peers.add(p)
+			peers.peerServiceMutex.Unlock()
 		case p := <-disconnect:
-			peers.closeChannelMutex.Lock()
+			peers.peerServiceMutex.Lock()
 			peers.delete(p)
-			close(p.ch)
-			peers.closeChannelMutex.Unlock()
+			//close(p.ch)  //FABIO <-- Try without closing the channel... https://stackoverflow.com/questions/8593645/is-it-ok-to-leave-a-channel-open
+			peers.peerServiceMutex.Unlock()
 		}
 	}
 }
@@ -70,7 +72,7 @@ func sendAndSearchMessages(msg []byte) {
 
 			//If connection is valid, send message.
 			//This is used to get the newest channel for given IP+Port. In case of an update in the background
-			peers.closeChannelMutex.Lock()
+			peers.peerServiceMutex.Lock()
 
 			//Update Peer
 			_, _ = isConnectionAlreadyInSendingMap(p.peer, sendingMap)
@@ -96,7 +98,7 @@ func sendAndSearchMessages(msg []byte) {
 				//Remove Sent message
 				p.delayedMessages = p.delayedMessages[1:]
 			}
-			peers.closeChannelMutex.Unlock()
+			peers.peerServiceMutex.Unlock()
 		} else {
 			//Store messages which are not sent du to connectivity issues.
 			messages := p.delayedMessages
@@ -131,8 +133,6 @@ func isConnectionAlreadyInSendingMap(p *peer, sendingMap map[string]*delayedMess
 
 //Belongs to the broadcast service.
 func peerBroadcast(p *peer) {
-	logger.Printf("CreatedPeerbroadcast for %v", p.getIPPort())
-
 	for msg := range p.ch {
 		go sendData(p, msg)
 	}
