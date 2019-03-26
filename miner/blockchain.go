@@ -8,6 +8,7 @@ import (
 	"github.com/bazo-blockchain/bazo-miner/protocol"
 	"github.com/bazo-blockchain/bazo-miner/storage"
 	"log"
+	"runtime"
 	"sync"
 	"time"
 )
@@ -122,6 +123,7 @@ func mining(initialBlock *protocol.Block) {
 
 		//Prints miner connections
 		p2p.PrintMinerCons()
+		runtime.GC()
 
 		//This is the same mutex that is claimed at the beginning of a block validation. The reason we do this is
 		//that before start mining a new block we empty the mempool which contains tx data that is likely to be

@@ -22,7 +22,7 @@ func BlockReq(hash [32]byte, hashWithoutTx [32]byte) error {
 			return errors.New("Couldn't get a connection, request not transmitted.")
 		}
 		packet := BuildPacket(BLOCK_REQ, payload)
-		go sendData(p, packet)
+		sendData(p, packet)
 	}
 
 	return nil
@@ -36,7 +36,7 @@ func LastBlockReq() error {
 	}
 
 	packet := BuildPacket(BLOCK_REQ, nil)
-	go sendData(p, packet)
+	sendData(p, packet)
 	return nil
 }
 
@@ -51,7 +51,7 @@ func TxReq(hash [32]byte, reqType uint8) error {
 			return errors.New("Couldn't get a connection, request not transmitted.")
 		}
 		packet := BuildPacket(reqType, hash[:])
-		go sendData(p, packet)
+		sendData(p, packet)
 	}
 
 	return nil
@@ -69,7 +69,7 @@ func TxWithTxCntReq(payload []byte, reqType uint8) error { //TODO
 		}
 
 		packet := BuildPacket(reqType, payload)
-		go sendData(p, packet)
+		sendData(p, packet)
 	}
 
 	return nil

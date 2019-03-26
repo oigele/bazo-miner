@@ -131,7 +131,7 @@ func isConnectionAlreadyInSendingMap(p *peer, sendingMap map[string]*delayedMess
 //Belongs to the broadcast service.
 func peerBroadcast(p *peer) {
 	for msg := range p.ch {
-		go sendData(p, msg)
+		sendData(p, msg)
 	}
 }
 

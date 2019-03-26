@@ -60,7 +60,7 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 	//if !peers.minerConns[p] {
 	if !peers.contains(p.getIPPort(), PEERTYPE_MINER) {
 		packet := BuildPacket(TX_BRDCST_ACK, nil)
-		go sendData(p, packet)
+		sendData(p, packet)
 	}
 
 	if storage.ReadOpenTx(tx.Hash()) != nil {
@@ -77,11 +77,11 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 		return
 	}
 
-	if len(minerBrdcstMsg) > 0 {
-		logger.Printf("Received Tx: %x from %v  -> Inside ProccessTx: len(minerBrdcstMsg) = %v", tx.Hash(), p.getIPPort(), len(minerBrdcstMsg))
-	} else {
-		logger.Printf("Received Tx: %x from %v ", tx.Hash(), p.getIPPort())
-	}
+//	if len(minerBrdcstMsg) > 0 {
+//		logger.Printf("Received Tx: %x from %v  -> Inside ProccessTx: len(minerBrdcstMsg) = %v", tx.Hash(), p.getIPPort(), len(minerBrdcstMsg))
+//	} else {
+//		logger.Printf("Received Tx: %x from %v ", tx.Hash(), p.getIPPort())
+//	}
 
 	//Write to mempool and rebroadcast
 	storage.WriteOpenTx(tx)

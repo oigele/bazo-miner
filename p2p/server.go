@@ -19,7 +19,7 @@ var (
 	peers  peersStruct
 
 	iplistChan      = make(chan string, MIN_MINERS)
-	minerBrdcstMsg  = make(chan []byte, 10000)
+	minerBrdcstMsg  = make(chan []byte, 100)
 	clientBrdcstMsg = make(chan []byte)
 	register        = make(chan *peer)
 	disconnect      = make(chan *peer)
@@ -167,7 +167,7 @@ func peerConn(p *peer) {
 	}
 
 	//Give the peer a channel
-	p.ch = make(chan []byte, 1000)
+	p.ch = make(chan []byte, 100)
 
 	//Register withe the broadcast service and start the additional writer
 	register <- p

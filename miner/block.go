@@ -1236,7 +1236,7 @@ func preValidate(block *protocol.Block, initialSetup bool) (accTxSlice []*protoc
 	//We fetch tx data for each type in parallel -> performance boost.
 	nrOfChannels := 5
 	errChan := make(chan error, nrOfChannels)
-	aggregatedFundsChan := make(chan []*protocol.FundsTx, 10000)
+	aggregatedFundsChan := make(chan []*protocol.FundsTx, 100)
 
 	//We need to allocate slice space for the underlying array when we pass them as reference.
 	accTxSlice = make([]*protocol.AccTx, block.NrAccTx)

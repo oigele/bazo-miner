@@ -14,7 +14,7 @@ var (
 	BlockHeaderOut = make(chan []byte)
 
 	VerifiedTxsOut = make(chan []byte)
-	VerifiedTxsBrdcstOut = make(chan []byte, 10000)
+	VerifiedTxsBrdcstOut = make(chan []byte, 100)
 
 	//Data requested by miner, to allow parallelism, we have a chan for every tx type.
 	FundsTxChan  		= make(chan *protocol.FundsTx)
