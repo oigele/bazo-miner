@@ -21,7 +21,7 @@ var receivedBlockInTheMeantime bool
 func prepareBlock(block *protocol.Block) {
 	//Fetch all txs from mempool (opentxs).
 	opentxs := storage.ReadAllOpenTxs()
-	opentxs = append(opentxs, storage.ReadAllINVALIDOpenTx()...)
+	//opentxs = append(opentxs, storage.ReadAllINVALIDOpenTx()...)
 	var opentxToAdd []protocol.Transaction
 
 	//This copy is strange, but seems to be necessary to leverage the sort interface.
