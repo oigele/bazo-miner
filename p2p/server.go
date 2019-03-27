@@ -132,16 +132,17 @@ func listener(ipport string) {
 		conn, err := listener.Accept()
 
 		if conn != nil {
-			conn.(*net.TCPConn).SetKeepAlive(true)
-			conn.(*net.TCPConn).SetKeepAlivePeriod(1 * time.Minute)
+			logger.Printf("1. CON is nil --> Probably going to crash")
 		}
+		conn.(*net.TCPConn).SetKeepAlive(true)
+		conn.(*net.TCPConn).SetKeepAlivePeriod(1 * time.Minute)
 
 		if err != nil {
 			logger.Printf("%v\n", err)
 			if conn != nil {
-				logger.Printf("Close Conn to %v", ipport)
-				conn.Close()
+				logger.Printf("2. CON is nil --> Probably going to crash")
 			}
+			conn.Close()
 			continue
 		}
 
