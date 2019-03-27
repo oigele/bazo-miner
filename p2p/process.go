@@ -12,6 +12,29 @@ var (
 	processTxBroadcastMutex = &sync.Mutex{}
 )
 
+
+type SpecialTxRequest struct {
+	senderHash [32]byte
+	reqType    uint8
+	txcnt      uint32
+}
+
+func (R *SpecialTxRequest) Encoding() (encodedTx []byte) {
+
+	// Encode
+	if R == nil {
+		return nil
+	}
+	var txcnt [8]byte
+	binary.BigEndian.PutUint32(txcnt[:], R.txcnt)
+	encodedTx = make([]byte, 42)
+
+	encodedTx[0] = R.reqType
+	copy(encodedTx[1:9], txcnt[:])
+	copy(encodedTx[10:42], R.senderHash[:])
+
+	return encodedTx
+}
 //Process tx broadcasts from other miners. We can't broadcast incoming messages directly, first check if
 //the tx has already been broadcast before, whether it is a valid tx etc.
 func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
@@ -24,6 +47,29 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 		fTx = fTx.Decode(payload)
 		if fTx == nil {
 			return
+		}
+
+		prevTxs := storage.ReadTxcntToTx(fTx.TxCnt-1)
+		for _, tx := range prevTxs {
+			openTx := storage.ReadOpenTx(tx)
+			if openTx != nil && openTx.Sender() == fTx.From{
+				break
+			} else {
+				openInvalidTx := storage.ReadINVALIDOpenTx(tx)
+				if openInvalidTx != nil && openInvalidTx.Sender() == fTx.From{
+					break
+
+				} else {
+					closedTx := storage.ReadClosedTx(tx)
+					if openInvalidTx != nil && closedTx.Sender() == fTx.From{
+						break
+					}
+				}
+			}
+			var requestTx = SpecialTxRequest{fTx.From, SPECIALTX_REQ, fTx.TxCnt-1}
+			payload := requestTx.Encoding()
+			//Special Request can be received through the fundsTxChan.
+			_ = TxWithTxCntReq(payload, SPECIALTX_REQ)
 		}
 		tx = fTx
 	case ACCTX_BRDCST:

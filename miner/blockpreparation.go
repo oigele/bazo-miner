@@ -158,7 +158,7 @@ func prepareBlock(block *protocol.Block) {
 
 			//Try to fetch the transaction form the network, if it is not received until now.
 			if missingTransaction == nil {
-				var requestTx = specialTxRequest{sender.senderAddress, p2p.SPECIALTX_REQ, missingTxcnt}
+				var requestTx = SpecialTxRequest{sender.senderAddress, p2p.SPECIALTX_REQ, missingTxcnt}
 				payload := requestTx.Encoding()
 				//Special Request can be received through the fundsTxChan.
 				err := p2p.TxWithTxCntReq(payload, p2p.SPECIALTX_REQ)
@@ -183,6 +183,7 @@ func prepareBlock(block *protocol.Block) {
 
 			if missingTransaction == nil {
 				logger.Printf("Missing txcnt %v not found", missingTxcnt)
+				p2p.PrintMinerCons()
 			} else {
 				opentxToAdd = append(opentxToAdd, missingTransaction)
 			}
@@ -220,13 +221,13 @@ func prepareBlock(block *protocol.Block) {
 	return
 }
 
-type specialTxRequest struct {
+type SpecialTxRequest struct {
 	senderHash [32]byte
 	reqType    uint8
 	txcnt      uint32
 }
 
-func (R *specialTxRequest) Encoding() (encodedTx []byte) {
+func (R *SpecialTxRequest) Encoding() (encodedTx []byte) {
 
 	// Encode
 	if R == nil {

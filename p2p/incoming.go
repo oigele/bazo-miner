@@ -6,15 +6,15 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 	switch header.TypeID {
 	//BROADCASTING
 	case FUNDSTX_BRDCST:
-		processTxBrdcst(p, payload, FUNDSTX_BRDCST)
+		go processTxBrdcst(p, payload, FUNDSTX_BRDCST)
 	case ACCTX_BRDCST:
-		processTxBrdcst(p, payload, ACCTX_BRDCST)
+		go processTxBrdcst(p, payload, ACCTX_BRDCST)
 	case CONFIGTX_BRDCST:
-		processTxBrdcst(p, payload, CONFIGTX_BRDCST)
+		go processTxBrdcst(p, payload, CONFIGTX_BRDCST)
 	case STAKETX_BRDCST:
-		processTxBrdcst(p, payload, STAKETX_BRDCST)
+		go processTxBrdcst(p, payload, STAKETX_BRDCST)
 	case AGGTX_BRDCST:
-		processTxBrdcst(p, payload, AGGTX_BRDCST)
+		go processTxBrdcst(p, payload, AGGTX_BRDCST)
 	case BLOCK_BRDCST:
 		forwardBlockToMiner(p, payload)
 	case TIME_BRDCST:
