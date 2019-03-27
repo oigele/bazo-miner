@@ -61,14 +61,14 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 
 				} else {
 					closedTx := storage.ReadClosedTx(tx)
-					if openInvalidTx != nil && closedTx.Sender() == fTx.From{
+					if closedTx != nil && closedTx.Sender() == fTx.From{
 						break
 					}
 				}
 			}
+			logger.Printf("Request Missing Transaction straight away. From: %x, TxCnt: %v", fTx.From[0:8], fTx.TxCnt-1)
 			var requestTx = SpecialTxRequest{fTx.From, SPECIALTX_REQ, fTx.TxCnt-1}
 			payload := requestTx.Encoding()
-			//Special Request can be received through the fundsTxChan.
 			_ = TxWithTxCntReq(payload, SPECIALTX_REQ)
 		}
 		tx = fTx

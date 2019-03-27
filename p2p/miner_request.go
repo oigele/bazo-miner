@@ -58,12 +58,10 @@ func TxReq(hash [32]byte, reqType uint8) error {
 }
 
 //Request specific transaction
-func TxWithTxCntReq(payload []byte, reqType uint8) error { //TODO
+func TxWithTxCntReq(payload []byte, reqType uint8) error {
 
 	// Tx Request also as brodcast so that the possibility of an answer is higher.
 	for _, p := range peers.getAllPeers(PEERTYPE_MINER) {
-		//Write to the channel, which the peerBroadcast(*peer) running in a seperate goroutine consumes right away.
-
 		if p == nil {
 			return errors.New("Couldn't get a connection, request not transmitted.")
 		}
