@@ -116,6 +116,11 @@ func prepareBlock(block *protocol.Block) {
 			logger.Printf("Missing Transaction: All these Transactions are missing for sender %x: %v ", sender.senderAddress[0:8], missingTxCntSender[sender.senderAddress].missingTransactions)
 		}
 
+		//Maximla 10 missing transactions per sender are possible to search
+		if len(missingTxCntSender[sender.senderAddress].missingTransactions) > 10 {
+			missingTxCntSender[sender.senderAddress].missingTransactions = missingTxCntSender[sender.senderAddress].missingTransactions[0:10]
+		}
+
 		for _, missingTxcnt := range missingTxCntSender[sender.senderAddress].missingTransactions {
 
 			var missingTransaction protocol.Transaction

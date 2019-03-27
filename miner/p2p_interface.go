@@ -18,7 +18,7 @@ func incomingData() {
 			block1 = block1.Decode(block)
 			logger.Printf("Inside IncommingData --> len(BlockIn) = %v for block %x", len(p2p.BlockIn), block1.Hash[0:8])
 		}
-		processBlock(block)
+		go processBlock(block)
 	}
 }
 
