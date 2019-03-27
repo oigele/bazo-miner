@@ -29,7 +29,9 @@ func Connect(connectionString string) *net.TCPConn {
 
 func RcvData(p *peer) (header *Header, payload []byte, err error) {
 	reader := bufio.NewReader(p.conn)
-	logger.Printf("  Reader: %v", &reader)
+	if reader == nil {
+		return nil, nil, errors.New(fmt.Sprintf("New Created Reader is nil"))
+	}
 	header, err = ReadHeader(reader)
 	if err != nil {
 		p.conn.Close()

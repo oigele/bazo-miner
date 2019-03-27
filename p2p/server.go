@@ -192,7 +192,7 @@ func peerConn(p *peer) {
 					if err != nil || p == nil {
 						selfConnect := "Cannot self-connect"
 						if err.Error()[0:9] != selfConnect[0:9] {
-							logger.Printf("Initiating new miner connection failed: %v", err)
+							//logger.Printf("Initiating new miner connection failed: %v", err)
 						}
 						return
 					}

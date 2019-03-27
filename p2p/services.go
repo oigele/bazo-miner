@@ -155,7 +155,7 @@ func checkHealthService() {
 			if p == nil || err != nil {
 				selfConnect := "Cannot self-connect"
 				if err.Error()[0:9] != selfConnect[0:9] {
-					logger.Printf("Initiating new miner connection failed: %v", err)
+					//logger.Printf("Initiating new miner connection failed: %v", err)
 				}
 			} else {
 				go peerConn(p)
@@ -176,7 +176,7 @@ func checkHealthService() {
 
 				p, err := initiateNewMinerConnection(ipaddr)
 				if err != nil {
-					logger.Printf("Initiating new miner connection failed: %v", err)
+				//	logger.Printf("Initiating new miner connection failed: %v", err)
 				}
 				if p == nil || err != nil {
 					goto RETRY
