@@ -130,7 +130,7 @@ func listener(ipport string) {
 
 	for {
 		conn, err := listener.Accept()
-		conn = nil
+		
 		if conn == nil {
 			logger.Printf("1. CON is nil %v --> Probably going to crash", conn)
 			logger.Printf("1. Err is %v --> Probably going to crash", err)
