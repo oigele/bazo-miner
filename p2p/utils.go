@@ -29,6 +29,7 @@ func Connect(connectionString string) *net.TCPConn {
 
 func RcvData(p *peer) (header *Header, payload []byte, err error) {
 	reader := bufio.NewReader(p.conn)
+	logger.Printf("  Reader: %v", &reader)
 	header, err = ReadHeader(reader)
 	if err != nil {
 		p.conn.Close()
@@ -124,8 +125,8 @@ func ReadHeader(reader *bufio.Reader) (*Header, error) {
 	//The first four bytes of any incoming messages is the length of the payload.
 	//Error catching after every read is necessary to avoid panicking.
 	var headerArr [HEADER_LEN]byte
-	if reader == nil {
-		return nil, errors.New("Reader is nill")
+	if &reader == nil || reader == nil {
+		return nil, errors.New("Reader is nil")
 	}
 	//Reading byte by byte is surprisingly fast and works a lot better for concurrent connections.
 	for i := range headerArr {

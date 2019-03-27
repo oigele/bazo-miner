@@ -136,9 +136,12 @@ func listener(ipport string) {
 			conn.(*net.TCPConn).SetKeepAlivePeriod(1 * time.Minute)
 		}
 
-		if err != nil && conn != nil {
+		if err != nil {
 			logger.Printf("%v\n", err)
-			conn.Close() //Probably closing the conn when failed...?
+			if conn != nil {
+				logger.Printf("Close Conn to %v", ipport)
+				conn.Close()
+			}
 			continue
 		}
 
@@ -150,6 +153,7 @@ func listener(ipport string) {
 func handleNewConn(p *peer) {
 	//logger.Printf("New incoming connection: %v\n", p.conn.RemoteAddr().String())
 
+	logger.Printf("Handle New Connection to %v, p.conn: %v, &p.conn: %v, p.time: %v, p.ch: %v", p.getIPPort(), p.conn, &p.conn, p.time, p.ch)
 	header, payload, err := RcvData(p)
 	if err != nil {
 		logger.Printf("Failed to handle incoming connection: %v\n", err)

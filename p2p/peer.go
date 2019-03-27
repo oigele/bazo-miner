@@ -82,6 +82,7 @@ func (peers peersStruct) add(p *peer) {
 	if p.peerType == PEERTYPE_MINER {
 		for peer := range peers.minerConns {
 			if p.getIPPort() == peer.getIPPort() {
+				p.conn.Close()
 				delete(peers.minerConns, peer)
 				logger.Printf("Deleted Old Peer Entry for %v", peer.getIPPort())
 			}
@@ -107,9 +108,11 @@ func (peers peersStruct) delete(p *peer) {
 	defer peers.peerMutex.Unlock()
 
 	if p.peerType == PEERTYPE_MINER {
+		p.conn.Close()
 		delete(peers.minerConns, p)
 	}
 	if p.peerType == PEERTYPE_CLIENT {
+		p.conn.Close()
 		delete(peers.clientConns, p)
 	}
 }
