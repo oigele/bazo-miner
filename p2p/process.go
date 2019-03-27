@@ -60,7 +60,7 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 	//if !peers.minerConns[p] {
 	if !peers.contains(p.getIPPort(), PEERTYPE_MINER) {
 		packet := BuildPacket(TX_BRDCST_ACK, nil)
-		sendData(p, packet)
+		go sendData(p, packet)
 	}
 
 	if storage.ReadOpenTx(tx.Hash()) != nil {

@@ -1492,13 +1492,6 @@ func postValidate(data blockData, initialSetup bool) {
 
 		if len(data.fundsTxSlice) > 0 {
 			broadcastVerifiedFundsTxs(data.fundsTxSlice)
-			broadcastVerifiedFundsTxsToOtherMiners(data.fundsTxSlice)
-			broadcastVerifiedFundsTxsToOtherMiners(data.aggregatedFundsTxSlice)
-		}
-
-		//Broadcast AggTx to the neighbors, such that they do not have to request them later.
-		if len(data.aggTxSlice) > 0 {
-			broadcastVerifiedAggTxsToOtherMiners(data.aggTxSlice)
 		}
 
 		//It might be that block is not in the openblock storage, but this doesn't matter.

@@ -8,7 +8,7 @@ func neighborReq() {
 	knownPeers := peers.getAllPeers(PEERTYPE_MINER)
 		for _, p := range knownPeers {
 		packet := BuildPacket(NEIGHBOR_REQ, nil)
-		sendData(p, packet)
+		go sendData(p, packet)
 	}
 
 }
@@ -24,7 +24,7 @@ func neighborBrdcst() {
 
 	packet := BuildPacket(NEIGHBOR_RES, _neighborRes(ipportList))
 	for _, p := range knownPeers {
-		sendData(p, packet)
+		go sendData(p, packet)
 	}
 
 }
