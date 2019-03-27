@@ -106,10 +106,13 @@ func specialTxRes(p *peer, payload []byte, txKind uint8) {
 		packet := BuildPacket(FUNDSTX_RES, searchedTransaction.Encode())
 		sendData(p, packet)
 		packet = BuildPacket(FUNDSTX_BRDCST, searchedTransaction.Encode())
-		sendData(p, packet)
+		minerBrdcstMsg <-  packet
 	} else {
 		packet := BuildPacket(NOT_FOUND, nil)
 		sendData(p, packet)
+		//Probably Problematic because of many requests.
+		packet = BuildPacket(SPECIALTX_REQ, payload)
+		minerBrdcstMsg <- packet
 	}
 }
 

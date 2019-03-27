@@ -77,12 +77,6 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 		return
 	}
 
-//	if len(minerBrdcstMsg) > 0 {
-//		logger.Printf("Received Tx: %x from %v  -> Inside ProccessTx: len(minerBrdcstMsg) = %v", tx.Hash(), p.getIPPort(), len(minerBrdcstMsg))
-//	} else {
-//		logger.Printf("Received Tx: %x from %v ", tx.Hash(), p.getIPPort())
-//	}
-
 	//Write to mempool and rebroadcast
 	storage.WriteOpenTx(tx)
 	toBrdcst := BuildPacket(brdcstType, payload)
