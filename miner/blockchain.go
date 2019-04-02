@@ -116,7 +116,7 @@ func mining(initialBlock *protocol.Block) {
 				go broadcastBlock(currentBlock)
 				logger.Printf("Validated block (mined): %vState:\n%v", currentBlock, getState())
 			} else {
-				logger.Printf("Mined block (%x) [last block is: %x] could not be validated: %v\n", currentBlock.Hash[0:8], lastBlock.Hash[0:8],, err)
+				logger.Printf("Mined block (%x) [last block is: %x] could not be validated: %v\n", currentBlock.Hash[0:8], lastBlock.Hash[0:8], err)
 			}
 		}
 
