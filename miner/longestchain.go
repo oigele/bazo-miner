@@ -139,12 +139,14 @@ func getNewChain(newBlock *protocol.Block) (ancestor *protocol.Block, newChain [
 						break
 					}
 				}
-				logger.Printf("Block %x received Before", requestHash)
+				logger.Printf("Block %x received Before", requestHash[0:8])
 				break
 			}
+			logger.Printf("This Potential Ancestor was not found: %x", requestHash[0:8])
 			return nil, nil
 		}
 	}
 
+	logger.Printf("NO Common ancestor found down to the Genesis Block.",)
 	return nil, nil
 }

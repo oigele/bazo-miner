@@ -1084,11 +1084,32 @@ func fetchAggTxData(block *protocol.Block, aggTxSlice []*protocol.AggTx, initial
 								storage.WriteOpenTx(tx)
 								transactions = append(transactions, tx.(*protocol.FundsTx))
 							case <-time.After(TXFETCH_TIMEOUT * time.Second):
-								logger.Printf("Fetching (%x) timed out...", txHash)
+								stash := p2p.ReceivedAggTxStash
+								if p2p.AggTxAlreadyInStash(stash, txHash){
+									for _, trx := range stash {
+										if trx.Hash() == txHash {
+											tx = trx
+											break
+										}
+									}
+									break
+								}
+								fundsStash := p2p.ReceivedFundsTXStash
+								if p2p.FundsTxAlreadyInStash(fundsStash, txHash){
+									for _, trx := range fundsStash {
+										if trx.Hash() == txHash {
+											tx = trx
+											break
+										}
+									}
+									break
+								}
+								logger.Printf("Fetching UnknownTX: %x timed out...", txHash)
 								if cnt < 2 {
 									cnt ++
 									goto NEXTTRY
 								}
+								logger.Printf("Fetching UnknownTX: %x timed out!", txHash)
 								errChan <- errors.New("UnknownTx fetch timed out")
 								return
 							}
