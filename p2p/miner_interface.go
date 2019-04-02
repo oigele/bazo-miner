@@ -155,8 +155,10 @@ func forwardTxReqToMiner(p *peer, payload []byte, txType uint8) {
 	// are sent multiple times through the channel.
 		// The same concept is used for the AggTx below.
 		fundsTxSashMutex.Lock()
+		logger.Printf("Received Requested FundsTx: %x", fundsTx.Hash())
 		if !FundsTxAlreadyInStash(ReceivedFundsTXStash, fundsTx.Hash()) {
 			ReceivedFundsTXStash = append(ReceivedFundsTXStash, fundsTx)
+			logger.Printf("Forward Requested FundsTx: %x", fundsTx.Hash())
 			FundsTxChan <- fundsTx
 			if len(ReceivedFundsTXStash) > 5000 {
 				ReceivedFundsTXStash = append(ReceivedFundsTXStash[:0], ReceivedFundsTXStash[1:]...)
@@ -209,7 +211,9 @@ func forwardTxReqToMiner(p *peer, payload []byte, txType uint8) {
 		}
 
 		aggTxStashMutex.Lock()
+		logger.Printf("Received Requested AggTX: %x", aggTx.Hash())
 		if !AggTxAlreadyInStash(ReceivedAggTxStash, aggTx.Hash()) {
+			logger.Printf("Forward Requested AggTx: %x", aggTx.Hash())
 			ReceivedAggTxStash = append(ReceivedAggTxStash, aggTx)
 			AggTxChan <- aggTx
 			if len(ReceivedAggTxStash) > 1000 {

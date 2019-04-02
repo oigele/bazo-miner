@@ -50,7 +50,7 @@ func processBlock(payload []byte) {
 		go broadcastBlock(block)
 		logger.Printf("Validated block (received): %vState:\n%v", block, getState())
 	} else {
-		logger.Printf("Received block (%x) could not be validated: %v\n", block.Hash[0:8], err)
+		logger.Printf("Received block (%x) [last block is: %x] could not be validated: %v\n", block.Hash[0:8], lastBlock.Hash[0:8],, err)
 	}
 }
 

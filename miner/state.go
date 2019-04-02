@@ -114,6 +114,7 @@ func initState() (initialBlock *protocol.Block, err error) {
 		}
 
 		for {
+			cnt := 0
 			RETRY:
 			p2p.BlockReq(lastBlock.PrevHash, lastBlock.PrevHashWithoutTx)
 			//p2p.BlockReq(lastBlock.PrevHash, lastBlock.PrevHashWithoutTx)
@@ -133,7 +134,9 @@ func initState() (initialBlock *protocol.Block, err error) {
 					break
 				} else {
 					logger.Printf("Timed out while requesting block %x", lastBlock.PrevHash[0:8])
-					goto RETRY
+					if cnt < 2 {
+						goto RETRY
+					}
 				}
 			}
 

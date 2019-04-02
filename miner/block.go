@@ -1010,7 +1010,7 @@ func fetchAggTxData(block *protocol.Block, aggTxSlice []*protocol.AggTx, initial
 			if aggTx.Hash() != aggTxHash {
 				errChan <- errors.New("Received AggTxHash did not correspond to our request.")
 			}
-			logger.Printf("Received requested AggTX %x", aggTx.Hash())
+			logger.Printf("Received requested AggTX %x for block &x", aggTx.Hash(), block.Hash[0:8])
 		}
 
 		//At this point the aggTx visible in the blocks body should be received.
@@ -1069,6 +1069,7 @@ func fetchAggTxData(block *protocol.Block, aggTxSlice []*protocol.AggTx, initial
 							cnt := 0
 							NEXTTRY:
 							err := p2p.TxReq(txHash, p2p.UNKNOWNTX_REQ)
+							logger.Printf("Request Unknown %x", txHash)
 							if err != nil {
 								errChan <- errors.New(fmt.Sprintf("Tx could not be read: %v", err))
 								return
@@ -1079,16 +1080,19 @@ func fetchAggTxData(block *protocol.Block, aggTxSlice []*protocol.AggTx, initial
 							case tx = <-p2p.AggTxChan:
 								//Received an Aggregated Transaction which was already validated in an older block.
 								storage.WriteOpenTx(tx)
+								logger.Printf("Received unknonw AggTx %x for block %x", tx.Hash(), block.Hash[0:8])
 							case tx = <-p2p.FundsTxChan:
 								//Received a fundsTransaction, which needs to be handled further.
 								storage.WriteOpenTx(tx)
 								transactions = append(transactions, tx.(*protocol.FundsTx))
+								logger.Printf("Received unknown Funds %x for block %x", tx.Hash(), block.Hash[0:8])
 							case <-time.After(TXFETCH_TIMEOUT * time.Second):
 								stash := p2p.ReceivedAggTxStash
 								if p2p.AggTxAlreadyInStash(stash, txHash){
 									for _, trx := range stash {
 										if trx.Hash() == txHash {
 											tx = trx
+											logger.Printf("Found AggTx %x in received Stash", txHash)
 											break
 										}
 									}
@@ -1099,17 +1103,18 @@ func fetchAggTxData(block *protocol.Block, aggTxSlice []*protocol.AggTx, initial
 									for _, trx := range fundsStash {
 										if trx.Hash() == txHash {
 											tx = trx
+											logger.Printf("Found Funds %x in received Stash", txHash)
 											break
 										}
 									}
 									break
 								}
-								logger.Printf("Fetching UnknownTX: %x timed out...", txHash)
+								logger.Printf("Fetching UnknownTX: %x  for %x timed out...", txHash, block.Hash[0:8])
 								if cnt < 2 {
 									cnt ++
 									goto NEXTTRY
 								}
-								logger.Printf("Fetching UnknownTX: %x timed out!", txHash)
+								logger.Printf("Fetching UnknownTX: %x  for %x timed out!!!", txHash, block.Hash[0:8])
 								errChan <- errors.New("UnknownTx fetch timed out")
 								return
 							}

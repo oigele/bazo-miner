@@ -129,6 +129,7 @@ func getNewChain(newBlock *protocol.Block) (ancestor *protocol.Block, newChain [
 		select {
 		case encodedBlock := <-p2p.BlockReqChan:
 			newBlock = newBlock.Decode(encodedBlock)
+			logger.Printf("Recieved block %x for %x", newBlock.Hash[0:8], requestHash[0:8])
 			storage.WriteToReceivedStash(newBlock)
 		//Limit waiting time to BLOCKFETCH_TIMEOUT seconds before aborting.
 		case <-time.After(BLOCKFETCH_TIMEOUT * time.Second):
@@ -142,7 +143,7 @@ func getNewChain(newBlock *protocol.Block) (ancestor *protocol.Block, newChain [
 				logger.Printf("Block %x received Before", requestHash[0:8])
 				break
 			}
-			logger.Printf("This Potential Ancestor was not found: %x", requestHash[0:8])
+			logger.Printf("NO Common ancestor. This Potential Ancestor was not found: %x", requestHash[0:8])
 			return nil, nil
 		}
 	}
