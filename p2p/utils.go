@@ -38,7 +38,7 @@ func RcvData(p *peer) (header *Header, payload []byte, err error) {
 		return nil, nil, errors.New(fmt.Sprintf("Connection to %v aborted: %v", p.getIPPort(), err))
 	}
 
-	if int(header.Len) > 800000 { //FABIO
+	if int(header.Len) > 1000000 { //FABIO
 		logger.Printf("Header.Len = %v --> Abort here to prevent an Out Of Memory Error", header.Len)
 		p.conn.Close()
 		if p.peerType == PEERTYPE_MINER {

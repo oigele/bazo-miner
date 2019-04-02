@@ -129,10 +129,10 @@ func initState() (initialBlock *protocol.Block, err error) {
 							break
 						}
 					}
-					logger.Printf("Block %x received Before", lastBlock.PrevHash[0:8])
+					logger.Printf("Block %x received before", lastBlock.PrevHash[0:8])
 					break
 				} else {
-					logger.Printf("Timed out while requesting %x", lastBlock.PrevHash[0:8])
+					logger.Printf("Timed out while requesting block %x", lastBlock.PrevHash[0:8])
 					goto RETRY
 				}
 			}

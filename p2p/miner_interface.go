@@ -2,6 +2,7 @@ package p2p
 
 import (
 	"github.com/bazo-blockchain/bazo-miner/protocol"
+	"github.com/bazo-blockchain/bazo-miner/storage"
 	"sync"
 )
 
@@ -29,7 +30,6 @@ var (
 	ReceivedAggTxStash = make([]*protocol.AggTx, 0)
 	ReceivedStakeTxStash = make([]*protocol.StakeTx, 0)
 	ReceivedAccTxStash = make([]*protocol.AccTx, 0)
-	receivedBlockStash = make([]*protocol.Block, 0)
 
 	fundsTxSashMutex = &sync.Mutex{}
 	aggTxStashMutex = &sync.Mutex{}
@@ -226,12 +226,10 @@ func forwardBlockReqToMiner(p *peer, payload []byte) {
 
 	blockStashMutex.Lock()
 	logger.Printf("Received Block %x", block.Hash[0:8])
-	if !BlockAlreadyReceived(receivedBlockStash, block.Hash) {
-		receivedBlockStash = append(receivedBlockStash, block)
+	if !BlockAlreadyReceived(storage.ReadReceivedBlockStash(), block.Hash) {
+		storage.WriteToReceivedStash(block)
+		logger.Printf("Received Block %x and Added it to the Blockstash", block.Hash[0:8])
 		BlockReqChan <- payload
-		if len(receivedBlockStash) > 40 {
-			receivedBlockStash = append(receivedBlockStash[:0], receivedBlockStash[1:]...)
-		}
 	}
 	blockStashMutex.Unlock()
 }

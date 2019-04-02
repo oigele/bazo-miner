@@ -120,20 +120,18 @@ func sendAndSearchMessages(msg []byte) {
 // This can happen all time when new connecting, because e.g a new channel (p.ch) is set up once adding a new peer
 // (even if it was added before). If the peer changes as well, it gets updated in teh sendingMap.
 func isConnectionAlreadyInSendingMap(p *peer, sendingMap map[string]*delayedMessagesPerSender) (alreadyInSenderMap bool, needsUpdate bool) {
-	//logger.Printf("Inside Validation for block --> Inside Broadcastservice (1.1)")
+	peerMutex.Lock()
+	defer peerMutex.Unlock()
 	for _, connection := range sendingMap {
 		if connection.peer.getIPPort() == p.getIPPort() {
 			if connection.peer != p {
 				sendingMap[p.getIPPort()] = &delayedMessagesPerSender{p, connection.delayedMessages}
-				//logger.Printf("Inside Validation for block --> Inside Broadcastservice (1.2)")
 				return true, true
 			} else {
-				//logger.Printf("Inside Validation for block --> Inside Broadcastservice (1.3)")
 				return true, false
 			}
 		}
 	}
-	//logger.Printf("Inside Validation for block --> Inside Broadcastservice (1.4)")
 	return false, false
 }
 

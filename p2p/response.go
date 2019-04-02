@@ -196,6 +196,16 @@ func blockRes(p *peer, payload []byte) {
 				block = storage.ReadOpenBlock(blockHash)
 			}
 		}
+
+		if block == nil {
+			stash := storage.ReadReceivedBlockStash()
+			for _, blck := range stash {
+				if blck.Hash == blockHash {
+					block = blck
+				}
+			}
+		}
+
 	} else if len(payload) == 0 {
 		block = storage.ReadLastClosedBlock()
 	}

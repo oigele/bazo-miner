@@ -1114,7 +1114,11 @@ func fetchAggTxData(block *protocol.Block, aggTxSlice []*protocol.AggTx, initial
 								return
 							}
 							if tx.Hash() != txHash {
-								errChan <- errors.New("Received TxHash did not correspond to our request.")
+								if cnt < 2 {
+									cnt ++
+									goto NEXTTRY
+								}
+								errChan <- errors.New("Received unknown TxHash did not correspond to our request.")
 							}
 						}
 					}
@@ -1622,11 +1626,11 @@ func timestampCheck(timestamp int64) error {
 	systemTime := p2p.ReadSystemTime()
 
 	if timestamp > systemTime {
-		if timestamp-systemTime > int64(time.Hour.Seconds()) {
+		if timestamp-systemTime > int64(2*time.Hour.Seconds()) {
 			return errors.New("Timestamp was too far in the future.System time: " + strconv.FormatInt(systemTime, 10) + " vs. timestamp " + strconv.FormatInt(timestamp, 10) + "\n")
 		}
 	} else {
-		if systemTime-timestamp > int64(time.Hour.Seconds()) {
+		if systemTime-timestamp > int64(2*time.Hour.Seconds()) {
 			return errors.New("Timestamp was too far in the past. System time: " + strconv.FormatInt(systemTime, 10) + " vs. timestamp " + strconv.FormatInt(timestamp, 10) + "\n")
 		}
 	}

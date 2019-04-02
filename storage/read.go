@@ -178,8 +178,10 @@ func (a ByHeight) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByHeight) Less(i, j int) bool { return a[i].Height < a[j].Height }
 
 
-func ReadReceivedBlockStash() (receivedBlocks []*protocol.Block){
-	return receivedBlockStash
+func ReadReceivedBlockStash() (ReceivedBlocks []*protocol.Block){
+	ReceivedBlockStashMutex.Lock()
+	defer ReceivedBlockStashMutex.Unlock()
+	return ReceivedBlockStash
 }
 
 func ReadOpenTx(hash [32]byte) (transaction protocol.Transaction) {
