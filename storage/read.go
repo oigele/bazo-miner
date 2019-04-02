@@ -179,8 +179,6 @@ func (a ByHeight) Less(i, j int) bool { return a[i].Height < a[j].Height }
 
 
 func ReadReceivedBlockStash() (ReceivedBlocks []*protocol.Block){
-	ReceivedBlockStashMutex.Lock()
-	defer ReceivedBlockStashMutex.Unlock()
 	return ReceivedBlockStash
 }
 

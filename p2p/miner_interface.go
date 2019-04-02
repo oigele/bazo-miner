@@ -224,14 +224,12 @@ func forwardBlockReqToMiner(p *peer, payload []byte) {
 	var block *protocol.Block
 	block = block.Decode(payload)
 
-	blockStashMutex.Lock()
 	logger.Printf("Received Block %x", block.Hash[0:8])
 	if !BlockAlreadyReceived(storage.ReadReceivedBlockStash(), block.Hash) {
 		storage.WriteToReceivedStash(block)
 		logger.Printf("Received Block %x and Added it to the Blockstash", block.Hash[0:8])
 		BlockReqChan <- payload
 	}
-	blockStashMutex.Unlock()
 }
 
 func ReadSystemTime() int64 {

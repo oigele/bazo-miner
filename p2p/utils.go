@@ -119,7 +119,7 @@ func peerSelfConn(newIpport string) bool {
 func BuildPacket(typeID uint8, payload []byte) (packet []byte) {
 	var payloadLen [4]byte
 
-	if int(len(payload)) > 800000 {
+	if int(len(payload)) > 1000000 {
 		logger.Printf("Payload = %v --> Probably Abort here to prevent an Out Of Memory Error", len(payload))
 	}
 
