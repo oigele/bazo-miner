@@ -156,6 +156,7 @@ func forwardTxReqToMiner(p *peer, payload []byte, txType uint8) {
 		// The same concept is used for the AggTx below.
 		fundsTxSashMutex.Lock()
 		logger.Printf("Received Requested FundsTx: %x", fundsTx.Hash())
+		storage.WriteOpenTx(fundsTx)
 		if !FundsTxAlreadyInStash(ReceivedFundsTXStash, fundsTx.Hash()) {
 			ReceivedFundsTXStash = append(ReceivedFundsTXStash, fundsTx)
 			logger.Printf("Forward Requested FundsTx: %x", fundsTx.Hash())
@@ -211,6 +212,7 @@ func forwardTxReqToMiner(p *peer, payload []byte, txType uint8) {
 		}
 
 		aggTxStashMutex.Lock()
+		storage.WriteOpenTx(aggTx)
 		logger.Printf("Received Requested AggTX: %x", aggTx.Hash())
 		if !AggTxAlreadyInStash(ReceivedAggTxStash, aggTx.Hash()) {
 			logger.Printf("Forward Requested AggTx: %x", aggTx.Hash())

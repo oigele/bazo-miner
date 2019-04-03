@@ -99,6 +99,7 @@ func getNewChain(newBlock *protocol.Block) (ancestor *protocol.Block, newChain [
 		//It might be the case that we already started a sync and the block is in the openblock storage.
 		openBlock := storage.ReadOpenBlock(newBlock.PrevHash)
 		if openBlock != nil {
+			newBlock = openBlock
 			continue
 		}
 

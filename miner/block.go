@@ -1010,7 +1010,7 @@ func fetchAggTxData(block *protocol.Block, aggTxSlice []*protocol.AggTx, initial
 			if aggTx.Hash() != aggTxHash {
 				errChan <- errors.New("Received AggTxHash did not correspond to our request.")
 			}
-			logger.Printf("Received requested AggTX %x for block &x", aggTx.Hash(), block.Hash[0:8])
+			logger.Printf("Received requested AggTX %x for block %x", aggTx.Hash(), block.Hash[0:8])
 		}
 
 		//At this point the aggTx visible in the blocks body should be received.
@@ -1635,7 +1635,7 @@ func timestampCheck(timestamp int64) error {
 			return errors.New("Timestamp was too far in the future.System time: " + strconv.FormatInt(systemTime, 10) + " vs. timestamp " + strconv.FormatInt(timestamp, 10) + "\n")
 		}
 	} else {
-		if systemTime-timestamp > int64(2*time.Hour.Seconds()) {
+		if systemTime-timestamp > int64(10*time.Hour.Seconds()) {
 			return errors.New("Timestamp was too far in the past. System time: " + strconv.FormatInt(systemTime, 10) + " vs. timestamp " + strconv.FormatInt(timestamp, 10) + "\n")
 		}
 	}

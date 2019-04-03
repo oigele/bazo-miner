@@ -90,8 +90,8 @@ func WriteToReceivedStash(block *protocol.Block) {
 	if !blockAlreadyInStash(ReceivedBlockStash, block.Hash) {
 		ReceivedBlockStash = append(ReceivedBlockStash, block)
 
-		//When length of stash is > 100 --> Remove first added Block
-		if len(ReceivedBlockStash) > 100 {
+		//When length of stash is > 500 --> Remove first added Block
+		if len(ReceivedBlockStash) > 500 {
 			ReceivedBlockStash = append(ReceivedBlockStash[:0], ReceivedBlockStash[1:]...)
 		}
 	}
