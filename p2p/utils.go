@@ -91,18 +91,16 @@ func RcvData_(c net.Conn) (header *Header, payload []byte, err error) {
 	return header, payload, nil
 }
 
-var (SendDataLock = &sync.Mutex{})
 func sendData(p *peer, payload []byte) {
 	//logger.Printf("Send message:\nReceiver: %v\nType: %v\nPayload length: %v\n", p.getIPPort(), LogMapping[payload[4]], len(payload)-HEADER_LEN)
 
-	SendDataLock.Lock()
 	if LogMapping[payload[4]] == "" {
 		logger.Printf("Strange Header.TypeID (%v) to send to %v", payload[4], p.getIPPort())
 	}
 	logger.Printf("IP: %v, SourceIP: %v", p.getIPPort(), Ipport)
 	logger.Printf("Payload: %x", payload)
 	p.conn.Write(payload)
-	SendDataLock.Unlock()
+
 }
 
 //Tested in server_test.go
