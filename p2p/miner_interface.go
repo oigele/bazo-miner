@@ -147,12 +147,12 @@ func forwardTxReqToMiner(p *peer, payload []byte, txType uint8) {
 	if fundsTx == nil {
 		return
 		}
-	// If TX is not received with the last 1000 Transaction, send it through the channel to the TX_FETCH.
-	// Otherwise send nothing. This means, that the TX was sent before and we ensure, that only one TX per Broadcast
-	// request is going through to the FETCH Request. This should prevent the "Received txHash did not correspond to
-	// our request." error
-	// The Mutex Lock is needed, because sometimes the execution is too fast. And even with the stash transactions
-	// are sent multiple times through the channel.
+		// If TX is not received with the last 1000 Transaction, send it through the channel to the TX_FETCH.
+		// Otherwise send nothing. This means, that the TX was sent before and we ensure, that only one TX per Broadcast
+		// request is going through to the FETCH Request. This should prevent the "Received txHash did not correspond to
+		// our request." error
+		// The Mutex Lock is needed, because sometimes the execution is too fast. And even with the stash transactions
+		// are sent multiple times through the channel.
 		// The same concept is used for the AggTx below.
 		fundsTxSashMutex.Lock()
 		if !FundsTxAlreadyInStash(ReceivedFundsTXStash, fundsTx.Hash()) {

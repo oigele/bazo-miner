@@ -1209,6 +1209,7 @@ func validate(b *protocol.Block, initialSetup bool) error {
 			}
 
 			postValidate(blockDataMap[block.Hash], initialSetup)
+			logger.Printf("Validated block (During Validation of other block): %vState:\n%v", block, getState())
 		}
 	} else {
 		//Rollback
