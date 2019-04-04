@@ -1,6 +1,7 @@
 package p2p
 
 import (
+	"github.com/sasha-s/go-deadlock"
 	"math/rand"
 	"net"
 	"strings"
@@ -22,6 +23,7 @@ type peer struct {
 	listenerPort string
 	time         int64
 	peerType     uint
+	mu 			 deadlock.Mutex
 }
 
 //Block constructor, argument is the previous block in the blockchain.
