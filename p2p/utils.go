@@ -28,7 +28,11 @@ func Connect(connectionString string) *net.TCPConn {
 	return conn
 }
 
+var (ReceiveDataLock = &sync.Mutex{})
 func RcvData(p *peer) (header *Header, payload []byte, err error) {
+	ReceiveDataLock.Lock()
+	defer ReceiveDataLock.Unlock()
+
 	reader := bufio.NewReader(p.conn)
 	header, err = ReadHeader(reader)
 	if err != nil {
