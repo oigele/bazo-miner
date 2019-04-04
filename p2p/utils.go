@@ -30,6 +30,8 @@ func Connect(connectionString string) *net.TCPConn {
 //var (mu deadlock.Mutex)
 func RcvData(p *peer) (header *Header, payload []byte, err error) {
 	p.mu.Lock()
+	logger.Printf(" - - RcvData: Start RcvData For Peer %v on conn: %x (= %v)", p.getIPPort(), p.conn, p.conn)
+	defer logger.Printf(" - - RcvData: End RcvData For Peer %v on conn: %x (= %v)", p.getIPPort(), p.conn, p.conn)
 	defer p.mu.Unlock()
 
 	reader := bufio.NewReader(p.conn)
@@ -96,8 +98,8 @@ func sendData(p *peer, payload []byte) {
 	if LogMapping[payload[4]] == "" {
 		logger.Printf("Strange Header.TypeID (%v) to send to %v", payload[4], p.getIPPort())
 	}
-	logger.Printf("IP: %v, SourceIP: %v", p.getIPPort(), Ipport)
-	logger.Printf("Payload: %x", payload)
+	//logger.Printf("IP: %v, SourceIP: %v", p.getIPPort(), Ipport)
+	//logger.Printf("Payload: %x", payload)
 	p.conn.Write(payload)
 
 }
