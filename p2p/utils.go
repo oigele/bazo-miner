@@ -27,11 +27,12 @@ func Connect(connectionString string) *net.TCPConn {
 	return conn
 }
 
-//var (mu deadlock.Mutex)
+var (counter = 0)
 func RcvData(p *peer) (header *Header, payload []byte, err error) {
 	p.mu.Lock()
-	logger.Printf(" - - RcvData: - START - RcvData For Peer %v on conn: %x with local address: %v", p.getIPPort(), p.conn, p.conn.LocalAddr())
-	defer logger.Printf(" - - RcvData: -  END  - RcvData For Peer %v on conn: %x with local address: %v", p.getIPPort(), p.conn, p.conn.LocalAddr())
+	counter++
+	logger.Printf(" - - RcvData: - START (%v) - RcvData For Peer %v on conn: %x with local address: %v", counter, p.getIPPort(), p.conn, p.conn.LocalAddr())
+	defer logger.Printf(" - - RcvData: -  END (%v)  - RcvData For Peer %v on conn: %x with local address: %v", counter, p.getIPPort(), p.conn, p.conn.LocalAddr())
 	defer p.mu.Unlock()
 
 	reader := bufio.NewReader(p.conn)
