@@ -30,8 +30,8 @@ func Connect(connectionString string) *net.TCPConn {
 
 var (ReceiveDataLock = &sync.Mutex{})
 func RcvData(p *peer) (header *Header, payload []byte, err error) {
-	ReceiveDataLock.Lock()
-	defer ReceiveDataLock.Unlock()
+	p.l.Lock()
+	defer p.l.Unlock()
 
 	reader := bufio.NewReader(p.conn)
 	header, err = ReadHeader(reader)
