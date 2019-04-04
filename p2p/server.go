@@ -99,15 +99,18 @@ func initiateNewMinerConnection(dial string) (*peer, error) {
 		return nil, err
 	}
 
+	SendDataLock.Lock()
 	conn.Write(packet)
 
 	//Wait for the other party to finish the handshake with the corresponding message
 	header, _, err := RcvData(p)
 	if err != nil || header.TypeID != MINER_PONG {
 		conn.Close()
+		SendDataLock.Unlock()
 		return nil, errors.New(fmt.Sprintf("Failed to complete miner handshake: %v", err))
 	}
 
+	SendDataLock.Unlock()
 	return p, nil
 }
 
