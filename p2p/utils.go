@@ -155,8 +155,8 @@ func ReadHeader(reader *bufio.Reader) (*Header, error) {
 	//Check if the type is registered in the protocol.
 	if LogMapping[header.TypeID] == "" {
 		logger.Printf("Header: TypeID not found. --> typeID: %v", header.TypeID)
-		logger.Printf("Whole: %v", header)
-		
+		logger.Printf("HEADERARR: %x", headerArr)
+
 		return nil, errors.New("Header: TypeID not found.")
 	}
 
