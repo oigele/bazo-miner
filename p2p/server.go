@@ -154,7 +154,6 @@ func handleNewConn(p *peer) {
 	}
 
 	processIncomingMsg(p, header, payload)
-	p.conn.Close()
 }
 
 func peerConn(p *peer) {

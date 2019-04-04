@@ -93,6 +93,8 @@ func sendData(p *peer, payload []byte) {
 	if LogMapping[payload[4]] == "" {
 		logger.Printf("Strange Header.TypeID (%v) to send to %v", payload[4], p.getIPPort())
 	}
+	logger.Printf("IP: %v, SourceIP: %v", p.getIPPort(), Ipport)
+	logger.Printf("Payload: %x", payload)
 	p.conn.Write(payload)
 	p.l.Unlock()
 }
