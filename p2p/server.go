@@ -146,14 +146,15 @@ func listener(ipport string) {
 
 func handleNewConn(p *peer) {
 	//logger.Printf("New incoming connection: %v\n", p.conn.RemoteAddr().String())
+	go func() {
+		header, payload, err := RcvData(p)
+		if err != nil {
+			logger.Printf("Failed to handle incoming connection: %v\n", err)
+			return
+		}
 
-	header, payload, err := RcvData(p)
-	if err != nil {
-		logger.Printf("Failed to handle incoming connection: %v\n", err)
-		return
-	}
-
-	processIncomingMsg(p, header, payload)
+		processIncomingMsg(p, header, payload)
+	}()
 }
 
 func peerConn(p *peer) {
@@ -171,32 +172,34 @@ func peerConn(p *peer) {
 	register <- p
 	go peerBroadcast(p)
 
-	for {
-		header, payload, err := RcvData(p)
-		if err != nil {
-			if p.peerType == PEERTYPE_MINER {
-				logger.Printf("Miner disconnected: %v\n", err)
-				disconnect <- p
-				time.Sleep(time.Second)
-				lastpeerMutex.Lock()
-				if getLastTriedPeer() != p.getIPPort() {
-					logger.Printf("Try To Reconnect to %v", p.getIPPort())
-					iplistChan <- p.getIPPort()
-					setLastTriedPeer(p.getIPPort())
+	go func() {
+		for {
+			header, payload, err := RcvData(p)
+			if err != nil {
+				if p.peerType == PEERTYPE_MINER {
+					logger.Printf("Miner disconnected: %v\n", err)
+					disconnect <- p
+					time.Sleep(time.Second)
+					lastpeerMutex.Lock()
+					if getLastTriedPeer() != p.getIPPort() {
+						logger.Printf("Try To Reconnect to %v", p.getIPPort())
+						iplistChan <- p.getIPPort()
+						setLastTriedPeer(p.getIPPort())
+					}
+					lastpeerMutex.Unlock()
+					return
+				} else if p.peerType == PEERTYPE_CLIENT {
+					//logger.Printf("Client disconnected: %v\n", err)
+					disconnect <- p
 				}
-				lastpeerMutex.Unlock()
+
 				return
-			} else if p.peerType == PEERTYPE_CLIENT {
-				//logger.Printf("Client disconnected: %v\n", err)
-				disconnect <- p
 			}
 
-			return
+			processIncomingMsg(p, header, payload)
 		}
 
-		go processIncomingMsg(p, header, payload)
-
-	}
+	}()
 }
 
 func setLastTriedPeer(ipPort string) () {
