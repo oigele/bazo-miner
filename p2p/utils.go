@@ -7,9 +7,9 @@ import (
 	"fmt"
 	"github.com/bazo-blockchain/bazo-miner/protocol"
 	"github.com/bazo-blockchain/bazo-miner/storage"
+	"github.com/sasha-s/go-deadlock"
 	"net"
 	"strings"
-	"sync"
 	"time"
 )
 
@@ -28,10 +28,10 @@ func Connect(connectionString string) *net.TCPConn {
 	return conn
 }
 
-var (ReceiveDataLock = &sync.Mutex{})
+var (mu deadlock.Mutex)
 func RcvData(p *peer) (header *Header, payload []byte, err error) {
-	p.l.Lock()
-	defer p.l.Unlock()
+	mu.Lock()
+	defer mu.Unlock()
 
 	reader := bufio.NewReader(p.conn)
 	header, err = ReadHeader(reader)
