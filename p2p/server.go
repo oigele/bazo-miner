@@ -136,8 +136,8 @@ func listener(ipport string) {
 			continue
 		}
 
-		conn.(*net.TCPConn).SetKeepAlive(true)
-		conn.(*net.TCPConn).SetKeepAlivePeriod(1 * time.Minute)
+	//	conn.(*net.TCPConn).SetKeepAlive(true)
+	//	conn.(*net.TCPConn).SetKeepAlivePeriod(1 * time.Minute)
 
 		p := newPeer(conn, "", 0)
 		go handleNewConn(p)
@@ -154,6 +154,7 @@ func handleNewConn(p *peer) {
 	}
 
 	processIncomingMsg(p, header, payload)
+	p.conn.Close()
 }
 
 func peerConn(p *peer) {

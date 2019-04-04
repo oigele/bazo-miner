@@ -171,7 +171,6 @@ func ReadHeader(reader *bufio.Reader) (*Header, error) {
 //Decoupled functionality for testing reasons.
 func extractHeader(headerData []byte) *Header {
 	header := new(Header)
-
 	lenBuf := [4]byte{headerData[0], headerData[1], headerData[2], headerData[3]}
 	packetLen := binary.BigEndian.Uint32(lenBuf[:])
 
