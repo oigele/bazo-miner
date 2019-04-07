@@ -55,7 +55,18 @@ func prepareBlock(block *protocol.Block) {
 	var missingTxCntSender = map[[32]byte]*senderTxCounterForMissingTransactions{}
 
 	//Get Best combination of transactions
-	opentxToAdd = checkBestCombination(opentxs)
+	//opentxToAdd = checkBestCombination(opentxs)
+
+	txCounter := 0
+	for _, tx := range opentxs {
+		//Prevent block size to overflow.
+		txCounter++
+		if (txCounter*32) > blockSize {
+			break
+		} else {
+			opentxToAdd = append(opentxToAdd, tx)
+		}
+	}
 
 	//Search missing transactions for the transactions which will be added...
 	for _, tx := range opentxToAdd {
