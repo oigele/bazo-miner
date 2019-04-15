@@ -211,8 +211,6 @@ func initState() (initialBlock *protocol.Block, err error) {
 			postValidate(blockDataMap[blockToValidate.Hash], true)
 		}
 
-
-		//CalculateBlockchainSize(int(blockToValidate.GetSize()))
 		logger.Printf("Block validated: %d --> %x", blockToValidate.Height, blockToValidate.Hash[0:8])
 	}
 
