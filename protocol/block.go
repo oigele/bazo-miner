@@ -240,7 +240,7 @@ func (block *Block) Encode() []byte {
 		NrFundsTx:             			block.NrFundsTx,
 		NrConfigTx:            			block.NrConfigTx,
 		NrStakeTx:             			block.NrStakeTx,
-		NrAggTx:         				block.NrAggTx,
+		NrAggTx:         			block.NrAggTx,
 		NrElementsBF:          			block.NrElementsBF,
 		BloomFilter:           			block.BloomFilter,
 		SlashedAddress:        			block.SlashedAddress,

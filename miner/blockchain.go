@@ -22,6 +22,7 @@ var (
 	validatorAccAddress          [64]byte
 	multisigPubKey               *ecdsa.PublicKey
 	commPrivKey, rootCommPrivKey *rsa.PrivateKey
+	blockchainSize               = 0
 )
 
 //Miner entry point
@@ -67,8 +68,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	}
 
 	currentTargetTime = new(timerange)
-
-	target = append(target, 13)
+	target = append(target, 22)
 
 	initialBlock, err := initState()
 	if err != nil {

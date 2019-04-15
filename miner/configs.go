@@ -25,5 +25,5 @@ const (
 	SLASHING_WINDOW_SIZE 	= 100     //Blocks
 	SLASH_REWARD         	= 2       //Coins
 	NUM_INCL_PREV_PROOFS 	= 5       //Number of previous proofs included in the PoS condition
-	NO_EMPTYING_LENGTH		= 10	  //Number of blocks after the newest block which are not moved to the empty block bucket
+	NO_EMPTYING_LENGTH		= 100	  //Number of blocks after the newest block which are not moved to the empty block bucket
 )

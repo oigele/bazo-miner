@@ -13,14 +13,9 @@ import (
 func InitLogger() *log.Logger {
 
 	//Create a Log-file (Logger.Miner.log) and write all logger.printf(...) Statements into it.
-
-	//These two lines are used to get distinct file names for the logfile
 	time.Now().Format("030405")
-	filename := "LoggerMiner"+time.Now().Format("150405")+".log" //Use this line when running the miner locally.
-
-	//This line can be used if all log files should have the same name.
-	//filename := "LoggerMiner.log"
-
+	//filename := "LoggerMiner"+time.Now().Format("150405")+".log" //Use this line when running the miner locally.
+	filename := "LoggerMiner.log"
 	LogFile, err := os.OpenFile(filename, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
 	if err != nil {
 		log.Fatalf("error opening file: %v", err)
