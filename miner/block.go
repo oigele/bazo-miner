@@ -9,11 +9,11 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bazo-blockchain/bazo-miner/crypto"
-	"github.com/bazo-blockchain/bazo-miner/p2p"
-	"github.com/bazo-blockchain/bazo-miner/protocol"
-	"github.com/bazo-blockchain/bazo-miner/storage"
-	"github.com/bazo-blockchain/bazo-miner/vm"
+	"github.com/oigele/bazo-miner/crypto"
+	"github.com/oigele/bazo-miner/p2p"
+	"github.com/oigele/bazo-miner/protocol"
+	"github.com/oigele/bazo-miner/storage"
+	"github.com/oigele/bazo-miner/vm"
 	"golang.org/x/crypto/sha3"
 )
 

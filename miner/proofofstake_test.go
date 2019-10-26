@@ -2,7 +2,7 @@ package miner
 
 import (
 	"fmt"
-	"github.com/bazo-blockchain/bazo-miner/crypto"
+	"github.com/oigele/bazo-miner/crypto"
 	"math/rand"
 	"reflect"
 	"testing"

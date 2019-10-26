@@ -2,7 +2,7 @@ package cli
 
 import (
 	"fmt"
-	"github.com/bazo-blockchain/bazo-miner/crypto"
+	"github.com/oigele/bazo-miner/crypto"
 	"github.com/urfave/cli"
 )
 

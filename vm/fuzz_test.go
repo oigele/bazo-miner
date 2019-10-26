@@ -4,7 +4,7 @@ import (
 	"log"
 	"testing"
 
-	"github.com/bazo-blockchain/bazo-miner/protocol"
+	"github.com/oigele/bazo-miner/protocol"
 )
 
 // Function generates random bytes, if an exception occurs, it is catched and printed out with the random bytes,

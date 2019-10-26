@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bazo-blockchain/bazo-miner/protocol"
+	"github.com/oigele/bazo-miner/protocol"
 	"github.com/boltdb/bolt"
 )
 

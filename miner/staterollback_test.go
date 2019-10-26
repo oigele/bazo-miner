@@ -1,14 +1,14 @@
 package miner
 
 import (
-	"github.com/bazo-blockchain/bazo-miner/crypto"
+	"github.com/oigele/bazo-miner/crypto"
 	"math/rand"
 	"reflect"
 	"testing"
 	"time"
 
-	"github.com/bazo-blockchain/bazo-miner/protocol"
-	"github.com/bazo-blockchain/bazo-miner/storage"
+	"github.com/oigele/bazo-miner/protocol"
+	"github.com/oigele/bazo-miner/storage"
 )
 
 //Rollback tests for all tx types

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/bazo-blockchain/bazo-miner/cli"
-	"github.com/bazo-blockchain/bazo-miner/storage"
+	"github.com/oigele/bazo-miner/cli"
+	"github.com/oigele/bazo-miner/storage"
 	cli2 "github.com/urfave/cli"
 	"os"
 )

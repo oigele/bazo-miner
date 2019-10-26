@@ -1,7 +1,7 @@
 package vm
 
 import (
-	"github.com/bazo-blockchain/bazo-miner/protocol"
+	"github.com/oigele/bazo-miner/protocol"
 )
 
 type MockContext struct {

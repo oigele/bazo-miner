@@ -6,7 +6,7 @@ import (
 	"crypto/rsa"
 	"encoding/binary"
 	"fmt"
-	"github.com/bazo-blockchain/bazo-miner/crypto"
+	"github.com/oigele/bazo-miner/crypto"
 )
 
 const (

@@ -4,12 +4,12 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
-	"github.com/bazo-blockchain/bazo-miner/crypto"
+	"github.com/oigele/bazo-miner/crypto"
 	"sync"
 	"time"
 
-	"github.com/bazo-blockchain/bazo-miner/protocol"
-	"github.com/bazo-blockchain/bazo-miner/storage"
+	"github.com/oigele/bazo-miner/protocol"
+	"github.com/oigele/bazo-miner/storage"
 	"golang.org/x/crypto/sha3"
 )
 var validateMutex = sync.Mutex{}

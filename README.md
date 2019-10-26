@@ -74,7 +74,7 @@ Wallet and commitment keys are automatically created. Using this command, we def
 
 Starting miner B requires more work since new accounts have to be registered by a root account.
 In our case, we can use miner's A `WalletA.txt` (e.g. copy the file to the Bazo client directory) to create and add a new account to the network.
-Using the [Bazo client](https://github.com/bazo-blockchain/bazo-client), we create a new account:
+Using the [Bazo client](https://github.com/oigele/bazo-client), we create a new account:
 
 ```bash
 ./bazo-client account create --rootwallet WalletA.txt --wallet WalletB.txt 

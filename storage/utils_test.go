@@ -2,7 +2,7 @@ package storage
 
 import (
 	"fmt"
-	"github.com/bazo-blockchain/bazo-miner/protocol"
+	"github.com/oigele/bazo-miner/protocol"
 	"math/big"
 	"testing"
 )

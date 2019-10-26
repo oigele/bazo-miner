@@ -2,9 +2,9 @@ package miner
 
 import (
 	"encoding/binary"
-	"github.com/bazo-blockchain/bazo-miner/p2p"
-	"github.com/bazo-blockchain/bazo-miner/protocol"
-	"github.com/bazo-blockchain/bazo-miner/storage"
+	"github.com/oigele/bazo-miner/p2p"
+	"github.com/oigele/bazo-miner/protocol"
+	"github.com/oigele/bazo-miner/storage"
 	"sort"
 	"time"
 )

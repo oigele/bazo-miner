@@ -9,4 +9,4 @@ notifications:
 script:
 - go test -v ./...
 
-go_import_path: github.com/bazo-blockchain/bazo-miner
+go_import_path: github.com/oigele/bazo-miner

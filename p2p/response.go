@@ -3,8 +3,8 @@ package p2p
 import (
 	"bytes"
 	"encoding/binary"
-	"github.com/bazo-blockchain/bazo-miner/protocol"
-	"github.com/bazo-blockchain/bazo-miner/storage"
+	"github.com/oigele/bazo-miner/protocol"
+	"github.com/oigele/bazo-miner/storage"
 	"strconv"
 	"strings"
 	"sync"
