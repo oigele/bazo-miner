@@ -2,7 +2,7 @@ package miner
 
 import (
 	"encoding/binary"
-	"github.com/oigele/bazo-miner/p2p"
+	"bazo-miner/p2p"
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
 	"sort"

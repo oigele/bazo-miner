@@ -154,8 +154,8 @@ func (*ConfigTx) Decode(encodedTx []byte) (tx *ConfigTx) {
 
 func (tx *ConfigTx) TxFee() uint64 { return tx.Fee }
 func (tx *ConfigTx) Size() uint64  { return CONFIGTX_SIZE }
-func (tx *ConfigTx) Sender() [32]byte { return [32]byte{} } //Return empty because never needed.
-func (tx *ConfigTx) Receiver() [32]byte { return [32]byte{}}
+func (tx *ConfigTx) Sender() [64]byte { return [64]byte{} } //Return empty because never needed.
+func (tx *ConfigTx) Receiver() [64]byte { return [64]byte{}}
 
 func (tx ConfigTx) String() string {
 	return fmt.Sprintf(
