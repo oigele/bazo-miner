@@ -39,6 +39,36 @@ func ReadClosedBlock(hash [32]byte) (block *protocol.Block) {
 	return block
 }
 
+func ReadOpenEpochBlock(hash [32]byte) (epochBlock *protocol.EpochBlock) {
+	var encodedEpochBlock []byte
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(OPENEPOCHBLOCK_BUCKET))
+		encodedEpochBlock = b.Get(hash[:])
+		return nil
+	})
+
+	if encodedEpochBlock == nil {
+		return nil
+	}
+
+	return epochBlock.Decode(encodedEpochBlock)
+}
+
+func ReadClosedEpochBlock(hash [32]byte) (epochBlock *protocol.EpochBlock) {
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(CLOSEDEPOCHBLOCK_BUCKET))
+		encodedBlock := b.Get(hash[:])
+		epochBlock = epochBlock.Decode(encodedBlock)
+		return nil
+	})
+
+	if epochBlock == nil {
+		return nil
+	}
+
+	return epochBlock
+}
+
 //This function does read all blocks without transactions inside.
 func ReadClosedBlockWithoutTx(hash [32]byte) (block *protocol.Block) {
 

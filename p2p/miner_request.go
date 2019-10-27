@@ -2,6 +2,7 @@ package p2p
 
 import (
 	"errors"
+	"strconv"
 	"time"
 )
 
@@ -101,4 +102,16 @@ func PrintMinerConns() {
 		logger.Printf("|   No Neighbors                |", )
 	}
 	logger.Printf("|_______________________________|")
+}
+
+func StateTransitionReqShard(shardID int,height int) {
+	strShardID := strconv.Itoa(shardID)
+	strHeight := strconv.Itoa(height)
+
+	strRequest := ""
+	strRequest += strShardID
+	strRequest += ":"
+	strRequest += strHeight
+
+	StateTransitionShardOut <- []byte(strRequest)
 }

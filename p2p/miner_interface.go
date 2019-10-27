@@ -3,6 +3,7 @@ package p2p
 import (
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
+	"log"
 	"sync"
 )
 
@@ -13,6 +14,18 @@ var (
 	BlockOut = make(chan []byte, 100)
 	//BlockHeader from the miner, to the clients
 	BlockHeaderOut = make(chan []byte)
+
+	//State transition from the miner to the network
+	StateTransitionOut = make(chan []byte)
+
+	//State transition from the network to the miner
+	StateTransitionIn = make(chan []byte)
+
+	//EpochBlock from the network, to the miner
+	EpochBlockIn = make(chan []byte)
+	//EpochBlock from the miner, to the network
+	EpochBlockOut = make(chan []byte)
+
 
 	VerifiedTxsOut = make(chan []byte)
 	VerifiedTxsBrdcstOut = make(chan []byte, 1000)
@@ -25,6 +38,14 @@ var (
 	AggTxChan    		= make(chan *protocol.AggTx)
 
 	BlockReqChan = make(chan []byte)
+	StateTransitionShardReqChan 	= make(chan []byte)
+	StateTransitionShardOut 		= make(chan []byte)
+
+	FirstEpochBlockReqChan 	= make(chan []byte)
+	EpochBlockReqChan 	= make(chan []byte)
+	LastEpochBlockReqChan 	= make(chan []byte)
+
+	ValidatorShardMapReq 	= make(chan []byte)
 
 	ReceivedFundsTXStash = make([]*protocol.FundsTx, 0)
 	ReceivedAggTxStash = make([]*protocol.AggTx, 0)
@@ -54,6 +75,32 @@ func forwardBlockHeaderBrdcstToMiner() {
 	for {
 		blockHeader := <- BlockHeaderOut
 		clientBrdcstMsg <- BuildPacket(BLOCK_HEADER_BRDCST, blockHeader)
+	}
+}
+
+func forwardStateTransitionShardToMiner(){
+	for {
+		st := <- StateTransitionShardOut
+		logger.Printf("Building state transition request packet\n")
+		toBrdcst := BuildPacket(STATE_TRANSITION_REQ, st)
+		minerBrdcstMsg <- toBrdcst
+	}
+}
+
+func forwardStateTransitionBrdcstToMiner()  {
+	for {
+		st := <-StateTransitionOut
+		toBrdcst := BuildPacket(STATE_TRANSITION_BRDCST, st)
+		minerBrdcstMsg <- toBrdcst
+	}
+}
+
+func forwardEpochBlockBrdcstToMiner() {
+	for {
+		epochBlock := <-EpochBlockOut
+		toBrdcst := BuildPacket(EPOCH_BLOCK_BRDCST, epochBlock)
+		logger.Printf("Build Epoch Block Brdcst Packet...\n")
+		minerBrdcstMsg <- toBrdcst
 	}
 }
 

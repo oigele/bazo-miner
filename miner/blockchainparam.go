@@ -9,6 +9,8 @@ import (
 
 var (
 	lastBlock         *protocol.Block
+	dummyLastBlock	  = protocol.NewBlock([32]byte{},0)
+	lastEpochBlock	  *protocol.EpochBlock
 	globalBlockCount  = int64(-1)
 	localBlockCount   = int64(-1)
 	target            []uint8    //Stores the history of target values

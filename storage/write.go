@@ -27,6 +27,14 @@ func WriteClosedBlock(block *protocol.Block) (err error) {
 	return err
 }
 
+func WriteFirstEpochBlock(epochBlock *protocol.EpochBlock) error {
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(CLOSEDEPOCHBLOCK_BUCKET))
+		return b.Put([]byte("firstepochblock"), epochBlock.Encode())
+	})
+}
+
+
 func WriteClosedBlockWithoutTx(block *protocol.Block) (err error) {
 
 	err = db.Update(func(tx *bolt.Tx) error {

@@ -183,7 +183,7 @@ func prepareBlock(block *protocol.Block) {
 				opentxToAdd = append(opentxToAdd, missingTransaction)
 			}
 		}
-		//If Block is receifed before, break now.
+		//If Block is received before, break now.
 		if receivedBlockInTheMeantime {
 			logger.Printf("Received Block in the Meantime --> Abort requesting missing Tx (2)")
 			receivedBlockInTheMeantime = false
@@ -323,6 +323,87 @@ func (R *specialTxRequest) Encoding() (encodedTx []byte) {
 
 	return encodedTx
 }
+
+//Begin Code from Kürsat
+/**
+Transactions are sharded based on the public address of the sender
+*/
+func assignTransactionToShard(transaction protocol.Transaction) (shardNr int) {
+	//Convert Address/Issuer ([64]bytes) included in TX to bigInt for the modulo operation to determine the assigned shard ID.
+	switch transaction.(type) {
+	case *protocol.ContractTx:
+		var byteToConvert [64]byte
+		byteToConvert = transaction.(*protocol.ContractTx).Issuer
+		var calculatedInt int
+		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
+		return int((Abs(int32(calculatedInt)) % int32(NumberOfShards)) + 1)
+	case *protocol.FundsTx:
+		var byteToConvert [64]byte
+		byteToConvert = transaction.(*protocol.FundsTx).From
+		var calculatedInt int
+		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
+		return int((Abs(int32(calculatedInt)) % int32(NumberOfShards)) + 1)
+	case *protocol.ConfigTx:
+		var byteToConvert [64]byte
+		byteToConvert = transaction.(*protocol.ConfigTx).Sig
+		var calculatedInt int
+		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
+		return int((Abs(int32(calculatedInt)) % int32(NumberOfShards)) + 1)
+	case *protocol.StakeTx:
+		var byteToConvert [64]byte
+		byteToConvert = transaction.(*protocol.StakeTx).Account
+		var calculatedInt int
+		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
+		return int((Abs(int32(calculatedInt)) % int32(NumberOfShards)) + 1)
+	default:
+		return 1 // default shard ID
+	}
+}
+
+func Abs(x int32) int32 {
+	if x < 0 {
+		return -x
+	}
+	return x
+}
+
+/**
+During the synchronisation phase at every block height, the validator also receives the transaction hashes which were validated
+by the other shards. To avoid starvation, delete those transactions from the mempool
+*/
+func DeleteTransactionFromMempool(contractData [][32]byte, fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte) {
+	for _,fundsTX := range fundsData{
+		if(storage.ReadOpenTx(fundsTX) != nil){
+			storage.DeleteOpenTx(storage.ReadOpenTx(fundsTX))
+			FileLogger.Printf("Deleted transaction (%x) from the MemPool.\n",fundsTX)
+		}
+	}
+
+	for _,configTX := range configData{
+		if(storage.ReadOpenTx(configTX) != nil){
+			storage.DeleteOpenTx(storage.ReadOpenTx(configTX))
+			FileLogger.Printf("Deleted transaction (%x) from the MemPool.\n",configTX)
+		}
+	}
+
+	for _,stakeTX := range stakeData{
+		if(storage.ReadOpenTx(stakeTX) != nil){
+			storage.DeleteOpenTx(storage.ReadOpenTx(stakeTX))
+			FileLogger.Printf("Deleted transaction (%x) from the MemPool.\n",stakeTX)
+		}
+	}
+
+	for _,contractTX := range contractData{
+		if(storage.ReadOpenTx(contractTX) != nil){
+			storage.DeleteOpenTx(storage.ReadOpenTx(contractTX))
+			FileLogger.Printf("Deleted transaction (%x) from the MemPool.\n",contractTX)
+		}
+	}
+
+	logger.Printf("Deleted transaction count: %d - New Mempool Size: %d\n",len(contractData)+len(fundsData)+len(configData)+ len(stakeData),storage.GetMemPoolSize())
+}
+
+//End code from Kürsat
 
 //Implement the sort interface
 func (f openTxs) Len() int {

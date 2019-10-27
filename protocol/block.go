@@ -21,6 +21,7 @@ const (
 type Block struct {
 	//Header
 	Header      	 	byte
+	ShardId		 		int
 	Hash         		[32]byte
 	PrevHash     		[32]byte
 	HashWithoutTx   	[32]byte 			//valid hash once all tx are aggregated

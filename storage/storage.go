@@ -33,10 +33,16 @@ var (
 	openFundsTxBeforeAggregationMutex	= &sync.Mutex{}
 	txcntToTxMapMutex					= &sync.Mutex{}
 	ReceivedBlockStashMutex				= &sync.Mutex{}
+	//Added by Kürsat
+	ThisShardID             int // ID of the shard this validator is assigned to
+	ReceivedStateStash                      = protocol.NewStateStash()
 )
 
 const (
 	ERROR_MSG = "Initiate storage aborted: "
+	CLOSEDEPOCHBLOCK_BUCKET = "closedepochblocks"
+	LASTCLOSEDEPOCHBLOCK_BUCKET = "lastclosedepochblocks"
+	OPENEPOCHBLOCK_BUCKET	= "openepochblock"
 )
 
 //Entry function for the storage package
