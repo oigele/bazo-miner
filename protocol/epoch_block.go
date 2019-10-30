@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/gob"
 	"fmt"
-	"github.com/bazo-blockchain/bazo-miner/crypto"
+	"github.com/oigele/bazo-miner/crypto"
 )
 
 type EpochBlock struct {
@@ -19,7 +19,7 @@ type EpochBlock struct {
 	MerkleRoot            [32]byte
 	MerklePatriciaRoot    [32]byte
 	CommitmentProof       [crypto.COMM_PROOF_LENGTH]byte
-	State				  map[[64]byte]*Account
+	State				  map[[32]byte]*Account
 	ValMapping			  *ValShardMapping
 	NofShards			  int
 }
@@ -45,7 +45,7 @@ func (epochBlock *EpochBlock) HashEpochBlock() [32]byte {
 		merklePatriciaRoot	  		  [32]byte
 		height				  		  uint32
 		commitmentProof       		  [crypto.COMM_PROOF_LENGTH]byte
-		state					      map[[64]byte]*Account
+		state					      map[[32]byte]*Account
 		valmapping					  *ValShardMapping
 		noshards					  int
 	}{

@@ -1,6 +1,8 @@
 package storage
 
 import (
+	"errors"
+	"fmt"
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/boltdb/bolt"
 	"sort"
@@ -255,6 +257,56 @@ func ReadAllINVALIDOpenTx() (allOpenInvalidTxs []protocol.Transaction) {
 	}
 
 	return allOpenInvalidTxs
+}
+
+func ReadAccount(pubKey [64]byte) (acc *protocol.Account, err error) {
+	if acc = State[protocol.SerializeHashContent(pubKey)]; acc != nil {
+		return acc, nil
+	} else {
+		return nil, errors.New(fmt.Sprintf("Acc (%x) not in the state.", pubKey[0:8]))
+	}
+}
+
+func ReadGenesis() (genesis *protocol.Genesis, err error) {
+	err = db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(GENESIS_BUCKET))
+		encoded := b.Get([]byte("genesis"))
+		genesis = genesis.Decode(encoded)
+		return nil
+	})
+	return genesis, err
+}
+
+func ReadFirstEpochBlock() (firstEpochBlock *protocol.EpochBlock, err error) {
+	err = db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(CLOSEDEPOCHBLOCK_BUCKET))
+		encoded := b.Get([]byte("firstepochblock"))
+		firstEpochBlock = firstEpochBlock.Decode(encoded)
+		return nil
+	})
+	return firstEpochBlock, err
+}
+func ReadLastClosedEpochBlock() (epochBlock *protocol.EpochBlock) {
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(LASTCLOSEDEPOCHBLOCK_BUCKET))
+		cb := b.Cursor()
+		_, encodedBlock := cb.First()
+		epochBlock = epochBlock.Decode(encodedBlock)
+		return nil
+	})
+
+	if epochBlock == nil {
+		return nil
+	}
+
+	return epochBlock
+}
+
+
+func GetMemPoolSize() int {
+	memPoolMutex.Lock()
+	defer memPoolMutex.Unlock()
+	return len(txMemPool)
 }
 
 //Needed for the miner to prepare a new block

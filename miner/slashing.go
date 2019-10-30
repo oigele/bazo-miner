@@ -9,11 +9,12 @@ import (
 	"time"
 )
 
+//TODO uncomment
 type SlashingProof struct {
 	ConflictingBlockHash1 [32]byte
 	ConflictingBlockHash2 [32]byte
-	ConflictingBlockHashWithoutTx1 [32]byte
-	ConflictingBlockHashWithoutTx2 [32]byte
+//	ConflictingBlockHashWithoutTx1 [32]byte
+//	ConflictingBlockHashWithoutTx2 [32]byte
 }
 
 var SameChainMutex = sync.Mutex{}
@@ -43,7 +44,7 @@ func seekSlashingProof(block *protocol.Block) error {
 			if prevBlock.Beneficiary == block.Beneficiary &&
 				(uint64(prevBlock.Height) < uint64(block.Height)+activeParameters.Slashing_window_size ||
 					uint64(block.Height) < uint64(prevBlock.Height)+activeParameters.Slashing_window_size) {
-				slashingDict[block.Beneficiary] = SlashingProof{ConflictingBlockHash1: block.Hash, ConflictingBlockHash2: prevBlock.Hash, ConflictingBlockHashWithoutTx1: block.HashWithoutTx, ConflictingBlockHashWithoutTx2: block.PrevHashWithoutTx}
+				slashingDict[block.Beneficiary] = SlashingProof{ConflictingBlockHash1: block.Hash, ConflictingBlockHash2: prevBlock.Hash}
 			}
 		}
 	}
@@ -73,10 +74,11 @@ func IsInSameChain(b1, b2 *protocol.Block) bool {
 		newHigherBlock := storage.ReadClosedBlock(higherBlock.PrevHash)
 		//Check blocks without transactions
 		if newHigherBlock == nil {
-			newHigherBlock = storage.ReadClosedBlockWithoutTx(higherBlock.PrevHashWithoutTx)
+			//TODO uncomment and change p2p req back
+		//	newHigherBlock = storage.ReadClosedBlockWithoutTx(higherBlock.PrevHashWithoutTx)
 		}
 		if newHigherBlock == nil {
-			p2p.BlockReq(higherBlock.PrevHash, higherBlock.PrevHashWithoutTx)
+			p2p.BlockReq(higherBlock.PrevHash, higherBlock.PrevHash)
 
 			//Blocking wait
 			select {
@@ -95,7 +97,8 @@ func IsInSameChain(b1, b2 *protocol.Block) bool {
 					logger.Printf("Block %x received Before", higherBlock.PrevHash)
 					break
 				}
-				logger.Printf("Higher Block %x, %x  is nil --> Break", higherBlock.PrevHash, higherBlock.PrevHashWithoutTx)
+				//TODO uncomment
+//				logger.Printf("Higher Block %x, %x  is nil --> Break", higherBlock.PrevHash, higherBlock.PrevHashWithoutTx)
 				break
 			}
 		}

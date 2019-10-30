@@ -13,7 +13,11 @@ import (
 var (
 	db                 				*bolt.DB
 	logger             				*log.Logger
+	//don't get confused with the key of the account.
 	State              				= make(map[[32]byte]*protocol.Account)
+	//This map keeps track of the relative account adjustments within a shard, such as balance, txcount and stakingheight
+	RelativeState                     = make(map[[32]byte]*protocol.RelativeAccount)
+	OwnStateTransitionStash 		[]*protocol.StateTransition
 	RootKeys           				= make(map[[32]byte]*protocol.Account)
 	txMemPool          				= make(map[[32]byte]protocol.Transaction)
 	txINVALIDMemPool   				= make(map[[32]byte]protocol.Transaction)
@@ -36,6 +40,7 @@ var (
 	//Added by Kürsat
 	ThisShardID             int // ID of the shard this validator is assigned to
 	ReceivedStateStash                      = protocol.NewStateStash()
+	memPoolMutex                        = &sync.Mutex{}
 )
 
 const (
@@ -43,6 +48,7 @@ const (
 	CLOSEDEPOCHBLOCK_BUCKET = "closedepochblocks"
 	LASTCLOSEDEPOCHBLOCK_BUCKET = "lastclosedepochblocks"
 	OPENEPOCHBLOCK_BUCKET	= "openepochblock"
+	GENESIS_BUCKET			= "genesis"
 )
 
 //Entry function for the storage package
@@ -134,6 +140,34 @@ func Init(dbname string, bootstrapIpport string) {
 	})
 	db.Update(func(tx *bolt.Tx) error {
 		_, err = tx.CreateBucket([]byte("lastclosedblock"))
+		if err != nil {
+			return fmt.Errorf(ERROR_MSG+"Create bucket: %s", err)
+		}
+		return nil
+	})
+	db.Update(func(tx *bolt.Tx) error {
+		_, err = tx.CreateBucket([]byte("genesis"))
+		if err != nil {
+			return fmt.Errorf(ERROR_MSG+"Create bucket: %s", err)
+		}
+		return nil
+	})
+	db.Update(func(tx *bolt.Tx) error {
+		_, err = tx.CreateBucket([]byte("openepochblock"))
+		if err != nil {
+			return fmt.Errorf(ERROR_MSG+"Create bucket: %s", err)
+		}
+		return nil
+	})
+	db.Update(func(tx *bolt.Tx) error {
+		_, err = tx.CreateBucket([]byte(CLOSEDEPOCHBLOCK_BUCKET))
+		if err != nil {
+			return fmt.Errorf(ERROR_MSG+"Create bucket: %s", err)
+		}
+		return nil
+	})
+	db.Update(func(tx *bolt.Tx) error {
+		_, err = tx.CreateBucket([]byte(LASTCLOSEDEPOCHBLOCK_BUCKET))
 		if err != nil {
 			return fmt.Errorf(ERROR_MSG+"Create bucket: %s", err)
 		}

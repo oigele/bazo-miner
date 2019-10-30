@@ -100,10 +100,12 @@ func reactivateHistoricBlockDueToRollback(tx protocol.Transaction)() {
 	sort.Sort(ByHash(block.AggTxData))
 
 	//Write block back to bucket closed blocks with transactions.
-	block.Aggregated = false
+	//Todo uncomment
+	//block.Aggregated = false
 	storage.WriteClosedBlock(block)
 	storage.DeleteClosedBlockWithoutTx(blockHash)
-	logger.Printf("UPDATE: Rollback Write (%x) into closedBlockBucket as (%x)", block.HashWithoutTx[0:8], block.Hash[0:8])
+	//TODO uncomment
+	//logger.Printf("UPDATE: Rollback Write (%x) into closedBlockBucket as (%x)", block.HashWithoutTx[0:8], block.Hash[0:8])
 }
 
 type ByHash [][32]byte
@@ -208,7 +210,8 @@ func collectBlockRewardRollback(reward uint64, minerHash [32]byte) {
 }
 
 func collectSlashRewardRollback(reward uint64, block *protocol.Block) {
-	if block.SlashedAddress != [32]byte{} || block.ConflictingBlockHash1 != [32]byte{} || block.ConflictingBlockHash2 != [32]byte{} || block.ConflictingBlockHashWithoutTx1 != [32]byte{} || block.ConflictingBlockHashWithoutTx2 != [32]byte{} {
+	//TODO add to conditional: || block.ConflictingBlockHashWithoutTx1 != [32]byte{} || block.ConflictingBlockHashWithoutTx2 != [32]byte{}
+	if block.SlashedAddress != [32]byte{} || block.ConflictingBlockHash1 != [32]byte{} || block.ConflictingBlockHash2 != [32]byte{} {
 		minerAcc, _ := storage.GetAccount(block.Beneficiary)
 		slashedAcc, _ := storage.GetAccount(block.SlashedAddress)
 

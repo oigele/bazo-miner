@@ -63,6 +63,15 @@ func DeleteAllLastClosedBlock() {
 	})
 }
 
+func DeleteAllLastClosedEpochBlock() error {
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(LASTCLOSEDEPOCHBLOCK_BUCKET))
+		return b.ForEach(func(k, v []byte) error {
+			return b.Delete(k)
+		})
+	})
+}
+
 func DeleteOpenTx(transaction protocol.Transaction) {
 	openTxMutex.Lock()
 	delete(txMemPool, transaction.Hash())
@@ -113,6 +122,8 @@ func DeleteBootstrapReceivedMempool() {
 		delete(bootstrapReceivedMemPool, key)
 	}
 }
+
+
 
 func DeleteAll() {
 	//Delete in-memory storage

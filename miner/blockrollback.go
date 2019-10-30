@@ -96,7 +96,7 @@ func validateStateRollback(data blockData) {
 	collectTxFeesRollback(data.accTxSlice, data.fundsTxSlice, data.configTxSlice, data.stakeTxSlice, data.block.Beneficiary)
 	stakeStateChangeRollback(data.stakeTxSlice)
 	fundsStateChangeRollback(data.fundsTxSlice)
-	aggregatedStateRollback(data.aggTxSlice, data.block.HashWithoutTx,  data.block.Beneficiary)
+//	aggregatedStateRollback(data.aggTxSlice, data.block.HashWithoutTx,  data.block.Beneficiary)
 	accStateChangeRollback(data.accTxSlice)
 }
 
@@ -125,6 +125,7 @@ func postValidateRollback(data blockData) {
 	for _, tx := range data.aggTxSlice {
 
 		//Reopen FundsTx per aggTx
+		/* TODO UNCOMMENT THIS LOOP
 		for _, aggregatedTxHash := range tx.AggregatedTxSlice {
 			trx := storage.ReadClosedTx(aggregatedTxHash)
 			//Only move transactions which are validated the first time in this block to the Mempool.
@@ -141,6 +142,7 @@ func postValidateRollback(data blockData) {
 				}
 			}
 		}
+		 */
 
 		storage.WriteOpenTx(tx)
 		storage.DeleteClosedTx(tx)
@@ -157,7 +159,8 @@ func postValidateRollback(data blockData) {
 	storage.DeleteAllLastClosedBlock()
 	prevBlock := storage.ReadClosedBlock(data.block.PrevHash)
 	if prevBlock == nil {
-		prevBlock = storage.ReadClosedBlock(data.block.PrevHashWithoutTx)
+		//TODO UNCOMMENT THIS
+//		prevBlock = storage.ReadClosedBlock(data.block.PrevHashWithoutTx)
 	}
 	if prevBlock == nil {
 		return

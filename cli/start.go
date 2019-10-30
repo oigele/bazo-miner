@@ -143,7 +143,12 @@ func Start(args *startArgs, logger *log.Logger) error {
 		return err
 	}
 
-	miner.Init(validatorPubKey, multisigPubKey, &rootPrivKey.PublicKey, commPrivKey, rootCommPrivKey)
+	if p2p.IsBootstrap() {
+		miner.InitFirstStart(validatorPubKey, multisigPubKey, &rootPrivKey.PublicKey, commPrivKey, rootCommPrivKey)
+		logger.Printf("Me is Bootstrap!\n")
+	} else {
+		miner.Init(validatorPubKey, multisigPubKey, &rootPrivKey.PublicKey, commPrivKey, rootCommPrivKey)
+	}
 	return nil
 }
 

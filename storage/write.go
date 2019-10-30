@@ -27,6 +27,13 @@ func WriteClosedBlock(block *protocol.Block) (err error) {
 	return err
 }
 
+func WriteClosedEpochBlock(epochBlock *protocol.EpochBlock) error {
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(CLOSEDEPOCHBLOCK_BUCKET))
+		return b.Put(epochBlock.Hash[:], epochBlock.Encode())
+	})
+}
+
 func WriteFirstEpochBlock(epochBlock *protocol.EpochBlock) error {
 	return db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(CLOSEDEPOCHBLOCK_BUCKET))
@@ -35,6 +42,21 @@ func WriteFirstEpochBlock(epochBlock *protocol.EpochBlock) error {
 }
 
 
+func WriteLastClosedEpochBlock(epochBlock *protocol.EpochBlock) (err error) {
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(LASTCLOSEDEPOCHBLOCK_BUCKET))
+		return b.Put(epochBlock.Hash[:], epochBlock.Encode())
+	})
+}
+
+func WriteGenesis(genesis *protocol.Genesis) error {
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(GENESIS_BUCKET))
+		return b.Put([]byte("genesis"), genesis.Encode())
+	})
+}
+
+/* TODO UNCOMMENT
 func WriteClosedBlockWithoutTx(block *protocol.Block) (err error) {
 
 	err = db.Update(func(tx *bolt.Tx) error {
@@ -45,7 +67,7 @@ func WriteClosedBlockWithoutTx(block *protocol.Block) (err error) {
 
 	return err
 }
-
+*/
 func WriteLastClosedBlock(block *protocol.Block) (err error) {
 
 	err = db.Update(func(tx *bolt.Tx) error {
@@ -142,4 +164,12 @@ func WriteClosedTx(transaction protocol.Transaction) (err error) {
 	totalTransactionSize = totalTransactionSize + float32(transaction.Size())
 	averageTxSize = totalTransactionSize/nrClosedTransactions
 	return err
+}
+
+func WriteToOwnStateTransitionkStash(st *protocol.StateTransition) {
+	OwnStateTransitionStash = append(OwnStateTransitionStash,st)
+
+	if(len(OwnStateTransitionStash) > 20){
+		OwnStateTransitionStash = append(OwnStateTransitionStash[:0], OwnStateTransitionStash[1:]...)
+	}
 }

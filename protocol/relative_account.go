@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/gob"
 	"fmt"
-	"github.com/bazo-blockchain/bazo-miner/crypto"
+	"github.com/oigele/bazo-miner/crypto"
 )
 
 /**
@@ -12,7 +12,7 @@ import (
 	state with the state of the other shards and free the Mempool from already validated transactions.
  */
 type StateTransition struct {
-	RelativeStateChange			map[[64]byte]*RelativeAccount
+	RelativeStateChange			map[[32]byte]*RelativeAccount //changed to 32 Byte for streamlining
 	Height						int
 	ShardID						int
 	BlockHash					[32]byte
@@ -27,7 +27,7 @@ type StateTransition struct {
  */
 type RelativeAccount struct {
 	Address            [64]byte              // 64 Byte
-	Issuer             [64]byte              // 64 Byte
+	Issuer             [32]byte              // 32 Byte Changed to streamline
 	Balance            int64                // 8 Byte
 	TxCnt              int32                // 4 Byte
 	IsStaking          bool                  // 1 Byte
@@ -37,7 +37,7 @@ type RelativeAccount struct {
 	ContractVariables  []ByteArray           // Arbitrary length
 }
 
-func NewStateTransition(stateChange map[[64]byte]*RelativeAccount, height int, shardid int, blockHash [32]byte, contractData [][32]byte,
+func NewStateTransition(stateChange map[[32]byte]*RelativeAccount, height int, shardid int, blockHash [32]byte, contractData [][32]byte,
 	fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte) *StateTransition {
 	newTransition := StateTransition{
 		stateChange,
@@ -54,7 +54,7 @@ func NewStateTransition(stateChange map[[64]byte]*RelativeAccount, height int, s
 }
 
 func NewRelativeAccount(address [64]byte,
-	issuer [64]byte,
+	issuer [32]byte,
 	balance int64,
 	isStaking bool,
 	commitmentKey [crypto.COMM_KEY_LENGTH]byte,

@@ -10,11 +10,14 @@ import (
 var (
 	lastBlock         *protocol.Block
 	dummyLastBlock	  = protocol.NewBlock([32]byte{},0)
+	blockBeingProcessed *protocol.Block
 	lastEpochBlock	  *protocol.EpochBlock
 	globalBlockCount  = int64(-1)
 	localBlockCount   = int64(-1)
 	target            []uint8    //Stores the history of target values
 	currentTargetTime *timerange //Corresponds to the active timerange
+	FirstEpochBlock	  *protocol.EpochBlock
+	firstEpochOver	  bool
 )
 
 //An instance of this datastructure is created whenever system parameters change.
@@ -34,6 +37,8 @@ type Parameters struct {
 	Slashing_window_size    	uint64 //Number of blocks that a validator cannot vote on two competing chains.
 	Slash_reward            	uint64 //Reward for providing the correct slashing proof.
 	num_included_prev_proofs	int
+	epoch_length				int
+	validators_per_shard		int
 }
 
 func NewDefaultParameters() Parameters {
@@ -50,6 +55,8 @@ func NewDefaultParameters() Parameters {
 		SLASHING_WINDOW_SIZE,
 		SLASH_REWARD,
 		NUM_INCL_PREV_PROOFS,
+		EPOCH_LENGTH,
+		VALIDATORS_PER_SHARD,
 	}
 
 	return newParameters

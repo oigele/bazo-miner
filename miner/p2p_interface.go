@@ -91,7 +91,7 @@ func processBlock(payload []byte) {
 
 	var block *protocol.Block
 	block = block.Decode(payload)
-	
+
 	//What follows is Kürsat's mechanism to deal with any incoming blocks (not Epoch Blocks)
 	if(lastEpochBlock != nil){
 		logger.Printf("Received block (%x) from shard %d with height: %d\n", block.Hash[0:8],block.ShardId,block.Height)
@@ -125,8 +125,9 @@ func processBlock(payload []byte) {
 			}
 		}
 	}
-	
-	//here Kürsat's code ends
+
+
+
 /*
 	//Block already confirmed and validated
 	if storage.ReadClosedBlock(block.Hash) != nil {
@@ -150,6 +151,18 @@ func processBlock(payload []byte) {
 		logger.Printf("Received block (%x) could not be validated: %v\n", block.Hash[0:8], err)
 	}*/
 }
+
+
+func broadcastEpochBlock(epochBlock *protocol.EpochBlock) {
+	logger.Printf("Writing Epoch block (%x) to channel EpochBlockOut\n", epochBlock.Hash[0:8])
+	p2p.EpochBlockOut <- epochBlock.Encode()
+}
+
+func broadcastStateTransition(st *protocol.StateTransition) {
+	p2p.StateTransitionOut <- st.EncodeTransition()
+}
+
+//here Kürsat's code ends
 
 //p2p.BlockOut is a channel whose data get consumed by the p2p package
 func broadcastBlock(block *protocol.Block) {

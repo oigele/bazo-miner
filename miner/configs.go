@@ -7,6 +7,8 @@ const (
 
 	TXFETCH_TIMEOUT    = 2 //Sec
 	BLOCKFETCH_TIMEOUT = 40 //Sec
+	GENESISFETCH_TIMEOUT 	= 40 //Sec
+
 
 	//Some prominent programming languages (e.g., Java) have not unsigned integer types
 	//Neglecting MSB simplifies compatibility
@@ -26,4 +28,7 @@ const (
 	SLASH_REWARD         	= 2       //Coins
 	NUM_INCL_PREV_PROOFS 	= 5       //Number of previous proofs included in the PoS condition
 	NO_EMPTYING_LENGTH		= 100	  //Number of blocks after the newest block which are not moved to the empty block bucket
+	EPOCH_LENGTH         = 9 //blocks
+	VALIDATORS_PER_SHARD = 1 //validators
+	EPOCHBLOCKFETCH_TIMEOUT 	= 20 //Sec
 )

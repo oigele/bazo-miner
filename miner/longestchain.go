@@ -35,7 +35,8 @@ func getBlockSequences(newBlock *protocol.Block) (blocksToRollback, blocksToVali
 	var blocksToRollbackMutex = sync.Mutex{}
 	for {
 		blocksToRollbackMutex.Lock()
-		if tmpBlock.Hash == ancestor.Hash || tmpBlock.HashWithoutTx == ancestor.HashWithoutTx {
+		// TODO add || tmpBlock.HashWithoutTx == ancestor.HashWithoutTx
+		if tmpBlock.Hash == ancestor.Hash {
 			break
 		}
 		blocksToRollback = append(blocksToRollback, tmpBlock)
@@ -43,11 +44,12 @@ func getBlockSequences(newBlock *protocol.Block) (blocksToRollback, blocksToVali
 		newTmpBlock := storage.ReadClosedBlock(tmpBlock.PrevHash)
 
 		//Search in blocks withoutTx.
+		//TODO uncomment the next two commented lines
 		if newTmpBlock == nil {
-			newTmpBlock = storage.ReadClosedBlockWithoutTx(tmpBlock.PrevHashWithoutTx)
+//			newTmpBlock = storage.ReadClosedBlockWithoutTx(tmpBlock.PrevHashWithoutTx)
 		}
 		if newTmpBlock == nil {
-			logger.Printf("Block not found: %x, %x", tmpBlock.Hash, tmpBlock.HashWithoutTx)
+//			logger.Printf("Block not found: %x, %x", tmpBlock.Hash, tmpBlock.HashWithoutTx)
 			blocksToRollbackMutex.Unlock()
 			return nil, nil, errors.New(fmt.Sprintf("Block not found in both closed storages"))
 		}
@@ -87,7 +89,7 @@ func getNewChain(newBlock *protocol.Block) (ancestor *protocol.Block, newChain [
 			newChain = InvertBlockArray(newChain)
 			return potentialAncestor, newChain
 		}
-
+/*		TODO uncomment block
 		potentialAncestor = storage.ReadClosedBlockWithoutTx(newBlock.PrevHashWithoutTx)
 		if potentialAncestor != nil {
 			//Found ancestor because it is found in our closed block storage.
@@ -95,7 +97,7 @@ func getNewChain(newBlock *protocol.Block) (ancestor *protocol.Block, newChain [
 			newChain = InvertBlockArray(newChain)
 			return potentialAncestor, newChain
 		}
-
+*/
 		//It might be the case that we already started a sync and the block is in the openblock storage.
 		openBlock := storage.ReadOpenBlock(newBlock.PrevHash)
 		if openBlock != nil {
@@ -122,8 +124,9 @@ func getNewChain(newBlock *protocol.Block) (ancestor *protocol.Block, newChain [
 		//Fetch the block we apparently missed from the network.
 		//p2p.BlockReq(newBlock.PrevHash, newBlock.PrevHashWithoutTx)
 		requestHash := newBlock.PrevHash
-		requestHashWithoutTx := newBlock.PrevHashWithoutTx
-		p2p.BlockReq(requestHash, requestHashWithoutTx)
+		//Todo change the call back to request both blocks at once
+//		requestHashWithoutTx := newBlock.PrevHashWithoutTx
+		p2p.BlockReq(requestHash, requestHash)
 
 		//Blocking wait
 		select {

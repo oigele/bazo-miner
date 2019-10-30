@@ -16,6 +16,7 @@ const (
 	TX_BRDCST_ACK      		= 8
 	AGGTX_BRDCST      		= 9
 
+	GENESIS_REQ			    = 19
 	FUNDSTX_REQ            	= 20
 	ACCTX_REQ              	= 21
 	CONFIGTX_REQ           	= 22
@@ -55,7 +56,6 @@ const (
 	//Used to signal error
 	NOT_FOUND = 110
 
-	NOT_FOUND = 110
 
 	STATE_REQ = 120
 	STATE_RES = 121

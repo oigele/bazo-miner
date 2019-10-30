@@ -28,6 +28,7 @@ type blockData struct {
 	block        		  		*protocol.Block
 }
 
+/* TODO BUILD BACK IN
 //Block constructor, argument is the previous block in the blockchain.
 func newBlock(prevHash [32]byte, prevHashWithoutTx [32]byte, commitmentProof [crypto.COMM_PROOF_LENGTH]byte, height uint32) *protocol.Block {
 	block := new(protocol.Block)
@@ -37,6 +38,19 @@ func newBlock(prevHash [32]byte, prevHashWithoutTx [32]byte, commitmentProof [cr
 	block.Height = height
 	block.StateCopy = make(map[[32]byte]*protocol.Account)
 	block.Aggregated = false
+
+	return block
+}
+
+ */
+
+//TODO remove
+func newBlock(prevHash [32]byte, commitmentProof [crypto.COMM_PROOF_LENGTH]byte, height uint32) *protocol.Block {
+	block := new(protocol.Block)
+	block.PrevHash = prevHash
+	block.CommitmentProof = commitmentProof
+	block.Height = height
+	block.StateCopy = make(map[[32]byte]*protocol.Account)
 
 	return block
 }
@@ -57,8 +71,8 @@ func finalizeBlock(block *protocol.Block) error {
 			block.SlashedAddress = hash
 			block.ConflictingBlockHash1 = slashingProof.ConflictingBlockHash1
 			block.ConflictingBlockHash2 = slashingProof.ConflictingBlockHash2
-			block.ConflictingBlockHashWithoutTx1 = slashingProof.ConflictingBlockHashWithoutTx1
-			block.ConflictingBlockHashWithoutTx2 = slashingProof.ConflictingBlockHashWithoutTx2
+//			block.ConflictingBlockHashWithoutTx1 = slashingProof.ConflictingBlockHashWithoutTx1
+//			block.ConflictingBlockHashWithoutTx2 = slashingProof.ConflictingBlockHashWithoutTx2
 			break
 		}
 	}
@@ -85,7 +99,8 @@ func finalizeBlock(block *protocol.Block) error {
 	partialHash := block.HashBlock()
 
 	//Block hash without MerkleTree and therefore, without any transactions
-	partialHashWithoutMerkleRoot := block.HashBlockWithoutMerkleRoot()
+	//TODO uncomment
+//	partialHashWithoutMerkleRoot := block.HashBlockWithoutMerkleRoot()
 
 	prevProofs := GetLatestProofs(activeParameters.num_included_prev_proofs, block)
 	nonce, err := proofOfStake(getDifficulty(), block.PrevHash, prevProofs, block.Height, validatorAcc.Balance, commitmentProof)
@@ -97,6 +112,7 @@ func finalizeBlock(block *protocol.Block) error {
 			}
 			storage.DeleteAllFundsTxBeforeAggregation()
 		}
+		logger.Printf("We have an error in finalization")
 		return err
 	}
 
@@ -107,7 +123,8 @@ func finalizeBlock(block *protocol.Block) error {
 
 	//Put pieces together to get the final hash.
 	block.Hash = sha3.Sum256(append(nonceBuf[:], partialHash[:]...))
-	block.HashWithoutTx = sha3.Sum256(append(nonceBuf[:], partialHashWithoutMerkleRoot[:]...))
+	//TODO UNCOMMENT
+//	block.HashWithoutTx = sha3.Sum256(append(nonceBuf[:], partialHashWithoutMerkleRoot[:]...))
 
 	//This doesn't need to be hashed, because we already have the merkle tree taking care of consistency.
 	block.NrAccTx = uint16(len(block.AccTxData))
@@ -118,6 +135,61 @@ func finalizeBlock(block *protocol.Block) error {
 
 	copy(block.CommitmentProof[0:crypto.COMM_PROOF_LENGTH], commitmentProof[:])
 	logger.Printf("-- End Finalization")
+	return nil
+}
+
+/**
+Code from Kürsat
+*/
+func finalizeEpochBlock(epochBlock *protocol.EpochBlock) error {
+
+	validatorAcc, err := storage.ReadAccount(validatorAccAddress)
+	if err != nil {
+		return err
+	}
+
+
+	// Cryptographic Sortition for PoS in Bazo
+	// The commitment proof stores a signed message of the Height that this block was created at.
+	commitmentProof, err := crypto.SignMessageWithRSAKey(commPrivKey, fmt.Sprint(epochBlock.Height))
+	if err != nil {
+		return err
+	}
+
+	partialHash := epochBlock.HashEpochBlock()
+
+	/*Determine new number of shards needed based on current state*/
+	NumberOfShards = DetNumberOfShards()
+
+	//generate new validator mapping and include mappping in the epoch block
+	valMapping := protocol.NewMapping()
+	valMapping.ValMapping = AssignValidatorsToShards()
+	valMapping.EpochHeight = int(epochBlock.Height)
+
+	epochBlock.ValMapping = valMapping
+	ValidatorShardMap = epochBlock.ValMapping
+	epochBlock.NofShards = DetNumberOfShards()
+
+	storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
+
+	epochBlock.State = storage.State
+	logger.Printf("Before Epoch Block proofofstake for height: %d\n",epochBlock.Height)
+
+	nonce, err := proofOfStakeEpoch(getDifficulty(), lastEpochBlock.Hash, epochBlock.Height, validatorAcc.Balance, commitmentProof)
+	if err != nil {
+		return err
+	}
+	logger.Printf("After Epoch Block proofofstake for height: %d\n",epochBlock.Height)
+
+	var nonceBuf [8]byte
+	binary.BigEndian.PutUint64(nonceBuf[:], uint64(nonce))
+	epochBlock.Timestamp = nonce
+
+	//Put pieces together to get the final hash.
+	epochBlock.Hash = sha3.Sum256(append(nonceBuf[:], partialHash[:]...))
+
+	copy(epochBlock.CommitmentProof[0:crypto.COMM_PROOF_LENGTH], commitmentProof[:])
+
 	return nil
 }
 
@@ -1384,14 +1456,16 @@ func preValidate(block *protocol.Block, initialSetup bool) (accTxSlice []*protoc
 	}
 
 	//Check if block contains a proof for two conflicting block hashes, else no proof provided.
+	// TODO UNCOMMENT
 	if block.SlashedAddress != [32]byte{} {
-		if _, err = slashingCheck(block.SlashedAddress, block.ConflictingBlockHash1, block.ConflictingBlockHash2, block.ConflictingBlockHashWithoutTx1, block.ConflictingBlockHashWithoutTx2); err != nil {
-			return nil, nil, nil, nil, nil, nil, err
-		}
+//		if _, err = slashingCheck(block.SlashedAddress, block.ConflictingBlockHash1, block.ConflictingBlockHash2, block.ConflictingBlockHashWithoutTx1, block.ConflictingBlockHashWithoutTx2); err != nil {
+//			return nil, nil, nil, nil, nil, nil, err
+//		}
 	}
 
 	//Merkle Tree validation
-	if block.Aggregated == false && protocol.BuildMerkleTree(block).MerkleRoot() != block.MerkleRoot {
+	// TODO build block.Aggregated == false && back in
+	if  protocol.BuildMerkleTree(block).MerkleRoot() != block.MerkleRoot {
 		return nil, nil, nil, nil, nil, nil, errors.New("Merkle Root is incorrect.")
 	}
 
@@ -1399,6 +1473,7 @@ func preValidate(block *protocol.Block, initialSetup bool) (accTxSlice []*protoc
 }
 
 //Dynamic state check.
+//TODO UNCOMMENT
 func validateState(data blockData, initialSetup bool) error {
 	//The sequence of validation matters. If we start with accs, then fund/stake transactions can be done in the same block
 	//even though the accounts did not exist before the block validation.
@@ -1421,14 +1496,14 @@ func validateState(data blockData, initialSetup bool) error {
 	if err := stakeStateChange(data.stakeTxSlice, data.block.Height, initialSetup); err != nil {
 		fundsStateChangeRollback(data.fundsTxSlice)
 		accStateChangeRollback(data.accTxSlice)
-		aggregatedStateRollback(data.aggTxSlice, data.block.HashWithoutTx, data.block.Beneficiary)
+//		aggregatedStateRollback(data.aggTxSlice, data.block.HashWithoutTx, data.block.Beneficiary)
 		return err
 	}
 
 	if err := collectTxFees(data.accTxSlice, data.fundsTxSlice, data.configTxSlice, data.stakeTxSlice, data.aggTxSlice, data.block.Beneficiary, initialSetup); err != nil {
 		stakeStateChangeRollback(data.stakeTxSlice)
 		fundsStateChangeRollback(data.fundsTxSlice)
-		aggregatedStateRollback(data.aggTxSlice, data.block.HashWithoutTx, data.block.Beneficiary)
+//		aggregatedStateRollback(data.aggTxSlice, data.block.HashWithoutTx, data.block.Beneficiary)
 		accStateChangeRollback(data.accTxSlice)
 		return err
 	}
@@ -1437,7 +1512,7 @@ func validateState(data blockData, initialSetup bool) error {
 		collectTxFeesRollback(data.accTxSlice, data.fundsTxSlice, data.configTxSlice, data.stakeTxSlice, data.block.Beneficiary)
 		stakeStateChangeRollback(data.stakeTxSlice)
 		fundsStateChangeRollback(data.fundsTxSlice)
-		aggregatedStateRollback(data.aggTxSlice, data.block.HashWithoutTx, data.block.Beneficiary)
+//		aggregatedStateRollback(data.aggTxSlice, data.block.HashWithoutTx, data.block.Beneficiary)
 		accStateChangeRollback(data.accTxSlice)
 		return err
 	}
@@ -1447,7 +1522,7 @@ func validateState(data blockData, initialSetup bool) error {
 		collectTxFeesRollback(data.accTxSlice, data.fundsTxSlice, data.configTxSlice, data.stakeTxSlice, data.block.Beneficiary)
 		stakeStateChangeRollback(data.stakeTxSlice)
 		fundsStateChangeRollback(data.fundsTxSlice)
-		aggregatedStateRollback(data.aggTxSlice, data.block.HashWithoutTx, data.block.Beneficiary)
+//		aggregatedStateRollback(data.aggTxSlice, data.block.HashWithoutTx, data.block.Beneficiary)
 		accStateChangeRollback(data.accTxSlice)
 		return err
 	}
@@ -1458,7 +1533,7 @@ func validateState(data blockData, initialSetup bool) error {
 		collectTxFeesRollback(data.accTxSlice, data.fundsTxSlice, data.configTxSlice, data.stakeTxSlice, data.block.Beneficiary)
 		stakeStateChangeRollback(data.stakeTxSlice)
 		fundsStateChangeRollback(data.fundsTxSlice)
-		aggregatedStateRollback(data.aggTxSlice, data.block.HashWithoutTx, data.block.Beneficiary)
+//		aggregatedStateRollback(data.aggTxSlice, data.block.HashWithoutTx, data.block.Beneficiary)
 		accStateChangeRollback(data.accTxSlice)
 		return err
 	}
@@ -1489,7 +1564,8 @@ func postValidate(data blockData, initialSetup bool) {
 
 		for _, tx := range data.fundsTxSlice {
 			storage.WriteClosedTx(tx)
-			tx.Block = data.block.HashWithoutTx
+			//TODO UNCOMMENT
+//			tx.Block = data.block.HashWithoutTx
 			storage.DeleteOpenTx(tx)
 			storage.DeleteINVALIDOpenTx(tx)
 		}
@@ -1538,7 +1614,7 @@ func postValidate(data blockData, initialSetup bool) {
 					case *protocol.AggTx:
 						trx.(*protocol.AggTx).Aggregated = true
 					case *protocol.FundsTx:
-						trx.(*protocol.FundsTx).Block = data.block.HashWithoutTx
+//						trx.(*protocol.FundsTx).Block = data.block.HashWithoutTx
 						trx.(*protocol.FundsTx).Aggregated = true
 					}
 				}
@@ -1552,7 +1628,8 @@ func postValidate(data blockData, initialSetup bool) {
 			}
 
 			//Delete AggTx and write it to closed Tx.
-			tx.Block = data.block.HashWithoutTx
+			//TODO UNCOMMENT
+//			tx.Block = data.block.HashWithoutTx
 			tx.Aggregated = false
 			storage.WriteClosedTx(tx)
 			storage.DeleteOpenTx(tx)
@@ -1577,6 +1654,7 @@ func postValidate(data blockData, initialSetup bool) {
 		//logger.Printf("Inside Validation for block %x --> Inside Postvalidation (13)", data.block.Hash)
 
 		//Do not empty last three blocks and only if it not aggregated already.
+		/* TODO uncomment this loop
 		for _, block := range storage.ReadAllClosedBlocks(){
 
 			//Empty all blocks despite the last NO_AGGREGATION_LENGTH and genesis block.
@@ -1586,6 +1664,7 @@ func postValidate(data blockData, initialSetup bool) {
 				}
 			}
 		}
+		 */
 
 		// Write last block to db and delete last block's ancestor.
 		storage.DeleteAllLastClosedBlock()

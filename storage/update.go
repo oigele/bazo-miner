@@ -4,7 +4,7 @@ import (
 	"github.com/oigele/bazo-miner/protocol"
 )
 
-
+/* TODO UNCOMMENT
 func UpdateBlocksToBlocksWithoutTx(block *protocol.Block) (err error){
 
 	if BlockReadyToAggregate(block) {
@@ -16,7 +16,7 @@ func UpdateBlocksToBlocksWithoutTx(block *protocol.Block) (err error){
 	}
 	return
 }
-
+*/
 func BlockReadyToAggregate(block *protocol.Block) bool {
 
 	// If Block contains no transactions, it can be viewed as aggregated and moved to the according bucket.

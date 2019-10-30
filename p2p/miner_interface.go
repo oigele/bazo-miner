@@ -3,7 +3,6 @@ package p2p
 import (
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
-	"log"
 	"sync"
 )
 
@@ -44,6 +43,8 @@ var (
 	FirstEpochBlockReqChan 	= make(chan []byte)
 	EpochBlockReqChan 	= make(chan []byte)
 	LastEpochBlockReqChan 	= make(chan []byte)
+	GenesisReqChan 	= make(chan []byte)
+
 
 	ValidatorShardMapReq 	= make(chan []byte)
 

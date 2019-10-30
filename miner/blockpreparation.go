@@ -331,14 +331,16 @@ Transactions are sharded based on the public address of the sender
 func assignTransactionToShard(transaction protocol.Transaction) (shardNr int) {
 	//Convert Address/Issuer ([64]bytes) included in TX to bigInt for the modulo operation to determine the assigned shard ID.
 	switch transaction.(type) {
-	case *protocol.ContractTx:
-		var byteToConvert [64]byte
+	//TODO IMPLEMENT CONTRACT TX AND UNCOMMENT CASE
+/*	case *protocol.ContractTx:
+		var byteToConvert [32]byte
 		byteToConvert = transaction.(*protocol.ContractTx).Issuer
 		var calculatedInt int
 		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
 		return int((Abs(int32(calculatedInt)) % int32(NumberOfShards)) + 1)
+ */
 	case *protocol.FundsTx:
-		var byteToConvert [64]byte
+		var byteToConvert [32]byte
 		byteToConvert = transaction.(*protocol.FundsTx).From
 		var calculatedInt int
 		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
@@ -350,7 +352,7 @@ func assignTransactionToShard(transaction protocol.Transaction) (shardNr int) {
 		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
 		return int((Abs(int32(calculatedInt)) % int32(NumberOfShards)) + 1)
 	case *protocol.StakeTx:
-		var byteToConvert [64]byte
+		var byteToConvert [32]byte
 		byteToConvert = transaction.(*protocol.StakeTx).Account
 		var calculatedInt int
 		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
@@ -375,28 +377,28 @@ func DeleteTransactionFromMempool(contractData [][32]byte, fundsData [][32]byte,
 	for _,fundsTX := range fundsData{
 		if(storage.ReadOpenTx(fundsTX) != nil){
 			storage.DeleteOpenTx(storage.ReadOpenTx(fundsTX))
-			FileLogger.Printf("Deleted transaction (%x) from the MemPool.\n",fundsTX)
+			logger.Printf("Deleted transaction (%x) from the MemPool.\n",fundsTX)
 		}
 	}
 
 	for _,configTX := range configData{
 		if(storage.ReadOpenTx(configTX) != nil){
 			storage.DeleteOpenTx(storage.ReadOpenTx(configTX))
-			FileLogger.Printf("Deleted transaction (%x) from the MemPool.\n",configTX)
+			logger.Printf("Deleted transaction (%x) from the MemPool.\n",configTX)
 		}
 	}
 
 	for _,stakeTX := range stakeData{
 		if(storage.ReadOpenTx(stakeTX) != nil){
 			storage.DeleteOpenTx(storage.ReadOpenTx(stakeTX))
-			FileLogger.Printf("Deleted transaction (%x) from the MemPool.\n",stakeTX)
+			logger.Printf("Deleted transaction (%x) from the MemPool.\n",stakeTX)
 		}
 	}
 
 	for _,contractTX := range contractData{
 		if(storage.ReadOpenTx(contractTX) != nil){
 			storage.DeleteOpenTx(storage.ReadOpenTx(contractTX))
-			FileLogger.Printf("Deleted transaction (%x) from the MemPool.\n",contractTX)
+			logger.Printf("Deleted transaction (%x) from the MemPool.\n",contractTX)
 		}
 	}
 

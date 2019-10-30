@@ -86,7 +86,7 @@ func GetRelativeState(statePrev map[[64]byte]protocol.Account, stateNow map[[64]
 		//In case account was newly created during block validation
 		if _, ok := statePrev[know]; !ok {
 			accNow := stateNow[know]
-			accNewRel := protocol.NewRelativeAccount(know,[64]byte{},int64(accNow.Balance),accNow.IsStaking,accNow.CommitmentKey,accNow.Contract,accNow.ContractVariables)
+			accNewRel := protocol.NewRelativeAccount(know,[32]byte{},int64(accNow.Balance),accNow.IsStaking,accNow.CommitmentKey,accNow.Contract,accNow.ContractVariables)
 			accNewRel.TxCnt = int32(accNow.TxCnt)
 			accNewRel.StakingBlockHeight = int32(accNow.StakingBlockHeight)
 			stateRelative[know] = &accNewRel
@@ -96,7 +96,7 @@ func GetRelativeState(statePrev map[[64]byte]protocol.Account, stateNow map[[64]
 			accNew := stateNow[know]
 
 			//account with relative adjustments of the fields, will be  applied by the other shards
-			accTransition := protocol.NewRelativeAccount(know,[64]byte{},int64(accNew.Balance-accPrev.Balance),accNew.IsStaking,accNew.CommitmentKey,accNew.Contract,accNew.ContractVariables)
+			accTransition := protocol.NewRelativeAccount(know,[32]byte{},int64(accNew.Balance-accPrev.Balance),accNew.IsStaking,accNew.CommitmentKey,accNew.Contract,accNew.ContractVariables)
 			accTransition.TxCnt = int32(accNew.TxCnt - accPrev.TxCnt)
 			accTransition.StakingBlockHeight = int32(accNew.StakingBlockHeight - accPrev.StakingBlockHeight)
 			stateRelative[know] = &accTransition
@@ -126,12 +126,14 @@ func GetFundsTxPubKeys(fundsTxData [][32]byte) (fundsTxPubKeys [][32]byte) {
 }
 
 //From Kürsat
-func ApplyRelativeState(statePrev map[[64]byte]*protocol.Account, stateRel map[[64]byte]*protocol.RelativeAccount) (stateUpdated map[[64]byte]*protocol.Account) {
-	//TODO whats going on here? Why do I create a new account with just the relative change?
+func ApplyRelativeState(statePrev map[[32]byte]*protocol.Account, stateRel map[[32]byte]*protocol.RelativeAccount) (stateUpdated map[[32]byte]*protocol.Account) {
+	//TODO whats going on here? Why do I create a new account with just the relative change? => Ask Sina and Kürsat
+	//!!!
 	for krel, _ := range stateRel {
 		if _, ok := statePrev[krel]; !ok {
 			accNewRel := stateRel[krel]
-			accNew := protocol.NewAccount(krel,[64]byte{},uint64(accNewRel.Balance),accNewRel.IsStaking,accNewRel.CommitmentKey,accNewRel.Contract,accNewRel.ContractVariables)
+			//Important: The first argument used to be just krel, but that's not 64 bti!
+			accNew := protocol.NewAccount(stateRel[krel].Address,[32]byte{},uint64(accNewRel.Balance),accNewRel.IsStaking,accNewRel.CommitmentKey,accNewRel.Contract,accNewRel.ContractVariables)
 			accNew.TxCnt = uint32(accNewRel.TxCnt)
 			accNew.StakingBlockHeight = uint32(accNewRel.StakingBlockHeight)
 			statePrev[krel] = &accNew

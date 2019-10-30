@@ -91,6 +91,39 @@ func getState() (state string) {
 
 func initState() (initialBlock *protocol.Block, err error) {
 	var allClosedBlocks []*protocol.Block
+
+
+	genesis, err := initGenesis()
+	initialEpochBlock, err := initEpochBlock()
+
+	//Request last epoch block from the network
+	//This code is taken by Kürsat
+	if(p2p.IsBootstrap()){
+		var eb *protocol.EpochBlock
+		eb = storage.ReadLastClosedEpochBlock()
+		lastEpochBlock = eb
+		if(lastEpochBlock == nil){
+			lastEpochBlock = initialEpochBlock
+		}
+	} else {
+		lastEpochBlock, err = getLastEpochBlock()
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	storage.State = lastEpochBlock.State
+
+	initRootAccounts(genesis)
+
+	if err != nil {
+		return nil, err
+	}
+
+
+	//End code from Kürsat
+
+
 	if p2p.IsBootstrap() {
 		allClosedBlocks = storage.ReadAllClosedBlocks()
 	} else {
@@ -115,7 +148,8 @@ func initState() (initialBlock *protocol.Block, err error) {
 
 		for {
 			RETRY:
-			p2p.BlockReq(lastBlock.PrevHash, lastBlock.PrevHashWithoutTx)
+				//TODO change back with prevhashwithouttx
+			p2p.BlockReq(lastBlock.PrevHash, lastBlock.PrevHash)
 			//p2p.BlockReq(lastBlock.PrevHash, lastBlock.PrevHashWithoutTx)
 			select {
 			case encodedBlock := <-p2p.BlockReqChan:
@@ -136,14 +170,16 @@ func initState() (initialBlock *protocol.Block, err error) {
 					goto RETRY
 				}
 			}
-
+			/*
 			//write aggregated blocks to the 'closedblockswithouttx' bucket. Else to the normal closedblocks bucket.
 			if lastBlock.Aggregated == true{
 				storage.WriteClosedBlockWithoutTx(lastBlock)
 			} else {
 				storage.WriteClosedBlock(lastBlock)
 			}
-
+			*/
+			//TODO Delete this write statement and uncomment the above
+			storage.WriteClosedBlock(lastBlock)
 			if len(allClosedBlocks) > 0 && allClosedBlocks[len(allClosedBlocks)-1].Hash == lastBlock.Hash {
 				fmt.Printf("Block with height %v already exists", lastBlock.Height)
 			} else {
@@ -165,7 +201,7 @@ func initState() (initialBlock *protocol.Block, err error) {
 			}
 		}
 	} else {
-		initialBlock = newBlock([32]byte{},[32]byte{}, [crypto.COMM_PROOF_LENGTH]byte{}, 0)
+		initialBlock = newBlock([32]byte{}, [crypto.COMM_PROOF_LENGTH]byte{}, 0)
 
 		commitmentProof, err := crypto.SignMessageWithRSAKey(rootCommPrivKey, fmt.Sprint(initialBlock.Height))
 		if err != nil {
@@ -180,6 +216,7 @@ func initState() (initialBlock *protocol.Block, err error) {
 		storage.WriteClosedBlock(initialBlock)
 	}
 
+	//TODO why is this done?
 	if !p2p.IsBootstrap() {
 		allClosedBlocks = InvertBlockArray(allClosedBlocks)
 	}
@@ -221,11 +258,93 @@ func initState() (initialBlock *protocol.Block, err error) {
 	}
 
 
+
+
 	logger.Printf("\n\n%v block(s) validated. Chain good to go.\n------------------------------------------------------------------------\n\n", len(allClosedBlocks))
 	logger.Printf("Last Block: \n%v\n------------------------------------------------------------------------\n\n", lastBlock)
 	logger.Printf("Current STATE: \n%v\n------------------------------------------------------------------------\n\n", getState())
 
 	return initialBlock, nil
+}
+
+
+func initEpochBlock() (initialEpochBlock *protocol.EpochBlock, err error) {
+	if initialEpochBlock, err = storage.ReadFirstEpochBlock(); err != nil {
+		return nil, err
+	}
+
+	if initialEpochBlock == nil {
+		p2p.FirstEpochBlockReq()
+
+		select {
+		case encodedFirstEpochBlock := <-p2p.FirstEpochBlockReqChan:
+			initialEpochBlock = initialEpochBlock.Decode(encodedFirstEpochBlock)
+			logger.Printf("Received first Epoch Block: %v\n", initialEpochBlock.String())
+		case <-time.After(EPOCHBLOCKFETCH_TIMEOUT* time.Second):
+			return nil, errors.New("epoch block fetch timeout")
+		}
+
+		initialEpochBlock.State = storage.State
+		storage.WriteClosedEpochBlock(initialEpochBlock)
+
+		storage.DeleteAllLastClosedEpochBlock()
+		storage.WriteLastClosedEpochBlock(initialEpochBlock)
+	}
+	return initialEpochBlock, nil
+}
+
+
+/*Retrieve last epoch block from the network*/
+func getLastEpochBlock() (lastEpochBlock *protocol.EpochBlock, err error) {
+	p2p.LastEpochBlockReq()
+
+	var eb *protocol.EpochBlock
+
+	select {
+	case encodedLastEpochBlock := <-p2p.LastEpochBlockReqChan:
+		eb = eb.Decode(encodedLastEpochBlock)
+		logger.Printf("Received last Epoch Block: %v\n", eb.String())
+	case <-time.After(EPOCHBLOCKFETCH_TIMEOUT* time.Second):
+		return nil, errors.New("epoch block fetch timeout")
+	}
+
+
+	storage.WriteClosedEpochBlock(eb)
+
+	storage.DeleteAllLastClosedEpochBlock()
+	storage.WriteLastClosedEpochBlock(eb)
+
+	return eb, nil
+}
+
+func initRootAccounts(genesis *protocol.Genesis) {
+	//rootAcc := protocol.NewAccount(genesis.RootAddress, [64]byte{}, activeParameters.Staking_minimum, true, genesis.RootCommitment, nil, nil)
+	rootAcc := protocol.NewAccount(genesis.RootAddress, [32]byte{}, 4000, true, genesis.RootCommitment, nil, nil)
+	storage.State[protocol.SerializeHashContent(genesis.RootAddress)] = &rootAcc
+	storage.RootKeys[protocol.SerializeHashContent(genesis.RootAddress)] = &rootAcc
+}
+
+func initGenesis() (genesis *protocol.Genesis, err error) {
+	if genesis, err = storage.ReadGenesis(); err != nil {
+		return nil, err
+	}
+
+	if genesis == nil {
+		p2p.GenesisReq()
+
+		// TODO: @rmnblm parallelize this
+		// blocking wait
+		select {
+		case encodedGenesis := <-p2p.GenesisReqChan:
+			genesis = genesis.Decode(encodedGenesis)
+			logger.Printf("Received genesis: %v", genesis.String())
+		case <-time.After(GENESISFETCH_TIMEOUT * time.Second):
+			return nil, errors.New("genesis fetch timeout")
+		}
+
+		storage.WriteGenesis(genesis)
+	}
+	return genesis, nil
 }
 
 func accStateChange(txSlice []*protocol.AccTx) error {
@@ -533,7 +652,8 @@ func collectBlockReward(reward uint64, minerHash [32]byte, initialSetup bool) (e
 
 func collectSlashReward(reward uint64, block *protocol.Block) (err error) {
 	//Check if proof is provided. If proof was incorrect, prevalidation would already have failed.
-	if block.SlashedAddress != [32]byte{} || block.ConflictingBlockHash1 != [32]byte{} || block.ConflictingBlockHash2 != [32]byte{} || block.ConflictingBlockHashWithoutTx1 != [32]byte{} || block.ConflictingBlockHashWithoutTx2 != [32]byte{} {
+	//TODO add to conditional statement: || block.ConflictingBlockHashWithoutTx1 != [32]byte{} || block.ConflictingBlockHashWithoutTx2 != [32]byte{}
+	if block.SlashedAddress != [32]byte{} || block.ConflictingBlockHash1 != [32]byte{} || block.ConflictingBlockHash2 != [32]byte{}  {
 		var minerAcc, slashedAcc *protocol.Account
 		minerAcc, err = storage.GetAccount(block.Beneficiary)
 		slashedAcc, err = storage.GetAccount(block.SlashedAddress)
@@ -568,3 +688,18 @@ func updateStakingHeight(block *protocol.Block) error {
 
 	return nil
 }
+
+/**
+Retrieve total number of participants from the network which are staking
+*/
+func GetValidatorsCount() (validatorsCount int) {
+	var returnValCounts int
+	returnValCounts = 0
+	for _, acc := range storage.State {
+		if acc.IsStaking {
+			returnValCounts += 1
+		}
+	}
+	return returnValCounts
+}
+

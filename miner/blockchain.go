@@ -3,12 +3,13 @@ package miner
 import (
 	"crypto/ecdsa"
 	"crypto/rsa"
-	"fmt"
 	"github.com/oigele/bazo-miner/crypto"
 	"github.com/oigele/bazo-miner/p2p"
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
 	"log"
+	"math"
+	"math/rand"
 	"sync"
 	"time"
 )
@@ -39,8 +40,46 @@ var (
 
 )
 
+//p2p First start entry point
+
+func InitFirstStart(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validatorCommitment, rootCommitment *rsa.PrivateKey) error {
+	var err error
+	if err != nil {
+		return err
+	}
+
+
+	rootAddress := crypto.GetAddressFromPubKey(rootWallet)
+
+	var rootCommitmentKey [crypto.COMM_KEY_LENGTH]byte
+	copy(rootCommitmentKey[:], rootCommitment.N.Bytes())
+
+	genesis := protocol.NewGenesis(rootAddress, rootCommitmentKey)
+	storage.WriteGenesis(&genesis)
+
+	/*Write First Epoch block chained to the genesis block*/
+	initialEpochBlock := protocol.NewEpochBlock([][32]byte{genesis.Hash()}, 0)
+	initialEpochBlock.Hash = initialEpochBlock.HashEpochBlock()
+	FirstEpochBlock = initialEpochBlock
+	initialEpochBlock.State = storage.State
+
+	//This code looks really dubious? write something to delete it immediately?
+	storage.WriteFirstEpochBlock(initialEpochBlock)
+
+	storage.WriteClosedEpochBlock(initialEpochBlock)
+
+	storage.DeleteAllLastClosedEpochBlock()
+	storage.WriteLastClosedEpochBlock(initialEpochBlock)
+
+
+	firstValMapping := protocol.NewMapping()
+	initialEpochBlock.ValMapping = firstValMapping
+
+	return Init(validatorWallet, multisigWallet, rootWallet, validatorCommitment, rootCommitment)
+}
+
 //Miner entry point
-func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validatorCommitment, rootCommitment *rsa.PrivateKey) {
+func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validatorCommitment, rootCommitment *rsa.PrivateKey) error {
 	var err error
 
 
@@ -84,12 +123,13 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	currentTargetTime = new(timerange)
 	target = append(target, 13)
 
+	/* TODO not sure if it's ok to remove this.
 	initialBlock, err := initState()
 	if err != nil {
 		logger.Printf("Could not set up initial state: %v.\n", err)
 		return
 	}
-
+*/
 	logger.Printf("ActiveConfigParams: \n%v\n------------------------------------------------------------------------\n\nBAZO is Running\n\n", activeParameters)
 
 	//this is used to generate the state with aggregated transactions.
@@ -101,6 +141,8 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 		}
 	}
 	storage.DeleteBootstrapReceivedMempool()
+
+	var initialBlock *protocol.Block
 
 	//Listen for incoming blocks from the network
 	go incomingData()
@@ -114,8 +156,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	if(p2p.IsBootstrap()){
 		initialBlock, err = initState() //From here on, every validator should have the same state representation
 		if err != nil {
-			return
-			//Return err ??
+			 return err
 		}
 		lastBlock = initialBlock
 	} else {
@@ -135,6 +176,28 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 			}
 		}
 	}
+
+	logger.Printf("Active config params:%v\n", activeParameters)
+
+	//Define number of shards based on the validators in the network
+	NumberOfShards = DetNumberOfShards()
+	logger.Printf("Number of Shards: %v", NumberOfShards)
+
+	/*First validator assignment is done by the bootstrapping node, the others will be done based on PoS at the end of each epoch*/
+	if (p2p.IsBootstrap()) {
+		var validatorShardMapping = protocol.NewMapping()
+		validatorShardMapping.ValMapping = AssignValidatorsToShards()
+		validatorShardMapping.EpochHeight = int(lastEpochBlock.Height)
+		ValidatorShardMap = validatorShardMapping
+		logger.Printf("Validator Shard Mapping:\n")
+		logger.Printf(validatorShardMapping.String())
+	}
+
+	storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
+
+	epochMining(lastBlock.Hash, lastBlock.Height)
+
+	return nil
 }
 
 
@@ -309,11 +372,16 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 	}
 }
 
+//TODO change interface back to Fabio's
 //Mining is a constant process, trying to come up with a successful PoW.
-func mining(initialBlock *protocol.Block) {
-	currentBlock := newBlock(initialBlock.Hash, initialBlock.HashWithoutTx, [crypto.COMM_PROOF_LENGTH]byte{}, initialBlock.Height+1)
+func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
+	currentBlock := newBlock(hashPrevBlock, [crypto.COMM_PROOF_LENGTH]byte{}, heightPrevBlock+1)
 
 	for {
+
+		//Set shard identifier in block
+		currentBlock.ShardId = storage.ThisShardID
+		blockBeingProcessed = currentBlock
 		err := finalizeBlock(currentBlock)
 		if err != nil {
 			logger.Printf("%v\n", err)
@@ -324,7 +392,19 @@ func mining(initialBlock *protocol.Block) {
 		if err == nil {
 			err := validate(currentBlock, false)
 			if err == nil {
-				//Only broadcast the block if it is valid.
+
+				//Generate state transition for this block. This data is needed by the other shards to update their local states.
+				stateTransition := protocol.NewStateTransition(storage.RelativeState,int(currentBlock.Height),storage.ThisShardID,currentBlock.Hash,
+					currentBlock.ContractTxData,currentBlock.FundsTxData,currentBlock.ConfigTxData,currentBlock.StakeTxData)
+
+				logger.Printf("Broadcast state transition for height %d\n", currentBlock.Height)
+				//Broadcast state transition to other shards
+				broadcastStateTransition(stateTransition)
+				//Write state transition to own stash. Needed in case the network requests it at a later stage.
+				storage.WriteToOwnStateTransitionkStash(stateTransition)
+
+				logger.Printf("Broadcast block for height %d\n", currentBlock.Height)
+
 				go broadcastBlock(currentBlock)
 				logger.Printf("Validated block (mined): %vState:\n%v", currentBlock, getState())
 			} else {
@@ -345,7 +425,7 @@ func mining(initialBlock *protocol.Block) {
 		logger.Printf("\n\n __________________________________________________ New Mining Round __________________________________________________")
 		blockValidation.Lock()
 		logger.Printf("Create Next Block")
-		nextBlock := newBlock(lastBlock.Hash, lastBlock.HashWithoutTx, [crypto.COMM_PROOF_LENGTH]byte{}, lastBlock.Height+1)
+		nextBlock := newBlock(lastBlock.Hash, [crypto.COMM_PROOF_LENGTH]byte{}, lastBlock.Height+1)
 		currentBlock = nextBlock
 		logger.Printf("Prepare Next Block")
 		prepareBlock(currentBlock)
@@ -369,12 +449,66 @@ func initRootKey(rootKey *ecdsa.PublicKey) error {
 	return nil
 }
 
-//Helper functions from Kürsat
+/**
+Number of Shards is determined based on the total number of validators in the network. Currently, the system supports only
+one validator per shard, thus Number of Shards = Number of Validators.
+*/
+func DetNumberOfShards() (numberOfShards int) {
+	return int(math.Ceil(float64(GetValidatorsCount()) / float64(activeParameters.validators_per_shard)))
+}
+
+/**
+This function assigns the validators to the single shards in a random fashion. In case multiple validators per shard are supported,
+they would be assigned to the shards uniformly.
+*/
+func AssignValidatorsToShards() map[[64]byte]int {
+
+	/*This map denotes which validator is assigned to which shard index*/
+	validatorShardAssignment := make(map[[64]byte]int)
+
+	/*Fill 'validatorAssignedMap' with the validators of the current state.
+	The bool value indicates whether the validator has been assigned to a shard
+	*/
+	validatorSlices := make([][64]byte, 0)
+	validatorAssignedMap := make(map[[64]byte]bool)
+	for _, acc := range storage.State {
+		if acc.IsStaking {
+			validatorAssignedMap[acc.Address] = false
+			validatorSlices = append(validatorSlices, acc.Address)
+		}
+	}
+
+	/*Iterate over range of shards. At each index, select a random validators
+	from the map above and set is bool 'assigned' to TRUE*/
+	rand.Seed(time.Now().Unix())
+
+	for j := 1; j <= int(activeParameters.validators_per_shard); j++ {
+		for i := 1; i <= NumberOfShards; i++ {
+
+			if len(validatorSlices) == 0 {
+				return validatorShardAssignment
+			}
+
+			randomIndex := rand.Intn(len(validatorSlices))
+			randomValidator := validatorSlices[randomIndex]
+
+			//Assign validator to shard ID
+			validatorShardAssignment[randomValidator] = i
+			//Remove assigned validator from active list
+			validatorSlices = removeValidator(validatorSlices, randomIndex)
+		}
+	}
+	return validatorShardAssignment
+}
+
+//Helper functions
+
 func removeValidator(inputSlice [][64]byte, index int) [][64]byte {
 	inputSlice[index] = inputSlice[len(inputSlice)-1]
 	inputSlice = inputSlice[:len(inputSlice)-1]
 	return inputSlice
 }
+
 
 func makeRange(min, max int) []int {
 	a := make([]int, max-min+1)
