@@ -92,7 +92,7 @@ Then, miner B has to join the pool of validators (enable staking):
 ./bazo-client staking enable --wallet WalletB.txt --commitment CommitmentB.txt
 ```
 
-Start miner B, using the generated `WalletB.txt` and `CommitmentB.txt` (e.g. copy the files to the Bazo miner directory):
+Start miner B, using the generated `WalletB.txt` and `CommitmentB.txt` (i.e. copy the files to the Bazo miner directory):
 
 ```bash
 ./bazo-miner start --database StoreB.db --address localhost:8001 --bootstrap localhost:8000 --wallet WalletB.txt --commitment CommitmentB.txt --rootwallet WalletA.txt --rootcommitment CommitmentA.txt
