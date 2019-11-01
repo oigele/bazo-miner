@@ -116,6 +116,12 @@ func initState() (initialBlock *protocol.Block, err error) {
 
 	initRootAccounts(genesis)
 
+	initialBlock, err = getInitialBlock(lastEpochBlock)
+	if err != nil {
+		return nil, err
+	}
+
+
 	if err != nil {
 		return nil, err
 	}
@@ -123,6 +129,7 @@ func initState() (initialBlock *protocol.Block, err error) {
 
 	//End code from Kürsat
 
+	/* The following commented block fetches all blocks from the blockchain to validate them. This, however, wont be necessary anymore with sharding, because we just wait for an epoch block to start from there.
 
 	if p2p.IsBootstrap() {
 		allClosedBlocks = storage.ReadAllClosedBlocks()
@@ -140,6 +147,7 @@ func initState() (initialBlock *protocol.Block, err error) {
 
 		storage.WriteClosedBlock(lastBlock)
 		storage.WriteLastClosedBlock(lastBlock)
+		//TODO add option for last block being an epoch block?
 		if len(allClosedBlocks) > 0 && allClosedBlocks[len(allClosedBlocks)-1].Hash == lastBlock.Hash {
 			fmt.Printf("Block with height %v already exists", lastBlock.Height)
 		} else {
@@ -170,14 +178,15 @@ func initState() (initialBlock *protocol.Block, err error) {
 					goto RETRY
 				}
 			}
-			/*
+
 			//write aggregated blocks to the 'closedblockswithouttx' bucket. Else to the normal closedblocks bucket.
 			if lastBlock.Aggregated == true{
 				storage.WriteClosedBlockWithoutTx(lastBlock)
 			} else {
 				storage.WriteClosedBlock(lastBlock)
 			}
-			*/
+			//the block above here might not be needed anymore anyway
+
 			//TODO Delete this write statement and uncomment the above
 			storage.WriteClosedBlock(lastBlock)
 			if len(allClosedBlocks) > 0 && allClosedBlocks[len(allClosedBlocks)-1].Hash == lastBlock.Hash {
@@ -259,6 +268,8 @@ func initState() (initialBlock *protocol.Block, err error) {
 
 
 
+*/
+
 
 	logger.Printf("\n\n%v block(s) validated. Chain good to go.\n------------------------------------------------------------------------\n\n", len(allClosedBlocks))
 	logger.Printf("Last Block: \n%v\n------------------------------------------------------------------------\n\n", lastBlock)
@@ -292,6 +303,31 @@ func initEpochBlock() (initialEpochBlock *protocol.EpochBlock, err error) {
 	}
 	return initialEpochBlock, nil
 }
+func getInitialBlock(lastEpochBlock *protocol.EpochBlock) (initialBlock *protocol.Block, err error) {
+	if len(storage.AllClosedBlocksAsc) > 0 {
+		//Set the last closed block as the initial block
+		initialBlock = storage.AllClosedBlocksAsc[len(storage.AllClosedBlocksAsc)-1]
+	} else {
+		initialBlock = newBlock(lastEpochBlock.Hash, [crypto.COMM_PROOF_LENGTH]byte{}, 1) // since first epoch block is at height 0
+		commitmentProof, err := crypto.SignMessageWithRSAKey(commPrivKey, fmt.Sprint(initialBlock.Height))
+		if err != nil {
+			return nil, err
+		}
+		copy(initialBlock.CommitmentProof[:], commitmentProof[:])
+
+		initialBlock.Hash = initialBlock.HashBlock()
+
+		//Append genesis block to the map and save in storage
+		storage.AllClosedBlocksAsc = append(storage.AllClosedBlocksAsc, initialBlock)
+
+		storage.DeleteAllLastClosedBlock()
+		storage.WriteLastClosedBlock(initialBlock)
+		storage.WriteClosedBlock(initialBlock)
+	}
+
+	return initialBlock, nil
+}
+
 
 
 /*Retrieve last epoch block from the network*/

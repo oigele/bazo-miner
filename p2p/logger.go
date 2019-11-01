@@ -26,6 +26,7 @@ func InitLogging() {
 	LogMapping[8]  = "TX_BRDCST_ACK"
 	LogMapping[9]  = "AGGTX_BRDCST"
 
+	LogMapping[19] = "GENESIS_REQ"
 	LogMapping[20] = "FUNDSTX_REQ"
 	LogMapping[21] = "ACCTX_REQ"
 	LogMapping[22] = "CONFIGTX_REQ"
@@ -62,4 +63,23 @@ func InitLogging() {
 	LogMapping[103] = "CLIENT_PONG"
 
 	LogMapping[110] = "NOT_FOUND"
+
+	LogMapping[120] = "STATE_REQ"
+	LogMapping[121] = "STATE_RES"
+	LogMapping[122] = "FIRST_EPOCH_BLOCK_REQ"
+	LogMapping[123] = "FIRST_EPOCH_BLOCK_RES"
+	LogMapping[124] = "EPOCH_BLOCK_REQ"
+	LogMapping[125] = "EPOCH_BLOCK_RES"
+	LogMapping[126] = "VALIDATOR_SHARD_BRDCST"
+	LogMapping[127] = "VALIDATOR_SHARD_REQ"
+	LogMapping[128] = "VALIDATOR_SHARD_RES"
+	LogMapping[129] = "EPOCH_BLOCK_BRDCST"
+	LogMapping[131] = "LAST_EPOCH_BLOCK_RES"
+	LogMapping[132] = "LAST_EPOCH_BLOCK_REQ"
+	LogMapping[133] = "STATE_TRANSITION_BRDCST"
+	LogMapping[136] = "STATE_TRANSITION_REQ"
+	LogMapping[137] = "STATE_TRANSITION_RES"
+	LogMapping[138] = "GENESIS_RES"
+
+
 }

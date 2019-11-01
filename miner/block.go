@@ -1689,6 +1689,8 @@ func timestampCheck(timestamp int64) error {
 	return nil
 }
 
+
+//TODO connect with project
 func slashingCheck(slashedAddress, conflictingBlockHash1, conflictingBlockHash2, conflictingBlockHashWithoutTx1, conflictingBlockHashWithoutTx2 [32]byte) (bool, error) {
 	prefix := "Invalid slashing proof: "
 
@@ -1745,7 +1747,7 @@ func slashingCheck(slashedAddress, conflictingBlockHash1, conflictingBlockHash2,
 		}
 
 		ancestor, _ := getNewChain(conflictingBlock1)
-		if ancestor == nil {
+		if ancestor == [32]byte{} {
 			return false, errors.New(fmt.Sprintf(prefix + "Could not find a ancestor for the provided conflicting hash (1)."))
 		}
 	}
@@ -1778,8 +1780,8 @@ func slashingCheck(slashedAddress, conflictingBlockHash1, conflictingBlockHash2,
 			}
 		}
 
-		ancestor, _ := getNewChain(conflictingBlock2)
-		if ancestor == nil {
+		ancestorHash, _ := getNewChain(conflictingBlock2)
+		if ancestorHash == [32]byte{} {
 			return false, errors.New(fmt.Sprintf(prefix + "Could not find a ancestor for the provided conflicting hash (2)."))
 		}
 	}

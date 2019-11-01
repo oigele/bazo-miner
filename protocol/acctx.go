@@ -15,7 +15,7 @@ const (
 
 type AccTx struct {
 	Header            byte
-	Issuer            [64]byte //Changed for Kürsat
+	Issuer            [32]byte
 	Fee               uint64
 	PubKey            [64]byte
 	Sig               [64]byte
@@ -73,7 +73,7 @@ func (tx *AccTx) Hash() [32]byte {
 
 	txHash := struct {
 		Header            byte
-		Issuer            [64]byte
+		Issuer            [32]byte
 		Fee               uint64
 		PubKey            [64]byte
 		Contract          []byte
@@ -120,7 +120,7 @@ func (tx *AccTx) TxFee() uint64 { return tx.Fee }
 
 func (tx *AccTx) Size() uint64 { return ACCTX_SIZE }
 
-func (tx *AccTx) Sender() [64]byte { return tx.Issuer}
+func (tx *AccTx) Sender() [32]byte { return tx.Issuer}
 func (tx *AccTx) Receiver() [32]byte { return [32]byte{}}
 
 

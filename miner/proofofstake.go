@@ -137,11 +137,23 @@ func proofOfStake(diff uint8,
 		if lastBlock == nil {
 			return -1, errors.New("Abort mining, No Last Block Found")
 		}
-		if prevHash != lastBlock.Hash {
-			//Error code -2 initiates that probably a aggTx Should be deleted from open storage.
-			logger.Printf("Abort mining, another block has been successfully validated in the meantime --> LastBlock: %x", lastBlock.Hash[0:8])
-			return -2, errors.New("Abort mining, another block has been successfully validated in the meantime:")
+
+
+
+		if (prevBlockIsEpochBlock == true || FirstStartAfterEpoch == true){
+			//if(lastBlock.Height == lastEpochBlock.Height + 1 && lastBlock.ShardId == storage.ThisShardID){
+			if(lastBlock.PrevHash == lastEpochBlock.Hash && lastBlock.ShardId == storage.ThisShardID){
+				logger.Printf("Abort mining after epoch block, another block has been successfully validated in the meantime")
+				return -2, errors.New("Abort mining after epoch block, another block has been successfully validated in the meantime")
+			}
+		} else {
+			//if prevHash != lastBlock.Hash && lastBlock.ShardId == storage.ThisShardID{
+			if prevHash != lastBlock.Hash{
+				logger.Printf("Abort mining, another block has been successfully validated in the meantime")
+				return -2, errors.New("Abort mining, another block has been successfully validated in the meantime")
+			}
 		}
+
 
 		abort = false
 

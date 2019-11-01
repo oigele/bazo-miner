@@ -383,3 +383,94 @@ func intermediateNodesRes(p *peer, payload []byte) {
 
 	sendData(p, packet)
 }
+
+func stateTransitionRes(p *peer, payload []byte) {
+	var packet []byte
+	var st *protocol.StateTransition
+
+	strPayload := string(payload)
+	shardID,_ := strconv.ParseInt(strings.Split(strPayload,":")[0],10,64)
+
+	height,_ := strconv.ParseInt(strings.Split(strPayload,":")[1],10,64)
+
+	logger.Printf("responding state transition request for height: %d\n",height)
+
+	if(shardID == int64(storage.ThisShardID)){
+		st = storage.ReadStateTransitionFromOwnStash(int(height))
+		if(st != nil){
+			packet = BuildPacket(STATE_TRANSITION_RES,st.EncodeTransition())
+			logger.Printf("sent state transition response for height: %d\n",height)
+		} else {
+			packet = BuildPacket(NOT_FOUND,nil)
+			logger.Printf("state transition for height %d was nil.\n",height)
+		}
+	} else {
+		packet = BuildPacket(NOT_FOUND,nil)
+	}
+
+	sendData(p, packet)
+}
+
+func genesisRes(p *peer, payload []byte) {
+	var packet []byte
+	genesis, err := storage.ReadGenesis()
+	if err == nil && genesis != nil {
+		packet = BuildPacket(GENESIS_RES, genesis.Encode())
+	} else {
+		packet = BuildPacket(NOT_FOUND, nil)
+	}
+
+	sendData(p, packet)
+}
+
+func FirstEpochBlockRes(p *peer, payload []byte) {
+	var packet []byte
+	firstEpochBlock, err := storage.ReadFirstEpochBlock()
+
+	if err == nil && firstEpochBlock != nil {
+		packet = BuildPacket(FIRST_EPOCH_BLOCK_RES, firstEpochBlock.Encode())
+	} else {
+		packet = BuildPacket(NOT_FOUND, nil)
+	}
+
+	sendData(p, packet)
+}
+
+func LastEpochBlockRes(p *peer, payload []byte) {
+	var packet []byte
+
+	var lastEpochBlock *protocol.EpochBlock
+	lastEpochBlock = storage.ReadLastClosedEpochBlock()
+
+	if lastEpochBlock != nil {
+		packet = BuildPacket(LAST_EPOCH_BLOCK_RES, lastEpochBlock.Encode())
+	} else {
+		packet = BuildPacket(NOT_FOUND, nil)
+	}
+
+	sendData(p, packet)
+}
+
+func EpochBlockRes(p *peer, payload []byte) {
+	var ebHash [32]byte
+	copy(ebHash[:], payload[0:32])
+
+	var eb *protocol.EpochBlock
+	closedEb := storage.ReadClosedEpochBlock(ebHash)
+
+	if closedEb != nil {
+		eb = closedEb
+	}
+
+	if eb == nil {
+		packet := BuildPacket(NOT_FOUND, nil)
+		sendData(p, packet)
+		return
+	}
+
+	var packet []byte
+	packet = BuildPacket(EPOCH_BLOCK_RES, eb.Encode())
+
+	sendData(p, packet)
+}
+

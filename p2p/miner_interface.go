@@ -280,6 +280,37 @@ func forwardBlockReqToMiner(p *peer, payload []byte) {
 	blockStashMutex.Unlock()
 }
 
+func forwardEpochBlockToMinerIn(p *peer, payload []byte) {
+	logger.Printf("Writing Epoch block to channel EpochBlockIn.\n")
+	EpochBlockIn <- payload
+}
+
+func forwardStateTransitionToMiner(p *peer, payload []byte) () {
+	StateTransitionIn <- payload
+}
+
+
+func forwardLastEpochBlockToMiner(p *peer, payload []byte)  {
+	LastEpochBlockReqChan <- payload
+}
+
+func forwardStateTransitionShardReqToMiner(p *peer, payload []byte) {
+	logger.Printf("received state transition response..\n")
+	StateTransitionShardReqChan <- payload
+}
+
+func forwardGenesisReqToMiner(p *peer, payload []byte) {
+	GenesisReqChan <- payload
+}
+
+func forwardFirstEpochBlockToMiner(p *peer, payload []byte) {
+	FirstEpochBlockReqChan <- payload
+}
+
+func forwardEpochBlockToMiner(p *peer, payload []byte) {
+	EpochBlockReqChan <- payload
+}
+
 func ReadSystemTime() int64 {
 	return systemTime
 }

@@ -375,3 +375,13 @@ func ReadClosedTx(hash [32]byte) (transaction protocol.Transaction) {
 
 	return nil
 }
+
+func ReadStateTransitionFromOwnStash(height int) *protocol.StateTransition {
+	for _, st := range OwnStateTransitionStash {
+		if(int(st.Height) == height){
+			return st
+		}
+	}
+
+	return nil
+}

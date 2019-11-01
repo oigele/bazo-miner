@@ -6,7 +6,6 @@ import (
 	"github.com/oigele/bazo-miner/p2p"
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
-	"sync"
 	"time"
 )
 
@@ -14,10 +13,9 @@ import (
 //Covers both cases (if block belongs to the longest chain or not).
 func getBlockSequences(newBlock *protocol.Block) (blocksToRollback, blocksToValidate []*protocol.Block, err error) {
 	//Fetch all blocks that are needed to validate.
-	ancestor, newChain := getNewChain(newBlock)
-
+	ancestorHash, newChain := getNewChain(newBlock)
 	//Common ancestor not found, discard block.
-	if ancestor == nil {
+	if ancestorHash == [32]byte{} {
 		return nil, nil, errors.New("Common ancestor not found.")
 	}
 
@@ -31,12 +29,13 @@ func getBlockSequences(newBlock *protocol.Block) (blocksToRollback, blocksToVali
 	if tmpBlock == nil {
 		return nil, nil, errors.New("Last Block not found")
 	}
-
+	/* Removed fabios Code. He immediately throws an error if he doesnt find a block that he should find. I don't see a valid reason for that so
+	I decided to use Kürsats code
 	var blocksToRollbackMutex = sync.Mutex{}
 	for {
 		blocksToRollbackMutex.Lock()
 		// TODO add || tmpBlock.HashWithoutTx == ancestor.HashWithoutTx
-		if tmpBlock.Hash == ancestor.Hash {
+		if tmpBlock.Hash == ancestorHash {
 			break
 		}
 		blocksToRollback = append(blocksToRollback, tmpBlock)
@@ -51,10 +50,32 @@ func getBlockSequences(newBlock *protocol.Block) (blocksToRollback, blocksToVali
 		if newTmpBlock == nil {
 //			logger.Printf("Block not found: %x, %x", tmpBlock.Hash, tmpBlock.HashWithoutTx)
 			blocksToRollbackMutex.Unlock()
+			//TODO find out what is the consequence of that is
 			return nil, nil, errors.New(fmt.Sprintf("Block not found in both closed storages"))
 		}
 		tmpBlock = newTmpBlock
 		blocksToRollbackMutex.Unlock()
+	}
+	 */
+
+	//This for loop is Kürsats solution
+	for tmpBlock.Height > lastEpochBlock.Height{
+		if tmpBlock.Hash == ancestorHash {
+			break
+		}
+		blocksToRollback = append(blocksToRollback, tmpBlock)
+		logger.Printf("Added block (%x) to rollback blocks\n",tmpBlock.Hash[0:8])
+		//The block needs to be in closed storage.
+		tmpBlockNewHash := tmpBlock.PrevHash
+		tmpBlock = storage.ReadClosedBlock(tmpBlockNewHash)
+		if(tmpBlock != nil){
+			logger.Printf("New tmpBlock: (%x)\n",tmpBlock.Hash[0:8])
+		} else {
+			logger.Printf("tmpBlock is nil. No Block found in closed storage for hash: (%x)\n",tmpBlockNewHash[0:8])
+			if(ancestorHash == storage.ReadLastClosedEpochBlock().Hash){
+				break
+			}
+		}
 	}
 
 	//Compare current length with new chain length.
@@ -66,7 +87,7 @@ func getBlockSequences(newBlock *protocol.Block) (blocksToRollback, blocksToVali
 		if len(blocksToRollback) != 0 {
 
 			logger.Printf("Rollback (blocks to rollback %d vs block of new chain %d)", len(blocksToRollback), len(newChain))
-			logger.Printf("ANCESTOR: %x", ancestor.Hash[0:8])
+			logger.Printf("ANCESTOR: %x", ancestorHash[0:8])
 
 		}
 		return blocksToRollback, newChain, nil
@@ -75,20 +96,36 @@ func getBlockSequences(newBlock *protocol.Block) (blocksToRollback, blocksToVali
 
 //Returns the ancestor from which the split occurs (if a split occurred, if not it's just our last block) and a list
 //of blocks that belong to a new chain.
-func getNewChain(newBlock *protocol.Block) (ancestor *protocol.Block, newChain []*protocol.Block) {
+func getNewChain(newBlock *protocol.Block) (ancestor [32]byte, newChain []*protocol.Block) {
 	found := false
 	for {
 		newChain = append(newChain, newBlock)
 
+
 		//Search for an ancestor (which needs to be in closed storage -> validated block).
 		//Search in closed (Validated) blocks first
 		potentialAncestor := storage.ReadClosedBlock(newBlock.PrevHash)
+		prevBlockHash := newBlock.PrevHash
+
 		if potentialAncestor != nil {
 			//Found ancestor because it is found in our closed block storage.
 			//We went back in time, so reverse order.
 			newChain = InvertBlockArray(newChain)
-			return potentialAncestor, newChain
+			return potentialAncestor.Hash, newChain
+		} else {
+			//Check if ancestor is an epoch block
+			potentialEpochAncestorHash := storage.ReadLastClosedEpochBlock().Hash
+			if prevBlockHash == potentialEpochAncestorHash {
+				//Found ancestor because it is found in our closed block storage.
+				//We went back in time, so reverse order.
+				newChain = InvertBlockArray(newChain)
+				return potentialEpochAncestorHash, newChain
+			}
 		}
+
+
+
+
 /*		TODO uncomment block
 		potentialAncestor = storage.ReadClosedBlockWithoutTx(newBlock.PrevHashWithoutTx)
 		if potentialAncestor != nil {
@@ -126,6 +163,7 @@ func getNewChain(newBlock *protocol.Block) (ancestor *protocol.Block, newChain [
 		requestHash := newBlock.PrevHash
 		//Todo change the call back to request both blocks at once
 //		requestHashWithoutTx := newBlock.PrevHashWithoutTx
+		logger.Printf("Getting previous block. But I think the previous block is an Epoch Block.")
 		p2p.BlockReq(requestHash, requestHash)
 
 		//Blocking wait
@@ -146,9 +184,9 @@ func getNewChain(newBlock *protocol.Block) (ancestor *protocol.Block, newChain [
 				}
 				break
 			}
-			return nil, nil
-		}
+			return [32]byte{}, nil		}
 	}
 
-	return nil, nil
+	return [32]byte{}, nil
+
 }

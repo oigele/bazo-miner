@@ -134,6 +134,10 @@ func _processNeighborRes(payload []byte) (ipportList []string) {
 	return ipportList
 }
 
+func processValMappingRes(p *peer, payload []byte) {
+	ValidatorShardMapReq <- payload
+}
+
 func EmptyingiplistChan() {
 	for i := 0; i < len(iplistChan); i++ {
 		<- iplistChan

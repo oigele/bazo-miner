@@ -2,11 +2,9 @@ package miner
 
 import (
 	"errors"
-	"github.com/oigele/bazo-miner/p2p"
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
 	"sync"
-	"time"
 )
 
 //TODO uncomment
@@ -27,8 +25,10 @@ func seekSlashingProof(block *protocol.Block) error {
 		return errors.New("Latest block not found.")
 	}
 
+	lastEpochBlockHash := storage.ReadLastClosedEpochBlock().Hash
+
 	//When the block is added ontop of your chain then there is no slashing needed
-	if lastClosedBlock.Hash == block.Hash || lastClosedBlock.Hash == block.PrevHash {
+	if lastClosedBlock.Hash == block.Hash || lastClosedBlock.Hash == block.PrevHash || block.Hash == lastEpochBlockHash || block.PrevHash == lastEpochBlockHash {
 		return nil
 	} else {
 		//Get the latest blocks and check if there is proof for multi-voting within the slashing window
@@ -54,6 +54,10 @@ func seekSlashingProof(block *protocol.Block) error {
 //Check if two blocks are part of the same chain or if they appear in two competing chains
 func IsInSameChain(b1, b2 *protocol.Block) bool {
 
+	logger.Printf("Fisrt Block Hash %s", b1.Hash)
+	logger.Printf("Second Block Hash %s", b2.Hash)
+
+
 	SameChainMutex.Lock()
 	defer SameChainMutex.Unlock()
 	var higherBlock, lowerBlock  *protocol.Block
@@ -71,8 +75,12 @@ func IsInSameChain(b1, b2 *protocol.Block) bool {
 	}
 
 	for higherBlock.Height > 0 {
-		newHigherBlock := storage.ReadClosedBlock(higherBlock.PrevHash)
+		logger.Printf("Infinite loop?")
+		//Todo uncommnt this one too and replace it for the other one
+		//newHigherBlock := storage.ReadClosedBlock(higherBlock.PrevHash)
+		higherBlock := storage.ReadClosedBlock(higherBlock.PrevHash)
 		//Check blocks without transactions
+		/* TODO build the block req back in. Currently it doesnt work because epoch blocks would require a separate call.
 		if newHigherBlock == nil {
 			//TODO uncomment and change p2p req back
 		//	newHigherBlock = storage.ReadClosedBlockWithoutTx(higherBlock.PrevHashWithoutTx)
@@ -103,10 +111,15 @@ func IsInSameChain(b1, b2 *protocol.Block) bool {
 			}
 		}
 		if higherBlock != nil {
+			Todo uncomment the line below along with the fetching above
 			higherBlock = newHigherBlock
 			if higherBlock.Hash == lowerBlock.Hash {
 				return true
 			}
+		}*/
+
+		if higherBlock.Hash == lowerBlock.Hash {
+			return true
 		}
 	}
 
