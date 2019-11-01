@@ -36,10 +36,10 @@ func prepareBlock(block *protocol.Block) {
 	tmpCopy = opentxs
 	sort.Sort(tmpCopy)
 
-	nonAggregatableTxCounter = 0 //Counter for all transactions which will not be aggregated. (Stake-, config-, acctx)
+	nonAggregatableTxCounter = 0                             //Counter for all transactions which will not be aggregated. (Stake-, config-, acctx)
 	blockSize = int(activeParameters.Block_size) - (650 + 8) //Set blocksize - (fixed space + Bloomfiltersize
 	logger.Printf("block.GetBloomFilterSize() %v", block.GetBloomFilterSize())
-	transactionHashSize = 32  //It is 32 bytes
+	transactionHashSize = 32 //It is 32 bytes
 
 	//map where all senders from FundsTx and AggTx are added to. --> this ensures that tx with same sender are only counted once.
 	storage.DifferentSenders = map[[32]byte]uint32{}
@@ -47,15 +47,21 @@ func prepareBlock(block *protocol.Block) {
 	storage.FundsTxBeforeAggregation = nil
 
 	type senderTxCounterForMissingTransactions struct {
-		senderAddress [32]byte
-		txcnt uint32
+		senderAddress       [32]byte
+		txcnt               uint32
 		missingTransactions []uint32
 	}
 
 	var missingTxCntSender = map[[32]byte]*senderTxCounterForMissingTransactions{}
 
 	//Get Best combination of transactions
-	opentxToAdd = checkBestCombination(opentxs)
+	//TODO add back in
+	//opentxToAdd = checkBestCombination(opentxs)
+
+	//this is just for compatability. Should work because sharding is perfomed according to sender
+	opentxToAdd = opentxs
+
+
 
 	//Search missing transactions for the transactions which will be added...
 	for _, tx := range opentxToAdd {
@@ -196,28 +202,73 @@ func prepareBlock(block *protocol.Block) {
 	tmpCopy = opentxToAdd
 	sort.Sort(tmpCopy)
 
+	//*********************************************************//
+	//Here Kürsats Sharding Logic Begins
+	//*********************************************************//
+
+	//Keep track of transactions from assigned for my shard and which are valid. Only consider these ones when filling a block
+	//Otherwhise we would also count invalid transactions from my shard, this prevents well-filled blocks.
+	txFromThisShard := 0
+
+
 	//Add previous selected transactions.
+	// Here the transactions get added to the block
 	for _, tx := range opentxToAdd {
-		err := addTx(block, tx)
-		if err != nil {
-			//If the tx is invalid, we remove it completely, prevents starvation in the mempool.
-			storage.DeleteOpenTx(tx)
+		txAssignedShard := assignTransactionToShard(tx)
+		logger.Printf("Assigned shard: %d", txAssignedShard)
+
+		if int(txAssignedShard) == ValidatorShardMap.ValMapping[validatorAccAddress] {
+			logger.Printf("---- Transaction (%x) in shard: %d\n", tx.Hash(), txAssignedShard)
+			//Prevent block size to overflow.
+			if int(block.GetSize()+10)+(txFromThisShard*int(len(tx.Hash()))) > int(activeParameters.Block_size) {
+				logger.Printf("Overflow prevented")
+				break
+			}
+
+			switch tx.(type) {
+			case *protocol.StakeTx:
+				//Add StakeTXs only when preparing the last block before the next epoch block
+				if (int(lastBlock.Height) == int(lastEpochBlock.Height)+int(activeParameters.epoch_length)-1) {
+					err := addTx(block, tx)
+					if err == nil {
+						txFromThisShard += 1
+					}
+				}
+			case *protocol.FundsTx, *protocol.ConfigTx, *protocol.AccTx:
+				err := addTx(block, tx)
+				if err != nil {
+					//If the tx is invalid, we remove it completely, prevents starvation in the mempool.
+					//storage.DeleteOpenTx(tx)
+					storage.WriteINVALIDOpenTx(tx)
+				} else {
+					txFromThisShard += 1
+				}
+			}
 		}
 	}
 
-	// In miner\block.go --> AddFundsTx the transactions get added into storage.TxBeforeAggregation.
-	if len(storage.ReadFundsTxBeforeAggregation()) > 0 {
-		splitSortedAggregatableTransactions(block)
-	}
+	//*********************************************************//
+	//Here Kürsats Sharding Logic Ends
+	//*********************************************************//
 
-	//Set measurement values back to zero / nil.
-	storage.DifferentSenders = nil
-	storage.DifferentReceivers = nil
-	nonAggregatableTxCounter = 0
-	return
+		/* TODO add back in
+		// In miner\block.go --> AddFundsTx the transactions get added into storage.TxBeforeAggregation.
+		if len(storage.ReadFundsTxBeforeAggregation()) > 0 {
+			splitSortedAggregatableTransactions(block)
+		}
+
+		//Set measurement values back to zero / nil.
+		storage.DifferentSenders = nil
+		storage.DifferentReceivers = nil
+		nonAggregatableTxCounter = 0
+		return
+		*/
 }
 
+
+
 func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol.Transaction) {
+	//Explanation: While more open Txs exist and there is enough space in the block left, keep adding transactions to TxToAppend
 	nrWhenCombinedBest := 0
 	moreOpenTx := true
 	for moreOpenTx {
@@ -331,14 +382,6 @@ Transactions are sharded based on the public address of the sender
 func assignTransactionToShard(transaction protocol.Transaction) (shardNr int) {
 	//Convert Address/Issuer ([64]bytes) included in TX to bigInt for the modulo operation to determine the assigned shard ID.
 	switch transaction.(type) {
-	//TODO IMPLEMENT CONTRACT TX AND UNCOMMENT CASE
-/*	case *protocol.ContractTx:
-		var byteToConvert [32]byte
-		byteToConvert = transaction.(*protocol.ContractTx).Issuer
-		var calculatedInt int
-		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
-		return int((Abs(int32(calculatedInt)) % int32(NumberOfShards)) + 1)
- */
 	case *protocol.FundsTx:
 		var byteToConvert [32]byte
 		byteToConvert = transaction.(*protocol.FundsTx).From

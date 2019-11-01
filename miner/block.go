@@ -129,6 +129,7 @@ func finalizeBlock(block *protocol.Block) error {
 	//This doesn't need to be hashed, because we already have the merkle tree taking care of consistency.
 	block.NrAccTx = uint16(len(block.AccTxData))
 	block.NrFundsTx = uint16(len(block.FundsTxData))
+	logger.Printf("%d", len(block.FundsTxData))
 	block.NrConfigTx = uint8(len(block.ConfigTxData))
 	block.NrStakeTx = uint16(len(block.StakeTxData))
 	block.NrAggTx = uint16(len(block.AggTxData))
@@ -237,6 +238,12 @@ func addTx(b *protocol.Block, tx protocol.Transaction) error {
 			//logger.Printf("Adding fundsTx (%x) failed (%v)",tx.Hash(), err)
 			return err
 		}
+		err = addFundsTxFinal(b, tx.(*protocol.FundsTx))
+		if err != nil {
+			//logger.Printf("Adding fundsTx (%x) failed (%v): %v\n",tx.Hash(), err, tx.(*protocol.FundsTx))
+			//logger.Printf("Adding fundsTx (%x) failed (%v)",tx.Hash(), err)
+			return err
+		}
 	case *protocol.ConfigTx:
 		err := addConfigTx(b, tx.(*protocol.ConfigTx))
 		if err != nil {
@@ -272,7 +279,6 @@ func addAccTx(b *protocol.Block, tx *protocol.AccTx) error {
 }
 
 func addFundsTx(b *protocol.Block, tx *protocol.FundsTx) error {
-
 	addFundsTxMutex.Lock()
 
 	//Checking if the sender account is already in the local state copy. If not and account exist, create local copy.
@@ -288,6 +294,7 @@ func addFundsTx(b *protocol.Block, tx *protocol.FundsTx) error {
 		} else {
 			storage.WriteINVALIDOpenTx(tx)
 			addFundsTxMutex.Unlock()
+			logger.Printf("Sender account not present in the state: %x\n", tx.From)
 			return errors.New(fmt.Sprintf("Sender account not present in the state: %x\n", tx.From))
 		}
 	}
@@ -391,6 +398,7 @@ func addAggTxFinal(b *protocol.Block, tx *protocol.AggTx) error {
 }
 
 func splitSortedAggregatableTransactions(b *protocol.Block){
+	//Explanation: Aggregates as many transactions as possible. Each time considering the local maximum
 	txToAggregate := make([]protocol.Transaction, 0)
 	moreTransactionsToAggregate := true
 
@@ -1277,9 +1285,14 @@ func validate(b *protocol.Block, initialSetup bool) error {
 			}
 
 			blockDataMap[block.Hash] = blockData{accTxs, fundsTxs, configTxs, stakeTxs, aggTxs, aggregatedFundsTxSlice,block}
+
+			var previousStateCopy = CopyState(storage.State)
 			if err := validateState(blockDataMap[block.Hash], initialSetup); err != nil {
 				return err
 			}
+
+
+			storage.RelativeState = storage.GetRelativeState(previousStateCopy,storage.State)
 
 			postValidate(blockDataMap[block.Hash], initialSetup)
 			if i != len(blocksToValidate)-1 {
@@ -1310,9 +1323,13 @@ func validate(b *protocol.Block, initialSetup bool) error {
 			}
 
 			blockDataMap[block.Hash] = blockData{accTxs, fundsTxs, configTxs, stakeTxs, aggTxs, aggregatedFundsTxSlice,block}
+			var previousStateCopy = CopyState(storage.State)
 			if err := validateState(blockDataMap[block.Hash], initialSetup); err != nil {
 				return err
 			}
+
+
+			storage.RelativeState = storage.GetRelativeState(previousStateCopy,storage.State)
 
 			postValidate(blockDataMap[block.Hash], initialSetup)
 			//logger.Printf("Validated block (after rollback): %x", block.Hash[0:8])
@@ -1321,6 +1338,17 @@ func validate(b *protocol.Block, initialSetup bool) error {
 	}
 
 	return nil
+}
+
+func CopyState(state map[[32]byte]*protocol.Account) map[[32]byte]protocol.Account {
+
+	var copyState = make(map[[32]byte]protocol.Account)
+
+	for k, v := range state {
+		copyState[k] = *v
+	}
+
+	return copyState
 }
 
 //Doesn't involve any state changes.
