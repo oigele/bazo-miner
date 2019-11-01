@@ -150,6 +150,8 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 
 	//Since new validators only join after the currently running epoch ends, they do no need to download the whole shardchain history,
 	//but can continue with their work after the next epoch block and directly set their state to the global state of the first received epoch block
+
+
 	if (p2p.IsBootstrap()) {
 		initialBlock, err = initState() //From here on, every validator should have the same state representation
 		if err != nil {
@@ -160,6 +162,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 		for {
 			//As the non-bootstrapping node, wait until I receive the last epoch block as well as the validator assignment
 			// The global variables 'lastEpochBlock' and 'ValidatorShardMap' are being set when they are received by the network
+
 			if lastEpochBlock != nil {
 				logger.Printf("Last epoch block not nil")
 			}
@@ -214,6 +217,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 		//Indicates that a validator newly joined Bazo after the current epoch, thus his 'lastBlock' variable is nil
 		//and he continues directly with the mining of the first shard block
 		if FirstStartAfterEpoch {
+			logger.Printf("First start after Epoch. New miner successfully introduced to Bazo network")
 			mining(hashPrevBlock, heightPrevBlock)
 		}
 
@@ -237,6 +241,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			if (NumberOfShards == 1) {
 				break
 			}
+
 
 			//Retrieve all state transitions from the local state with the height of my last block
 			stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, lastBlock.Height)
@@ -266,6 +271,12 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			for _, id := range shardIDs {
 				if (id != storage.ThisShardID && shardIDStateBoolMap[id] == false) {
 					var stateTransition *protocol.StateTransition
+
+					//it might be possible that a new validator started mining an epoch block too late. In this case, the bootstrap can broadcast the epoch block again
+
+					if p2p.IsBootstrap() {
+						broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
+					}
 
 					logger.Printf("requesting state transition for lastblock height: %d\n", lastBlock.Height)
 
@@ -418,7 +429,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 			logger.Printf("Broadcast block for height %d\n", currentBlock.Height)
 
-			go broadcastBlock(currentBlock)
+			broadcastBlock(currentBlock)
 			logger.Printf("Validated block (mined): %vState:\n%v", currentBlock, getState())
 		} else {
 			logger.Printf("Mined block (%x) could not be validated: %v\n", currentBlock.Hash[0:8], err)
