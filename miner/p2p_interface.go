@@ -21,6 +21,7 @@ func incomingData() {
 func incomingEpochData() {
 	for {
 		//receive Epoch Block
+		logger.Printf("Listening to incoming epoch blocks...")
 		epochBlock := <-p2p.EpochBlockIn
 		logger.Printf("Retrieved Epoch block from channel EpochBlockIn.\n")
 		processEpochBlock(epochBlock)
