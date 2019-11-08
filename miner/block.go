@@ -238,12 +238,6 @@ func addTx(b *protocol.Block, tx protocol.Transaction) error {
 			//logger.Printf("Adding fundsTx (%x) failed (%v)",tx.Hash(), err)
 			return err
 		}
-		err = addFundsTxFinal(b, tx.(*protocol.FundsTx))
-		if err != nil {
-			//logger.Printf("Adding fundsTx (%x) failed (%v): %v\n",tx.Hash(), err, tx.(*protocol.FundsTx))
-			//logger.Printf("Adding fundsTx (%x) failed (%v)",tx.Hash(), err)
-			return err
-		}
 	case *protocol.ConfigTx:
 		err := addConfigTx(b, tx.(*protocol.ConfigTx))
 		if err != nil {
@@ -407,45 +401,31 @@ func splitSortedAggregatableTransactions(b *protocol.Block){
 	sortTxBeforeAggregation(PossibleTransactionsToAggregate)
 	cnt := 0
 
+	//The following code has been narrowed down to the use case for only aggregating according to senders. To see how the funcion was like originally check fabios github.
 	for moreTransactionsToAggregate {
 
-		//Get Sender and Receiver which are most common
-		maxSender, addressSender := getMaxKeyAndValueFormMap(storage.DifferentSenders)
-		maxReceiver, addressReceiver := getMaxKeyAndValueFormMap(storage.DifferentReceivers)
+		//Get Sender which is most common
+		_, addressSender := getMaxKeyAndValueFormMap(storage.DifferentSenders)
 
-		// The sender or receiver which is most common is selected and all transactions are added to the txToAggregate
-		// slice. The number of transactions sent/Received will lower with every tx added. Then the splitted transactions
+		// The sender which is most common is selected and all transactions are added to the txToAggregate
+		// slice. The number of transactions sent/ will lower with every tx added. Then the splitted transactions
 		// get aggregated into the correct aggregation transaction type and then written into the block.
 		i:=0
-		if maxSender >= maxReceiver {
-			for _, tx := range PossibleTransactionsToAggregate {
-				if tx.From == addressSender {
-					txToAggregate = append(txToAggregate, tx)
-				} else {
-					PossibleTransactionsToAggregate[i] = tx
-					i++
-				}
+		for _, tx := range PossibleTransactionsToAggregate {
+			if tx.From == addressSender {
+				txToAggregate = append(txToAggregate, tx)
+			} else {
+				PossibleTransactionsToAggregate[i] = tx
+				i++
 			}
-		} else {
-			for _, tx := range PossibleTransactionsToAggregate {
-				if tx.To == addressReceiver {
-					txToAggregate = append(txToAggregate, tx)
-				} else {
-					PossibleTransactionsToAggregate[i] = tx
-					i++
-				}
-			}
-
 		}
 
 		PossibleTransactionsToAggregate = PossibleTransactionsToAggregate[:i]
 		storage.DifferentSenders = map[[32]byte]uint32{}
-		storage.DifferentReceivers = map[[32]byte]uint32{}
 
 		//Count senders and receivers again, because some transactions are removed now.
 		for _, tx := range PossibleTransactionsToAggregate {
 			storage.DifferentSenders[tx.From] = storage.DifferentSenders[tx.From] + 1
-			storage.DifferentReceivers[tx.To] = storage.DifferentReceivers[tx.To] + 1
 		}
 
 		//Aggregate Transactions
@@ -454,7 +434,7 @@ func splitSortedAggregatableTransactions(b *protocol.Block){
 		//Empty Slice
 		txToAggregate = txToAggregate[:0]
 
-		if len(PossibleTransactionsToAggregate) > 0 && len(storage.DifferentSenders) > 0 && len(storage.DifferentReceivers) > 0  {
+		if len(PossibleTransactionsToAggregate) > 0 && len(storage.DifferentSenders) > 0  {
 			if cnt > 20 {
 				moreTransactionsToAggregate = false
 			}
@@ -520,6 +500,7 @@ func getMaxKeyAndValueFormMap(m map[[32]byte]uint32) (uint32, [32]byte) {
 	return max, biggestK
 }
 
+//Here, I already made sure that TX will be aggregated according to sender. Maybe make code slimmer to improve performance
 func AggregateTransactions(SortedAndSelectedFundsTx []protocol.Transaction, block *protocol.Block) error {
 	aggregationMutex.Lock()
 	defer aggregationMutex.Unlock()
@@ -528,7 +509,6 @@ func AggregateTransactions(SortedAndSelectedFundsTx []protocol.Transaction, bloc
 	var nrOfSenders = map[[32]byte]int{}
 	var nrOfReceivers = map[[32]byte]int{}
 	var amount uint64
-	var historicTransactions []protocol.Transaction
 
 	//Sum up Amount, copy sender and receiver to correct slices and to map to check if aggregation by sender or receiver.
 	for _, tx := range SortedAndSelectedFundsTx {
@@ -552,6 +532,7 @@ func AggregateTransactions(SortedAndSelectedFundsTx []protocol.Transaction, bloc
 		transactionReceivers = transactionReceivers[:1]
 	}
 
+	/* The following block searches in historic transactions in historic blocks. However, this is not needed anymore
 	// set addresses by which historic transactions should be searched.
 	// If Zero-32byte array is sent, it will not find any addresses, because BAZOAccountAddresses
 	if len(nrOfSenders) == len(nrOfReceivers){
@@ -599,11 +580,12 @@ func AggregateTransactions(SortedAndSelectedFundsTx []protocol.Transaction, bloc
 		historicTransactions = searchTransactionsInHistoricBlocks([32]byte{}, transactionReceivers[0])
 	}
 
+
 	//Add transactions to the transactionsHashes slice
 	for _, tx := range historicTransactions {
 		transactionHashes = append(transactionHashes, tx.Hash())
 	}
-
+	*/
 	if len(transactionHashes) > 1 {
 
 		//Create Aggregated Transaction
@@ -634,6 +616,7 @@ func AggregateTransactions(SortedAndSelectedFundsTx []protocol.Transaction, bloc
 		transactionHashes = nil
 
 	} else if len(SortedAndSelectedFundsTx) > 0{
+		logger.Printf("I got here")
 		addFundsTxFinal(block, SortedAndSelectedFundsTx[0].(*protocol.FundsTx))
 	} else {
 		err := errors.New("NullPointer")

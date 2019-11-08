@@ -43,7 +43,7 @@ func prepareBlock(block *protocol.Block) {
 
 	//map where all senders from FundsTx and AggTx are added to. --> this ensures that tx with same sender are only counted once.
 	storage.DifferentSenders = map[[32]byte]uint32{}
-	storage.DifferentReceivers = map[[32]byte]uint32{}
+	//storage.DifferentReceivers = map[[32]byte]uint32{}
 	storage.FundsTxBeforeAggregation = nil
 
 	type senderTxCounterForMissingTransactions struct {
@@ -55,11 +55,10 @@ func prepareBlock(block *protocol.Block) {
 	var missingTxCntSender = map[[32]byte]*senderTxCounterForMissingTransactions{}
 
 	//Get Best combination of transactions
-	//TODO add back in
-	//opentxToAdd = checkBestCombination(opentxs)
+	opentxToAdd = checkBestCombination(opentxs)
 
 	//this is just for compatability. Should work because sharding is perfomed according to sender
-	opentxToAdd = opentxs
+	//opentxToAdd = opentxs
 
 
 
@@ -202,9 +201,10 @@ func prepareBlock(block *protocol.Block) {
 	tmpCopy = opentxToAdd
 	sort.Sort(tmpCopy)
 
-	//*********************************************************//
+
+
+	/* TODO evaluate if this block of code might ever be useful anymore
 	//Here Kürsats Sharding Logic Begins
-	//*********************************************************//
 
 	//Keep track of transactions from assigned for my shard and which are valid. Only consider these ones when filling a block
 	//Otherwhise we would also count invalid transactions from my shard, this prevents well-filled blocks.
@@ -247,40 +247,69 @@ func prepareBlock(block *protocol.Block) {
 		}
 	}
 
+	*/
 	//*********************************************************//
 	//Here Kürsats Sharding Logic Ends
 	//*********************************************************//
 
-		/* TODO add back in
+	//Add previous selected transactions.
+	for _, tx := range opentxToAdd {
+		err := addTx(block, tx)
+		if err != nil {
+			//If the tx is invalid, we remove it completely, prevents starvation in the mempool.
+			storage.DeleteOpenTx(tx)
+		}
+	}
+
 		// In miner\block.go --> AddFundsTx the transactions get added into storage.TxBeforeAggregation.
+		//TODO check this line of code. Is it still valid after tx aggregation? There could be a tx in this pool, but it might not be in the correct shard. Currently it looks like this approach is valid because the write operation takes part in addtx(couple of lines above)
 		if len(storage.ReadFundsTxBeforeAggregation()) > 0 {
 			splitSortedAggregatableTransactions(block)
 		}
 
 		//Set measurement values back to zero / nil.
 		storage.DifferentSenders = nil
-		storage.DifferentReceivers = nil
+		//storage.DifferentReceivers = nil
 		nonAggregatableTxCounter = 0
 		return
-		*/
 }
 
 
 
+//Maybe needs some optimization. Note that due to our own constraint, transactions are not aggregated according to the receiver anymore, so they are not counted anymore
 func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol.Transaction) {
 	//Explanation: While more open Txs exist and there is enough space in the block left, keep adding transactions to TxToAppend
 	nrWhenCombinedBest := 0
 	moreOpenTx := true
 	for moreOpenTx {
 		var intermediateTxToAppend []protocol.Transaction
-
 		for i, tx := range openTxs {
+			txAssignedShard := assignTransactionToShard(tx)
+			//Makes sure we only validate the transactions of our own shard
+			if int(txAssignedShard) != ValidatorShardMap.ValMapping[validatorAccAddress] {
+				continue
+			}
 			switch tx.(type) {
 			case *protocol.FundsTx:
 				storage.DifferentSenders[tx.(*protocol.FundsTx).From] = storage.DifferentSenders[tx.(*protocol.FundsTx).From] + 1
-				storage.DifferentReceivers[tx.(*protocol.FundsTx).To] = storage.DifferentReceivers[tx.(*protocol.FundsTx).To] + 1
+				//storage.DifferentReceivers[tx.(*protocol.FundsTx).To] = storage.DifferentReceivers[tx.(*protocol.FundsTx).To] + 1
 			case *protocol.AggTx:
 				continue
+			//TODO optimize code
+			case *protocol.StakeTx:
+				if (int(lastBlock.Height) == int(lastEpochBlock.Height)+int(activeParameters.epoch_length)-1) {
+					continue
+				} else {
+					if (nonAggregatableTxCounter+1)*transactionHashSize < blockSize {
+						nonAggregatableTxCounter += 1
+						TxToAppend = append(TxToAppend, tx)
+						if i != len(openTxs){
+							openTxs = append(openTxs[:i], openTxs[i+1:]...)
+						}
+					} else {
+						return TxToAppend
+					}
+				}
 			default:
 				//If another non-FundsTx can fit into the block, add it, else block is already full, so return the tx
 				//This does help that non-FundsTx get validated as fast as possible.
@@ -296,11 +325,13 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 			}
 		}
 
-		maxSender, addressSender := getMaxKeyAndValueFormMap(storage.DifferentSenders)
-		maxReceiver, addressReceiver := getMaxKeyAndValueFormMap(storage.DifferentReceivers)
+		//first return value maxSender not needed anymore. We dont need to compare max sender and max receiver anymore.
+		//this is still useful because we aggregate the senders with the most transactions first
+		_, addressSender := getMaxKeyAndValueFormMap(storage.DifferentSenders)
+		//maxReceiver, addressReceiver := getMaxKeyAndValueFormMap(storage.DifferentReceivers)
 
 		i := 0
-		if maxSender >= maxReceiver {
+		//if maxSender >= maxReceiver {
 			for _, tx := range openTxs {
 				switch tx.(type) {
 				case *protocol.FundsTx:
@@ -313,7 +344,7 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 					}
 				}
 			}
-		} else {
+		/*} else {
 			for _, tx := range openTxs {
 				switch tx.(type) {
 				case *protocol.FundsTx:
@@ -325,10 +356,10 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 					}
 				}
 			}
-		}
+		}*/
 		openTxs = openTxs[:i]
 		storage.DifferentSenders = make(map[[32]byte]uint32)
-		storage.DifferentReceivers = make(map[[32]byte]uint32)
+		//storage.DifferentReceivers = make(map[[32]byte]uint32)
 
 		nrWhenCombinedBest = nrWhenCombinedBest + 1
 

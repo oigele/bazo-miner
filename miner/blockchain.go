@@ -406,6 +406,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 	blockBeingProcessed = currentBlock
 	logger.Printf("Finalize Next Block")
 	err := finalizeBlock(currentBlock)
+
 	logger.Printf("Finalize Next Block -> Done")
 	if err != nil {
 		logger.Printf("%v\n", err)
