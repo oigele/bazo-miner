@@ -254,10 +254,21 @@ func prepareBlock(block *protocol.Block) {
 
 	//Add previous selected transactions.
 	for _, tx := range opentxToAdd {
-		err := addTx(block, tx)
-		if err != nil {
-			//If the tx is invalid, we remove it completely, prevents starvation in the mempool.
-			storage.DeleteOpenTx(tx)
+		switch tx.(type) {
+		case *protocol.StakeTx:
+			if (int(lastBlock.Height) == int(lastEpochBlock.Height)+int(activeParameters.epoch_length)-1) {
+				err := addTx(block, tx)
+				if err != nil {
+					//If the tx is invalid, we remove it completely, prevents starvation in the mempool.
+					storage.DeleteOpenTx(tx)
+				}
+			}
+		default:
+			err := addTx(block, tx)
+			if err != nil {
+				//If the tx is invalid, we remove it completely, prevents starvation in the mempool.
+				storage.DeleteOpenTx(tx)
+			}
 		}
 	}
 
@@ -295,21 +306,6 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 				//storage.DifferentReceivers[tx.(*protocol.FundsTx).To] = storage.DifferentReceivers[tx.(*protocol.FundsTx).To] + 1
 			case *protocol.AggTx:
 				continue
-			//TODO optimize code
-			case *protocol.StakeTx:
-				if (int(lastBlock.Height) == int(lastEpochBlock.Height)+int(activeParameters.epoch_length)-1) {
-					continue
-				} else {
-					if (nonAggregatableTxCounter+1)*transactionHashSize < blockSize {
-						nonAggregatableTxCounter += 1
-						TxToAppend = append(TxToAppend, tx)
-						if i != len(openTxs){
-							openTxs = append(openTxs[:i], openTxs[i+1:]...)
-						}
-					} else {
-						return TxToAppend
-					}
-				}
 			default:
 				//If another non-FundsTx can fit into the block, add it, else block is already full, so return the tx
 				//This does help that non-FundsTx get validated as fast as possible.

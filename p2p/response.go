@@ -405,6 +405,7 @@ func stateTransitionRes(p *peer, payload []byte) {
 			logger.Printf("state transition for height %d was nil.\n",height)
 		}
 	} else {
+		logger.Printf("Shard ID was %d, not mine", shardID)
 		packet = BuildPacket(NOT_FOUND,nil)
 	}
 
