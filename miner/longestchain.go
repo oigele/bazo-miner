@@ -96,6 +96,7 @@ func getBlockSequences(newBlock *protocol.Block) (blocksToRollback, blocksToVali
 
 //Returns the ancestor from which the split occurs (if a split occurred, if not it's just our last block) and a list
 //of blocks that belong to a new chain.
+//basically returns a list of blocks that are not in the closed storage yet
 func getNewChain(newBlock *protocol.Block) (ancestor [32]byte, newChain []*protocol.Block) {
 	found := false
 	for {

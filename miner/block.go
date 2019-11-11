@@ -1467,11 +1467,10 @@ func preValidate(block *protocol.Block, initialSetup bool) (accTxSlice []*protoc
 	}
 
 	//Check if block contains a proof for two conflicting block hashes, else no proof provided.
-	// TODO UNCOMMENT
 	if block.SlashedAddress != [32]byte{} {
-//		if _, err = slashingCheck(block.SlashedAddress, block.ConflictingBlockHash1, block.ConflictingBlockHash2, block.ConflictingBlockHashWithoutTx1, block.ConflictingBlockHashWithoutTx2); err != nil {
-//			return nil, nil, nil, nil, nil, nil, err
-//		}
+		if _, err = slashingCheck(block.SlashedAddress, block.ConflictingBlockHash1, block.ConflictingBlockHash2); err != nil {
+			return nil, nil, nil, nil, nil, nil, err
+		}
 	}
 
 	//Merkle Tree validation
@@ -1702,7 +1701,7 @@ func timestampCheck(timestamp int64) error {
 
 
 //TODO connect with project
-func slashingCheck(slashedAddress, conflictingBlockHash1, conflictingBlockHash2, conflictingBlockHashWithoutTx1, conflictingBlockHashWithoutTx2 [32]byte) (bool, error) {
+func slashingCheck(slashedAddress, conflictingBlockHash1, conflictingBlockHash2 [32]byte) (bool, error) {
 	prefix := "Invalid slashing proof: "
 
 	if conflictingBlockHash1 == [32]byte{} || conflictingBlockHash2 == [32]byte{} {
@@ -1717,13 +1716,6 @@ func slashingCheck(slashedAddress, conflictingBlockHash1, conflictingBlockHash2,
 	conflictingBlock1 := storage.ReadClosedBlock(conflictingBlockHash1)
 	conflictingBlock2 := storage.ReadClosedBlock(conflictingBlockHash2)
 
-	//Try fetching the block from the Blocks Without Transactions.
-	if conflictingBlock1 == nil {
-		conflictingBlock1 = storage.ReadClosedBlockWithoutTx(conflictingBlockHashWithoutTx1)
-	}
-	if conflictingBlock2 == nil {
-		conflictingBlock2 = storage.ReadClosedBlockWithoutTx(conflictingBlockHashWithoutTx2)
-	}
 
 	if IsInSameChain(conflictingBlock1, conflictingBlock2) {
 		return false, errors.New(fmt.Sprintf(prefix + "Conflicting block hashes are on the same chain."))
@@ -1735,7 +1727,7 @@ func slashingCheck(slashedAddress, conflictingBlockHash1, conflictingBlockHash2,
 		conflictingBlock1 = storage.ReadOpenBlock(conflictingBlockHash1)
 		if conflictingBlock1 == nil {
 			//Fetch the block we apparently missed from the network.
-			p2p.BlockReq(conflictingBlockHash1, conflictingBlockHashWithoutTx1)
+			p2p.BlockReq(conflictingBlockHash1, conflictingBlockHash1)
 
 			//Blocking wait
 			select {
@@ -1769,7 +1761,7 @@ func slashingCheck(slashedAddress, conflictingBlockHash1, conflictingBlockHash2,
 		conflictingBlock2 = storage.ReadOpenBlock(conflictingBlockHash2)
 		if conflictingBlock2 == nil {
 			//Fetch the block we apparently missed from the network.
-			p2p.BlockReq(conflictingBlockHash2, conflictingBlockHashWithoutTx2)
+			p2p.BlockReq(conflictingBlockHash2, conflictingBlockHash2)
 
 			//Blocking wait
 			select {
