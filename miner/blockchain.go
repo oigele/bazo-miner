@@ -162,6 +162,8 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 		for {
 			//As the non-bootstrapping node, wait until I receive the last epoch block as well as the validator assignment
 			// The global variables 'lastEpochBlock' and 'ValidatorShardMap' are being set when they are received by the network
+			time.After(5 * time.Second)
+			logger.Printf("Problem?")
 			if lastEpochBlock != nil {
 				logger.Printf("Last epoch block not nil")
 			}
