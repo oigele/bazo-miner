@@ -162,7 +162,6 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 		for {
 			//As the non-bootstrapping node, wait until I receive the last epoch block as well as the validator assignment
 			// The global variables 'lastEpochBlock' and 'ValidatorShardMap' are being set when they are received by the network
-			logger.Printf("Infintite loop?")
 			if lastEpochBlock != nil {
 				logger.Printf("Last epoch block not nil")
 			}
@@ -369,6 +368,8 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			//Introduce some delay in case there was a fork of the epoch block.
 			//Even though the states of both epoch blocks are the same, the validator-shard assignment is likely to be different
 			//General rule: Accept the last received epoch block as the valid one.
+			//Idea: We just accept the last received epoch block. There is no rollback for epoch blocks in place.
+			//Kürsat hopes that the last received Epoch block will be the same for all blocks.
 			time.Sleep(5 * time.Second)
 
 			prevBlockIsEpochBlock = true

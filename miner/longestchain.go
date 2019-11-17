@@ -13,6 +13,8 @@ import (
 //Covers both cases (if block belongs to the longest chain or not).
 func getBlockSequences(newBlock *protocol.Block) (blocksToRollback, blocksToValidate []*protocol.Block, err error) {
 	//Fetch all blocks that are needed to validate.
+	//ancestorhash is the last block that is saved in the storage as already validated
+	//newchain is the chain behind the new block and after the previously mentioned ancestor
 	ancestorHash, newChain := getNewChain(newBlock)
 	//Common ancestor not found, discard block.
 	if ancestorHash == [32]byte{} {
