@@ -1,0 +1,1345 @@
+INFO: 2019/11/18 16:42:49.082371 server.go:164: Adding a new miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:42:51.974634 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:42:51.974696 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:42:53.997028 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:42:53.997103 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:42:53.997113 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:42:53.997126 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:42:53.997132 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:42:56.975207 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:42:56.975279 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:42:58.997404 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:42:58.997478 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:42:58.997488 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:42:58.997494 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:42:58.997500 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:43:01.975753 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:43:01.975828 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:43:03.997774 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:43:03.997849 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:43:03.997859 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:43:03.997864 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:43:03.997872 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:43:06.976365 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:43:06.976449 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:43:08.998171 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:43:08.998246 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:43:08.998294 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:43:08.998301 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:43:08.998307 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:43:11.977029 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:43:11.977115 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:43:13.998586 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:43:13.998659 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:43:13.998669 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:43:13.998676 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:43:13.998682 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:43:16.977538 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:43:16.977623 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:43:18.998956 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:43:18.999032 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:43:18.999043 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:43:18.999049 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:43:18.999071 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:43:21.978429 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:43:21.978536 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:43:23.999392 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:43:23.999467 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:43:23.999478 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:43:23.999484 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:43:23.999491 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:43:26.978962 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:43:26.979040 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:43:28.999797 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:43:28.999874 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:43:28.999885 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:43:28.999892 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:43:28.999905 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:43:31.979525 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:43:31.979604 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:43:34.000205 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:43:34.000310 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:43:34.000322 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:43:34.000331 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:43:34.000337 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:43:36.980104 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:43:36.980185 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:43:39.000654 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:43:39.000732 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:43:39.000743 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:43:39.000750 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:43:39.000757 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:43:41.980777 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:43:41.980858 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:43:44.001037 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:43:44.001112 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:43:44.001125 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:43:44.001131 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:43:44.001139 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:43:46.981390 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:43:46.981475 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:43:49.001411 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:43:49.001480 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:43:49.001491 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:43:49.001497 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:43:49.001517 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:43:51.981717 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:43:51.981782 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:43:54.001813 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:43:54.001876 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:43:54.001887 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:43:54.001893 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:43:54.001900 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:43:56.982248 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:43:56.982311 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:43:59.002143 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:43:59.002202 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:43:59.002213 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:43:59.002219 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:43:59.002226 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:44:01.982995 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:44:01.983067 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:44:04.002486 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:44:04.002548 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:44:04.002560 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:44:04.002567 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:44:04.002574 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:44:06.983480 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:44:06.983548 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:44:09.002831 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:44:09.002890 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:44:09.002901 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:44:09.002982 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:44:09.002989 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:44:11.984204 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:44:11.984285 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:44:14.003252 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:44:14.003327 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:44:14.003360 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:44:14.003366 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:44:14.003393 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:44:16.984892 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:44:16.984956 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:44:19.003622 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:44:19.003691 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:44:19.003701 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:44:19.003707 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:44:19.003778 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:44:21.985515 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:44:21.985602 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:44:24.004043 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:44:24.004118 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:44:24.004129 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:44:24.004135 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:44:24.004142 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:44:26.986128 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:44:26.986203 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:44:29.004396 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:44:29.004449 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:44:29.004459 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:44:29.004476 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:44:29.004483 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:44:31.986673 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:44:31.986755 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:44:34.004758 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:44:34.004832 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:44:34.004842 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:44:34.004848 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:44:34.004855 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:44:36.987257 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:44:36.987337 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:44:39.005172 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:44:39.005241 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:44:39.005253 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:44:39.005259 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:44:39.005266 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:44:41.987899 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:44:41.987972 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:44:44.005519 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:44:44.005575 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:44:44.005586 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:44:44.005592 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:44:44.005599 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:44:46.988397 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:44:46.988458 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:44:49.005876 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:44:49.005956 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:44:49.005969 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:44:49.005975 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:44:49.006009 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:44:51.989099 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:44:51.989176 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:44:54.006293 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:44:54.006369 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:44:54.006380 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:44:54.006386 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:44:54.006408 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:44:56.989607 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:44:56.989670 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:44:59.006724 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:44:59.006791 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:44:59.006803 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:44:59.006808 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:44:59.006815 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:45:01.990252 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:45:01.990313 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:45:04.007072 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:45:04.007155 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:45:04.007167 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:45:04.007173 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:45:04.007180 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:45:06.990838 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:45:06.990952 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:45:09.007508 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:45:09.007581 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:45:09.007592 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:45:09.007598 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:45:09.007604 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:45:11.991411 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:45:11.991475 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:45:14.007890 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:45:14.007974 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:45:14.007986 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:45:14.007992 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:45:14.008000 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:45:16.992145 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:45:16.992274 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:45:19.008287 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:45:19.008363 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:45:19.008402 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:45:19.008409 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:45:19.008442 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:45:21.992772 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:45:21.992855 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:45:24.008689 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:45:24.008758 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:45:24.008768 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:45:24.008774 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:45:24.008781 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:45:26.993344 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:45:26.993413 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:45:29.009046 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:45:29.009118 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:45:29.009130 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:45:29.009136 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:45:29.009142 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:45:31.994069 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:45:31.994133 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:45:34.009489 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:45:34.009565 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:45:34.009576 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:45:34.009581 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:45:34.009589 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:45:36.994866 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:45:36.994943 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:45:39.009911 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:45:39.009996 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:45:39.010007 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:45:39.010013 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:45:39.010020 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:45:41.995473 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:45:41.995538 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:45:44.010275 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:45:44.010351 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:45:44.010361 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:45:44.010371 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:45:44.010379 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:45:46.996093 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:45:46.996160 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:45:49.010633 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:45:49.010705 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:45:49.010717 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:45:49.010750 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:45:49.010768 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:45:51.997009 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:45:51.997088 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:45:54.011047 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:45:54.011111 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:45:54.011122 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:45:54.011128 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:45:54.011134 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:45:56.997569 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:45:56.997632 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:45:59.011420 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:45:59.011475 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:45:59.011486 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:45:59.011491 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:45:59.011522 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:46:01.998412 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:46:01.998499 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:46:04.011825 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:46:04.011896 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:46:04.011906 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:46:04.011911 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:46:04.011918 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:46:06.999028 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:46:06.999105 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:46:09.012167 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:46:09.012242 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:46:09.012252 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:46:09.012258 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:46:09.012265 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:46:11.999792 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:46:11.999862 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:46:14.012619 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:46:14.012700 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:46:14.012745 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:46:14.012751 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:46:14.012758 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:46:17.000495 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:46:17.000564 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:46:19.013013 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:46:19.013078 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:46:19.013089 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:46:19.013111 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:46:19.013117 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:46:22.001421 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:46:22.001565 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:46:24.013384 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:46:24.013542 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:46:24.013582 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:46:24.013588 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:46:24.013595 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:46:27.001662 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:46:27.001745 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:46:29.013851 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:46:29.013910 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:46:29.013921 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:46:29.013927 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:46:29.013934 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:46:32.002303 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:46:32.002373 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:46:34.014175 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:46:34.014239 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:46:34.014249 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:46:34.014255 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:46:34.014262 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:46:37.002959 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:46:37.003045 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:46:39.014553 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:46:39.014632 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:46:39.014643 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:46:39.014650 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:46:39.014657 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:46:42.003438 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:46:42.003515 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:46:44.014994 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:46:44.015086 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:46:44.015098 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:46:44.015104 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:46:44.015111 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:46:47.003982 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:46:47.004049 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:46:49.015400 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:46:49.015462 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:46:49.015474 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:46:49.015492 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:46:49.015506 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:46:52.004574 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:46:52.004639 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:46:54.015771 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:46:54.015846 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:46:54.015858 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:46:54.015864 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:46:54.015870 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:46:57.005245 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:46:57.005328 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:46:59.016152 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:46:59.016240 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:46:59.016253 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:46:59.016259 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:46:59.016266 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:47:02.005977 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:47:02.006060 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:47:04.016613 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:47:04.016689 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:47:04.016707 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:47:04.016713 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:47:04.016735 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:47:07.006441 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:47:07.006521 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:47:09.016981 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:47:09.017037 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:47:09.017047 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:47:09.017053 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:47:09.017060 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:47:12.007035 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:47:12.007101 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:47:14.017339 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:47:14.017392 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:47:14.017403 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:47:14.017409 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:47:14.017416 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:47:17.007698 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:47:17.007797 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:47:19.017658 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:47:19.017763 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:47:19.017802 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:47:19.017809 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:47:19.017816 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:47:22.008388 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:47:22.008485 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:47:24.018081 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:47:24.018143 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:47:24.018153 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:47:24.018158 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:47:24.018165 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:47:27.008954 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:47:27.009026 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:47:29.018408 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:47:29.018462 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:47:29.018494 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:47:29.018500 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:47:29.018506 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:47:32.009498 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:47:32.009558 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:47:34.018789 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:47:34.018848 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:47:34.018859 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:47:34.018864 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:47:34.018871 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:47:37.010147 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:47:37.010206 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:47:39.019113 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:47:39.019178 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:47:39.019189 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:47:39.019195 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:47:39.019201 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:47:42.010821 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:47:42.010896 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:47:44.019517 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:47:44.019595 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:47:44.019607 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:47:44.019613 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:47:44.019620 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:47:47.011436 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:47:47.011518 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:47:49.019940 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:47:49.020019 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:47:49.020061 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:47:49.020067 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:47:49.020074 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:47:52.011997 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:47:52.012084 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:47:54.020378 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:47:54.020494 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:47:54.020507 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:47:54.020512 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:47:54.020519 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:47:57.012655 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:47:57.012734 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:47:59.020844 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:47:59.020925 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:47:59.020937 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:47:59.020943 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:47:59.020950 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:48:02.013407 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:48:02.013499 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:48:04.021245 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:04.021349 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:04.021362 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:04.021368 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:04.021375 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:48:07.013786 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:48:07.013868 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:48:09.021692 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:09.021782 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:09.021793 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:09.021799 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:09.021822 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:48:12.014245 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:48:12.014318 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:48:14.022112 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:14.022199 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:14.022212 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:14.022218 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:14.022225 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:48:17.014888 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:48:17.014953 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:48:19.022477 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:19.022543 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:19.022575 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:19.022582 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:19.022589 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:48:22.015481 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:48:22.015542 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:48:24.022855 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:24.022922 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:24.022934 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:24.022940 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:24.022947 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:48:27.016144 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:48:27.016217 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:48:29.023243 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:29.023324 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:29.023336 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:29.023341 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:29.023349 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:48:32.016889 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:48:32.016975 response.go:408: Shard ID was 2, not mine
+INFO: 2019/11/18 16:48:34.023642 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:34.023718 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:34.023755 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:34.023760 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:34.023767 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:48:37.017577 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/18 16:48:37.018834 response.go:396: responding state transition request for height: 121
+INFO: 2019/11/18 16:48:37.018869 response.go:405: state transition for height 121 was nil.
+INFO: 2019/11/18 16:48:37.030460 miner_interface.go:103: Build Epoch Block Brdcst Packet...
+INFO: 2019/11/18 16:48:38.213103 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:38.213121 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:38.213134 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:38.213143 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:38.213290 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:48:38.248073 miner_interface.go:298: received state transition response..
+INFO: 2019/11/18 16:48:39.025699 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:39.025771 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:39.025781 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:39.025787 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:39.025822 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:48:39.262391 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:39.262506 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:39.262532 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:39.262552 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:39.262817 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:48:44.026164 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:44.026268 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:44.026283 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:44.026309 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:44.026321 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:48:44.264662 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:48:49.026675 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:49.026757 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:49.026768 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:49.026774 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:49.026781 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:48:50.287803 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:50.287937 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:50.287953 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:50.287963 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:50.288120 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:48:54.027085 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:54.027184 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:54.027195 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:54.027202 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:54.027212 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:48:56.311313 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:56.311333 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:56.311345 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:56.311458 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:56.311572 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:48:59.027486 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:48:59.027575 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:48:59.027601 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:48:59.027609 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:48:59.027630 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:49:02.333140 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:02.333157 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:02.333169 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:02.333178 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:02.333254 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:49:04.027905 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:04.027980 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:04.027993 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:04.028002 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:04.028011 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:49:07.334818 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:49:09.028298 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:09.028379 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:09.028392 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:09.028401 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:09.028411 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:49:12.336660 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:49:14.028674 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:14.028736 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:14.028751 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:14.028757 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:14.028764 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:49:15.119117 response.go:396: responding state transition request for height: 126
+INFO: 2019/11/18 16:49:15.119175 response.go:405: state transition for height 126 was nil.
+INFO: 2019/11/18 16:49:18.361194 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:18.361212 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:18.361225 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:18.361246 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:19.029047 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:19.029687 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:19.030235 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:19.030661 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:19.031085 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:49:19.384370 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:19.384391 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:19.384405 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:19.384414 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:19.384565 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:49:24.032085 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:24.032166 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:24.032177 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:24.032188 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:24.032195 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:49:24.384937 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:49:29.032454 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:29.032523 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:29.032534 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:29.032540 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:29.032546 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:49:29.385374 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:49:34.032846 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:34.032913 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:34.032945 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:34.032951 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:34.032957 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:49:34.385740 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:49:39.033202 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:39.033264 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:39.033274 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:39.033282 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:39.033293 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:49:39.386005 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:49:44.033622 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:44.033698 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:44.033709 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:44.033715 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:44.033723 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:49:45.411651 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:45.411671 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:45.411684 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:45.411693 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:45.411928 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:49:49.033964 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:49.034056 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:49.034071 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:49.034081 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:49.034104 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:49:50.413601 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:49:54.034367 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:54.034445 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:54.034459 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:54.034469 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:54.034479 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:49:55.415479 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:49:59.034759 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:49:59.034821 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:49:59.034832 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:49:59.034837 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:49:59.034844 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:50:01.436496 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:01.436516 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:01.436529 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:01.436537 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:01.436750 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:50:04.035189 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:04.035267 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:04.035281 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:04.035290 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:04.035299 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:50:06.438444 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:50:09.035564 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:09.035636 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:09.035654 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:09.035667 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:09.035676 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:50:11.438715 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:50:14.035936 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:14.035995 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:14.036006 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:14.036012 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:14.036028 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:50:16.439035 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:50:19.036308 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:19.036374 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:19.036385 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:19.036391 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:19.036398 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:50:21.439321 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:50:24.036667 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:24.036732 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:24.036742 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:24.036750 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:24.036758 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:50:26.439698 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:50:29.037038 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:29.037119 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:29.037131 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:29.037137 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:29.037145 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:50:31.440036 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:50:34.037445 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:34.037536 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:34.037548 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:34.037554 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:34.037584 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:50:37.180127 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/18 16:50:37.187187 miner_interface.go:103: Build Epoch Block Brdcst Packet...
+INFO: 2019/11/18 16:50:39.037890 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:39.039131 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:39.039174 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:39.039184 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:39.039215 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:50:43.467479 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:43.467498 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:43.467510 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:43.467519 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:43.467589 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:50:44.039491 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:44.039635 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:44.039654 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:44.039677 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:44.039686 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:50:48.469364 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:50:49.040005 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:49.040104 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:49.040124 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:49.040142 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:49.040194 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:50:53.469666 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:50:54.041443 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:54.041510 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:54.041521 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:54.041527 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:54.041534 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:50:59.045855 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:59.048272 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:59.049163 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:59.049617 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:59.050054 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:50:59.491941 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:50:59.492015 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:50:59.492030 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:50:59.492092 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:50:59.492195 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:51:04.051037 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:51:04.051101 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:51:04.051126 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:51:04.051131 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:51:04.051138 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:51:05.514410 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:51:05.514568 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:51:05.514582 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:51:05.514591 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:51:05.514753 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:51:09.051429 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:51:09.051531 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:51:09.051557 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:51:09.051567 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:51:09.051577 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:51:10.516643 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:51:14.051907 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:51:14.052003 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:51:14.052018 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:51:14.052027 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:51:14.052044 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:51:15.516967 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:51:19.052312 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:51:19.052381 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:51:19.052392 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:51:19.052398 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:51:19.052405 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:51:20.517252 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:51:24.052695 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:51:24.052785 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:51:24.052796 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:51:24.052803 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:51:24.052810 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:51:25.517620 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:51:29.053113 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:51:29.053210 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:51:29.053223 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:51:29.053235 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:51:29.053241 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:51:30.517977 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:51:34.053506 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:51:34.053584 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:51:34.053596 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:51:34.053626 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:51:34.053633 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:51:35.518321 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:51:39.053928 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:51:39.054003 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:51:39.054013 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:51:39.054019 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:51:39.054027 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:51:40.518596 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:51:44.054289 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:51:44.054352 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:51:44.054361 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:51:44.054367 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:51:44.054373 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:51:45.518943 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:51:49.054812 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:51:49.054903 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:51:49.054920 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:51:49.054926 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:51:49.054934 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:51:50.519278 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:51:54.055357 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:51:54.055455 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:51:54.055466 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:51:54.055472 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:51:54.055480 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:51:55.519602 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:51:59.055758 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:51:59.055825 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:51:59.055838 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:51:59.055846 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:51:59.055855 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:52:01.539778 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:01.539798 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:01.539863 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:01.539912 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:01.540044 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:52:04.056122 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:04.056206 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:04.056221 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:04.056234 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:04.056259 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:52:06.540497 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:52:09.056570 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:09.056646 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:09.056660 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:09.056669 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:09.056678 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:52:11.540782 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:52:14.057004 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:14.057069 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:14.057079 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:14.057085 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:14.057091 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:52:16.541062 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:52:19.057355 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:19.057419 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:19.057430 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:19.057436 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:19.057442 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:52:22.567954 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:22.568106 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:22.568122 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:22.568131 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:22.568269 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:52:24.057731 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:24.058570 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:24.059008 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:24.059445 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:24.059547 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:52:27.568542 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:52:29.059787 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:29.059885 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:29.059897 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:29.059902 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:29.059909 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:52:32.568815 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:52:34.060169 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:34.060238 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:34.060248 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:34.060254 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:34.060260 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:52:37.569116 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:52:39.060618 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:39.060699 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:39.060709 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:39.060715 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:39.060722 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:52:42.569478 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:52:44.061004 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:44.061076 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:44.061085 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:44.061093 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:44.061100 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:52:48.593253 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:48.593273 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:48.593288 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:48.593309 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:48.593367 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:52:49.061394 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:49.061477 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:49.061491 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:49.061500 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:49.061509 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:52:53.595195 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:52:54.062767 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:54.062870 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:54.062886 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:54.062895 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:54.062914 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:52:58.595532 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:52:59.064212 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:52:59.064288 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:52:59.064300 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:52:59.064307 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:52:59.064314 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:53:04.069298 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:53:04.071525 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:53:04.072098 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:53:04.072554 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:53:04.073058 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:53:04.616188 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:53:04.616207 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:53:04.616368 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:53:04.616379 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:53:04.616514 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:53:09.074033 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:53:09.075432 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:53:09.075497 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:53:09.075506 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:53:09.075516 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:53:09.616815 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:53:14.075852 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:53:14.075911 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:53:14.075922 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:53:14.075927 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:53:14.075933 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:53:14.617160 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:53:19.076259 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:53:19.076350 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:53:19.076360 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:53:19.076367 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:53:19.076374 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:53:19.617472 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:53:24.076728 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:53:24.076798 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:53:24.076809 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:53:24.076814 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:53:24.076823 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:53:24.617772 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:53:29.077102 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:53:29.077172 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:53:29.077183 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:53:29.077188 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:53:29.077194 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:53:29.618074 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:53:34.077454 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:53:34.077515 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:53:34.077525 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:53:34.077530 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:53:34.077537 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:53:34.618392 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:53:39.077860 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:53:39.077932 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:53:39.077943 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:53:39.077966 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:53:39.077973 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:53:39.618788 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:53:44.078251 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:53:44.078330 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:53:44.078345 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:53:44.078353 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:53:44.078361 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:53:44.619075 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:53:49.078728 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:53:49.078790 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:53:49.078801 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:53:49.078807 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:53:49.078815 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:53:49.619362 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:53:54.079078 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:53:54.079141 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:53:54.079152 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:53:54.079157 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:53:54.079165 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:53:54.619704 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:53:59.079428 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:53:59.079489 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:53:59.079499 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:53:59.079505 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:53:59.079511 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:53:59.620027 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:54:04.079832 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:04.079894 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:04.079904 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:04.079910 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:04.079917 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:54:04.620314 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:54:09.080279 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:09.080354 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:09.080365 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:09.080373 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:09.080380 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:54:09.620609 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:54:14.080663 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:14.080783 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:14.080801 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:14.080807 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:14.080813 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:54:14.620899 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:54:19.081076 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:19.081156 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:19.081167 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:19.081174 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:19.081192 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:54:19.621194 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:54:24.081534 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:24.081636 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:24.081647 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:24.081656 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:24.081672 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:54:24.621495 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:54:29.081979 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:29.082053 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:29.082065 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:29.082071 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:29.082079 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:54:29.621820 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:54:34.082345 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:34.082411 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:34.082421 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:34.082427 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:34.082434 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:54:35.644770 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:35.644787 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:35.644801 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:35.644810 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:35.644876 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:54:39.082770 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:39.082846 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:39.082861 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:39.082870 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:39.082879 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:54:40.646593 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:54:44.083150 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:44.083208 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:44.083235 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:44.083241 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:44.083247 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:54:45.646909 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:54:49.083597 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:49.083662 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:49.083671 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:49.083678 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:49.083684 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:54:51.669139 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:51.669164 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:51.669226 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:51.669307 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:51.669395 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:54:54.083972 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:54.085755 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:54.085802 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:54.085828 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:54.085837 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:54:57.676798 miner_interface.go:103: Build Epoch Block Brdcst Packet...
+INFO: 2019/11/18 16:54:57.719179 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/18 16:54:59.086121 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:54:59.086222 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:54:59.086236 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:54:59.086246 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:54:59.086273 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:55:03.705364 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:03.705386 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:03.705399 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:03.705408 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:03.705549 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:55:04.090273 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:04.090376 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:04.090401 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:04.090412 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:04.090503 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:55:08.705891 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:55:09.091972 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:09.092059 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:09.092084 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:09.092090 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:09.092097 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:55:14.096416 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:14.098813 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:14.099528 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:14.100025 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:14.100458 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:55:14.728240 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:14.728260 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:14.728274 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:14.728419 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:14.728497 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:55:19.101449 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:19.101551 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:19.101561 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:19.101567 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:19.101574 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:55:20.750518 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:20.750538 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:20.750563 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:20.750652 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:20.750759 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:55:24.101877 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:24.102045 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:24.102072 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:24.102082 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:24.102093 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:55:26.774078 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:26.774213 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:26.774229 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:26.774239 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:26.774396 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:55:29.102401 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:29.102545 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:29.102563 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:29.102572 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:29.102608 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:55:31.774797 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:55:34.102921 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:34.103009 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:34.103021 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:34.103034 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:34.103041 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:55:36.775136 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:55:39.103338 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:39.103430 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:39.103443 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:39.103492 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:39.103501 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:55:42.531077 response.go:396: responding state transition request for height: 145
+INFO: 2019/11/18 16:55:42.532099 response.go:405: state transition for height 145 was nil.
+INFO: 2019/11/18 16:55:42.532269 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/18 16:55:42.794916 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:42.794937 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:42.794950 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:42.794959 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:43.819849 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:43.819874 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:43.819890 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:43.819899 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:43.820054 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:55:44.103795 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:44.103898 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:44.103909 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:44.103915 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:44.103927 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:55:49.104231 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:49.105043 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:49.105451 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:49.105845 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:49.106264 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:55:49.844806 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:49.844823 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:49.844835 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:49.844844 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:49.845069 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:55:54.107273 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:54.107391 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:54.107415 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:54.107421 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:54.107428 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:55:55.869228 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:55.869253 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:55.869282 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:55.869291 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:55.869479 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:55:59.107739 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:55:59.107841 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:55:59.107882 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:55:59.107892 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:55:59.107903 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:56:01.894165 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:56:01.894189 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:56:01.894314 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:56:01.894326 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:56:01.894487 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:56:04.108336 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:56:04.108432 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:56:04.108447 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:56:04.108456 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:56:04.108477 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:56:07.611116 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/18 16:56:07.620953 miner_interface.go:103: Build Epoch Block Brdcst Packet...
+INFO: 2019/11/18 16:56:09.108807 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:56:09.108907 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:56:09.108918 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:56:09.108924 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:56:09.108933 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:56:13.918662 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:56:13.918682 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:56:13.918695 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:56:13.918703 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:56:13.918780 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:56:14.112695 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:56:14.112770 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:56:14.112783 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:56:14.112793 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:56:14.112803 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:56:18.919129 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:56:19.113114 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:56:19.113198 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:56:19.113210 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:56:19.113215 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:56:19.113222 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:56:23.919442 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:56:24.114277 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:56:24.114347 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:56:24.114357 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:56:24.114363 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:56:24.114369 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:56:28.919795 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:56:29.115397 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:56:29.115450 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:56:29.115459 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:56:29.115464 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:56:29.115471 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/18 16:56:33.920093 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/18 16:56:34.116602 miner_request.go:128:   ____________
+INFO: 2019/11/18 16:56:34.116665 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/18 16:56:34.116676 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/18 16:56:34.116682 miner_request.go:137: |_______________________________|
+INFO: 2019/11/18 16:56:34.116690 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
