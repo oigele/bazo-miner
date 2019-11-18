@@ -1,0 +1,2106 @@
+INFO: 2019/11/18 16:42:49.081759 blockchain.go:88: 
+
+
+BBBBBBBBBBBBBBBBB               AAA               ZZZZZZZZZZZZZZZZZZZ     OOOOOOOOO
+B::::::::::::::::B             A:::A              Z:::::::::::::::::Z   OO:::::::::OO
+B::::::BBBBBB:::::B           A:::::A             Z:::::::::::::::::Z OO:::::::::::::OO
+BB:::::B     B:::::B         A:::::::A            Z:::ZZZZZZZZ:::::Z O:::::::OOO:::::::O
+  B::::B     B:::::B        A:::::::::A           ZZZZZ     Z:::::Z  O::::::O   O::::::O
+  B::::B     B:::::B       A:::::A:::::A                  Z:::::Z    O:::::O     O:::::O
+  B::::BBBBBB:::::B       A:::::A A:::::A                Z:::::Z     O:::::O     O:::::O
+  B:::::::::::::BB       A:::::A   A:::::A              Z:::::Z      O:::::O     O:::::O
+  B::::BBBBBB:::::B     A:::::A     A:::::A            Z:::::Z       O:::::O     O:::::O
+  B::::B     B:::::B   A:::::AAAAAAAAA:::::A          Z:::::Z        O:::::O     O:::::O
+  B::::B     B:::::B  A:::::::::::::::::::::A        Z:::::Z         O:::::O     O:::::O
+  B::::B     B:::::B A:::::AAAAAAAAAAAAA:::::A    ZZZ:::::Z     ZZZZZO::::::O   O::::::O
+BB:::::BBBBBB::::::BA:::::A             A:::::A   Z::::::ZZZZZZZZ:::ZO:::::::OOO:::::::O
+B:::::::::::::::::BA:::::A               A:::::A  Z:::::::::::::::::Z OO:::::::::::::OO
+B::::::::::::::::BA:::::A                 A:::::A Z:::::::::::::::::Z   OO:::::::::OO
+BBBBBBBBBBBBBBBBBAAAAAAA                   AAAAAAAZZZZZZZZZZZZZZZZZZZ     OOOOOOOOO
+
+
+INFO: 2019/11/18 16:42:49.086312 blockchain.go:106: 
+
+
+-------------------- START MINER ---------------------
+INFO: 2019/11/18 16:42:49.086350 blockchain.go:107: This Miners IP-Address: 34.74.168.109:8001
+
+INFO: 2019/11/18 16:42:51.086812 blockchain.go:128: ActiveConfigParams: 
+
+Block Hash: 0000000000000000
+Block size: 5000
+Difficulty interval: 25
+Fee minimum: 1
+Block interval: 15
+Block reward: 0
+Staking minimum: 1000
+Waiting minimum: 0
+Acceptanced time difference: 60
+Slashing window size: 100
+Slash reward: 2
+Num of previous proofs included in PoS: 5
+
+------------------------------------------------------------------------
+
+BAZO is Running
+
+INFO: 2019/11/18 16:42:51.086890 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/18 16:42:52.087073 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:42:53.087364 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:42:54.087608 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:42:55.087950 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:42:56.088206 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:42:57.088467 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:42:58.088745 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:42:59.089024 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:00.089305 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:01.089685 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:02.089966 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:03.090247 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:04.090577 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:05.090898 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:06.091208 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:07.091511 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:08.091866 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:09.092122 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:10.092405 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:11.092693 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:12.093022 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:13.093321 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:14.093641 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:15.093928 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:16.094289 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:17.094563 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:18.094833 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:19.095159 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:20.095444 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:21.095759 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:22.096052 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:23.096367 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:24.096676 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:25.096955 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:26.097244 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:27.097532 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:28.097832 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:29.098117 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:30.098398 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:31.098709 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:32.099098 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:33.099393 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:34.099666 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:35.099942 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:36.100225 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:37.100519 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:38.100918 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:39.101266 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:40.101609 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:41.101896 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:42.102215 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:43.102551 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:44.102833 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:45.103116 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:46.103422 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:47.103762 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:48.104033 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:49.104264 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:50.104587 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:51.104845 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:52.105111 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:53.105340 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:54.105590 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:55.105842 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:56.106098 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:57.106336 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:58.106615 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:43:59.106883 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:00.107122 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:01.107388 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:02.107641 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:03.107908 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:04.108153 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:05.108447 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:06.108726 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:07.109044 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:08.109317 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:09.109578 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:10.109838 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:11.110116 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:12.110408 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:13.110796 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:14.111070 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:15.111347 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:16.111645 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:17.111899 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:18.112191 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:19.112459 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:20.112722 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:21.113096 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:22.113397 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:23.113694 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:24.113975 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:25.114310 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:26.114610 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:27.114879 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:28.115131 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:29.115420 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:30.115699 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:31.116021 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:32.116335 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:33.116658 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:34.116923 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:35.117185 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:36.117524 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:37.117827 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:38.118110 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:39.118359 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:40.118602 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:41.118888 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:42.119130 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:43.119390 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:44.119640 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:45.119953 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:46.120219 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:47.120511 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:48.120811 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:49.121133 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:50.121457 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:51.121770 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:52.122057 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:53.122333 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:54.122670 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:55.122958 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:56.123270 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:57.123559 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:58.123811 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:44:59.124061 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:00.124317 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:01.124576 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:02.124830 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:03.125151 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:04.125442 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:05.125749 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:06.126017 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:07.126302 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:08.126660 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:09.126922 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:10.127189 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:11.127477 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:12.127721 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:13.128052 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:14.128333 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:15.128607 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:16.128899 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:17.129191 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:18.129483 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:19.129798 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:20.130068 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:21.130363 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:22.130677 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:23.130945 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:24.131205 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:25.131495 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:26.131762 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:27.132100 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:28.132402 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:29.132686 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:30.132982 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:31.133280 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:32.133594 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:33.133896 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:34.134181 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:35.134550 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:36.134842 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:37.135127 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:38.135454 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:39.135787 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:40.136068 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:41.136351 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:42.136607 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:43.136862 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:44.137118 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:45.137391 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:46.137691 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:47.138006 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:48.138294 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:49.138673 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:50.138953 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:51.139221 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:52.139581 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:53.139865 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:54.140117 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:55.140363 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:56.140634 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:57.140883 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:58.141162 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:45:59.141415 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:00.141686 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:01.141992 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:02.142276 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:03.142584 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:04.142909 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:05.143179 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:06.143468 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:07.143800 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:08.144095 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:09.144359 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:10.144634 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:11.144994 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:12.145276 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:13.145552 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:14.145857 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:15.146209 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:16.146589 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:17.146994 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:18.147266 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:19.147535 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:20.147861 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:21.148131 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:22.148417 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:23.148721 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:24.149029 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:25.149354 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:26.149651 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:27.149940 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:28.150224 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:29.150478 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:30.150730 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:31.151032 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:32.151283 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:33.151562 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:34.151905 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:35.152156 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:36.152440 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:37.152791 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:38.153169 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:39.153529 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:40.153852 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:41.154167 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:42.154392 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:43.154666 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:44.154993 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:45.155305 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:46.155585 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:47.155845 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:48.156119 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:49.156396 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:50.156646 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:51.156901 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:52.157139 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:53.157419 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:54.157696 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:55.157992 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:56.158286 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:57.158616 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:58.158916 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:46:59.159206 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:00.159575 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:01.159870 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:02.160157 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:03.160471 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:04.160818 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:05.161116 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:06.161420 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:07.161701 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:08.161948 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:09.162193 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:10.162436 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:11.162708 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:12.162977 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:13.163270 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:14.163562 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:15.163875 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:16.164177 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:17.164476 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:18.164769 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:19.165090 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:20.165322 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:21.165659 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:22.165952 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:23.166259 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:24.166533 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:25.166867 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:26.167128 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:27.167436 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:28.167883 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:29.168146 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:30.168406 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:31.168708 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:32.169016 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:33.169275 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:34.169520 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:35.169775 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:36.170024 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:37.170279 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:38.170597 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:39.170843 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:40.171118 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:41.171451 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:42.171722 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:43.172016 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:44.172304 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:45.172590 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:46.172889 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:47.173180 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:48.173503 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:49.173826 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:50.174135 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:51.174537 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:52.174914 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:53.175216 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:54.175637 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:55.175960 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:56.176288 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:57.176618 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:58.176884 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:47:59.177147 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:00.177447 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:01.177757 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:02.178230 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:03.178549 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:04.178877 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:05.179190 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:06.179644 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:07.179959 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:08.180290 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:09.180607 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:10.180889 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:11.181160 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:12.181416 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:13.181661 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:14.181944 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:15.182237 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:16.182517 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:17.182783 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:18.183073 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:19.183318 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:20.183578 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:21.183843 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:22.184090 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:23.184338 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:24.184588 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:25.184845 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:26.185105 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:27.185365 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:28.185608 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:29.185881 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:30.186163 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:31.186463 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:32.186808 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:33.187095 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:34.187405 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:35.187692 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:36.187995 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:37.017670 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/18 16:48:37.018217 p2p_interface.go:50: Received Epoch Block: Hash: 471bfce2e499fc6a
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: e6ad0e35ca92de07ddde72775a16eb41ec85c1b7f0e9eed73b7e6de0cd87febd
+
+Timestamp: 1574095354
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 120
+Commitment Proof: a5e826d4319f9e74
+State: 
+Is root: Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+
+Validator Shard Mapping: 
+Entry: b6ffae0006b138a0 -> 1
+Entry: 38fb0b4fa2680fdb -> 2
+Epoch Height: 120
+
+Number of Shards: 2
+
+INFO: 2019/11/18 16:48:37.030225 p2p_interface.go:158: Writing Epoch block (471bfce2e499fc6a) to channel EpochBlockOut
+INFO: 2019/11/18 16:48:37.030435 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/18 16:48:37.188284 blockchain.go:166: Problem?
+INFO: 2019/11/18 16:48:37.189059 blockchain.go:168: Last epoch block not nil
+INFO: 2019/11/18 16:48:37.189514 blockchain.go:171: Validator Shard Map not nil
+INFO: 2019/11/18 16:48:37.189948 blockchain.go:174: First statement ok
+INFO: 2019/11/18 16:48:37.190397 blockchain.go:221: First start after Epoch. New miner successfully introduced to Bazo network
+INFO: 2019/11/18 16:48:37.191012 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:48:37.192190 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:48:37.192532 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:48:37.192620 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:48:37.192722 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:48:37.192733 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:48:37.192786 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:48:38.196682 proofofstake.go:126: Try Block with Time: 044838 and cnt: 1
+INFO: 2019/11/18 16:48:38.196817 block.go:132: 0
+INFO: 2019/11/18 16:48:38.196828 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:48:38.196836 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:48:38.196846 blockchain.go:417: Block mined (7d18e7c51a12edbd)
+INFO: 2019/11/18 16:48:38.209611 blockchain.go:428: Broadcast state transition for height 121
+INFO: 2019/11/18 16:48:38.210665 blockchain.go:434: Broadcast block for height 121
+INFO: 2019/11/18 16:48:38.211492 blockchain.go:437: Validated block (mined): 
+Hash: 7d18e7c51a12edbd			Previous Hash: 471bfce2e499fc6a		Nonce: 000000005dd2cb66
+Timestamp: 1574095718
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 121
+Commitment Proof: 6bffb249165d92fb
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+INFO: 2019/11/18 16:48:38.213165 blockchain.go:226: Before checking my state stash for lastblock height: 121
+INFO: 2019/11/18 16:48:38.213257 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:48:38.213271 blockchain.go:282: requesting state transition for lastblock height: 121
+INFO: 2019/11/18 16:48:38.246492 p2p_interface.go:98: Received block (7d18e7c51a12edbd) from shard 0 with height: 121
+INFO: 2019/11/18 16:48:38.248302 blockchain.go:292: Writing state back to stash Shard ID: 1  VS my shard ID: 2 - Height: 121
+INFO: 2019/11/18 16:48:38.248337 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:48:38.248345 blockchain.go:300: Processed state transition of shard: 1
+INFO: 2019/11/18 16:48:38.248355 blockchain.go:312: After checking my state stash for lastblock height: 121
+INFO: 2019/11/18 16:48:38.248362 blockchain.go:318: Synchronisation duration for lastblock height: 121 - 0 seconds
+INFO: 2019/11/18 16:48:38.248369 blockchain.go:319: Total Synchronisation duration for lastblock height: 121 - 0 seconds
+INFO: 2019/11/18 16:48:38.248376 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:48:38.248383 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:48:38.248388 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:48:38.248397 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:48:38.248406 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:48:38.248413 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:48:38.248420 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:48:39.251563 proofofstake.go:126: Try Block with Time: 044839 and cnt: 1
+INFO: 2019/11/18 16:48:39.251659 block.go:132: 0
+INFO: 2019/11/18 16:48:39.251671 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:48:39.251679 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:48:39.251689 blockchain.go:417: Block mined (73512d444719e053)
+INFO: 2019/11/18 16:48:39.261534 blockchain.go:428: Broadcast state transition for height 122
+INFO: 2019/11/18 16:48:39.261723 blockchain.go:434: Broadcast block for height 122
+INFO: 2019/11/18 16:48:39.262260 blockchain.go:437: Validated block (mined): 
+Hash: 73512d444719e053			Previous Hash: 7d18e7c51a12edbd		Nonce: 000000005dd2cb67
+Timestamp: 1574095719
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 122
+Commitment Proof: b078cfa18f5634b7
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+INFO: 2019/11/18 16:48:39.262764 blockchain.go:226: Before checking my state stash for lastblock height: 122
+INFO: 2019/11/18 16:48:39.262781 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:48:39.262795 blockchain.go:282: requesting state transition for lastblock height: 122
+INFO: 2019/11/18 16:48:44.263074 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 122
+INFO: 2019/11/18 16:48:44.264584 blockchain.go:282: requesting state transition for lastblock height: 122
+INFO: 2019/11/18 16:48:46.042345 p2p_interface.go:73: Writing state to stash Shard ID: 1  VS my shard ID: 2 - Height: 122 - Hash: fc43f8683e63e4c6
+INFO: 2019/11/18 16:48:46.042433 p2p_interface.go:75: Length state stash map: 2
+INFO: 2019/11/18 16:48:46.042445 p2p_interface.go:76: Length state stash keys: 2
+INFO: 2019/11/18 16:48:46.042454 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:48:46.043014 p2p_interface.go:98: Received block (2e81d59467759aed) from shard 0 with height: 122
+INFO: 2019/11/18 16:48:46.077562 p2p_interface.go:98: Received block (2e81d59467759aed) from shard 0 with height: 122
+INFO: 2019/11/18 16:48:46.077648 p2p_interface.go:104: Received block (2e81d59467759aed) already in block stash
+INFO: 2019/11/18 16:48:49.264850 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 122
+INFO: 2019/11/18 16:48:49.264948 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:48:49.264959 blockchain.go:262: Processed state transition of shard: 1
+INFO: 2019/11/18 16:48:49.264965 blockchain.go:312: After checking my state stash for lastblock height: 122
+INFO: 2019/11/18 16:48:49.264973 blockchain.go:318: Synchronisation duration for lastblock height: 122 - 10 seconds
+INFO: 2019/11/18 16:48:49.264981 blockchain.go:319: Total Synchronisation duration for lastblock height: 122 - 10 seconds
+INFO: 2019/11/18 16:48:49.264989 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:48:49.264996 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:48:49.265018 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:48:49.265043 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:48:49.265052 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:48:49.265058 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:48:49.265063 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:48:50.269253 proofofstake.go:126: Try Block with Time: 044850 and cnt: 1
+INFO: 2019/11/18 16:48:50.269404 block.go:132: 0
+INFO: 2019/11/18 16:48:50.269420 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:48:50.269432 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:48:50.269445 blockchain.go:417: Block mined (35332aed819f188c)
+INFO: 2019/11/18 16:48:50.282957 blockchain.go:428: Broadcast state transition for height 123
+INFO: 2019/11/18 16:48:50.283976 blockchain.go:434: Broadcast block for height 123
+INFO: 2019/11/18 16:48:50.284869 blockchain.go:437: Validated block (mined): 
+Hash: 35332aed819f188c			Previous Hash: 73512d444719e053		Nonce: 000000005dd2cb72
+Timestamp: 1574095730
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 123
+Commitment Proof: 87e92d7961015f6d
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+INFO: 2019/11/18 16:48:50.288013 blockchain.go:226: Before checking my state stash for lastblock height: 123
+INFO: 2019/11/18 16:48:50.288027 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:48:50.288097 blockchain.go:282: requesting state transition for lastblock height: 123
+INFO: 2019/11/18 16:48:50.319427 p2p_interface.go:98: Received block (35332aed819f188c) from shard 0 with height: 123
+INFO: 2019/11/18 16:48:53.059245 p2p_interface.go:73: Writing state to stash Shard ID: 1  VS my shard ID: 2 - Height: 123 - Hash: 0b8637056b670825
+INFO: 2019/11/18 16:48:53.059308 p2p_interface.go:75: Length state stash map: 3
+INFO: 2019/11/18 16:48:53.059315 p2p_interface.go:76: Length state stash keys: 3
+INFO: 2019/11/18 16:48:53.059321 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:48:53.059665 p2p_interface.go:98: Received block (7adf6b68b4e61a42) from shard 0 with height: 123
+INFO: 2019/11/18 16:48:53.093993 p2p_interface.go:98: Received block (7adf6b68b4e61a42) from shard 0 with height: 123
+INFO: 2019/11/18 16:48:53.094063 p2p_interface.go:104: Received block (7adf6b68b4e61a42) already in block stash
+INFO: 2019/11/18 16:48:55.288350 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 123
+INFO: 2019/11/18 16:48:55.288457 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:48:55.288469 blockchain.go:262: Processed state transition of shard: 1
+INFO: 2019/11/18 16:48:55.288475 blockchain.go:312: After checking my state stash for lastblock height: 123
+INFO: 2019/11/18 16:48:55.288483 blockchain.go:318: Synchronisation duration for lastblock height: 123 - 5 seconds
+INFO: 2019/11/18 16:48:55.288495 blockchain.go:319: Total Synchronisation duration for lastblock height: 123 - 15 seconds
+INFO: 2019/11/18 16:48:55.288502 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:48:55.288510 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:48:55.288520 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:48:55.288529 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:48:55.288538 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:48:55.288544 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:48:55.288551 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:48:56.293672 proofofstake.go:126: Try Block with Time: 044856 and cnt: 1
+INFO: 2019/11/18 16:48:56.294478 block.go:132: 0
+INFO: 2019/11/18 16:48:56.294731 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:48:56.294744 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:48:56.294759 blockchain.go:417: Block mined (3121ec95b4c13fbb)
+INFO: 2019/11/18 16:48:56.306737 blockchain.go:428: Broadcast state transition for height 124
+INFO: 2019/11/18 16:48:56.307648 blockchain.go:434: Broadcast block for height 124
+INFO: 2019/11/18 16:48:56.308489 blockchain.go:437: Validated block (mined): 
+Hash: 3121ec95b4c13fbb			Previous Hash: 35332aed819f188c		Nonce: 000000005dd2cb78
+Timestamp: 1574095736
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 124
+Commitment Proof: 59827e81db55dedc
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+INFO: 2019/11/18 16:48:56.311470 blockchain.go:226: Before checking my state stash for lastblock height: 124
+INFO: 2019/11/18 16:48:56.311538 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:48:56.311553 blockchain.go:282: requesting state transition for lastblock height: 124
+INFO: 2019/11/18 16:48:56.343097 p2p_interface.go:98: Received block (3121ec95b4c13fbb) from shard 0 with height: 124
+INFO: 2019/11/18 16:49:01.076871 p2p_interface.go:73: Writing state to stash Shard ID: 1  VS my shard ID: 2 - Height: 124 - Hash: b1456338aa2196e5
+INFO: 2019/11/18 16:49:01.076921 p2p_interface.go:75: Length state stash map: 4
+INFO: 2019/11/18 16:49:01.076927 p2p_interface.go:76: Length state stash keys: 4
+INFO: 2019/11/18 16:49:01.076933 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:49:01.077216 p2p_interface.go:98: Received block (6d28153a27353af4) from shard 0 with height: 124
+INFO: 2019/11/18 16:49:01.111576 p2p_interface.go:98: Received block (6d28153a27353af4) from shard 0 with height: 124
+INFO: 2019/11/18 16:49:01.111654 p2p_interface.go:104: Received block (6d28153a27353af4) already in block stash
+INFO: 2019/11/18 16:49:01.311752 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 124
+INFO: 2019/11/18 16:49:01.313518 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:49:01.313552 blockchain.go:262: Processed state transition of shard: 1
+INFO: 2019/11/18 16:49:01.313560 blockchain.go:312: After checking my state stash for lastblock height: 124
+INFO: 2019/11/18 16:49:01.313568 blockchain.go:318: Synchronisation duration for lastblock height: 124 - 5 seconds
+INFO: 2019/11/18 16:49:01.313576 blockchain.go:319: Total Synchronisation duration for lastblock height: 124 - 20 seconds
+INFO: 2019/11/18 16:49:01.313584 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:49:01.313610 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:49:01.313618 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:49:01.313627 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:49:01.313635 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:49:01.313641 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:49:01.313647 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:49:02.318432 proofofstake.go:126: Try Block with Time: 044902 and cnt: 1
+INFO: 2019/11/18 16:49:02.318535 block.go:132: 0
+INFO: 2019/11/18 16:49:02.318546 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:49:02.318553 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:49:02.318562 blockchain.go:417: Block mined (8a3a47f12cb71c83)
+INFO: 2019/11/18 16:49:02.329149 blockchain.go:428: Broadcast state transition for height 125
+INFO: 2019/11/18 16:49:02.329930 blockchain.go:434: Broadcast block for height 125
+INFO: 2019/11/18 16:49:02.330659 blockchain.go:437: Validated block (mined): 
+Hash: 8a3a47f12cb71c83			Previous Hash: 3121ec95b4c13fbb		Nonce: 000000005dd2cb7e
+Timestamp: 1574095742
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 125
+Commitment Proof: 1f97c5abbacbfe83
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+INFO: 2019/11/18 16:49:02.333201 blockchain.go:226: Before checking my state stash for lastblock height: 125
+INFO: 2019/11/18 16:49:02.333213 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:49:02.333227 blockchain.go:282: requesting state transition for lastblock height: 125
+INFO: 2019/11/18 16:49:02.365164 p2p_interface.go:98: Received block (8a3a47f12cb71c83) from shard 0 with height: 125
+INFO: 2019/11/18 16:49:07.333431 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 125
+INFO: 2019/11/18 16:49:07.334777 blockchain.go:282: requesting state transition for lastblock height: 125
+INFO: 2019/11/18 16:49:12.335024 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 125
+INFO: 2019/11/18 16:49:12.336623 blockchain.go:282: requesting state transition for lastblock height: 125
+INFO: 2019/11/18 16:49:14.095666 p2p_interface.go:73: Writing state to stash Shard ID: 1  VS my shard ID: 2 - Height: 125 - Hash: 4876a5fd2be00419
+INFO: 2019/11/18 16:49:14.095718 p2p_interface.go:75: Length state stash map: 5
+INFO: 2019/11/18 16:49:14.095725 p2p_interface.go:76: Length state stash keys: 5
+INFO: 2019/11/18 16:49:14.095731 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:49:14.096065 p2p_interface.go:98: Received block (b21afea0a87a43d4) from shard 0 with height: 125
+INFO: 2019/11/18 16:49:14.130366 p2p_interface.go:98: Received block (b21afea0a87a43d4) from shard 0 with height: 125
+INFO: 2019/11/18 16:49:14.130414 p2p_interface.go:104: Received block (b21afea0a87a43d4) already in block stash
+INFO: 2019/11/18 16:49:15.115577 p2p_interface.go:73: Writing state to stash Shard ID: 1  VS my shard ID: 2 - Height: 126 - Hash: f3104bf971f46240
+INFO: 2019/11/18 16:49:15.115625 p2p_interface.go:75: Length state stash map: 6
+INFO: 2019/11/18 16:49:15.115633 p2p_interface.go:76: Length state stash keys: 6
+INFO: 2019/11/18 16:49:15.115639 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:49:15.115911 p2p_interface.go:98: Received block (903929c7d6aee1b5) from shard 0 with height: 126
+INFO: 2019/11/18 16:49:15.150256 p2p_interface.go:98: Received block (903929c7d6aee1b5) from shard 0 with height: 126
+INFO: 2019/11/18 16:49:15.150306 p2p_interface.go:104: Received block (903929c7d6aee1b5) already in block stash
+INFO: 2019/11/18 16:49:17.336855 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 125
+INFO: 2019/11/18 16:49:17.336935 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:49:17.336945 blockchain.go:262: Processed state transition of shard: 1
+INFO: 2019/11/18 16:49:17.336952 blockchain.go:312: After checking my state stash for lastblock height: 125
+INFO: 2019/11/18 16:49:17.336959 blockchain.go:318: Synchronisation duration for lastblock height: 125 - 15 seconds
+INFO: 2019/11/18 16:49:17.336967 blockchain.go:319: Total Synchronisation duration for lastblock height: 125 - 35 seconds
+INFO: 2019/11/18 16:49:17.336976 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:49:17.336983 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:49:17.336991 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:49:17.337000 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:49:17.337009 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:49:17.337016 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:49:17.337022 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:49:18.342174 proofofstake.go:126: Try Block with Time: 044918 and cnt: 1
+INFO: 2019/11/18 16:49:18.342286 block.go:132: 0
+INFO: 2019/11/18 16:49:18.342299 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:49:18.342319 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:49:18.342405 blockchain.go:417: Block mined (b4627262ee323d28)
+INFO: 2019/11/18 16:49:18.357042 blockchain.go:428: Broadcast state transition for height 126
+INFO: 2019/11/18 16:49:18.357810 blockchain.go:434: Broadcast block for height 126
+INFO: 2019/11/18 16:49:18.358587 blockchain.go:437: Validated block (mined): 
+Hash: b4627262ee323d28			Previous Hash: 8a3a47f12cb71c83		Nonce: 000000005dd2cb8e
+Timestamp: 1574095758
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 126
+Commitment Proof: 1af076fe2cdca7b4
+Slashed Address:0000000000000000
+State:
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+INFO: 2019/11/18 16:49:18.361256 blockchain.go:226: Before checking my state stash for lastblock height: 126
+INFO: 2019/11/18 16:49:18.361268 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:49:18.361420 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:49:18.361432 blockchain.go:262: Processed state transition of shard: 1
+INFO: 2019/11/18 16:49:18.361441 blockchain.go:312: After checking my state stash for lastblock height: 126
+INFO: 2019/11/18 16:49:18.361451 blockchain.go:318: Synchronisation duration for lastblock height: 126 - 0 seconds
+INFO: 2019/11/18 16:49:18.361461 blockchain.go:319: Total Synchronisation duration for lastblock height: 126 - 35 seconds
+INFO: 2019/11/18 16:49:18.361471 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:49:18.361495 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:49:18.361572 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:49:18.361583 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:49:18.361594 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:49:18.361603 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:49:18.361611 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:49:18.393023 p2p_interface.go:98: Received block (b4627262ee323d28) from shard 0 with height: 126
+INFO: 2019/11/18 16:49:19.366518 proofofstake.go:126: Try Block with Time: 044919 and cnt: 1
+INFO: 2019/11/18 16:49:19.367252 block.go:132: 0
+INFO: 2019/11/18 16:49:19.367705 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:49:19.368234 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:49:19.368485 blockchain.go:417: Block mined (38c63371528ed99a)
+INFO: 2019/11/18 16:49:19.379529 blockchain.go:428: Broadcast state transition for height 127
+INFO: 2019/11/18 16:49:19.380261 blockchain.go:434: Broadcast block for height 127
+INFO: 2019/11/18 16:49:19.380972 blockchain.go:437: Validated block (mined): 
+Hash: 38c63371528ed99a			Previous Hash: b4627262ee323d28		Nonce: 000000005dd2cb8f
+Timestamp: 1574095759
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 127
+Commitment Proof: 8d12417e4afc84bd
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+INFO: 2019/11/18 16:49:19.384424 blockchain.go:226: Before checking my state stash for lastblock height: 127
+INFO: 2019/11/18 16:49:19.384486 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:49:19.384544 blockchain.go:282: requesting state transition for lastblock height: 127
+INFO: 2019/11/18 16:49:19.415202 p2p_interface.go:98: Received block (38c63371528ed99a) from shard 0 with height: 127
+INFO: 2019/11/18 16:49:24.384774 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 127
+INFO: 2019/11/18 16:49:24.384918 blockchain.go:282: requesting state transition for lastblock height: 127
+INFO: 2019/11/18 16:49:29.385139 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 127
+INFO: 2019/11/18 16:49:29.385337 blockchain.go:282: requesting state transition for lastblock height: 127
+INFO: 2019/11/18 16:49:34.385586 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 127
+INFO: 2019/11/18 16:49:34.385679 blockchain.go:282: requesting state transition for lastblock height: 127
+INFO: 2019/11/18 16:49:39.385914 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 127
+INFO: 2019/11/18 16:49:39.385989 blockchain.go:282: requesting state transition for lastblock height: 127
+INFO: 2019/11/18 16:49:44.133986 p2p_interface.go:73: Writing state to stash Shard ID: 1  VS my shard ID: 2 - Height: 127 - Hash: dc4725091f6c783b
+INFO: 2019/11/18 16:49:44.134069 p2p_interface.go:75: Length state stash map: 7
+INFO: 2019/11/18 16:49:44.134076 p2p_interface.go:76: Length state stash keys: 7
+INFO: 2019/11/18 16:49:44.134083 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:49:44.134394 p2p_interface.go:98: Received block (ec486c55183a064b) from shard 0 with height: 127
+INFO: 2019/11/18 16:49:44.168969 p2p_interface.go:98: Received block (ec486c55183a064b) from shard 0 with height: 127
+INFO: 2019/11/18 16:49:44.169585 p2p_interface.go:104: Received block (ec486c55183a064b) already in block stash
+INFO: 2019/11/18 16:49:44.386203 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 127
+INFO: 2019/11/18 16:49:44.388135 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:49:44.388177 blockchain.go:262: Processed state transition of shard: 1
+INFO: 2019/11/18 16:49:44.388189 blockchain.go:312: After checking my state stash for lastblock height: 127
+INFO: 2019/11/18 16:49:44.388208 blockchain.go:318: Synchronisation duration for lastblock height: 127 - 25 seconds
+INFO: 2019/11/18 16:49:44.388227 blockchain.go:319: Total Synchronisation duration for lastblock height: 127 - 60 seconds
+INFO: 2019/11/18 16:49:44.388239 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:49:44.388253 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:49:44.388266 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:49:44.388278 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:49:44.388300 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:49:44.388314 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:49:44.388323 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:49:45.393401 proofofstake.go:126: Try Block with Time: 044945 and cnt: 1
+INFO: 2019/11/18 16:49:45.394247 block.go:132: 0
+INFO: 2019/11/18 16:49:45.394624 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:49:45.395029 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:49:45.395499 blockchain.go:417: Block mined (196f49a82f62a4cc)
+INFO: 2019/11/18 16:49:45.406215 blockchain.go:428: Broadcast state transition for height 128
+INFO: 2019/11/18 16:49:45.406944 blockchain.go:434: Broadcast block for height 128
+INFO: 2019/11/18 16:49:45.407671 blockchain.go:437: Validated block (mined): 
+Hash: 196f49a82f62a4cc			Previous Hash: 38c63371528ed99a		Nonce: 000000005dd2cba9
+Timestamp: 1574095785
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 128
+Commitment Proof: 3993d7ee11c1a35b
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+INFO: 2019/11/18 16:49:45.411755 blockchain.go:226: Before checking my state stash for lastblock height: 128
+INFO: 2019/11/18 16:49:45.411895 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:49:45.411911 blockchain.go:282: requesting state transition for lastblock height: 128
+INFO: 2019/11/18 16:49:45.442423 p2p_interface.go:98: Received block (196f49a82f62a4cc) from shard 0 with height: 128
+INFO: 2019/11/18 16:49:50.412137 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 128
+INFO: 2019/11/18 16:49:50.413562 blockchain.go:282: requesting state transition for lastblock height: 128
+INFO: 2019/11/18 16:49:55.413791 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 128
+INFO: 2019/11/18 16:49:55.415445 blockchain.go:282: requesting state transition for lastblock height: 128
+INFO: 2019/11/18 16:49:59.152039 p2p_interface.go:73: Writing state to stash Shard ID: 1  VS my shard ID: 2 - Height: 128 - Hash: d7b82ff382a19506
+INFO: 2019/11/18 16:49:59.152086 p2p_interface.go:75: Length state stash map: 8
+INFO: 2019/11/18 16:49:59.152093 p2p_interface.go:76: Length state stash keys: 8
+INFO: 2019/11/18 16:49:59.152098 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:49:59.152451 p2p_interface.go:98: Received block (b6e1a5a6dab8043e) from shard 0 with height: 128
+INFO: 2019/11/18 16:49:59.186679 p2p_interface.go:98: Received block (b6e1a5a6dab8043e) from shard 0 with height: 128
+INFO: 2019/11/18 16:49:59.186787 p2p_interface.go:104: Received block (b6e1a5a6dab8043e) already in block stash
+INFO: 2019/11/18 16:50:00.415677 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 128
+INFO: 2019/11/18 16:50:00.415750 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:50:00.415760 blockchain.go:262: Processed state transition of shard: 1
+INFO: 2019/11/18 16:50:00.415767 blockchain.go:312: After checking my state stash for lastblock height: 128
+INFO: 2019/11/18 16:50:00.415774 blockchain.go:318: Synchronisation duration for lastblock height: 128 - 15 seconds
+INFO: 2019/11/18 16:50:00.415781 blockchain.go:319: Total Synchronisation duration for lastblock height: 128 - 75 seconds
+INFO: 2019/11/18 16:50:00.415789 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:50:00.415796 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:50:00.415804 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:50:00.415812 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:50:00.415821 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:50:00.415826 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:50:00.415832 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:50:01.419297 proofofstake.go:126: Try Block with Time: 045001 and cnt: 1
+INFO: 2019/11/18 16:50:01.419599 block.go:132: 0
+INFO: 2019/11/18 16:50:01.419875 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:50:01.420060 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:50:01.420073 blockchain.go:417: Block mined (81e750c532ed233f)
+INFO: 2019/11/18 16:50:01.432171 blockchain.go:428: Broadcast state transition for height 129
+INFO: 2019/11/18 16:50:01.432995 blockchain.go:434: Broadcast block for height 129
+INFO: 2019/11/18 16:50:01.433700 blockchain.go:437: Validated block (mined): 
+Hash: 81e750c532ed233f			Previous Hash: 196f49a82f62a4cc		Nonce: 000000005dd2cbb9
+Timestamp: 1574095801
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 129
+Commitment Proof: 3fd13c9508072ea9
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+INFO: 2019/11/18 16:50:01.436574 blockchain.go:226: Before checking my state stash for lastblock height: 129
+INFO: 2019/11/18 16:50:01.436585 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:50:01.436599 blockchain.go:282: requesting state transition for lastblock height: 129
+INFO: 2019/11/18 16:50:01.468356 p2p_interface.go:98: Received block (81e750c532ed233f) from shard 0 with height: 129
+INFO: 2019/11/18 16:50:06.436932 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 129
+INFO: 2019/11/18 16:50:06.438386 blockchain.go:282: requesting state transition for lastblock height: 129
+INFO: 2019/11/18 16:50:11.438618 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 129
+INFO: 2019/11/18 16:50:11.438697 blockchain.go:282: requesting state transition for lastblock height: 129
+INFO: 2019/11/18 16:50:16.438940 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 129
+INFO: 2019/11/18 16:50:16.439018 blockchain.go:282: requesting state transition for lastblock height: 129
+INFO: 2019/11/18 16:50:21.439224 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 129
+INFO: 2019/11/18 16:50:21.439302 blockchain.go:282: requesting state transition for lastblock height: 129
+INFO: 2019/11/18 16:50:26.439578 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 129
+INFO: 2019/11/18 16:50:26.439677 blockchain.go:282: requesting state transition for lastblock height: 129
+INFO: 2019/11/18 16:50:31.439916 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 129
+INFO: 2019/11/18 16:50:31.440015 blockchain.go:282: requesting state transition for lastblock height: 129
+INFO: 2019/11/18 16:50:36.170754 p2p_interface.go:73: Writing state to stash Shard ID: 1  VS my shard ID: 2 - Height: 129 - Hash: c36c54c2e46b0938
+INFO: 2019/11/18 16:50:36.170834 p2p_interface.go:75: Length state stash map: 9
+INFO: 2019/11/18 16:50:36.170843 p2p_interface.go:76: Length state stash keys: 9
+INFO: 2019/11/18 16:50:36.170849 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:50:36.171177 p2p_interface.go:98: Received block (ec6bfc1e4b481ed7) from shard 0 with height: 129
+INFO: 2019/11/18 16:50:36.205271 p2p_interface.go:80: Received state transition already included: Shard ID: 1  VS my shard ID: 2 - Height: 129 - Hash: c36c54c2e46b0938
+INFO: 2019/11/18 16:50:36.206051 p2p_interface.go:98: Received block (ec6bfc1e4b481ed7) from shard 0 with height: 129
+INFO: 2019/11/18 16:50:36.206941 p2p_interface.go:104: Received block (ec6bfc1e4b481ed7) already in block stash
+INFO: 2019/11/18 16:50:36.440259 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 129
+INFO: 2019/11/18 16:50:36.440386 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:50:36.440490 blockchain.go:262: Processed state transition of shard: 1
+INFO: 2019/11/18 16:50:36.440503 blockchain.go:312: After checking my state stash for lastblock height: 129
+INFO: 2019/11/18 16:50:36.440515 blockchain.go:318: Synchronisation duration for lastblock height: 129 - 35 seconds
+INFO: 2019/11/18 16:50:36.440526 blockchain.go:319: Total Synchronisation duration for lastblock height: 129 - 110 seconds
+INFO: 2019/11/18 16:50:36.440542 blockchain.go:326: epochblock beingprocessed height: 130
+INFO: 2019/11/18 16:50:36.440567 blockchain.go:335: Before finalizeEpochBlock() ---- Height: 130
+INFO: 2019/11/18 16:50:36.444478 block.go:177: Before Epoch Block proofofstake for height: 130
+INFO: 2019/11/18 16:50:37.180216 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/18 16:50:37.180586 p2p_interface.go:50: Received Epoch Block: Hash: 293935a5203e1381
+Len Previous Shard Hashes: 2
+Prev Shard Hashes: ec6bfc1e4b481ed74bd3445628c5810125f84d411a86bd073770cf839ebf5017
+81e750c532ed233f7302c272e06d9232b762dece7f6bebe193f63c23e3f400ba
+
+Timestamp: 1574095837
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 130
+Commitment Proof: a9fb58570ecbd2d2
+State: 
+Is root: Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+Is root: Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+
+Validator Shard Mapping: 
+Entry: 38fb0b4fa2680fdb -> 1
+Entry: b6ffae0006b138a0 -> 2
+Epoch Height: 130
+
+Number of Shards: 2
+
+INFO: 2019/11/18 16:50:37.186772 p2p_interface.go:158: Writing Epoch block (293935a5203e1381) to channel EpochBlockOut
+INFO: 2019/11/18 16:50:37.187066 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/18 16:50:37.445144 proofofstake.go:243: Abort mining EPOCH BLOCK, another one has been successfully validated in the meantime
+INFO: 2019/11/18 16:50:37.445264 blockchain.go:338: After finalizeEpochBlock() ---- Height: 130
+INFO: 2019/11/18 16:50:37.445317 blockchain.go:341: Abort mining EPOCH BLOCK, another one has been successfully validated in the meantime
+INFO: 2019/11/18 16:50:42.445527 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:50:42.445616 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:50:42.445627 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:50:42.445640 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:50:42.445651 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:50:42.445657 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:50:42.445673 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:50:43.449382 proofofstake.go:126: Try Block with Time: 045043 and cnt: 1
+INFO: 2019/11/18 16:50:43.450239 block.go:132: 0
+INFO: 2019/11/18 16:50:43.450698 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:50:43.451128 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:50:43.451598 blockchain.go:417: Block mined (7a315a684aa8a694)
+INFO: 2019/11/18 16:50:43.462508 blockchain.go:428: Broadcast state transition for height 131
+INFO: 2019/11/18 16:50:43.463289 blockchain.go:434: Broadcast block for height 131
+INFO: 2019/11/18 16:50:43.464098 blockchain.go:437: Validated block (mined): 
+Hash: 7a315a684aa8a694			Previous Hash: 293935a5203e1381		Nonce: 000000005dd2cbe3
+Timestamp: 1574095843
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 131
+Commitment Proof: 1ec8262aa8b6f46f
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+INFO: 2019/11/18 16:50:43.467542 blockchain.go:226: Before checking my state stash for lastblock height: 131
+INFO: 2019/11/18 16:50:43.467555 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:50:43.467570 blockchain.go:282: requesting state transition for lastblock height: 131
+INFO: 2019/11/18 16:50:43.500884 p2p_interface.go:98: Received block (7a315a684aa8a694) from shard 0 with height: 131
+INFO: 2019/11/18 16:50:48.467779 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 131
+INFO: 2019/11/18 16:50:48.469317 blockchain.go:282: requesting state transition for lastblock height: 131
+INFO: 2019/11/18 16:50:53.469561 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 131
+INFO: 2019/11/18 16:50:53.469647 blockchain.go:282: requesting state transition for lastblock height: 131
+INFO: 2019/11/18 16:50:55.199745 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 131 - Hash: 34d4366b7df449fd
+INFO: 2019/11/18 16:50:55.199794 p2p_interface.go:75: Length state stash map: 10
+INFO: 2019/11/18 16:50:55.199801 p2p_interface.go:76: Length state stash keys: 10
+INFO: 2019/11/18 16:50:55.199808 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:50:55.200851 p2p_interface.go:98: Received block (47acfc9773392fb4) from shard 0 with height: 131
+INFO: 2019/11/18 16:50:55.235706 p2p_interface.go:98: Received block (47acfc9773392fb4) from shard 0 with height: 131
+INFO: 2019/11/18 16:50:55.235773 p2p_interface.go:104: Received block (47acfc9773392fb4) already in block stash
+INFO: 2019/11/18 16:50:58.469891 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 131
+INFO: 2019/11/18 16:50:58.470035 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:50:58.470046 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:50:58.470052 blockchain.go:312: After checking my state stash for lastblock height: 131
+INFO: 2019/11/18 16:50:58.470062 blockchain.go:318: Synchronisation duration for lastblock height: 131 - 15 seconds
+INFO: 2019/11/18 16:50:58.470076 blockchain.go:319: Total Synchronisation duration for lastblock height: 131 - 125 seconds
+INFO: 2019/11/18 16:50:58.470096 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:50:58.470107 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:50:58.470118 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:50:58.470131 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:50:58.470142 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:50:58.470151 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:50:58.470171 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:50:59.474689 proofofstake.go:126: Try Block with Time: 045059 and cnt: 1
+INFO: 2019/11/18 16:50:59.475613 block.go:132: 0
+INFO: 2019/11/18 16:50:59.476071 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:50:59.476500 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:50:59.476926 blockchain.go:417: Block mined (74f3049631813c1d)
+INFO: 2019/11/18 16:50:59.487531 blockchain.go:428: Broadcast state transition for height 132
+INFO: 2019/11/18 16:50:59.488352 blockchain.go:434: Broadcast block for height 132
+INFO: 2019/11/18 16:50:59.489261 blockchain.go:437: Validated block (mined): 
+Hash: 74f3049631813c1d			Previous Hash: 7a315a684aa8a694		Nonce: 000000005dd2cbf3
+Timestamp: 1574095859
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 132
+Commitment Proof: b9aaf59d62a4d0f5
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+INFO: 2019/11/18 16:50:59.492104 blockchain.go:226: Before checking my state stash for lastblock height: 132
+INFO: 2019/11/18 16:50:59.492117 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:50:59.492175 blockchain.go:282: requesting state transition for lastblock height: 132
+INFO: 2019/11/18 16:50:59.523749 p2p_interface.go:98: Received block (74f3049631813c1d) from shard 0 with height: 132
+INFO: 2019/11/18 16:51:00.230748 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 132 - Hash: e6766234cb160455
+INFO: 2019/11/18 16:51:00.230827 p2p_interface.go:75: Length state stash map: 11
+INFO: 2019/11/18 16:51:00.230835 p2p_interface.go:76: Length state stash keys: 11
+INFO: 2019/11/18 16:51:00.230843 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:51:00.231119 p2p_interface.go:98: Received block (fa0339307b13c5ab) from shard 0 with height: 132
+INFO: 2019/11/18 16:51:00.265523 p2p_interface.go:98: Received block (fa0339307b13c5ab) from shard 0 with height: 132
+INFO: 2019/11/18 16:51:00.265608 p2p_interface.go:104: Received block (fa0339307b13c5ab) already in block stash
+INFO: 2019/11/18 16:51:04.492373 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 132
+INFO: 2019/11/18 16:51:04.492449 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:51:04.492460 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:51:04.492466 blockchain.go:312: After checking my state stash for lastblock height: 132
+INFO: 2019/11/18 16:51:04.492475 blockchain.go:318: Synchronisation duration for lastblock height: 132 - 5 seconds
+INFO: 2019/11/18 16:51:04.492497 blockchain.go:319: Total Synchronisation duration for lastblock height: 132 - 130 seconds
+INFO: 2019/11/18 16:51:04.492510 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:51:04.492517 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:51:04.492525 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:51:04.492533 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:51:04.492542 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:51:04.492547 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:51:04.492553 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:51:05.496698 proofofstake.go:126: Try Block with Time: 045105 and cnt: 1
+INFO: 2019/11/18 16:51:05.497374 block.go:132: 0
+INFO: 2019/11/18 16:51:05.497759 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:51:05.498273 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:51:05.498673 blockchain.go:417: Block mined (579138c52f894685)
+INFO: 2019/11/18 16:51:05.509292 blockchain.go:428: Broadcast state transition for height 133
+INFO: 2019/11/18 16:51:05.509969 blockchain.go:434: Broadcast block for height 133
+INFO: 2019/11/18 16:51:05.510653 blockchain.go:437: Validated block (mined): 
+Hash: 579138c52f894685			Previous Hash: 74f3049631813c1d		Nonce: 000000005dd2cbf9
+Timestamp: 1574095865
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 133
+Commitment Proof: 852f21626e13ca5c
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+INFO: 2019/11/18 16:51:05.514601 blockchain.go:226: Before checking my state stash for lastblock height: 133
+INFO: 2019/11/18 16:51:05.514613 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:51:05.514731 blockchain.go:282: requesting state transition for lastblock height: 133
+INFO: 2019/11/18 16:51:05.545314 p2p_interface.go:98: Received block (579138c52f894685) from shard 0 with height: 133
+INFO: 2019/11/18 16:51:10.514961 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 133
+INFO: 2019/11/18 16:51:10.516581 blockchain.go:282: requesting state transition for lastblock height: 133
+INFO: 2019/11/18 16:51:15.516846 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 133
+INFO: 2019/11/18 16:51:15.516947 blockchain.go:282: requesting state transition for lastblock height: 133
+INFO: 2019/11/18 16:51:20.517142 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 133
+INFO: 2019/11/18 16:51:20.517231 blockchain.go:282: requesting state transition for lastblock height: 133
+INFO: 2019/11/18 16:51:25.517505 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 133
+INFO: 2019/11/18 16:51:25.517597 blockchain.go:282: requesting state transition for lastblock height: 133
+INFO: 2019/11/18 16:51:30.517846 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 133
+INFO: 2019/11/18 16:51:30.517957 blockchain.go:282: requesting state transition for lastblock height: 133
+INFO: 2019/11/18 16:51:35.518202 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 133
+INFO: 2019/11/18 16:51:35.518299 blockchain.go:282: requesting state transition for lastblock height: 133
+INFO: 2019/11/18 16:51:40.518497 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 133
+INFO: 2019/11/18 16:51:40.518577 blockchain.go:282: requesting state transition for lastblock height: 133
+INFO: 2019/11/18 16:51:45.518828 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 133
+INFO: 2019/11/18 16:51:45.518925 blockchain.go:282: requesting state transition for lastblock height: 133
+INFO: 2019/11/18 16:51:50.519152 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 133
+INFO: 2019/11/18 16:51:50.519259 blockchain.go:282: requesting state transition for lastblock height: 133
+INFO: 2019/11/18 16:51:55.519480 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 133
+INFO: 2019/11/18 16:51:55.519581 blockchain.go:282: requesting state transition for lastblock height: 133
+INFO: 2019/11/18 16:51:59.249200 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 133 - Hash: 21603709a8cafee0
+INFO: 2019/11/18 16:51:59.249247 p2p_interface.go:75: Length state stash map: 12
+INFO: 2019/11/18 16:51:59.249254 p2p_interface.go:76: Length state stash keys: 12
+INFO: 2019/11/18 16:51:59.249261 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:51:59.249525 p2p_interface.go:98: Received block (e39e93f5e50a095b) from shard 0 with height: 133
+INFO: 2019/11/18 16:51:59.283861 p2p_interface.go:98: Received block (e39e93f5e50a095b) from shard 0 with height: 133
+INFO: 2019/11/18 16:51:59.284430 p2p_interface.go:104: Received block (e39e93f5e50a095b) already in block stash
+INFO: 2019/11/18 16:52:00.519789 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 133
+INFO: 2019/11/18 16:52:00.519883 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 3
+INFO: 2019/11/18 16:52:00.519894 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:52:00.519900 blockchain.go:312: After checking my state stash for lastblock height: 133
+INFO: 2019/11/18 16:52:00.519908 blockchain.go:318: Synchronisation duration for lastblock height: 133 - 55 seconds
+INFO: 2019/11/18 16:52:00.519916 blockchain.go:319: Total Synchronisation duration for lastblock height: 133 - 185 seconds
+INFO: 2019/11/18 16:52:00.519924 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:52:00.519931 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:52:00.519940 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:52:00.519953 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:52:00.520004 verification.go:56: Account non existent. From: Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+To: <nil>
+INFO: 2019/11/18 16:52:00.520024 block.go:222: Transaction could not be verified: 
+Header: 0
+Amount: 15000
+Fee: 1
+TxCnt: 1
+From: 30e2b5e3b887c210
+To: 85ac028d6a1afbd0
+Sig1: 458aeb55ed8bda13
+Sig2: 686221f77232d989
+Data: []
+Aggregated: false
+Block: 0000000000000000000000000000000000000000000000000000000000000000
+INFO: 2019/11/18 16:52:00.520064 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:52:00.520072 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:52:00.520081 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:52:01.523347 proofofstake.go:126: Try Block with Time: 045201 and cnt: 1
+INFO: 2019/11/18 16:52:01.524096 block.go:132: 0
+INFO: 2019/11/18 16:52:01.524471 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:52:01.524865 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:52:01.525248 blockchain.go:417: Block mined (217d4426a6b97b76)
+INFO: 2019/11/18 16:52:01.534468 blockchain.go:428: Broadcast state transition for height 134
+INFO: 2019/11/18 16:52:01.535226 blockchain.go:434: Broadcast block for height 134
+INFO: 2019/11/18 16:52:01.535893 blockchain.go:437: Validated block (mined): 
+Hash: 217d4426a6b97b76			Previous Hash: 579138c52f894685		Nonce: 000000005dd2cc31
+Timestamp: 1574095921
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 134
+Commitment Proof: 166f45bf1a1f995c
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 14999, IsStaking: true, 
+INFO: 2019/11/18 16:52:01.539996 blockchain.go:226: Before checking my state stash for lastblock height: 134
+INFO: 2019/11/18 16:52:01.540009 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:52:01.540023 blockchain.go:282: requesting state transition for lastblock height: 134
+INFO: 2019/11/18 16:52:01.570672 p2p_interface.go:98: Received block (217d4426a6b97b76) from shard 0 with height: 134
+INFO: 2019/11/18 16:52:06.540364 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 134
+INFO: 2019/11/18 16:52:06.540477 blockchain.go:282: requesting state transition for lastblock height: 134
+INFO: 2019/11/18 16:52:11.540684 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 134
+INFO: 2019/11/18 16:52:11.540763 blockchain.go:282: requesting state transition for lastblock height: 134
+INFO: 2019/11/18 16:52:16.540962 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 134
+INFO: 2019/11/18 16:52:16.541042 blockchain.go:282: requesting state transition for lastblock height: 134
+INFO: 2019/11/18 16:52:20.295285 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 134 - Hash: 5985450808827427
+INFO: 2019/11/18 16:52:20.295339 p2p_interface.go:75: Length state stash map: 13
+INFO: 2019/11/18 16:52:20.295346 p2p_interface.go:76: Length state stash keys: 13
+INFO: 2019/11/18 16:52:20.295352 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:52:20.296301 p2p_interface.go:98: Received block (9341025c6532bfce) from shard 0 with height: 134
+INFO: 2019/11/18 16:52:20.330672 p2p_interface.go:98: Received block (9341025c6532bfce) from shard 0 with height: 134
+INFO: 2019/11/18 16:52:20.331539 p2p_interface.go:104: Received block (9341025c6532bfce) already in block stash
+INFO: 2019/11/18 16:52:21.541243 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 134
+INFO: 2019/11/18 16:52:21.541319 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 2
+INFO: 2019/11/18 16:52:21.541328 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:52:21.541334 blockchain.go:312: After checking my state stash for lastblock height: 134
+INFO: 2019/11/18 16:52:21.541342 blockchain.go:318: Synchronisation duration for lastblock height: 134 - 20 seconds
+INFO: 2019/11/18 16:52:21.541349 blockchain.go:319: Total Synchronisation duration for lastblock height: 134 - 205 seconds
+INFO: 2019/11/18 16:52:21.541365 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:52:21.541372 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:52:21.541379 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:52:21.541390 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:52:21.541601 block.go:271: Added tx (3f6cdfc1dd362d9c1d1cc255f6cf05aed8f1072cfe26ecdda00f48812f5683e9) to the AccTxData slice: 
+Header: 0
+Issuer: 30e2b5e3b887c210
+Fee: 1
+PubKey: 939cff955de48a9b
+Sig: b34520893ca1bae0
+Contract: []
+ContractVariables: []
+INFO: 2019/11/18 16:52:21.541613 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:52:21.541618 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:52:21.541624 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:52:22.546155 proofofstake.go:126: Try Block with Time: 045222 and cnt: 1
+INFO: 2019/11/18 16:52:22.546983 block.go:132: 0
+INFO: 2019/11/18 16:52:22.547352 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:52:22.547719 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:52:22.548097 blockchain.go:417: Block mined (f16f64abd4776d36)
+INFO: 2019/11/18 16:52:22.562062 blockchain.go:428: Broadcast state transition for height 135
+INFO: 2019/11/18 16:52:22.562942 blockchain.go:434: Broadcast block for height 135
+INFO: 2019/11/18 16:52:22.563894 blockchain.go:437: Validated block (mined): 
+Hash: f16f64abd4776d36			Previous Hash: 217d4426a6b97b76		Nonce: 000000005dd2cc46
+Timestamp: 1574095942
+MerkleRoot: 942364f0e46f103f
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 1 --> [3f6cdfc1dd362d9c1d1cc255f6cf05aed8f1072cfe26ecdda00f48812f5683e9]
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 1
+Height: 135
+Commitment Proof: 2cd5fb5772836c26
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+INFO: 2019/11/18 16:52:22.568142 blockchain.go:226: Before checking my state stash for lastblock height: 135
+INFO: 2019/11/18 16:52:22.568175 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:52:22.568192 blockchain.go:282: requesting state transition for lastblock height: 135
+INFO: 2019/11/18 16:52:22.598914 p2p_interface.go:98: Received block (f16f64abd4776d36) from shard 0 with height: 135
+INFO: 2019/11/18 16:52:27.568441 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 135
+INFO: 2019/11/18 16:52:27.568521 blockchain.go:282: requesting state transition for lastblock height: 135
+INFO: 2019/11/18 16:52:32.568725 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 135
+INFO: 2019/11/18 16:52:32.568798 blockchain.go:282: requesting state transition for lastblock height: 135
+INFO: 2019/11/18 16:52:37.569017 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 135
+INFO: 2019/11/18 16:52:37.569098 blockchain.go:282: requesting state transition for lastblock height: 135
+INFO: 2019/11/18 16:52:42.569369 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 135
+INFO: 2019/11/18 16:52:42.569460 blockchain.go:282: requesting state transition for lastblock height: 135
+INFO: 2019/11/18 16:52:46.314311 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 135 - Hash: cd07219656f4c2ba
+INFO: 2019/11/18 16:52:46.314378 p2p_interface.go:75: Length state stash map: 14
+INFO: 2019/11/18 16:52:46.314385 p2p_interface.go:76: Length state stash keys: 14
+INFO: 2019/11/18 16:52:46.314392 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:52:46.314717 p2p_interface.go:98: Received block (f1fdf181b168739b) from shard 0 with height: 135
+INFO: 2019/11/18 16:52:46.349052 p2p_interface.go:98: Received block (f1fdf181b168739b) from shard 0 with height: 135
+INFO: 2019/11/18 16:52:46.350110 p2p_interface.go:104: Received block (f1fdf181b168739b) already in block stash
+INFO: 2019/11/18 16:52:47.569690 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 135
+INFO: 2019/11/18 16:52:47.569794 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 1
+INFO: 2019/11/18 16:52:47.569804 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:52:47.569811 blockchain.go:312: After checking my state stash for lastblock height: 135
+INFO: 2019/11/18 16:52:47.569819 blockchain.go:318: Synchronisation duration for lastblock height: 135 - 25 seconds
+INFO: 2019/11/18 16:52:47.569831 blockchain.go:319: Total Synchronisation duration for lastblock height: 135 - 230 seconds
+INFO: 2019/11/18 16:52:47.569839 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:52:47.569847 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:52:47.569856 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:52:47.569868 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:52:47.569880 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:52:47.569908 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:52:47.569914 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:52:48.574640 proofofstake.go:126: Try Block with Time: 045248 and cnt: 1
+INFO: 2019/11/18 16:52:48.575504 block.go:132: 0
+INFO: 2019/11/18 16:52:48.575885 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:52:48.576269 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:52:48.576639 blockchain.go:417: Block mined (55108bca65a2ca0f)
+INFO: 2019/11/18 16:52:48.587830 blockchain.go:428: Broadcast state transition for height 136
+INFO: 2019/11/18 16:52:48.588519 blockchain.go:434: Broadcast block for height 136
+INFO: 2019/11/18 16:52:48.589259 blockchain.go:437: Validated block (mined): 
+Hash: 55108bca65a2ca0f			Previous Hash: f16f64abd4776d36		Nonce: 000000005dd2cc60
+Timestamp: 1574095968
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 136
+Commitment Proof: 62650a76440200f2
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+INFO: 2019/11/18 16:52:48.593321 blockchain.go:226: Before checking my state stash for lastblock height: 136
+INFO: 2019/11/18 16:52:48.593333 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:52:48.593350 blockchain.go:282: requesting state transition for lastblock height: 136
+INFO: 2019/11/18 16:52:48.623890 p2p_interface.go:98: Received block (55108bca65a2ca0f) from shard 0 with height: 136
+INFO: 2019/11/18 16:52:53.593582 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 136
+INFO: 2019/11/18 16:52:53.595143 blockchain.go:282: requesting state transition for lastblock height: 136
+INFO: 2019/11/18 16:52:58.595417 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 136
+INFO: 2019/11/18 16:52:58.595513 blockchain.go:282: requesting state transition for lastblock height: 136
+INFO: 2019/11/18 16:53:03.335806 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 136 - Hash: 240acae1bb1c812c
+INFO: 2019/11/18 16:53:03.335877 p2p_interface.go:75: Length state stash map: 15
+INFO: 2019/11/18 16:53:03.335885 p2p_interface.go:76: Length state stash keys: 15
+INFO: 2019/11/18 16:53:03.335891 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:53:03.336287 p2p_interface.go:98: Received block (a689fd0c34386234) from shard 0 with height: 136
+INFO: 2019/11/18 16:53:03.370585 p2p_interface.go:98: Received block (a689fd0c34386234) from shard 0 with height: 136
+INFO: 2019/11/18 16:53:03.371781 p2p_interface.go:104: Received block (a689fd0c34386234) already in block stash
+INFO: 2019/11/18 16:53:03.595770 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 136
+INFO: 2019/11/18 16:53:03.595879 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 1
+INFO: 2019/11/18 16:53:03.595891 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:53:03.595897 blockchain.go:312: After checking my state stash for lastblock height: 136
+INFO: 2019/11/18 16:53:03.595906 blockchain.go:318: Synchronisation duration for lastblock height: 136 - 15 seconds
+INFO: 2019/11/18 16:53:03.595915 blockchain.go:319: Total Synchronisation duration for lastblock height: 136 - 245 seconds
+INFO: 2019/11/18 16:53:03.595923 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:53:03.595932 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:53:03.595940 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:53:03.595955 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:53:03.595995 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:53:03.596001 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:53:03.596007 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:53:04.600683 proofofstake.go:126: Try Block with Time: 045304 and cnt: 1
+INFO: 2019/11/18 16:53:04.601451 block.go:132: 0
+INFO: 2019/11/18 16:53:04.601966 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:53:04.602388 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:53:04.602811 blockchain.go:417: Block mined (40b6da455553d26f)
+INFO: 2019/11/18 16:53:04.612186 blockchain.go:428: Broadcast state transition for height 137
+INFO: 2019/11/18 16:53:04.612949 blockchain.go:434: Broadcast block for height 137
+INFO: 2019/11/18 16:53:04.613693 blockchain.go:437: Validated block (mined): 
+Hash: 40b6da455553d26f			Previous Hash: 55108bca65a2ca0f		Nonce: 000000005dd2cc70
+Timestamp: 1574095984
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 137
+Commitment Proof: 9816e8ffceaced94
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+INFO: 2019/11/18 16:53:04.616389 blockchain.go:226: Before checking my state stash for lastblock height: 137
+INFO: 2019/11/18 16:53:04.616401 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:53:04.616428 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:53:04.648308 p2p_interface.go:98: Received block (40b6da455553d26f) from shard 0 with height: 137
+INFO: 2019/11/18 16:53:09.616697 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:53:09.616782 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:53:14.617049 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:53:14.617140 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:53:19.617360 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:53:19.617452 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:53:24.617674 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:53:24.617756 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:53:29.617964 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:53:29.618056 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:53:34.618268 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:53:34.618370 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:53:39.618664 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:53:39.618768 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:53:44.618969 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:53:44.619056 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:53:49.619267 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:53:49.619345 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:53:54.619593 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:53:54.619687 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:53:59.619934 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:53:59.620010 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:54:04.620218 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:54:04.620296 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:54:09.620516 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:54:09.620593 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:54:14.620805 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:54:14.620882 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:54:19.621089 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:54:19.621176 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:54:24.621394 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:54:24.621475 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:54:29.621678 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:54:29.621802 blockchain.go:282: requesting state transition for lastblock height: 137
+INFO: 2019/11/18 16:54:30.379416 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 137 - Hash: dc3268838c52cdd5
+INFO: 2019/11/18 16:54:30.379468 p2p_interface.go:75: Length state stash map: 16
+INFO: 2019/11/18 16:54:30.379476 p2p_interface.go:76: Length state stash keys: 16
+INFO: 2019/11/18 16:54:30.379483 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:54:30.380443 p2p_interface.go:98: Received block (87de4e3cc1780c7e) from shard 0 with height: 137
+INFO: 2019/11/18 16:54:30.414904 p2p_interface.go:98: Received block (87de4e3cc1780c7e) from shard 0 with height: 137
+INFO: 2019/11/18 16:54:30.415831 p2p_interface.go:104: Received block (87de4e3cc1780c7e) already in block stash
+INFO: 2019/11/18 16:54:34.622006 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 137
+INFO: 2019/11/18 16:54:34.622090 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 1
+INFO: 2019/11/18 16:54:34.622100 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:54:34.622107 blockchain.go:312: After checking my state stash for lastblock height: 137
+INFO: 2019/11/18 16:54:34.622115 blockchain.go:318: Synchronisation duration for lastblock height: 137 - 90 seconds
+INFO: 2019/11/18 16:54:34.622125 blockchain.go:319: Total Synchronisation duration for lastblock height: 137 - 335 seconds
+INFO: 2019/11/18 16:54:34.622134 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:54:34.622142 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:54:34.622150 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:54:34.622162 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:54:34.622173 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:54:34.622179 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:54:34.622185 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:54:35.627084 proofofstake.go:126: Try Block with Time: 045435 and cnt: 1
+INFO: 2019/11/18 16:54:35.627843 block.go:132: 0
+INFO: 2019/11/18 16:54:35.628247 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:54:35.628618 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:54:35.629007 blockchain.go:417: Block mined (47cae35f80571b0b)
+INFO: 2019/11/18 16:54:35.639325 blockchain.go:428: Broadcast state transition for height 138
+INFO: 2019/11/18 16:54:35.640099 blockchain.go:434: Broadcast block for height 138
+INFO: 2019/11/18 16:54:35.640823 blockchain.go:437: Validated block (mined): 
+Hash: 47cae35f80571b0b			Previous Hash: 40b6da455553d26f		Nonce: 000000005dd2cccb
+Timestamp: 1574096075
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 138
+Commitment Proof: 9e7e4e41f2f350c6
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+INFO: 2019/11/18 16:54:35.644821 blockchain.go:226: Before checking my state stash for lastblock height: 138
+INFO: 2019/11/18 16:54:35.644845 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:54:35.644859 blockchain.go:282: requesting state transition for lastblock height: 138
+INFO: 2019/11/18 16:54:35.675187 p2p_interface.go:98: Received block (47cae35f80571b0b) from shard 0 with height: 138
+INFO: 2019/11/18 16:54:40.645060 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 138
+INFO: 2019/11/18 16:54:40.646513 blockchain.go:282: requesting state transition for lastblock height: 138
+INFO: 2019/11/18 16:54:45.646812 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 138
+INFO: 2019/11/18 16:54:45.646892 blockchain.go:282: requesting state transition for lastblock height: 138
+INFO: 2019/11/18 16:54:49.413282 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 138 - Hash: bca071633e07f1dc
+INFO: 2019/11/18 16:54:49.413338 p2p_interface.go:75: Length state stash map: 17
+INFO: 2019/11/18 16:54:49.413345 p2p_interface.go:76: Length state stash keys: 17
+INFO: 2019/11/18 16:54:49.413351 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:54:49.413605 p2p_interface.go:98: Received block (93ad784352c74618) from shard 0 with height: 138
+INFO: 2019/11/18 16:54:49.447852 p2p_interface.go:98: Received block (93ad784352c74618) from shard 0 with height: 138
+INFO: 2019/11/18 16:54:49.447899 p2p_interface.go:104: Received block (93ad784352c74618) already in block stash
+INFO: 2019/11/18 16:54:50.647109 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 138
+INFO: 2019/11/18 16:54:50.647190 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 1
+INFO: 2019/11/18 16:54:50.647199 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:54:50.647205 blockchain.go:312: After checking my state stash for lastblock height: 138
+INFO: 2019/11/18 16:54:50.647213 blockchain.go:318: Synchronisation duration for lastblock height: 138 - 15 seconds
+INFO: 2019/11/18 16:54:50.647222 blockchain.go:319: Total Synchronisation duration for lastblock height: 138 - 350 seconds
+INFO: 2019/11/18 16:54:50.647229 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:54:50.647240 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:54:50.647249 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:54:50.647259 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:54:50.647587 block.go:250: Adding stakeTx (6973ed72830bd68e53993e7ccd7f4652d0f9f61ea5fae9391035a37a289b110d) failed (Not enough funds to complete the transaction!): 
+Header: 0
+Fee: 1
+IsStaking: true
+Account: 85ac028d6a1afbd0
+Sig: f502b7219bfa61a4
+CommitmentKey: d039950e8fed04d6
+
+INFO: 2019/11/18 16:54:50.647638 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:54:50.647645 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:54:50.647650 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:54:51.651122 proofofstake.go:126: Try Block with Time: 045451 and cnt: 1
+INFO: 2019/11/18 16:54:51.651984 block.go:132: 0
+INFO: 2019/11/18 16:54:51.652346 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:54:51.652701 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:54:51.653062 blockchain.go:417: Block mined (2ea0d87d36528914)
+INFO: 2019/11/18 16:54:51.663630 blockchain.go:428: Broadcast state transition for height 139
+INFO: 2019/11/18 16:54:51.664455 blockchain.go:434: Broadcast block for height 139
+INFO: 2019/11/18 16:54:51.665173 blockchain.go:437: Validated block (mined): 
+Hash: 2ea0d87d36528914			Previous Hash: 47cae35f80571b0b		Nonce: 000000005dd2ccdb
+Timestamp: 1574096091
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 139
+Commitment Proof: 8ee8e24b33dc9a6f
+Slashed Address:0000000000000000
+State:
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+INFO: 2019/11/18 16:54:51.669319 blockchain.go:226: Before checking my state stash for lastblock height: 139
+INFO: 2019/11/18 16:54:51.669334 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:54:51.669351 blockchain.go:282: requesting state transition for lastblock height: 139
+INFO: 2019/11/18 16:54:51.700027 p2p_interface.go:98: Received block (2ea0d87d36528914) from shard 0 with height: 139
+INFO: 2019/11/18 16:54:52.431506 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 139 - Hash: 7e85cd3ded3d5dc9
+INFO: 2019/11/18 16:54:52.431603 p2p_interface.go:75: Length state stash map: 18
+INFO: 2019/11/18 16:54:52.431614 p2p_interface.go:76: Length state stash keys: 18
+INFO: 2019/11/18 16:54:52.431623 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:54:52.432010 p2p_interface.go:98: Received block (e7f27ca9daebb339) from shard 0 with height: 139
+INFO: 2019/11/18 16:54:52.466415 p2p_interface.go:98: Received block (e7f27ca9daebb339) from shard 0 with height: 139
+INFO: 2019/11/18 16:54:52.466500 p2p_interface.go:104: Received block (e7f27ca9daebb339) already in block stash
+INFO: 2019/11/18 16:54:56.669781 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 139
+INFO: 2019/11/18 16:54:56.669890 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:54:56.669903 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:54:56.669910 blockchain.go:312: After checking my state stash for lastblock height: 139
+INFO: 2019/11/18 16:54:56.669933 blockchain.go:318: Synchronisation duration for lastblock height: 139 - 5 seconds
+INFO: 2019/11/18 16:54:56.669941 blockchain.go:319: Total Synchronisation duration for lastblock height: 139 - 355 seconds
+INFO: 2019/11/18 16:54:56.669952 blockchain.go:326: epochblock beingprocessed height: 140
+INFO: 2019/11/18 16:54:56.669961 blockchain.go:335: Before finalizeEpochBlock() ---- Height: 140
+INFO: 2019/11/18 16:54:56.672815 block.go:177: Before Epoch Block proofofstake for height: 140
+INFO: 2019/11/18 16:54:57.674285 block.go:183: After Epoch Block proofofstake for height: 140
+INFO: 2019/11/18 16:54:57.675124 blockchain.go:338: After finalizeEpochBlock() ---- Height: 140
+INFO: 2019/11/18 16:54:57.675554 blockchain.go:343: EPOCH BLOCK mined (49a2fee4b79c1f46)
+INFO: 2019/11/18 16:54:57.675569 blockchain.go:348: Broadcast epoch block (49a2fee4b79c1f46)
+INFO: 2019/11/18 16:54:57.675584 p2p_interface.go:158: Writing Epoch block (49a2fee4b79c1f46) to channel EpochBlockOut
+INFO: 2019/11/18 16:54:57.684491 blockchain.go:356: Created Validator Shard Mapping :
+INFO: 2019/11/18 16:54:57.685235 blockchain.go:357: 
+Entry: 38fb0b4fa2680fdb -> 1
+Entry: b6ffae0006b138a0 -> 2
+Epoch Height: 140
+INFO: 2019/11/18 16:54:57.685625 blockchain.go:358: Inserting EPOCH BLOCK: Hash: 49a2fee4b79c1f46
+Len Previous Shard Hashes: 2
+Prev Shard Hashes: 2ea0d87d3652891446c3ecc09ff5b7bc18cdae33dabd0744aa1612a78ba3d97e
+e7f27ca9daebb339fff23fadfda472e11cc1c43155a1135b8ee981219ea0469e
+
+Timestamp: 1574096097
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 140
+Commitment Proof: 80599314167ada2e
+State: 
+Is root: Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+
+Validator Shard Mapping: 
+Entry: 38fb0b4fa2680fdb -> 1
+Entry: b6ffae0006b138a0 -> 2
+Epoch Height: 140
+
+Number of Shards: 2
+
+INFO: 2019/11/18 16:54:57.685783 blockchain.go:359: Created Validator Shard Mapping :
+INFO: 2019/11/18 16:54:57.685796 blockchain.go:360: 
+Entry: 38fb0b4fa2680fdb -> 1
+Entry: b6ffae0006b138a0 -> 2
+Epoch Height: 140
+
+INFO: 2019/11/18 16:54:57.685869 blockchain.go:361: Inserting EPOCH BLOCK: Hash: 49a2fee4b79c1f46
+Len Previous Shard Hashes: 2
+Prev Shard Hashes: 2ea0d87d3652891446c3ecc09ff5b7bc18cdae33dabd0744aa1612a78ba3d97e
+e7f27ca9daebb339fff23fadfda472e11cc1c43155a1135b8ee981219ea0469e
+
+Timestamp: 1574096097
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 140
+Commitment Proof: 80599314167ada2e
+State: 
+Is root: Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+
+Validator Shard Mapping: 
+Entry: 38fb0b4fa2680fdb -> 1
+Entry: b6ffae0006b138a0 -> 2
+Epoch Height: 140
+
+Number of Shards: 2
+
+INFO: 2019/11/18 16:54:57.686085 blockchain.go:365: "Hash : 2ea0d87d36528914 \n Height : 139" -> "EPOCH BLOCK: \n Hash : 49a2fee4b79c1f46 \n Height : 140 \nMPT : 0000000000000000"
+INFO: 2019/11/18 16:54:57.686173 blockchain.go:366: "EPOCH BLOCK: \n Hash : 49a2fee4b79c1f46 \n Height : 140 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2019/11/18 16:54:57.686188 blockchain.go:365: "Hash : e7f27ca9daebb339 \n Height : 139" -> "EPOCH BLOCK: \n Hash : 49a2fee4b79c1f46 \n Height : 140 \nMPT : 0000000000000000"
+INFO: 2019/11/18 16:54:57.686256 blockchain.go:366: "EPOCH BLOCK: \n Hash : 49a2fee4b79c1f46 \n Height : 140 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2019/11/18 16:54:57.719266 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/18 16:54:57.719812 p2p_interface.go:45: Received Epoch Block (49a2fee4b79c1f46) already in storage
+INFO: 2019/11/18 16:54:57.719828 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/18 16:55:02.686598 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:55:02.686693 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:55:02.686705 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:55:02.686718 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:55:02.686740 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:55:02.686746 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:55:02.686752 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:55:03.689762 proofofstake.go:126: Try Block with Time: 045503 and cnt: 1
+INFO: 2019/11/18 16:55:03.690599 block.go:132: 0
+INFO: 2019/11/18 16:55:03.691147 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:55:03.691607 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:55:03.692047 blockchain.go:417: Block mined (4b26739526e62009)
+INFO: 2019/11/18 16:55:03.701139 blockchain.go:428: Broadcast state transition for height 141
+INFO: 2019/11/18 16:55:03.702077 blockchain.go:434: Broadcast block for height 141
+INFO: 2019/11/18 16:55:03.702946 blockchain.go:437: Validated block (mined): 
+Hash: 4b26739526e62009			Previous Hash: 49a2fee4b79c1f46		Nonce: 000000005dd2cce7
+Timestamp: 1574096103
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 141
+Commitment Proof: 230c2c5f83c2f556
+Slashed Address:0000000000000000
+State:
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+INFO: 2019/11/18 16:55:03.705430 blockchain.go:226: Before checking my state stash for lastblock height: 141
+INFO: 2019/11/18 16:55:03.705511 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:55:03.705530 blockchain.go:282: requesting state transition for lastblock height: 141
+INFO: 2019/11/18 16:55:03.737530 p2p_interface.go:98: Received block (4b26739526e62009) from shard 0 with height: 141
+INFO: 2019/11/18 16:55:08.705770 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 141
+INFO: 2019/11/18 16:55:08.705873 blockchain.go:282: requesting state transition for lastblock height: 141
+INFO: 2019/11/18 16:55:11.452267 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 141 - Hash: dc85a8fcc32536fa
+INFO: 2019/11/18 16:55:11.452334 p2p_interface.go:75: Length state stash map: 19
+INFO: 2019/11/18 16:55:11.452341 p2p_interface.go:76: Length state stash keys: 19
+INFO: 2019/11/18 16:55:11.452346 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:55:11.453392 p2p_interface.go:98: Received block (b3e2d762fd51d7b3) from shard 0 with height: 141
+INFO: 2019/11/18 16:55:11.487872 p2p_interface.go:98: Received block (b3e2d762fd51d7b3) from shard 0 with height: 141
+INFO: 2019/11/18 16:55:11.488937 p2p_interface.go:104: Received block (b3e2d762fd51d7b3) already in block stash
+INFO: 2019/11/18 16:55:13.706121 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 141
+INFO: 2019/11/18 16:55:13.706233 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:55:13.706244 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:55:13.706250 blockchain.go:312: After checking my state stash for lastblock height: 141
+INFO: 2019/11/18 16:55:13.706258 blockchain.go:318: Synchronisation duration for lastblock height: 141 - 10 seconds
+INFO: 2019/11/18 16:55:13.706266 blockchain.go:319: Total Synchronisation duration for lastblock height: 141 - 365 seconds
+INFO: 2019/11/18 16:55:13.706274 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:55:13.706281 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:55:13.706289 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:55:13.706299 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:55:13.706308 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:55:13.706314 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:55:13.706325 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:55:14.709472 proofofstake.go:126: Try Block with Time: 045514 and cnt: 1
+INFO: 2019/11/18 16:55:14.710363 block.go:132: 0
+INFO: 2019/11/18 16:55:14.710814 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:55:14.711241 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:55:14.711630 blockchain.go:417: Block mined (f4ff4a09dfaddf2c)
+INFO: 2019/11/18 16:55:14.723224 blockchain.go:428: Broadcast state transition for height 142
+INFO: 2019/11/18 16:55:14.724088 blockchain.go:434: Broadcast block for height 142
+INFO: 2019/11/18 16:55:14.724920 blockchain.go:437: Validated block (mined): 
+Hash: f4ff4a09dfaddf2c			Previous Hash: 4b26739526e62009		Nonce: 000000005dd2ccf2
+Timestamp: 1574096114
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 142
+Commitment Proof: 9a39f30a8d740a76
+Slashed Address:0000000000000000
+State:
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+INFO: 2019/11/18 16:55:14.728437 blockchain.go:226: Before checking my state stash for lastblock height: 142
+INFO: 2019/11/18 16:55:14.728451 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:55:14.728467 blockchain.go:282: requesting state transition for lastblock height: 142
+INFO: 2019/11/18 16:55:14.759659 p2p_interface.go:98: Received block (f4ff4a09dfaddf2c) from shard 0 with height: 142
+INFO: 2019/11/18 16:55:15.468839 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 142 - Hash: f8b44a2ba3205a83
+INFO: 2019/11/18 16:55:15.468906 p2p_interface.go:75: Length state stash map: 20
+INFO: 2019/11/18 16:55:15.468913 p2p_interface.go:76: Length state stash keys: 20
+INFO: 2019/11/18 16:55:15.468919 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:55:15.469231 p2p_interface.go:98: Received block (96dd2facf98912b6) from shard 0 with height: 142
+INFO: 2019/11/18 16:55:15.503598 p2p_interface.go:98: Received block (96dd2facf98912b6) from shard 0 with height: 142
+INFO: 2019/11/18 16:55:15.503686 p2p_interface.go:104: Received block (96dd2facf98912b6) already in block stash
+INFO: 2019/11/18 16:55:19.728723 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 142
+INFO: 2019/11/18 16:55:19.728827 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:55:19.728838 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:55:19.728848 blockchain.go:312: After checking my state stash for lastblock height: 142
+INFO: 2019/11/18 16:55:19.728856 blockchain.go:318: Synchronisation duration for lastblock height: 142 - 5 seconds
+INFO: 2019/11/18 16:55:19.728865 blockchain.go:319: Total Synchronisation duration for lastblock height: 142 - 370 seconds
+INFO: 2019/11/18 16:55:19.728872 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:55:19.728879 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:55:19.728889 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:55:19.728898 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:55:19.728907 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:55:19.728913 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:55:19.728919 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:55:20.733034 proofofstake.go:126: Try Block with Time: 045520 and cnt: 1
+INFO: 2019/11/18 16:55:20.733889 block.go:132: 0
+INFO: 2019/11/18 16:55:20.734286 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:55:20.734666 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:55:20.735083 blockchain.go:417: Block mined (427b29af729d9dd6)
+INFO: 2019/11/18 16:55:20.744798 blockchain.go:428: Broadcast state transition for height 143
+INFO: 2019/11/18 16:55:20.745694 blockchain.go:434: Broadcast block for height 143
+INFO: 2019/11/18 16:55:20.746489 blockchain.go:437: Validated block (mined): 
+Hash: 427b29af729d9dd6			Previous Hash: f4ff4a09dfaddf2c		Nonce: 000000005dd2ccf8
+Timestamp: 1574096120
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 143
+Commitment Proof: 184eac2b1dfcede6
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+INFO: 2019/11/18 16:55:20.750664 blockchain.go:226: Before checking my state stash for lastblock height: 143
+INFO: 2019/11/18 16:55:20.750676 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:55:20.750739 blockchain.go:282: requesting state transition for lastblock height: 143
+INFO: 2019/11/18 16:55:20.781193 p2p_interface.go:98: Received block (427b29af729d9dd6) from shard 0 with height: 143
+INFO: 2019/11/18 16:55:25.485432 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 143 - Hash: c3f6a2c48a2ec6d6
+INFO: 2019/11/18 16:55:25.485499 p2p_interface.go:75: Length state stash map: 21
+INFO: 2019/11/18 16:55:25.485506 p2p_interface.go:76: Length state stash keys: 21
+INFO: 2019/11/18 16:55:25.485599 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:55:25.485908 p2p_interface.go:98: Received block (3325cdb55c6d7098) from shard 0 with height: 143
+INFO: 2019/11/18 16:55:25.520200 p2p_interface.go:98: Received block (3325cdb55c6d7098) from shard 0 with height: 143
+INFO: 2019/11/18 16:55:25.521139 p2p_interface.go:104: Received block (3325cdb55c6d7098) already in block stash
+INFO: 2019/11/18 16:55:25.750963 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 143
+INFO: 2019/11/18 16:55:25.751650 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:55:25.751688 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:55:25.751699 blockchain.go:312: After checking my state stash for lastblock height: 143
+INFO: 2019/11/18 16:55:25.751710 blockchain.go:318: Synchronisation duration for lastblock height: 143 - 5 seconds
+INFO: 2019/11/18 16:55:25.751722 blockchain.go:319: Total Synchronisation duration for lastblock height: 143 - 375 seconds
+INFO: 2019/11/18 16:55:25.751733 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:55:25.751747 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:55:25.751773 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:55:25.751786 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:55:25.751799 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:55:25.751820 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:55:25.751829 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:55:26.755196 proofofstake.go:126: Try Block with Time: 045526 and cnt: 1
+INFO: 2019/11/18 16:55:26.756082 block.go:132: 0
+INFO: 2019/11/18 16:55:26.756472 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:55:26.756888 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:55:26.757300 blockchain.go:417: Block mined (30635fd6340bb912)
+INFO: 2019/11/18 16:55:26.768582 blockchain.go:428: Broadcast state transition for height 144
+INFO: 2019/11/18 16:55:26.769369 blockchain.go:434: Broadcast block for height 144
+INFO: 2019/11/18 16:55:26.770192 blockchain.go:437: Validated block (mined): 
+Hash: 30635fd6340bb912			Previous Hash: 427b29af729d9dd6		Nonce: 000000005dd2ccfe
+Timestamp: 1574096126
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 144
+Commitment Proof: 35d05086a66d912e
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+INFO: 2019/11/18 16:55:26.774249 blockchain.go:226: Before checking my state stash for lastblock height: 144
+INFO: 2019/11/18 16:55:26.774285 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:55:26.774375 blockchain.go:282: requesting state transition for lastblock height: 144
+INFO: 2019/11/18 16:55:26.804515 p2p_interface.go:98: Received block (30635fd6340bb912) from shard 0 with height: 144
+INFO: 2019/11/18 16:55:31.774656 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 144
+INFO: 2019/11/18 16:55:31.774777 blockchain.go:282: requesting state transition for lastblock height: 144
+INFO: 2019/11/18 16:55:36.775015 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 144
+INFO: 2019/11/18 16:55:36.775116 blockchain.go:282: requesting state transition for lastblock height: 144
+INFO: 2019/11/18 16:55:37.506795 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 144 - Hash: 89e9ba7c652abbdb
+INFO: 2019/11/18 16:55:37.506857 p2p_interface.go:75: Length state stash map: 22
+INFO: 2019/11/18 16:55:37.506864 p2p_interface.go:76: Length state stash keys: 22
+INFO: 2019/11/18 16:55:37.506870 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:55:37.507220 p2p_interface.go:98: Received block (57e5b18d28a398fb) from shard 0 with height: 144
+INFO: 2019/11/18 16:55:37.541884 p2p_interface.go:98: Received block (57e5b18d28a398fb) from shard 0 with height: 144
+INFO: 2019/11/18 16:55:37.542856 p2p_interface.go:104: Received block (57e5b18d28a398fb) already in block stash
+INFO: 2019/11/18 16:55:41.775406 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 144
+INFO: 2019/11/18 16:55:41.775554 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:55:41.775566 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:55:41.775572 blockchain.go:312: After checking my state stash for lastblock height: 144
+INFO: 2019/11/18 16:55:41.775580 blockchain.go:318: Synchronisation duration for lastblock height: 144 - 15 seconds
+INFO: 2019/11/18 16:55:41.775588 blockchain.go:319: Total Synchronisation duration for lastblock height: 144 - 390 seconds
+INFO: 2019/11/18 16:55:41.775603 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:55:41.775611 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:55:41.775624 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:55:41.775633 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:55:41.775642 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:55:41.775648 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:55:41.775663 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:55:42.526737 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 145 - Hash: 8e4e0a6d582d5bfe
+INFO: 2019/11/18 16:55:42.526798 p2p_interface.go:75: Length state stash map: 23
+INFO: 2019/11/18 16:55:42.526805 p2p_interface.go:76: Length state stash keys: 23
+INFO: 2019/11/18 16:55:42.526811 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:55:42.527769 p2p_interface.go:98: Received block (7c9b3676d6b32312) from shard 0 with height: 145
+INFO: 2019/11/18 16:55:42.533278 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/18 16:55:42.534424 p2p_interface.go:45: Received Epoch Block (49a2fee4b79c1f46) already in storage
+INFO: 2019/11/18 16:55:42.535102 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/18 16:55:42.562328 p2p_interface.go:98: Received block (7c9b3676d6b32312) from shard 0 with height: 145
+INFO: 2019/11/18 16:55:42.562435 p2p_interface.go:104: Received block (7c9b3676d6b32312) already in block stash
+INFO: 2019/11/18 16:55:42.778960 proofofstake.go:126: Try Block with Time: 045542 and cnt: 1
+INFO: 2019/11/18 16:55:42.779111 block.go:132: 0
+INFO: 2019/11/18 16:55:42.779126 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:55:42.779137 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:55:42.779150 blockchain.go:417: Block mined (eb9e35241cd4a0b7)
+INFO: 2019/11/18 16:55:42.790484 blockchain.go:428: Broadcast state transition for height 145
+INFO: 2019/11/18 16:55:42.791500 blockchain.go:434: Broadcast block for height 145
+INFO: 2019/11/18 16:55:42.792271 blockchain.go:437: Validated block (mined): 
+Hash: eb9e35241cd4a0b7			Previous Hash: 30635fd6340bb912		Nonce: 000000005dd2cd0e
+Timestamp: 1574096142
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 145
+Commitment Proof: b08458da5bbbff49
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+INFO: 2019/11/18 16:55:42.794982 blockchain.go:226: Before checking my state stash for lastblock height: 145
+INFO: 2019/11/18 16:55:42.794995 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:55:42.795015 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:55:42.795027 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:55:42.795036 blockchain.go:312: After checking my state stash for lastblock height: 145
+INFO: 2019/11/18 16:55:42.795046 blockchain.go:318: Synchronisation duration for lastblock height: 145 - 0 seconds
+INFO: 2019/11/18 16:55:42.795067 blockchain.go:319: Total Synchronisation duration for lastblock height: 145 - 390 seconds
+INFO: 2019/11/18 16:55:42.795077 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:55:42.795094 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:55:42.795105 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:55:42.795116 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:55:42.795140 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:55:42.795149 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:55:42.795158 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:55:42.826542 p2p_interface.go:98: Received block (eb9e35241cd4a0b7) from shard 0 with height: 145
+INFO: 2019/11/18 16:55:43.799824 proofofstake.go:126: Try Block with Time: 045543 and cnt: 1
+INFO: 2019/11/18 16:55:43.800793 block.go:132: 0
+INFO: 2019/11/18 16:55:43.801233 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:55:43.801636 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:55:43.802047 blockchain.go:417: Block mined (74c7f79d21147343)
+INFO: 2019/11/18 16:55:43.814009 blockchain.go:428: Broadcast state transition for height 146
+INFO: 2019/11/18 16:55:43.814887 blockchain.go:434: Broadcast block for height 146
+INFO: 2019/11/18 16:55:43.815677 blockchain.go:437: Validated block (mined): 
+Hash: 74c7f79d21147343			Previous Hash: eb9e35241cd4a0b7		Nonce: 000000005dd2cd0f
+Timestamp: 1574096143
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 146
+Commitment Proof: b6ebfc8cc21092cb
+Slashed Address:0000000000000000
+State:
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+INFO: 2019/11/18 16:55:43.820001 blockchain.go:226: Before checking my state stash for lastblock height: 146
+INFO: 2019/11/18 16:55:43.820017 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:55:43.820035 blockchain.go:282: requesting state transition for lastblock height: 146
+INFO: 2019/11/18 16:55:43.850660 p2p_interface.go:98: Received block (74c7f79d21147343) from shard 0 with height: 146
+INFO: 2019/11/18 16:55:48.545858 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 146 - Hash: c5b376970c061a9b
+INFO: 2019/11/18 16:55:48.545924 p2p_interface.go:75: Length state stash map: 24
+INFO: 2019/11/18 16:55:48.545931 p2p_interface.go:76: Length state stash keys: 24
+INFO: 2019/11/18 16:55:48.545937 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:55:48.546280 p2p_interface.go:98: Received block (bf34b1b1e6bb24a2) from shard 0 with height: 146
+INFO: 2019/11/18 16:55:48.580648 p2p_interface.go:98: Received block (bf34b1b1e6bb24a2) from shard 0 with height: 146
+INFO: 2019/11/18 16:55:48.581639 p2p_interface.go:104: Received block (bf34b1b1e6bb24a2) already in block stash
+INFO: 2019/11/18 16:55:48.820274 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 146
+INFO: 2019/11/18 16:55:48.821571 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:55:48.821639 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:55:48.821650 blockchain.go:312: After checking my state stash for lastblock height: 146
+INFO: 2019/11/18 16:55:48.821661 blockchain.go:318: Synchronisation duration for lastblock height: 146 - 5 seconds
+INFO: 2019/11/18 16:55:48.821676 blockchain.go:319: Total Synchronisation duration for lastblock height: 146 - 395 seconds
+INFO: 2019/11/18 16:55:48.821687 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:55:48.821714 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:55:48.821727 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:55:48.821739 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:55:48.821751 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:55:48.821760 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:55:48.821769 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:55:49.826681 proofofstake.go:126: Try Block with Time: 045549 and cnt: 1
+INFO: 2019/11/18 16:55:49.827567 block.go:132: 0
+INFO: 2019/11/18 16:55:49.828008 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:55:49.828433 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:55:49.828844 blockchain.go:417: Block mined (ebd52328a0f218d4)
+INFO: 2019/11/18 16:55:49.839893 blockchain.go:428: Broadcast state transition for height 147
+INFO: 2019/11/18 16:55:49.840827 blockchain.go:434: Broadcast block for height 147
+INFO: 2019/11/18 16:55:49.841610 blockchain.go:437: Validated block (mined): 
+Hash: ebd52328a0f218d4			Previous Hash: 74c7f79d21147343		Nonce: 000000005dd2cd15
+Timestamp: 1574096149
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 147
+Commitment Proof: 521a7cc39f4bd92e
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+INFO: 2019/11/18 16:55:49.844995 blockchain.go:226: Before checking my state stash for lastblock height: 147
+INFO: 2019/11/18 16:55:49.845022 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:55:49.845040 blockchain.go:282: requesting state transition for lastblock height: 147
+INFO: 2019/11/18 16:55:49.876298 p2p_interface.go:98: Received block (ebd52328a0f218d4) from shard 0 with height: 147
+INFO: 2019/11/18 16:55:53.564656 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 147 - Hash: e5639fd87bc93a1d
+INFO: 2019/11/18 16:55:53.564735 p2p_interface.go:75: Length state stash map: 25
+INFO: 2019/11/18 16:55:53.564742 p2p_interface.go:76: Length state stash keys: 25
+INFO: 2019/11/18 16:55:53.564748 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:55:53.565061 p2p_interface.go:98: Received block (8d5c1d42c57a0c8f) from shard 0 with height: 147
+INFO: 2019/11/18 16:55:53.599451 p2p_interface.go:98: Received block (8d5c1d42c57a0c8f) from shard 0 with height: 147
+INFO: 2019/11/18 16:55:53.600347 p2p_interface.go:104: Received block (8d5c1d42c57a0c8f) already in block stash
+INFO: 2019/11/18 16:55:54.845284 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 147
+INFO: 2019/11/18 16:55:54.845389 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:55:54.845400 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:55:54.845412 blockchain.go:312: After checking my state stash for lastblock height: 147
+INFO: 2019/11/18 16:55:54.845422 blockchain.go:318: Synchronisation duration for lastblock height: 147 - 5 seconds
+INFO: 2019/11/18 16:55:54.845429 blockchain.go:319: Total Synchronisation duration for lastblock height: 147 - 400 seconds
+INFO: 2019/11/18 16:55:54.845436 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:55:54.845444 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:55:54.845453 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:55:54.845463 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:55:54.845476 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:55:54.845483 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:55:54.845489 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:55:55.850429 proofofstake.go:126: Try Block with Time: 045555 and cnt: 1
+INFO: 2019/11/18 16:55:55.851261 block.go:132: 0
+INFO: 2019/11/18 16:55:55.851673 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:55:55.852040 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:55:55.852418 blockchain.go:417: Block mined (4c2c27b542a75cea)
+INFO: 2019/11/18 16:55:55.854457 blockchainparam.go:91: TARGET_CHECK: Target changed, new target: 13
+INFO: 2019/11/18 16:55:55.863714 blockchain.go:428: Broadcast state transition for height 148
+INFO: 2019/11/18 16:55:55.864506 blockchain.go:434: Broadcast block for height 148
+INFO: 2019/11/18 16:55:55.865262 blockchain.go:437: Validated block (mined): 
+Hash: 4c2c27b542a75cea			Previous Hash: ebd52328a0f218d4		Nonce: 000000005dd2cd1b
+Timestamp: 1574096155
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 148
+Commitment Proof: 713023af511298c7
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+INFO: 2019/11/18 16:55:55.869303 blockchain.go:226: Before checking my state stash for lastblock height: 148
+INFO: 2019/11/18 16:55:55.869316 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:55:55.869337 blockchain.go:282: requesting state transition for lastblock height: 148
+INFO: 2019/11/18 16:55:55.900197 p2p_interface.go:98: Received block (4c2c27b542a75cea) from shard 0 with height: 148
+INFO: 2019/11/18 16:55:56.583138 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 148 - Hash: 625233f3d195e201
+INFO: 2019/11/18 16:55:56.583202 p2p_interface.go:75: Length state stash map: 26
+INFO: 2019/11/18 16:55:56.583210 p2p_interface.go:76: Length state stash keys: 26
+INFO: 2019/11/18 16:55:56.583215 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:55:56.583567 p2p_interface.go:98: Received block (313bccc563032ee4) from shard 0 with height: 148
+INFO: 2019/11/18 16:55:56.618211 p2p_interface.go:98: Received block (313bccc563032ee4) from shard 0 with height: 148
+INFO: 2019/11/18 16:55:56.618300 p2p_interface.go:104: Received block (313bccc563032ee4) already in block stash
+INFO: 2019/11/18 16:56:00.869690 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 148
+INFO: 2019/11/18 16:56:00.869803 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:56:00.869814 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:56:00.869822 blockchain.go:312: After checking my state stash for lastblock height: 148
+INFO: 2019/11/18 16:56:00.869831 blockchain.go:318: Synchronisation duration for lastblock height: 148 - 5 seconds
+INFO: 2019/11/18 16:56:00.869840 blockchain.go:319: Total Synchronisation duration for lastblock height: 148 - 405 seconds
+INFO: 2019/11/18 16:56:00.869848 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:56:00.869855 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:56:00.869868 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:56:00.869887 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:56:00.869896 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:56:00.869902 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:56:00.869908 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:56:01.874763 proofofstake.go:126: Try Block with Time: 045601 and cnt: 1
+INFO: 2019/11/18 16:56:01.875599 block.go:132: 0
+INFO: 2019/11/18 16:56:01.875998 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:56:01.876362 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:56:01.876758 blockchain.go:417: Block mined (4d534f6ae868eb40)
+INFO: 2019/11/18 16:56:01.888319 blockchain.go:428: Broadcast state transition for height 149
+INFO: 2019/11/18 16:56:01.889152 blockchain.go:434: Broadcast block for height 149
+INFO: 2019/11/18 16:56:01.890062 blockchain.go:437: Validated block (mined): 
+Hash: 4d534f6ae868eb40			Previous Hash: 4c2c27b542a75cea		Nonce: 000000005dd2cd21
+Timestamp: 1574096161
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 149
+Commitment Proof: 52d8dfac38139521
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+INFO: 2019/11/18 16:56:01.894337 blockchain.go:226: Before checking my state stash for lastblock height: 149
+INFO: 2019/11/18 16:56:01.894386 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:56:01.894406 blockchain.go:282: requesting state transition for lastblock height: 149
+INFO: 2019/11/18 16:56:01.924677 p2p_interface.go:98: Received block (4d534f6ae868eb40) from shard 0 with height: 149
+INFO: 2019/11/18 16:56:04.602779 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 1 - Height: 149 - Hash: 17e11f0fa04888b9
+INFO: 2019/11/18 16:56:04.602861 p2p_interface.go:75: Length state stash map: 27
+INFO: 2019/11/18 16:56:04.602868 p2p_interface.go:76: Length state stash keys: 27
+INFO: 2019/11/18 16:56:04.602888 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:56:04.603178 p2p_interface.go:98: Received block (dc218793be6f086d) from shard 0 with height: 149
+INFO: 2019/11/18 16:56:04.637321 p2p_interface.go:80: Received state transition already included: Shard ID: 2  VS my shard ID: 1 - Height: 149 - Hash: 17e11f0fa04888b9
+INFO: 2019/11/18 16:56:04.637544 p2p_interface.go:98: Received block (dc218793be6f086d) from shard 0 with height: 149
+INFO: 2019/11/18 16:56:04.637634 p2p_interface.go:104: Received block (dc218793be6f086d) already in block stash
+INFO: 2019/11/18 16:56:06.894687 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 149
+INFO: 2019/11/18 16:56:06.894801 blockpreparation.go:475: Deleted transaction count: 0 - New Mempool Size: 0
+INFO: 2019/11/18 16:56:06.894811 blockchain.go:262: Processed state transition of shard: 2
+INFO: 2019/11/18 16:56:06.894818 blockchain.go:312: After checking my state stash for lastblock height: 149
+INFO: 2019/11/18 16:56:06.894826 blockchain.go:318: Synchronisation duration for lastblock height: 149 - 5 seconds
+INFO: 2019/11/18 16:56:06.894833 blockchain.go:319: Total Synchronisation duration for lastblock height: 149 - 410 seconds
+INFO: 2019/11/18 16:56:06.894855 blockchain.go:326: epochblock beingprocessed height: 150
+INFO: 2019/11/18 16:56:06.894865 blockchain.go:335: Before finalizeEpochBlock() ---- Height: 150
+INFO: 2019/11/18 16:56:06.897739 block.go:177: Before Epoch Block proofofstake for height: 150
+INFO: 2019/11/18 16:56:07.611204 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/18 16:56:07.611585 p2p_interface.go:50: Received Epoch Block: Hash: 4405eb8ea18568de
+Len Previous Shard Hashes: 2
+Prev Shard Hashes: dc218793be6f086d9bb91a724adb3a5e4c89447b899df32d28e0e5ead1a82308
+4d534f6ae868eb406eb66208154a0564e9687fda10979032dffb044e884bb0e3
+
+Timestamp: 1574096167
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 150
+Commitment Proof: 4f0361f03d6e6f6d
+State: 
+Is root: Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+Is root: Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+
+Validator Shard Mapping: 
+Entry: b6ffae0006b138a0 -> 1
+Entry: 38fb0b4fa2680fdb -> 2
+Epoch Height: 150
+
+Number of Shards: 2
+
+INFO: 2019/11/18 16:56:07.619570 p2p_interface.go:158: Writing Epoch block (4405eb8ea18568de) to channel EpochBlockOut
+INFO: 2019/11/18 16:56:07.620794 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/18 16:56:07.897988 proofofstake.go:243: Abort mining EPOCH BLOCK, another one has been successfully validated in the meantime
+INFO: 2019/11/18 16:56:07.898887 blockchain.go:338: After finalizeEpochBlock() ---- Height: 150
+INFO: 2019/11/18 16:56:07.899278 blockchain.go:341: Abort mining EPOCH BLOCK, another one has been successfully validated in the meantime
+INFO: 2019/11/18 16:56:12.900226 blockchain.go:393: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/18 16:56:12.900318 blockchain.go:394: Create Next Block
+INFO: 2019/11/18 16:56:12.900333 blockchain.go:405: Prepare Next Block
+INFO: 2019/11/18 16:56:12.900346 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/18 16:56:12.900356 blockchain.go:408: Prepare Next Block --> Done
+INFO: 2019/11/18 16:56:12.900363 blockchain.go:410: Finalize Next Block
+INFO: 2019/11/18 16:56:12.900369 block.go:67: -- Start Finalize
+INFO: 2019/11/18 16:56:13.903279 proofofstake.go:126: Try Block with Time: 045613 and cnt: 1
+INFO: 2019/11/18 16:56:13.904041 block.go:132: 0
+INFO: 2019/11/18 16:56:13.904431 block.go:138: -- End Finalization
+INFO: 2019/11/18 16:56:13.904815 blockchain.go:413: Finalize Next Block -> Done
+INFO: 2019/11/18 16:56:13.905329 blockchain.go:417: Block mined (d53d91147b4e9db1)
+INFO: 2019/11/18 16:56:13.914444 blockchain.go:428: Broadcast state transition for height 151
+INFO: 2019/11/18 16:56:13.915218 blockchain.go:434: Broadcast block for height 151
+INFO: 2019/11/18 16:56:13.916099 blockchain.go:437: Validated block (mined): 
+Hash: d53d91147b4e9db1			Previous Hash: 4405eb8ea18568de		Nonce: 000000005dd2cd2d
+Timestamp: 1574096173
+MerkleRoot: 0000000000000000
+Beneficiary: 5180c25e7fd982c6
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 151
+Commitment Proof: 22250ee2961dff87
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 30e2b5e3b887c210, Address: b6ffae0006b138a0, TxCnt: 1, Balance: 4003, IsStaking: true, 
+Is root: false, Hash: 5180c25e7fd982c6, Address: 38fb0b4fa2680fdb, TxCnt: 0, Balance: 15000, IsStaking: true, 
+Is root: false, Hash: 85ac028d6a1afbd0, Address: 939cff955de48a9b, TxCnt: 0, Balance: 0, IsStaking: false, 
+INFO: 2019/11/18 16:56:13.918727 blockchain.go:226: Before checking my state stash for lastblock height: 151
+INFO: 2019/11/18 16:56:13.918743 blockchain.go:231: Number of shards: 2
+INFO: 2019/11/18 16:56:13.918763 blockchain.go:282: requesting state transition for lastblock height: 151
+INFO: 2019/11/18 16:56:13.950486 p2p_interface.go:98: Received block (d53d91147b4e9db1) from shard 0 with height: 151
+INFO: 2019/11/18 16:56:18.918997 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 151
+INFO: 2019/11/18 16:56:18.919107 blockchain.go:282: requesting state transition for lastblock height: 151
+INFO: 2019/11/18 16:56:23.919317 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 151
+INFO: 2019/11/18 16:56:23.919419 blockchain.go:282: requesting state transition for lastblock height: 151
+INFO: 2019/11/18 16:56:28.919648 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 151
+INFO: 2019/11/18 16:56:28.919774 blockchain.go:282: requesting state transition for lastblock height: 151
+INFO: 2019/11/18 16:56:33.919984 blockchain.go:304: have been waiting for 5 seconds for lastblock height: 151
+INFO: 2019/11/18 16:56:33.920075 blockchain.go:282: requesting state transition for lastblock height: 151
+INFO: 2019/11/18 16:56:36.649779 p2p_interface.go:73: Writing state to stash Shard ID: 1  VS my shard ID: 2 - Height: 151 - Hash: 49e17abd46eae5ad
+INFO: 2019/11/18 16:56:36.649849 p2p_interface.go:75: Length state stash map: 28
+INFO: 2019/11/18 16:56:36.649857 p2p_interface.go:76: Length state stash keys: 28
+INFO: 2019/11/18 16:56:36.649863 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/18 16:56:36.650344 p2p_interface.go:98: Received block (f760bae2ee4ae620) from shard 0 with height: 151
