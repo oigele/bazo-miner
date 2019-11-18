@@ -143,6 +143,7 @@ func ApplyRelativeState(statePrev map[[32]byte]*protocol.Account, stateRel map[[
 			accPrev.Balance = accPrev.Balance + uint64(accRel.Balance)
 			accPrev.TxCnt = accPrev.TxCnt + uint32(accRel.TxCnt)
 			accPrev.StakingBlockHeight = accPrev.StakingBlockHeight + uint32(accRel.StakingBlockHeight)
+			accPrev.IsStaking = accRel.IsStaking
 		}
 	}
 	return statePrev
