@@ -401,6 +401,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 	//Set shard identifier in block
 	currentBlock.ShardId = storage.ThisShardID
+	logger.Printf("This shard ID: %d", storage.ThisShardID)
 
 	logger.Printf("Prepare Next Block")
 	prepareBlock(currentBlock)

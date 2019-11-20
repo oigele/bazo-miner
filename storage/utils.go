@@ -143,7 +143,10 @@ func ApplyRelativeState(statePrev map[[32]byte]*protocol.Account, stateRel map[[
 			accPrev.Balance = accPrev.Balance + uint64(accRel.Balance)
 			accPrev.TxCnt = accPrev.TxCnt + uint32(accRel.TxCnt)
 			accPrev.StakingBlockHeight = accPrev.StakingBlockHeight + uint32(accRel.StakingBlockHeight)
-			accPrev.IsStaking = accRel.IsStaking
+			//Staking Tx can only be positive. So only take the info from the relative state if currently not staking (otherwhise we might accidentally change the state back)
+			if (accPrev.IsStaking == false) {
+				accPrev.IsStaking = accRel.IsStaking
+			}
 		}
 	}
 	return statePrev

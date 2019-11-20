@@ -55,6 +55,7 @@ func prepareBlock(block *protocol.Block) {
 	var missingTxCntSender = map[[32]byte]*senderTxCounterForMissingTransactions{}
 
 	//Get Best combination of transactions
+	//In here, the check happens if the Tx is in the right shard
 	opentxToAdd = checkBestCombination(opentxs)
 
 	//this is just for compatability. Should work because sharding is perfomed according to sender
