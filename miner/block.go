@@ -51,6 +51,7 @@ func newBlock(prevHash [32]byte, commitmentProof [crypto.COMM_PROOF_LENGTH]byte,
 	block.CommitmentProof = commitmentProof
 	block.Height = height
 	block.StateCopy = make(map[[32]byte]*protocol.Account)
+	block.ShardId = storage.ThisShardID
 
 	return block
 }
