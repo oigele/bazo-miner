@@ -16,7 +16,7 @@ func InitLogger() *log.Logger {
 
 	//use this two lines, if all miners should have distinct names for their log files. 
 	time.Now().Format("030405")
-	filename := "LoggerMiner"+time.Now().Format("150405")+".log"
+	filename := "LoggerMiner" + time.Now().Format("150405") + ".log"
 
 	//use this line when all miners should have the same log file name.
 	//filename := "LoggerMiner.log"
@@ -33,6 +33,7 @@ func InitLogger() *log.Logger {
 //Needed by miner and p2p package
 func GetAccount(hash [32]byte) (acc *protocol.Account, err error) {
 	if acc = State[hash]; acc != nil {
+		logger.Printf("Acc (%x) in the state:", hash[0:8])
 		return acc, nil
 	} else {
 		return nil, errors.New(fmt.Sprintf("Acc (%x) not in the state.", hash[0:8]))
@@ -86,7 +87,7 @@ func GetRelativeState(statePrev map[[32]byte]protocol.Account, stateNow map[[32]
 		//In case account was newly created during block validation
 		if _, ok := statePrev[know]; !ok {
 			accNow := stateNow[know]
-			accNewRel := protocol.NewRelativeAccount(stateNow[know].Address,[32]byte{},int64(accNow.Balance),accNow.IsStaking,accNow.CommitmentKey,accNow.Contract,accNow.ContractVariables)
+			accNewRel := protocol.NewRelativeAccount(stateNow[know].Address, [32]byte{}, int64(accNow.Balance), accNow.IsStaking, accNow.CommitmentKey, accNow.Contract, accNow.ContractVariables)
 			accNewRel.TxCnt = int32(accNow.TxCnt)
 			accNewRel.StakingBlockHeight = int32(accNow.StakingBlockHeight)
 			stateRelative[know] = &accNewRel
@@ -96,7 +97,7 @@ func GetRelativeState(statePrev map[[32]byte]protocol.Account, stateNow map[[32]
 			accNew := stateNow[know]
 
 			//account with relative adjustments of the fields, will be  applied by the other shards
-			accTransition := protocol.NewRelativeAccount(stateNow[know].Address,[32]byte{},int64(accNew.Balance-accPrev.Balance),accNew.IsStaking,accNew.CommitmentKey,accNew.Contract,accNew.ContractVariables)
+			accTransition := protocol.NewRelativeAccount(stateNow[know].Address, [32]byte{}, int64(accNew.Balance-accPrev.Balance), accNew.IsStaking, accNew.CommitmentKey, accNew.Contract, accNew.ContractVariables)
 			accTransition.TxCnt = int32(accNew.TxCnt - accPrev.TxCnt)
 			accTransition.StakingBlockHeight = int32(accNew.StakingBlockHeight - accPrev.StakingBlockHeight)
 			stateRelative[know] = &accTransition
@@ -104,7 +105,6 @@ func GetRelativeState(statePrev map[[32]byte]protocol.Account, stateNow map[[32]
 	}
 	return stateRelative
 }
-
 
 //Get all pubKey involved in FundsTx
 func GetFundsTxPubKeys(fundsTxData [][32]byte) (fundsTxPubKeys [][32]byte) {
@@ -131,7 +131,7 @@ func ApplyRelativeState(statePrev map[[32]byte]*protocol.Account, stateRel map[[
 		if _, ok := statePrev[krel]; !ok {
 			accNewRel := stateRel[krel]
 			//Important: The first argument used to be just krel, but that's not 64 bti!
-			accNew := protocol.NewAccount(stateRel[krel].Address,[32]byte{},uint64(accNewRel.Balance),accNewRel.IsStaking,accNewRel.CommitmentKey,accNewRel.Contract,accNewRel.ContractVariables)
+			accNew := protocol.NewAccount(stateRel[krel].Address, [32]byte{}, uint64(accNewRel.Balance), accNewRel.IsStaking, accNewRel.CommitmentKey, accNewRel.Contract, accNewRel.ContractVariables)
 			accNew.TxCnt = uint32(accNewRel.TxCnt)
 			accNew.StakingBlockHeight = uint32(accNewRel.StakingBlockHeight)
 			statePrev[krel] = &accNew
@@ -144,8 +144,10 @@ func ApplyRelativeState(statePrev map[[32]byte]*protocol.Account, stateRel map[[
 			accPrev.TxCnt = accPrev.TxCnt + uint32(accRel.TxCnt)
 			accPrev.StakingBlockHeight = accPrev.StakingBlockHeight + uint32(accRel.StakingBlockHeight)
 			//Staking Tx can only be positive. So only take the info from the relative state if currently not staking (otherwhise we might accidentally change the state back)
-			if (accPrev.IsStaking == false) {
+			//Also take over commitment key.
+			if accPrev.IsStaking == false {
 				accPrev.IsStaking = accRel.IsStaking
+				accPrev.CommitmentKey = accRel.CommitmentKey
 			}
 		}
 	}

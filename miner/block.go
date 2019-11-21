@@ -113,7 +113,7 @@ func finalizeBlock(block *protocol.Block) error {
 			}
 			storage.DeleteAllFundsTxBeforeAggregation()
 		}
-		logger.Printf("We have an error in finalization")
+		logger.Printf("We have an error in proof of stake in finalization")
 		return err
 	}
 
@@ -258,7 +258,7 @@ func addTx(b *protocol.Block, tx protocol.Transaction) error {
 }
 
 func addAccTx(b *protocol.Block, tx *protocol.AccTx) error {
-	accHash := sha3.Sum256(tx.PubKey[:])
+	accHash := protocol.SerializeHashContent(tx.PubKey)
 	//According to the accTx specification, we only accept new accounts except if the removal bit is
 	//set in the header (2nd bit).
 	if tx.Header&0x02 != 0x02 {
@@ -1440,6 +1440,7 @@ func preValidate(block *protocol.Block, initialSetup bool) (accTxSlice []*protoc
 	}
 
 	err = crypto.VerifyMessageWithRSAKey(commitmentPubKey, fmt.Sprint(block.Height), block.CommitmentProof)
+	logger.Printf("CommitmentPubKey: %x, --------------- Block Height: %d", commitmentPubKey, block.Height)
 	if err != nil {
 		return nil, nil, nil, nil, nil, nil,  errors.New("The submitted commitment proof can not be verified.")
 	}

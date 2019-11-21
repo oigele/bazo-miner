@@ -88,9 +88,9 @@ func (acc Account) String() string {
 			//"Issuer: %x, " +
 			"TxCnt: %v, " +
 			"Balance: %v, " +
-			"IsStaking: %v, " ,
+			"IsStaking: %v, " +
 			//+
-			//"CommitmentKey: %x, " +
+			"CommitmentKey: %x ",
 			//"StakingBlockHeight: %v, " +
 			//"Contract: %v, " +
 			//"ContractVariables: %v",
@@ -100,6 +100,7 @@ func (acc Account) String() string {
 		acc.TxCnt,
 		acc.Balance,
 		acc.IsStaking,
+		acc.CommitmentKey,
 		//acc.CommitmentKey[0:8],
 		//acc.StakingBlockHeight,
 		//acc.Contract,

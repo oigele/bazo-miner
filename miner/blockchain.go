@@ -22,6 +22,7 @@ var (
 	uptodate                     bool
 	slashingDict                 = make(map[[32]byte]SlashingProof)
 	validatorAccAddress          [64]byte
+	hasher						 [32]byte
 	multisigPubKey               *ecdsa.PublicKey
 	commPrivKey, rootCommPrivKey *rsa.PrivateKey
 	// This map keeps track of the validator assignment to the shards
@@ -85,6 +86,8 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 
 	//Set up logger.
 	logger = storage.InitLogger()
+	hasher = protocol.SerializeHashContent(validatorAccAddress)
+	logger.Printf("Acc hash is (%x)", hasher[0:8])
 	logger.Printf("\n\n\n" +
 		"BBBBBBBBBBBBBBBBB               AAA               ZZZZZZZZZZZZZZZZZZZ     OOOOOOOOO\n" +
 		"B::::::::::::::::B             A:::A              Z:::::::::::::::::Z   OO:::::::::OO\n" +
@@ -264,6 +267,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				}
 				//If all state transitions have been received, stop synchronisation
 				if (len(stateStashForHeight) == NumberOfShards-1) {
+					logger.Printf("Already received all state transitions")
 					break
 				}
 			}
@@ -274,11 +278,9 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					var stateTransition *protocol.StateTransition
 
 					//it might be possible that a new validator started mining an epoch block too late. In this case, the bootstrap can broadcast the epoch block again
-
 					if p2p.IsBootstrap() {
 						broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 					}
-
 					logger.Printf("requesting state transition for lastblock height: %d\n", lastBlock.Height)
 
 					p2p.StateTransitionReqShard(id, int(lastBlock.Height))
@@ -411,7 +413,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 	logger.Printf("Finalize Next Block")
 	err := finalizeBlock(currentBlock)
 
-	logger.Printf("Finalize Next Block -> Done")
+	logger.Printf("Finalize Next Block -> Done. Block height: %d", blockBeingProcessed.Height)
 	if err != nil {
 		logger.Printf("%v\n", err)
 	} else {
