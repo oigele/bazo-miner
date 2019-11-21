@@ -393,7 +393,7 @@ func stateTransitionRes(p *peer, payload []byte) {
 
 	height,_ := strconv.ParseInt(strings.Split(strPayload,":")[1],10,64)
 
-	logger.Printf("responding state transition request for height: %d\n",height)
+	logger.Printf("responding state transition request from shard %d for height: %d\n", shardID, height)
 
 	if(shardID == int64(storage.ThisShardID)){
 		st = storage.ReadStateTransitionFromOwnStash(int(height))

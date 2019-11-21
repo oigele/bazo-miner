@@ -38,6 +38,7 @@ var (
 	syncStartTime         int64
 	blockEndTime          int64
 	totalSyncTime         int64
+	myIdThisEpoch		  int64
 )
 
 //p2p First start entry point
@@ -281,7 +282,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					if p2p.IsBootstrap() {
 						broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 					}
-					logger.Printf("requesting state transition for lastblock height: %d\n", lastBlock.Height)
+					logger.Printf("requesting state transition for lastblock height: %d shard: %d\n", lastBlock.Height, id)
 
 					p2p.StateTransitionReqShard(id, int(lastBlock.Height))
 					//Blocking wait
