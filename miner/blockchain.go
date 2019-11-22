@@ -283,7 +283,9 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					//it might be possible that a new validator started mining an epoch block too late. In this case, the bootstrap can broadcast the epoch block again
 					if p2p.IsBootstrap() {
 						broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
+						time.Sleep(time.Second)
 					}
+
 					logger.Printf("requesting state transition for lastblock height: %d shard: %d\n", lastBlock.Height, id)
 
 					p2p.StateTransitionReqShard(id, int(lastBlock.Height))
@@ -312,6 +314,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						lastTransition := storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height) - 1)
 						if lastTransition != nil {
 							broadcastStateTransition(lastTransition)
+							time.Sleep(time.Second)
 						}
 						continue
 					}
