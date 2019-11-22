@@ -38,7 +38,8 @@ var (
 	syncStartTime         int64
 	blockEndTime          int64
 	totalSyncTime         int64
-	myIdThisEpoch		  int64
+	myIdThisEpoch		  int
+	shardsThisEpoch		  int
 )
 
 //p2p First start entry point
@@ -247,7 +248,8 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				break
 			}
 
-
+			logger.Printf("Shards this epoch: %d", shardsThisEpoch)
+			logger.Printf("My Shard ID this epoch %d", myIdThisEpoch)
 			//Retrieve all state transitions from the local state with the height of my last block
 			stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, lastBlock.Height)
 
@@ -267,7 +269,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					}
 				}
 				//If all state transitions have been received, stop synchronisation
-				if (len(stateStashForHeight) == NumberOfShards-1) {
+				if (len(stateStashForHeight) == shardsThisEpoch-1) {
 					logger.Printf("Already received all state transitions")
 					break
 				}
@@ -275,7 +277,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 			//Iterate over shard IDs to check which ones are still missing, and request them from the network
 			for _, id := range shardIDs {
-				if (id != storage.ThisShardID && shardIDStateBoolMap[id] == false) {
+				if (id != myIdThisEpoch && shardIDStateBoolMap[id] == false) {
 					var stateTransition *protocol.StateTransition
 
 					//it might be possible that a new validator started mining an epoch block too late. In this case, the bootstrap can broadcast the epoch block again
@@ -302,10 +304,15 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 						logger.Printf("Processed state transition of shard: %d\n", stateTransition.ShardID)
 
-						//Limit waiting time to 5 seconds seconds before aborting.
+
 					case <-time.After(5 * time.Second):
 						logger.Printf("have been waiting for 5 seconds for lastblock height: %d\n", lastBlock.Height)
 						//It the requested state transition has not been received, then continue with requesting the other missing ones
+						logger.Printf("broadcasting state transition from last block height %d again in case it couldnt be transmitted", int(lastBlock.Height) - 1)
+						lastTransition := storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height) - 1)
+						if lastTransition != nil {
+							broadcastStateTransition(lastTransition)
+						}
 						continue
 					}
 				}
@@ -448,7 +455,11 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 	p2p.EmptyingiplistChan()
 	p2p.PrintMinerConns()
 
+
 	FirstStartAfterEpoch = false
+	shardsThisEpoch = NumberOfShards
+	myIdThisEpoch = storage.ThisShardID
+
 }
 
 //At least one root key needs to be set which is allowed to create new accounts.
