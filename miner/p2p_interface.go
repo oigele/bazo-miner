@@ -78,6 +78,7 @@ func processStateData(payload []byte) {
 				broadcastStateTransition(stateTransition)
 			//There are a lot of connectivity problems. Oftentimes, only the root node is connected to all other nodes. Therefore, the root node will in all cases broadcast any incoming state transitions.
 			} else if p2p.IsBootstrap() {
+				logger.Printf("Sharing state transition of shard: %d height: %d, in case it hasnt reached its destination yet", stateTransition.ShardID, stateTransition.Height)
 				broadcastStateTransition(stateTransition)
 			} else {
 				logger.Printf("Received state transition already included: Shard ID: %v  VS my shard ID: %v - Height: %d - Hash: %x\n",stateTransition.ShardID,storage.ThisShardID,stateTransition.Height,stateHash[0:8])
