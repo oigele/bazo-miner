@@ -617,7 +617,6 @@ func AggregateTransactions(SortedAndSelectedFundsTx []protocol.Transaction, bloc
 		transactionHashes = nil
 
 	} else if len(SortedAndSelectedFundsTx) > 0{
-		logger.Printf("I got here")
 		addFundsTxFinal(block, SortedAndSelectedFundsTx[0].(*protocol.FundsTx))
 	} else {
 		err := errors.New("NullPointer")

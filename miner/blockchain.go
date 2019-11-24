@@ -293,6 +293,11 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					select {
 					case encodedStateTransition := <-p2p.StateTransitionShardReqChan:
 						stateTransition = stateTransition.DecodeTransition(encodedStateTransition)
+						//weird check that has to be done (run into an infinite loop when I dint)
+						if stateTransition.ShardID != id {
+							logger.Printf("Error: Id of the iteration: %d --- Id of the received transition: %d", id, stateTransition.ShardID)
+							continue
+						}
 						//Apply state transition to my local state
 						storage.State = storage.ApplyRelativeState(storage.State, stateTransition.RelativeStateChange)
 
