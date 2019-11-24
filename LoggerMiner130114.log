@@ -1,0 +1,981 @@
+INFO: 2019/11/24 13:01:14.682386 server.go:164: Adding a new miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:01:14.687807 blockchain.go:92: Acc hash is (10da4cb5de8a90f5)
+INFO: 2019/11/24 13:01:14.688178 blockchain.go:93: 
+
+
+BBBBBBBBBBBBBBBBB               AAA               ZZZZZZZZZZZZZZZZZZZ     OOOOOOOOO
+B::::::::::::::::B             A:::A              Z:::::::::::::::::Z   OO:::::::::OO
+B::::::BBBBBB:::::B           A:::::A             Z:::::::::::::::::Z OO:::::::::::::OO
+BB:::::B     B:::::B         A:::::::A            Z:::ZZZZZZZZ:::::Z O:::::::OOO:::::::O
+  B::::B     B:::::B        A:::::::::A           ZZZZZ     Z:::::Z  O::::::O   O::::::O
+  B::::B     B:::::B       A:::::A:::::A                  Z:::::Z    O:::::O     O:::::O
+  B::::BBBBBB:::::B       A:::::A A:::::A                Z:::::Z     O:::::O     O:::::O
+  B:::::::::::::BB       A:::::A   A:::::A              Z:::::Z      O:::::O     O:::::O
+  B::::BBBBBB:::::B     A:::::A     A:::::A            Z:::::Z       O:::::O     O:::::O
+  B::::B     B:::::B   A:::::AAAAAAAAA:::::A          Z:::::Z        O:::::O     O:::::O
+  B::::B     B:::::B  A:::::::::::::::::::::A        Z:::::Z         O:::::O     O:::::O
+  B::::B     B:::::B A:::::AAAAAAAAAAAAA:::::A    ZZZ:::::Z     ZZZZZO::::::O   O::::::O
+BB:::::BBBBBB::::::BA:::::A             A:::::A   Z::::::ZZZZZZZZ:::ZO:::::::OOO:::::::O
+B:::::::::::::::::BA:::::A               A:::::A  Z:::::::::::::::::Z OO:::::::::::::OO
+B::::::::::::::::BA:::::A                 A:::::A Z:::::::::::::::::Z   OO:::::::::OO
+BBBBBBBBBBBBBBBBBAAAAAAA                   AAAAAAAZZZZZZZZZZZZZZZZZZZ     OOOOOOOOO
+
+
+INFO: 2019/11/24 13:01:14.690851 blockchain.go:111: 
+
+
+-------------------- START MINER ---------------------
+INFO: 2019/11/24 13:01:14.691267 blockchain.go:112: This Miners IP-Address: 34.74.168.109:8001
+
+INFO: 2019/11/24 13:01:16.691829 blockchain.go:133: ActiveConfigParams: 
+
+Block Hash: 0000000000000000
+Block size: 5000
+Difficulty interval: 25
+Fee minimum: 1
+Block interval: 15
+Block reward: 0
+Staking minimum: 1000
+Waiting minimum: 0
+Acceptanced time difference: 60
+Slashing window size: 100
+Slash reward: 2
+Num of previous proofs included in PoS: 5
+
+------------------------------------------------------------------------
+
+BAZO is Running
+
+INFO: 2019/11/24 13:01:16.692366 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:01:17.431760 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:01:17.431830 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:01:17.432210 p2p_interface.go:50: Received Epoch Block: Hash: 9ab823b721d9f7d2
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: b06b94c6cd35a1e51d19b37149ad7c3dd67723c96af7c9fd66c766c87be8bd3c
+
+Timestamp: 1574599922
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 30
+Commitment Proof: 55fb00effb631245
+State: 
+Is root: Hash: fff9c76ea8cf00bf, Address: 32746cb95cb187b4, TxCnt: 1, Balance: 4003, IsStaking: true, CommitmentKey: 9f656f86ba869dd0484a4eb2ed73ae07eed442cad5aa8b89b5fb62e33b4be4afc9c01ca9677a1bc52999c8bc285bbedfa9a7c81b231a25f796c934dd1433b17f6e460dfba7d2a1e6b0b968cef9bd0d2ccc55acec56eac9eca9fc08483acc87aef714c465970b56a471c626541a4ac2cbd0a0cf3551574bbd79f6f2caf1d6b092790060649b5f85747afc19381e5ec11c60b0edc9d59ce34e55ed46d7cf3d343c55f3d142f258cd87dbea61657f5dad7b91f4e5d57a3dc7d631fa21f415b115090628417053ee2ff87d6c165cd1e2fc2b47b5f4372d097aaf66d303de279324b9d25625e221b2c57eb6f1ce139a2b6da4fb58588b6b60d717e400349896dcd06f 
+Is root: Hash: f975fe286e2d5574, Address: 815885c9962be933, TxCnt: 0, Balance: 14999, IsStaking: true, CommitmentKey: b4b99c408967166c8d3f6c0e6e360a96628a0dce289294e5b7eeba8b71af929a8c32e37d7ad40da5d4c6472933ff7a89a36413b12bc2e2b033c6bf8ae26a5e7fe13a82fd719dab411c79954cd8b408781ba3a0d236039d12a53d5c84703e8368716f546c378560ff829e6f9bad89f897273323617f18530d554f3c99b9b0f282e677de9c6fa5b081cb93a4c5bcbde9b981e76f1fd8249378bd99d9e14258022e68a3898d9e3b129e9999fa02bddaab1fd03ac2a7d32080343945c6f821141bffea9dce4e5d78a9d45063d993308814099f98fab53e728669d6859d5d7aa49cf584a35b7f190ce106324747595f699f02e8e95385019da58f94d1fbf3133806f5 
+
+Validator Shard Mapping: 
+Entry: 815885c9962be933 -> 1
+Entry: 32746cb95cb187b4 -> 2
+Epoch Height: 30
+
+Number of Shards: 2
+
+INFO: 2019/11/24 13:01:17.442584 p2p_interface.go:162: Writing Epoch block (9ab823b721d9f7d2) to channel EpochBlockOut
+INFO: 2019/11/24 13:01:17.442745 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:01:17.442805 miner_interface.go:103: Build Epoch Block Brdcst Packet...
+INFO: 2019/11/24 13:01:17.692186 blockchain.go:171: Problem?
+INFO: 2019/11/24 13:01:17.692317 blockchain.go:173: Last epoch block not nil
+INFO: 2019/11/24 13:01:17.692326 blockchain.go:176: Validator Shard Map not nil
+INFO: 2019/11/24 13:01:17.692333 blockchain.go:179: First statement ok
+INFO: 2019/11/24 13:01:17.692343 blockchain.go:226: First start after Epoch. New miner successfully introduced to Bazo network
+INFO: 2019/11/24 13:01:17.692355 blockchain.go:408: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2019/11/24 13:01:17.692376 blockchain.go:409: Create Next Block
+INFO: 2019/11/24 13:01:17.692387 blockchain.go:419: This shard ID: 0
+INFO: 2019/11/24 13:01:17.692394 blockchain.go:421: Prepare Next Block
+INFO: 2019/11/24 13:01:17.692431 blockpreparation.go:41: block.GetBloomFilterSize() 0
+INFO: 2019/11/24 13:01:17.692461 blockchain.go:424: Prepare Next Block --> Done
+INFO: 2019/11/24 13:01:17.692469 blockchain.go:426: Finalize Next Block
+INFO: 2019/11/24 13:01:17.692475 block.go:68: -- Start Finalize
+INFO: 2019/11/24 13:01:17.692516 blockchain.go:429: Finalize Next Block -> Done. Block height: 31
+INFO: 2019/11/24 13:01:17.692528 blockchain.go:431: Acc (10da4cb5de8a90f5) not in the state.
+INFO: 2019/11/24 13:01:17.692546 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:01:17.692560 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:01:17.692571 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:01:17.692577 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:01:17.692589 blockchain.go:231: Before checking my state stash for lastblock height: 0
+INFO: 2019/11/24 13:01:17.692602 blockchain.go:236: Number of shards: 2
+INFO: 2019/11/24 13:01:17.692610 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:01:17.692616 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:01:17.692625 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:01:17.692646 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:01:18.432123 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:01:18.432199 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:01:19.601178 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:01:19.601309 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:01:19.601324 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:01:19.601333 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:01:19.601361 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:01:22.692869 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:01:22.694455 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:01:23.432635 p2p_interface.go:73: Writing state to stash Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:01:23.432695 p2p_interface.go:75: Length state stash map: 1
+INFO: 2019/11/24 13:01:23.432702 p2p_interface.go:76: Length state stash keys: 1
+INFO: 2019/11/24 13:01:23.432708 p2p_interface.go:77: Redistributing state transition
+INFO: 2019/11/24 13:01:23.694793 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:01:23.694898 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:01:24.433084 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:01:24.433172 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:01:24.433570 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:01:24.433589 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:01:24.601629 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:01:24.601717 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:01:24.601727 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:01:24.601733 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:01:24.601739 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:01:25.433115 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:01:25.433350 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:01:28.695109 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:01:28.695180 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:01:29.601979 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:01:29.602050 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:01:29.602063 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:01:29.602069 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:01:29.602076 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:01:29.695336 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:01:29.695408 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:01:29.695423 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:01:29.695440 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:01:30.433781 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:01:31.434101 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:01:31.434169 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:01:31.434534 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:01:31.434545 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:01:32.434277 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:01:32.434350 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:01:34.602344 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:01:34.602410 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:01:34.602421 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:01:34.602426 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:01:34.602432 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:01:34.695597 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:01:34.695667 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:01:35.695935 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:01:35.696010 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:01:37.435043 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:01:38.435440 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:01:38.435537 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:01:38.435952 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:01:38.436028 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:01:39.435683 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:01:39.435763 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:01:39.602694 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:01:39.602780 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:01:39.602792 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:01:39.602798 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:01:39.602804 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:01:40.696238 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:01:40.696332 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:01:41.696644 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:01:41.696729 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:01:41.696746 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:01:41.696765 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:01:44.436190 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:01:44.603057 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:01:44.603114 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:01:44.603123 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:01:44.603129 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:01:44.603135 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:01:45.436583 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:01:45.436727 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:01:45.437128 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:01:45.437139 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:01:46.436731 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:01:46.436813 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:01:46.696964 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:01:46.697053 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:01:47.697221 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:01:47.697301 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:01:49.603393 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:01:49.603472 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:01:49.603487 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:01:49.603494 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:01:49.603500 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:01:51.437346 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:01:52.437756 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:01:52.437826 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:01:52.438192 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:01:52.438204 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:01:52.697524 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:01:52.697587 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:01:53.438998 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:01:53.439106 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:01:53.697799 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:01:53.697890 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:01:53.697907 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:01:53.697927 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:01:54.603794 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:01:54.603884 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:01:54.603896 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:01:54.603901 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:01:54.603908 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:01:58.439390 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:01:58.698137 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:01:58.698227 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:01:59.439808 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:01:59.439893 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:01:59.440293 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:01:59.440304 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:01:59.604188 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:01:59.604270 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:01:59.604282 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:01:59.604287 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:01:59.604318 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:01:59.698454 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:01:59.698658 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:02:00.439899 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:02:00.439980 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:02:04.604606 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:02:04.604685 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:02:04.604697 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:02:04.604703 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:02:04.604725 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:02:04.698813 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:02:04.698887 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:02:05.440811 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:02:05.699074 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:02:05.699141 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:02:05.699157 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:02:05.699173 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:02:06.441091 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:02:06.441274 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:02:06.441662 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:02:06.441673 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:02:07.441323 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:02:07.441403 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:02:09.604982 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:02:09.605061 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:02:09.605072 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:02:09.605077 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:02:09.605084 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:02:10.699393 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:02:10.699484 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:02:11.699755 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:02:11.699854 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:02:12.441911 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:02:13.442279 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:02:13.442346 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:02:13.442771 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:02:13.442784 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:02:14.442511 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:02:14.442579 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:02:14.605321 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:02:14.605379 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:02:14.605389 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:02:14.605395 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:02:14.605402 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:02:16.700108 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:02:16.700177 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:02:17.700363 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:02:17.700446 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:02:17.700460 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:02:17.700488 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:02:19.443130 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:02:19.605633 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:02:19.605706 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:02:19.605715 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:02:19.605720 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:02:19.605727 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:02:20.443481 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:02:20.443542 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:02:20.443926 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:02:20.443938 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:02:21.443696 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:02:21.443765 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:02:22.700666 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:02:22.700740 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:02:23.700998 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:02:23.701092 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:02:24.606047 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:02:24.606118 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:02:24.606204 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:02:24.606210 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:02:24.606217 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:02:26.444617 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:02:27.444795 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:02:27.444904 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:02:27.445687 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:02:27.445716 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:02:28.445082 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:02:28.445208 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:02:28.701313 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:02:28.701403 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:02:29.606508 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:02:29.606597 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:02:29.606609 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:02:29.606615 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:02:29.606622 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:02:29.701632 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:02:29.701711 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:02:29.701727 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:02:29.701748 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:02:33.445593 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:02:34.446005 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:02:34.446097 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:02:34.446742 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:02:34.446770 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:02:34.607001 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:02:34.607076 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:02:34.607086 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:02:34.607091 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:02:34.607099 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:02:34.701928 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:02:34.702060 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:02:35.446213 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:02:35.446324 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:02:35.702374 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:02:35.702472 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:02:39.607400 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:02:39.607479 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:02:39.607538 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:02:39.607546 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:02:39.607554 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:02:40.447080 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:02:40.702697 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:02:40.702785 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:02:41.447226 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:02:41.447333 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:02:41.447931 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:02:41.447964 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:02:41.702994 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:02:41.703072 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:02:41.703089 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:02:41.703108 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:02:42.447361 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:02:42.447492 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:02:44.607840 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:02:44.607929 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:02:44.607957 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:02:44.607963 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:02:44.607970 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:02:46.703317 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:02:46.703419 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:02:47.447872 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:02:47.703631 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:02:47.703711 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:02:48.448190 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:02:48.448262 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:02:48.448655 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:02:48.448666 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:02:49.448492 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:02:49.448575 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:02:49.608256 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:02:49.608341 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:02:49.608353 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:02:49.608359 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:02:49.608366 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:02:52.703911 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:02:52.703983 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:02:53.704172 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:02:53.704245 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:02:53.704259 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:02:53.704276 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:02:54.449237 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:02:54.608622 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:02:54.608684 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:02:54.608694 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:02:54.608700 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:02:54.608707 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:02:55.449370 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:02:55.449438 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:02:55.449879 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:02:55.449894 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:02:56.449614 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:02:56.449682 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:02:58.704489 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:02:58.704643 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:02:59.608987 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:02:59.609067 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:02:59.609102 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:02:59.609108 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:02:59.609120 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:02:59.704872 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:02:59.704968 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:03:01.450405 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:03:02.450726 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:03:02.450819 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:03:02.451310 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:03:02.451336 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:03:03.450927 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:03:03.451009 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:03:04.609378 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:03:04.609456 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:03:04.609467 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:03:04.609473 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:03:04.609479 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:03:04.705120 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:03:04.705180 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:03:05.705372 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:03:05.705437 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:03:05.705453 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:03:05.705471 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:03:08.451720 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:03:09.451994 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:03:09.452084 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:03:09.452790 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:03:09.452813 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:03:09.609786 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:03:09.609873 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:03:09.609885 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:03:09.609892 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:03:09.609898 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:03:10.452195 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:03:10.452313 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:03:10.705660 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:03:10.705747 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:03:11.706060 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:03:11.706145 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:03:14.610187 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:03:14.610270 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:03:14.610281 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:03:14.610287 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:03:14.610294 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:03:15.452900 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:03:16.453133 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:03:16.453208 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:03:16.453859 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:03:16.453894 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:03:16.706346 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:03:16.706425 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:03:17.453309 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:03:17.453395 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:03:17.706625 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:03:17.706692 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:03:17.706710 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:03:17.706726 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:03:19.610525 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:03:19.610579 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:03:19.610588 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:03:19.610594 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:03:19.610600 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:03:22.454141 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:03:22.706950 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:03:22.707017 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:03:23.454477 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:03:23.454548 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:03:23.454967 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:03:23.454983 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:03:23.707231 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:03:23.707321 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:03:24.454647 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:03:24.454722 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:03:24.610887 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:03:24.610987 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:03:24.610999 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:03:24.611004 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:03:24.611010 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:03:28.707523 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:03:28.707648 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:03:29.455427 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:03:29.611268 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:03:29.611464 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:03:29.611477 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:03:29.611483 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:03:29.611489 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:03:29.707819 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:03:29.707941 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:03:29.707956 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:03:29.707973 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:03:30.455591 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:03:30.455659 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:03:30.456246 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:03:30.456262 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:03:31.456085 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:03:31.456144 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:03:34.611755 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:03:34.611848 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:03:34.611860 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:03:34.611866 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:03:34.611873 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:03:34.708190 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:03:34.708270 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:03:35.708484 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:03:35.708673 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:03:36.456848 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:03:37.457058 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:03:37.457145 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:03:37.457571 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:03:37.457583 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:03:38.457177 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:03:38.457248 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:03:39.612134 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:03:39.612202 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:03:39.612212 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:03:39.612218 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:03:39.612225 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:03:40.708887 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:03:40.708961 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:03:41.709151 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:03:41.709232 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:03:41.709249 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:03:41.709265 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:03:43.457757 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:03:44.458172 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:03:44.458247 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:03:44.458614 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:03:44.458624 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:03:44.612463 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:03:44.612526 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:03:44.612535 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:03:44.612541 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:03:44.612547 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:03:45.458300 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:03:45.458382 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:03:46.709454 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:03:46.709547 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:03:47.709768 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:03:47.709866 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:03:49.612878 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:03:49.612953 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:03:49.612965 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:03:49.612970 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:03:49.612977 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:03:50.459432 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:03:51.459524 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:03:51.459804 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:03:51.460521 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:03:51.460544 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:03:52.459711 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:03:52.459832 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:03:52.710085 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:03:52.710170 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:03:53.710454 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:03:53.710624 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:03:53.710643 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:03:53.710663 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:03:54.613279 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:03:54.613372 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:03:54.613385 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:03:54.613390 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:03:54.613397 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:03:57.460335 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:03:58.460550 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:03:58.460631 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:03:58.461019 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:03:58.461031 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:03:58.710862 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:03:58.710931 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:03:59.460985 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:03:59.461044 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:03:59.613684 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:03:59.613747 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:03:59.613758 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:03:59.613763 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:03:59.613770 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:03:59.711134 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:03:59.711201 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:04:04.461483 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:04:04.614009 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:04:04.614071 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:04:04.614081 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:04:04.614087 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:04:04.614093 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:04:04.711364 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:04:04.711437 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:04:05.461923 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:04:05.461996 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:04:05.462501 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:04:05.462512 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:04:05.711638 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:04:05.711709 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:04:05.711722 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:04:05.711738 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:04:06.462088 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:04:06.462146 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:04:09.614478 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:04:09.614547 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:04:09.614556 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:04:09.614562 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:04:09.614568 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:04:10.711958 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:04:10.712020 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:04:11.462662 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:04:11.712231 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:04:11.712309 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:04:12.463131 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:04:12.463196 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:04:12.463561 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:04:12.463574 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:04:13.464311 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:04:13.464369 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:04:14.614841 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:04:14.614906 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:04:14.614916 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:04:14.614923 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:04:14.614929 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:04:16.712606 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:04:16.712696 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:04:17.712907 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:04:17.712985 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:04:17.713000 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:04:17.713083 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:04:18.464797 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:04:19.464386 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:04:19.464450 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:04:19.464875 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:04:19.464900 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:04:19.615171 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:04:19.615246 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:04:19.615255 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:04:19.615261 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:04:19.615269 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:04:20.464561 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:04:20.464619 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:04:22.713464 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:04:22.713549 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:04:23.713745 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:04:23.713861 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:04:24.615518 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:04:24.615581 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:04:24.615591 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:04:24.615598 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:04:24.615604 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:04:25.465225 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:04:26.465628 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:04:26.465711 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:04:26.466116 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:04:26.466128 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:04:27.465792 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:04:27.465910 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:04:28.714074 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:04:28.714164 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:04:29.615902 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:04:29.615982 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:04:29.615995 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:04:29.616001 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:04:29.616008 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:04:29.714377 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:04:29.714459 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:04:29.714476 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:04:29.714495 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:04:32.466592 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:04:33.466924 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:04:33.467015 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:04:33.467391 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:04:33.467421 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:04:34.466986 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:04:34.467045 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:04:34.616290 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:04:34.616353 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:04:34.616363 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:04:34.616369 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:04:34.616375 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:04:34.714654 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:04:34.714713 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:04:35.714893 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:04:35.714964 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:04:39.467736 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:04:39.616658 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:04:39.616741 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:04:39.616751 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:04:39.616761 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:04:39.616768 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:04:40.468198 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:04:40.468291 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:04:40.468745 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:04:40.468757 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:04:40.715171 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:04:40.715257 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:04:41.468264 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:04:41.468343 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:04:41.715483 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:04:41.715574 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:04:41.715634 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:04:41.715653 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:04:44.617040 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:04:44.617105 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:04:44.617115 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:04:44.617121 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:04:44.617127 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:04:46.468828 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:04:46.715867 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:04:46.715934 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:04:47.469308 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:04:47.469375 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:04:47.469698 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:04:47.469707 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:04:47.716133 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:04:47.716203 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:04:48.469360 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:04:48.469424 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:04:49.617421 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:04:49.617486 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:04:49.617517 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:04:49.617522 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:04:49.617528 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:04:52.716420 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:04:52.716515 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:04:53.470094 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:04:53.716753 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:04:53.716841 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:04:53.716858 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:04:53.716876 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:04:54.470434 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:04:54.470539 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:04:54.471055 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:04:54.471076 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:04:54.617860 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:04:54.617949 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:04:54.617960 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:04:54.617966 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:04:54.617973 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:04:55.470603 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:04:55.470717 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:04:58.717094 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:04:58.717189 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:04:59.618267 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:04:59.618352 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:04:59.618364 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:04:59.618370 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:04:59.618377 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:04:59.717409 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:04:59.717575 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:05:00.471226 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:05:01.471619 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:05:01.471703 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:05:01.472202 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:05:01.472213 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:05:02.471871 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:05:02.471934 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:05:04.618663 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:05:04.618752 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:05:04.618764 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:05:04.618771 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:05:04.618778 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:05:04.717776 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:05:04.717855 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:05:05.718058 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:05:05.718137 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:05:05.718156 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:05:05.718184 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:05:07.472605 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:05:08.472883 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:05:08.472949 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:05:08.473396 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:05:08.473409 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:05:09.473122 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:05:09.473185 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:05:09.619049 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:05:09.619119 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:05:09.619129 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:05:09.619135 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:05:09.619142 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:05:10.718396 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:05:10.718485 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:05:11.718722 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:05:11.718815 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:05:14.473845 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:05:14.619422 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:05:14.619488 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:05:14.619520 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:05:14.619543 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:05:14.619549 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:05:15.474152 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:05:15.474225 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:05:15.474549 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:05:15.474558 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:05:16.474470 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:05:16.474557 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:05:16.719062 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:05:16.719128 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:05:17.719360 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:05:17.719433 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:05:17.719447 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:05:17.719464 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:05:19.619825 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:05:19.619893 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:05:19.619902 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:05:19.619907 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:05:19.619914 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:05:21.475067 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:05:22.475414 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:05:22.475492 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:05:22.475952 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:05:22.475972 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:05:22.719664 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:05:22.719730 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:05:23.475648 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:05:23.475708 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:05:23.719906 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:05:23.720020 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:05:24.620163 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:05:24.620229 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:05:24.620239 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:05:24.620245 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:05:24.620259 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:05:28.476530 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:05:28.720254 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:05:28.720360 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:05:29.476871 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:05:29.476971 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:05:29.477355 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:05:29.477364 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:05:29.620568 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:05:29.620657 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:05:29.620669 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:05:29.620675 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:05:29.620683 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:05:29.720634 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:05:29.720716 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:05:29.720733 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:05:29.720753 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:05:30.476875 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:05:30.476990 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:05:34.621039 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:05:34.621118 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:05:34.621131 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:05:34.621137 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:05:34.621144 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:05:34.720960 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:05:34.721047 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:05:35.477551 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:05:35.721282 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:05:35.721377 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:05:36.477847 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:05:36.477937 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:05:36.478387 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:05:36.478403 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:05:37.478200 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:05:37.478305 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:05:39.621431 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:05:39.621521 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:05:39.621533 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:05:39.621539 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:05:39.621546 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:05:40.721643 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:05:40.721730 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:05:41.721967 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:05:41.722060 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:05:41.722076 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:05:41.722095 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:05:42.478765 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:05:43.479075 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:05:43.479160 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:05:43.479540 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:05:43.479551 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:05:44.479291 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:05:44.479388 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:05:44.621853 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:05:44.621926 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:05:44.621936 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:05:44.621942 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:05:44.621948 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:05:46.722311 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:05:46.722410 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:05:47.722628 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:05:47.722729 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:05:49.479972 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:05:49.622214 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:05:49.622288 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:05:49.622298 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:05:49.622304 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:05:49.622312 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:05:50.480216 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:05:50.480311 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:05:50.480698 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:05:50.480712 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:05:51.480500 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:05:51.480603 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:05:52.722927 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:05:52.723013 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:05:53.723232 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:05:53.723326 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:05:53.723344 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:05:53.723363 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:05:54.622638 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:05:54.622809 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:05:54.622821 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:05:54.622827 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:05:54.622834 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:05:56.481106 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:05:57.481348 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:05:57.481428 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:05:57.481848 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:05:57.481862 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:05:58.481541 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:05:58.481628 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:05:58.723550 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:05:58.723617 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:05:59.623124 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:05:59.623188 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:05:59.623198 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:05:59.623204 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:05:59.623210 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:05:59.723839 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 2
+INFO: 2019/11/24 13:05:59.723913 miner_interface.go:85: Building state transition request packet
+INFO: 2019/11/24 13:06:03.482169 p2p_interface.go:84: Received state transition already included: Shard ID: 2  VS my shard ID: 0 - Height: 31 - Hash: 66e92dc20639582c
+INFO: 2019/11/24 13:06:04.482470 miner_interface.go:284: Writing Epoch block to channel EpochBlockIn.
+INFO: 2019/11/24 13:06:04.482536 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2019/11/24 13:06:04.482932 p2p_interface.go:45: Received Epoch Block (9ab823b721d9f7d2) already in storage
+INFO: 2019/11/24 13:06:04.482944 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2019/11/24 13:06:04.623448 miner_request.go:128:   ____________
+INFO: 2019/11/24 13:06:04.623512 miner_request.go:129:  | Neighbors: |__________________
+INFO: 2019/11/24 13:06:04.623522 miner_request.go:132:  |-- Miner: 34.69.110.18:8000
+INFO: 2019/11/24 13:06:04.623528 miner_request.go:137: |_______________________________|
+INFO: 2019/11/24 13:06:04.623534 services.go:184:      |-- Request Neighbors...        |
+                                                       |_______________________________|
+INFO: 2019/11/24 13:06:04.724082 blockchain.go:311: have been waiting for 5 seconds for lastblock height: 0
+INFO: 2019/11/24 13:06:04.724151 blockchain.go:313: broadcasting state transition from last block height -1 again in case it couldnt be transmitted
+INFO: 2019/11/24 13:06:05.482737 response.go:396: responding state transition request for shard 1 for height: 31
+INFO: 2019/11/24 13:06:05.482812 response.go:408: Shard ID was 1, not mine
+INFO: 2019/11/24 13:06:05.724359 blockchain.go:251: Shards this epoch: 2
+INFO: 2019/11/24 13:06:05.724453 blockchain.go:252: My Shard ID this epoch 0
+INFO: 2019/11/24 13:06:05.724471 blockchain.go:289: requesting state transition for lastblock height: 0 shard: 1
+INFO: 2019/11/24 13:06:05.724490 miner_interface.go:85: Building state transition request packet
