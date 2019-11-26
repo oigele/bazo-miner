@@ -38,7 +38,7 @@ var (
 	syncStartTime         int64
 	blockEndTime          int64
 	totalSyncTime         int64
-	shardsThisEpoch       int
+	NumberOfShardsDelayed int
 )
 
 //p2p First start entry point
@@ -249,7 +249,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				break
 			}
 
-			logger.Printf("Shards this epoch: %d", shardsThisEpoch)
+			logger.Printf("Shards this epoch: %d", NumberOfShardsDelayed)
 			logger.Printf("My Shard ID this epoch %d", storage.ThisShardIDDelayed)
 			//Retrieve all state transitions from the local state with the height of my last block
 			stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, lastBlock.Height)
@@ -257,7 +257,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			if (len(stateStashForHeight) != 0) {
 				//Iterate through state transitions and apply them to local state, keep track of processed shards
 				for _, st := range stateStashForHeight {
-					if (shardIDStateBoolMap[st.ShardID] == false) {
+					if (shardIDStateBoolMap[st.ShardID] == false && st.ShardID != storage.ThisShardIDDelayed) {
 						//Apply all relative account changes to my local state
 						storage.State = storage.ApplyRelativeState(storage.State, st.RelativeStateChange)
 						//Delete transactions from Mempool (Transaction pool), which were validated
@@ -269,8 +269,8 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						logger.Printf("Processed state transition of shard: %d\n", st.ShardID)
 					}
 				}
-				//If all state transitions have been received, stop synchronisation
-				if (len(stateStashForHeight) == shardsThisEpoch-1) {
+				//If all state transitions have been received, stop synchronisation. Note that the state stash also includes the own transition
+				if (len(stateStashForHeight) == NumberOfShardsDelayed) {
 					logger.Printf("Already received all state transitions")
 					break
 				}
@@ -456,7 +456,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			broadcastStateTransition(stateTransition)
 			//Write state transition to own stash. Needed in case the network requests it at a later stage.
 			storage.WriteToOwnStateTransitionkStash(stateTransition)
-
+			storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
 			logger.Printf("Broadcast block for height %d\n", currentBlock.Height)
 
 			broadcastBlock(currentBlock)
@@ -472,7 +472,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 
 	FirstStartAfterEpoch = false
-	shardsThisEpoch = NumberOfShards
+	NumberOfShardsDelayed = NumberOfShards
 	storage.ThisShardIDDelayed = storage.ThisShardID
 
 }
