@@ -38,8 +38,7 @@ var (
 	syncStartTime         int64
 	blockEndTime          int64
 	totalSyncTime         int64
-	myIdThisEpoch		  int
-	shardsThisEpoch		  int
+	shardsThisEpoch       int
 )
 
 //p2p First start entry point
@@ -184,6 +183,8 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 					FirstStartAfterEpoch = true
 					lastBlock = dummyLastBlock
 					epochMining(lastEpochBlock.Hash, lastEpochBlock.Height) //start mining based on the received Epoch Block
+					//set the ID to 0 such that there wont be any answers to requests that shouldnt be answered
+					storage.ThisShardIDDelayed = 0
 				}
 			}
 		}
@@ -249,7 +250,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			}
 
 			logger.Printf("Shards this epoch: %d", shardsThisEpoch)
-			logger.Printf("My Shard ID this epoch %d", myIdThisEpoch)
+			logger.Printf("My Shard ID this epoch %d", storage.ThisShardIDDelayed)
 			//Retrieve all state transitions from the local state with the height of my last block
 			stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, lastBlock.Height)
 
@@ -277,7 +278,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 			//Iterate over shard IDs to check which ones are still missing, and request them from the network
 			for _, id := range shardIDs {
-				if (id != myIdThisEpoch && shardIDStateBoolMap[id] == false) {
+				if (id != storage.ThisShardIDDelayed && shardIDStateBoolMap[id] == false) {
 					var stateTransition *protocol.StateTransition
 
 					//it might be possible that a new validator started mining an epoch block too late. In this case, the bootstrap can broadcast the epoch block again
@@ -317,6 +318,10 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						//It the requested state transition has not been received, then continue with requesting the other missing ones
 						logger.Printf("broadcasting state transition from last block height %d again in case it couldnt be transmitted", int(lastBlock.Height) - 1)
 						lastTransition := storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height) - 1)
+						//overwrite in case the previous block is an epoch block. then we need to go further back
+						if prevBlockIsEpochBlock {
+							lastTransition = storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height) - 2)
+						}
 						if lastTransition != nil {
 							broadcastStateTransition(lastTransition)
 							time.Sleep(500 * time.Millisecond)
@@ -468,7 +473,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 	FirstStartAfterEpoch = false
 	shardsThisEpoch = NumberOfShards
-	myIdThisEpoch = storage.ThisShardID
+	storage.ThisShardIDDelayed = storage.ThisShardID
 
 }
 

@@ -395,7 +395,7 @@ func stateTransitionRes(p *peer, payload []byte) {
 
 	logger.Printf("responding state transition request for shard %d for height: %d\n", shardID, height)
 
-	if(shardID == int64(storage.ThisShardID)){
+	if shardID == int64(storage.ThisShardIDDelayed){
 		st = storage.ReadStateTransitionFromOwnStash(int(height))
 		if(st != nil){
 			packet = BuildPacket(STATE_TRANSITION_RES,st.EncodeTransition())

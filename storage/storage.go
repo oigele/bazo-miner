@@ -39,6 +39,7 @@ var (
 	ReceivedBlockStashMutex				= &sync.Mutex{}
 	//Added by Kürsat
 	ThisShardID             int // ID of the shard this validator is assigned to
+	ThisShardIDDelayed		int
 	ReceivedStateStash                      = protocol.NewStateStash()
 	memPoolMutex                        = &sync.Mutex{}
 )

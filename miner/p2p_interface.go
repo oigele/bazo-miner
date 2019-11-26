@@ -66,8 +66,7 @@ func processStateData(payload []byte) {
 	stateTransition = stateTransition.DecodeTransition(payload)
 
 	if(lastEpochBlock != nil){
-		//Only process state transition data form other shards and from the current epoch
-		if (stateTransition.ShardID != storage.ThisShardID && stateTransition.Height > int(lastEpochBlock.Height)){
+		//removed the check whether the shard id is the same as the id now. This will never lead to any inconsistencies and makes it easier to handle state transitions which reach over an epoch block.
 			stateHash := stateTransition.HashTransition()
 			if (storage.ReceivedStateStash.StateTransitionIncluded(stateHash) == false){
 				logger.Printf("Writing state to stash Shard ID: %v  VS my shard ID: %v - Height: %d - Hash: %x\n",stateTransition.ShardID,storage.ThisShardID,stateTransition.Height,stateHash[0:8])
@@ -84,7 +83,6 @@ func processStateData(payload []byte) {
 				logger.Printf("Received state transition already included: Shard ID: %v  VS my shard ID: %v - Height: %d - Hash: %x\n",stateTransition.ShardID,storage.ThisShardID,stateTransition.Height,stateHash[0:8])
 				return
 			}
-		}
 	}
 }
 
