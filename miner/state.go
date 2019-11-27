@@ -511,7 +511,7 @@ func fundsStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 func configStateChange(configTxSlice []*protocol.ConfigTx, blockHash [32]byte) {
 	var newParameters Parameters
 	//Initialize it to state right now (before validating config txs)
-	newParameters = *activeParameters
+	newParameters = *ActiveParameters
 
 	if len(configTxSlice) == 0 {
 		return
@@ -521,8 +521,9 @@ func configStateChange(configTxSlice []*protocol.ConfigTx, blockHash [32]byte) {
 	if CheckAndChangeParameters(&newParameters, &configTxSlice) {
 		newParameters.BlockHash = blockHash
 		parameterSlice = append(parameterSlice, newParameters)
-		activeParameters = &parameterSlice[len(parameterSlice)-1]
-		logger.Printf("Config parameters changed. New configuration: %v", *activeParameters)
+		ActiveParameters = &parameterSlice[len(parameterSlice)-1]
+		storage.EpochLength = ActiveParameters.Epoch_length
+		logger.Printf("Config parameters changed. New configuration: %v", *ActiveParameters)
 	}
 }
 
@@ -538,7 +539,7 @@ func stakeStateChange(txSlice []*protocol.StakeTx, height uint32, initialSetup b
 
 
 		//Check minimum amount
-		if !initialSetup && tx.IsStaking && accSender.Balance < tx.Fee+activeParameters.Staking_minimum {
+		if !initialSetup && tx.IsStaking && accSender.Balance < tx.Fee+ActiveParameters.Staking_minimum {
 			err = errors.New(fmt.Sprintf("Sender wants to stake but does not have enough funds (%v) in order to fulfill the required staking minimum (%v).", accSender.Balance, STAKING_MINIMUM))
 		}
 
@@ -705,7 +706,7 @@ func collectSlashReward(reward uint64, block *protocol.Block) (err error) {
 		//Validator is rewarded with slashing reward for providing a valid slashing proof
 		minerAcc.Balance += reward
 		//Slashed account looses the minimum staking amount
-		slashedAcc.Balance -= activeParameters.Staking_minimum
+		slashedAcc.Balance -= ActiveParameters.Staking_minimum
 		//Slashed account is being removed from the validator set
 		slashedAcc.IsStaking = false
 	}

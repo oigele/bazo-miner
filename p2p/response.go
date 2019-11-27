@@ -395,21 +395,50 @@ func stateTransitionRes(p *peer, payload []byte) {
 
 	logger.Printf("responding state transition request for shard %d for height: %d\n", shardID, height)
 
-	if shardID == int64(storage.ThisShardIDDelayed){
-		st = storage.ReadStateTransitionFromOwnStash(int(height))
-		if(st != nil){
-			packet = BuildPacket(STATE_TRANSITION_RES,st.EncodeTransition())
-			logger.Printf("sent state transition response for height: %d\n",height)
-		} else {
-			packet = BuildPacket(NOT_FOUND,nil)
-			logger.Printf("state transition for height %d was nil.\n",height)
-		}
-	} else {
-		logger.Printf("Shard ID was %d, not mine", shardID)
+	//security check becuase the listener to incoming blocks is a concurrent goroutine
+	 if storage.ReadLastClosedEpochBlock() == nil {
+		logger.Printf("Haven't stored last epoch block yet.")
 		packet = BuildPacket(NOT_FOUND,nil)
+	} else {
+		//check if the transition is from last block before epoch block.
+		//this actually gives us a lot of trouble, as the shard IDs might have been switched around.
+		if height == int64(storage.ReadLastClosedEpochBlock().Height-1) {
+			logger.Printf("Got a request for a transition before the epoch block. Height: %d", height)
+			//check if the shard ID before the last epoch block was the same as the request. if yes, I am responsible for the transition
+			if shardID == int64(storage.ThisShardMap[int(storage.ReadLastClosedEpochBlock().Height)-storage.EpochLength-1]) {
+				logger.Printf("Request was from my (old) shard ID: %d", shardID)
+				st = storage.ReadStateTransitionFromOwnStash(int(height))
+				if st != nil {
+					packet = BuildPacket(STATE_TRANSITION_RES, st.EncodeTransition())
+					logger.Printf("sent state transition response for height: %d\n", height)
+				} else {
+					logger.Printf("the state transition should have been mine but I couldn't find it...")
+					packet = BuildPacket(NOT_FOUND, nil)
+				}
+			} else {
+				logger.Printf("Shard ID was %d, not mine", shardID)
+				packet = BuildPacket(NOT_FOUND, nil)
+			}
+		} else {
+			if shardID == int64(storage.ThisShardIDDelayed) {
+				st = storage.ReadStateTransitionFromOwnStash(int(height))
+				if (st != nil) {
+					if int64(st.ShardID) == shardID {
+						packet = BuildPacket(STATE_TRANSITION_RES, st.EncodeTransition())
+						logger.Printf("sent state transition response for height: %d\n", height)
+					}
+				} else {
+					packet = BuildPacket(NOT_FOUND, nil)
+					logger.Printf("state transition for height %d was nil.\n", height)
+				}
+			} else {
+				logger.Printf("Shard ID was %d, not mine", shardID)
+				packet = BuildPacket(NOT_FOUND, nil)
+			}
+		}
 	}
-
 	sendData(p, packet)
+
 }
 
 func genesisRes(p *peer, payload []byte) {

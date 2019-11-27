@@ -31,14 +31,14 @@ type Parameters struct {
 	Diff_interval           	uint64
 	Block_interval          	uint64
 	Block_reward            	uint64 //Reward for delivering the correct PoS.
-	Staking_minimum         	uint64 //Minimum amount a validator must own for staking.
-	Waiting_minimum         	uint64 //Number of blocks that must a new validator must wait before it can start validating.
-	Accepted_time_diff      	uint64 //Number of seconds that a block can be received in the future.
-	Slashing_window_size    	uint64 //Number of blocks that a validator cannot vote on two competing chains.
-	Slash_reward            	uint64 //Reward for providing the correct slashing proof.
-	num_included_prev_proofs	int
-	epoch_length				int
-	validators_per_shard		int
+	Staking_minimum          uint64 //Minimum amount a validator must own for staking.
+	Waiting_minimum          uint64 //Number of blocks that must a new validator must wait before it can start validating.
+	Accepted_time_diff       uint64 //Number of seconds that a block can be received in the future.
+	Slashing_window_size     uint64 //Number of blocks that a validator cannot vote on two competing chains.
+	Slash_reward             uint64 //Reward for providing the correct slashing proof.
+	num_included_prev_proofs int
+	Epoch_length             int
+	validators_per_shard     int
 }
 
 func NewDefaultParameters() Parameters {
@@ -75,7 +75,7 @@ func collectStatistics(b *protocol.Block) {
 	globalBlockCount++
 	localBlockCount++
 
-	if localBlockCount >= int64(activeParameters.Diff_interval) {
+	if localBlockCount >= int64(ActiveParameters.Diff_interval) {
 		currentTargetTime.last = b.Timestamp
 		//The genesis block has timestamp = 0. This simplifies certain things: Every miner can start with an already
 		//existing genesis block (because all fields are set to 0). The "find common ancestor" algorithm can then
@@ -102,7 +102,7 @@ func collectStatisticsRollback(b *protocol.Block) {
 
 	//Never rollback the genesis blocks.
 	if localBlockCount == 0 && globalBlockCount != 0 {
-		localBlockCount = int64(activeParameters.Diff_interval) - 1
+		localBlockCount = int64(ActiveParameters.Diff_interval) - 1
 		//Target rollback
 		target = target[:len(target)-1]
 		currentTargetTime.first = targetTimes[len(targetTimes)-1].first
@@ -119,7 +119,7 @@ func calculateNewDifficulty(t *timerange) uint8 {
 	diff_now := t.last - t.first
 
 	//This is how long it should have taken.
-	diff_wanted := activeParameters.Block_interval * (activeParameters.Diff_interval)
+	diff_wanted := ActiveParameters.Block_interval * (ActiveParameters.Diff_interval)
 
 	diff_ratio := float64(diff_wanted) / float64(diff_now)
 

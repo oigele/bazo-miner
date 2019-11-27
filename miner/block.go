@@ -51,6 +51,7 @@ func newBlock(prevHash [32]byte, commitmentProof [crypto.COMM_PROOF_LENGTH]byte,
 	block.CommitmentProof = commitmentProof
 	block.Height = height
 	block.StateCopy = make(map[[32]byte]*protocol.Account)
+	//Doesnt get the delayed shard id, because a newly mined block will always have the fresh shard assignment.
 	block.ShardId = storage.ThisShardID
 
 	return block
@@ -103,7 +104,7 @@ func finalizeBlock(block *protocol.Block) error {
 	//TODO uncomment
 //	partialHashWithoutMerkleRoot := block.HashBlockWithoutMerkleRoot()
 
-	prevProofs := GetLatestProofs(activeParameters.num_included_prev_proofs, block)
+	prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, block)
 	nonce, err := proofOfStake(getDifficulty(), block.PrevHash, prevProofs, block.Height, validatorAcc.Balance, commitmentProof)
 	if err != nil {
 		//Delete all partially added transactions.
@@ -173,6 +174,7 @@ func finalizeEpochBlock(epochBlock *protocol.EpochBlock) error {
 	epochBlock.NofShards = DetNumberOfShards()
 
 	storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
+	storage.ThisShardMap[int(epochBlock.Height)] = storage.ThisShardID
 
 	epochBlock.State = storage.State
 	logger.Printf("Before Epoch Block proofofstake for height: %d\n",epochBlock.Height)
@@ -207,8 +209,8 @@ func addTx(b *protocol.Block, tx protocol.Transaction) error {
 	case *protocol.AggTx:
 		return nil
 	default :
-		if tx.TxFee() < activeParameters.Fee_minimum {
-			err := fmt.Sprintf("Transaction fee too low: %v (minimum is: %v)\n", tx.TxFee(), activeParameters.Fee_minimum)
+		if tx.TxFee() < ActiveParameters.Fee_minimum {
+			err := fmt.Sprintf("Transaction fee too low: %v (minimum is: %v)\n", tx.TxFee(), ActiveParameters.Fee_minimum)
 			return errors.New(err)
 		}
 	}
@@ -710,7 +712,7 @@ func addStakeTx(b *protocol.Block, tx *protocol.StakeTx) error {
 	//Root accounts are exempt from balance requirements. All other accounts need to have (at least)
 	//fee + minimum amount that is required for staking.
 	if !storage.IsRootKey(tx.Account) {
-		if (tx.Fee + activeParameters.Staking_minimum) >= b.StateCopy[tx.Account].Balance {
+		if (tx.Fee + ActiveParameters.Staking_minimum) >= b.StateCopy[tx.Account].Balance {
 			return errors.New("Not enough funds to complete the transaction!")
 		}
 	}
@@ -1345,7 +1347,7 @@ func preValidate(block *protocol.Block, initialSetup bool) (accTxSlice []*protoc
 	}
 
 	//Check block size.
-	if block.GetSize() > activeParameters.Block_size {
+	if block.GetSize() > ActiveParameters.Block_size {
 		return nil, nil, nil, nil, nil, nil, errors.New("Block size too large.")
 	}
 
@@ -1445,7 +1447,7 @@ func preValidate(block *protocol.Block, initialSetup bool) (accTxSlice []*protoc
 	}
 
 	//Invalid if PoS calculation is not correct.
-	prevProofs := GetLatestProofs(activeParameters.num_included_prev_proofs, block)
+	prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, block)
 
 	//PoS validation
 	if !initialSetup && !validateProofOfStake(getDifficulty(), prevProofs, block.Height, acc.Balance, block.CommitmentProof, block.Timestamp) {
@@ -1458,13 +1460,13 @@ func preValidate(block *protocol.Block, initialSetup bool) (accTxSlice []*protoc
 
 	//Invalid if PoS is too far in the future.
 	now := time.Now()
-	if block.Timestamp > now.Unix()+int64(activeParameters.Accepted_time_diff) {
+	if block.Timestamp > now.Unix()+int64(ActiveParameters.Accepted_time_diff) {
 		return nil, nil, nil, nil, nil, nil, errors.New("The timestamp is too far in the future. " + string(block.Timestamp) + " vs " + string(now.Unix()))
 	}
 
 	//Check for minimum waiting time.
-	if block.Height-acc.StakingBlockHeight < uint32(activeParameters.Waiting_minimum) {
-		return nil, nil, nil, nil, nil, nil, errors.New("The miner must wait a minimum amount of blocks before start validating. Block Height:" + fmt.Sprint(block.Height) + " - Height when started validating " + string(acc.StakingBlockHeight) + " MinWaitingTime: " + string(activeParameters.Waiting_minimum))
+	if block.Height-acc.StakingBlockHeight < uint32(ActiveParameters.Waiting_minimum) {
+		return nil, nil, nil, nil, nil, nil, errors.New("The miner must wait a minimum amount of blocks before start validating. Block Height:" + fmt.Sprint(block.Height) + " - Height when started validating " + string(acc.StakingBlockHeight) + " MinWaitingTime: " + string(ActiveParameters.Waiting_minimum))
 	}
 
 	//Check if block contains a proof for two conflicting block hashes, else no proof provided.
@@ -1519,7 +1521,7 @@ func validateState(data blockData, initialSetup bool) error {
 		return err
 	}
 
-	if err := collectBlockReward(activeParameters.Block_reward, data.block.Beneficiary, initialSetup); err != nil {
+	if err := collectBlockReward(ActiveParameters.Block_reward, data.block.Beneficiary, initialSetup); err != nil {
 		collectTxFeesRollback(data.accTxSlice, data.fundsTxSlice, data.configTxSlice, data.stakeTxSlice, data.block.Beneficiary)
 		stakeStateChangeRollback(data.stakeTxSlice)
 		fundsStateChangeRollback(data.fundsTxSlice)
@@ -1528,8 +1530,8 @@ func validateState(data blockData, initialSetup bool) error {
 		return err
 	}
 
-	if err := collectSlashReward(activeParameters.Slash_reward, data.block); err != nil {
-		collectBlockRewardRollback(activeParameters.Block_reward, data.block.Beneficiary)
+	if err := collectSlashReward(ActiveParameters.Slash_reward, data.block); err != nil {
+		collectBlockRewardRollback(ActiveParameters.Block_reward, data.block.Beneficiary)
 		collectTxFeesRollback(data.accTxSlice, data.fundsTxSlice, data.configTxSlice, data.stakeTxSlice, data.block.Beneficiary)
 		stakeStateChangeRollback(data.stakeTxSlice)
 		fundsStateChangeRollback(data.fundsTxSlice)
@@ -1539,8 +1541,8 @@ func validateState(data blockData, initialSetup bool) error {
 	}
 
 	if err := updateStakingHeight(data.block); err != nil {
-		collectSlashRewardRollback(activeParameters.Slash_reward, data.block)
-		collectBlockRewardRollback(activeParameters.Block_reward, data.block.Beneficiary)
+		collectSlashRewardRollback(ActiveParameters.Slash_reward, data.block)
+		collectBlockRewardRollback(ActiveParameters.Block_reward, data.block.Beneficiary)
 		collectTxFeesRollback(data.accTxSlice, data.fundsTxSlice, data.configTxSlice, data.stakeTxSlice, data.block.Beneficiary)
 		stakeStateChangeRollback(data.stakeTxSlice)
 		fundsStateChangeRollback(data.fundsTxSlice)
@@ -1792,7 +1794,7 @@ func slashingCheck(slashedAddress, conflictingBlockHash1, conflictingBlockHash2 
 
 	// We found the height of the blocks and the height of the blocks can be checked.
 	// If the height is not within the active slashing window size, we must throw an error. If not, the proof is valid.
-	if !(conflictingBlock1.Height < uint32(activeParameters.Slashing_window_size)+conflictingBlock2.Height) {
+	if !(conflictingBlock1.Height < uint32(ActiveParameters.Slashing_window_size)+conflictingBlock2.Height) {
 		return false, errors.New(fmt.Sprintf(prefix + "Could not find a ancestor for the provided conflicting hash (2)."))
 	}
 

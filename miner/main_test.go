@@ -133,7 +133,7 @@ func addTestingAccounts() {
 	commPrivKeyValidator, _ := rsa.GenerateMultiPrimeKey(rand.Reader, crypto.COMM_NOF_PRIMES, crypto.COMM_KEY_BITS)
 	copy(validatorAcc.CommitmentKey[:], commPrivKeyValidator.PublicKey.N.Bytes()[:])
 
-	validatorAcc.Balance = activeParameters.Staking_minimum
+	validatorAcc.Balance = ActiveParameters.Staking_minimum
 	validatorAcc.IsStaking = true
 
 	//Set the global variable in blockchain.go
@@ -176,7 +176,7 @@ func addRootAccounts() {
 	CommPrivKeyRoot, _ = crypto.CreateRSAPrivKeyFromBase64(CommPubRoot, CommPrivRoot, []string{CommPrimRoot1, CommPrimRoot2})
 	copy(rootAcc.CommitmentKey[:], CommPrivKeyRoot.PublicKey.N.Bytes()[:])
 
-	rootAcc.Balance = activeParameters.Staking_minimum
+	rootAcc.Balance = ActiveParameters.Staking_minimum
 	rootAcc.IsStaking = true
 
 	storage.State[hashRoot] = rootAcc
@@ -210,14 +210,14 @@ func cleanAndPrepare() {
 	slashingDict = make(map[[32]byte]SlashingProof)
 
 	parameterSlice = tmpSlice
-	activeParameters = &tmpSlice[0]
+	ActiveParameters = &tmpSlice[0]
 
 	slashingDict = make(map[[32]byte]SlashingProof)
 
 	//Override some params to ensure tests work correctly.
-	activeParameters.num_included_prev_proofs = 0
-	activeParameters.Block_reward = 1
-	activeParameters.Slash_reward = 1
+	ActiveParameters.num_included_prev_proofs = 0
+	ActiveParameters.Block_reward = 1
+	ActiveParameters.Slash_reward = 1
 
 	addTestingAccounts()
 	addRootAccounts()

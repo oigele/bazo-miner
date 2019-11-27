@@ -18,11 +18,11 @@ var (
 	logger                       *log.Logger
 	blockValidation              = &sync.Mutex{}
 	parameterSlice               []Parameters
-	activeParameters             *Parameters
+	ActiveParameters 			*Parameters
 	uptodate                     bool
 	slashingDict                 = make(map[[32]byte]SlashingProof)
 	validatorAccAddress          [64]byte
-	hasher						 [32]byte
+	hasher                       [32]byte
 	multisigPubKey               *ecdsa.PublicKey
 	commPrivKey, rootCommPrivKey *rsa.PrivateKey
 	// This map keeps track of the validator assignment to the shards
@@ -111,7 +111,8 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	logger.Printf("This Miners IP-Address: %v\n\n", p2p.Ipport)
 	time.Sleep(2 * time.Second)
 	parameterSlice = append(parameterSlice, NewDefaultParameters())
-	activeParameters = &parameterSlice[0]
+	ActiveParameters = &parameterSlice[0]
+	storage.EpochLength = ActiveParameters.Epoch_length
 
 	//Initialize root key.
 	initRootKey(rootWallet)
@@ -129,7 +130,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 		return
 	}
 	*/
-	logger.Printf("ActiveConfigParams: \n%v\n------------------------------------------------------------------------\n\nBAZO is Running\n\n", activeParameters)
+	logger.Printf("ActiveConfigParams: \n%v\n------------------------------------------------------------------------\n\nBAZO is Running\n\n", ActiveParameters)
 
 	//this is used to generate the state with aggregated transactions.
 	//TODO is this still necessary after the local state of the sharding is introduced?
@@ -180,6 +181,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 					storage.State = lastEpochBlock.State
 					NumberOfShards = lastEpochBlock.NofShards
 					storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress] //Save my ShardID
+					storage.ThisShardMap[int(lastEpochBlock.Height)] = storage.ThisShardID
 					FirstStartAfterEpoch = true
 					lastBlock = dummyLastBlock
 					epochMining(lastEpochBlock.Hash, lastEpochBlock.Height) //start mining based on the received Epoch Block
@@ -190,7 +192,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 		}
 	}
 
-	logger.Printf("Active config params:%v\n", activeParameters)
+	logger.Printf("Active config params:%v\n", ActiveParameters)
 
 	//Define number of shards based on the validators in the network
 	NumberOfShards = DetNumberOfShards()
@@ -207,7 +209,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	}
 
 	storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
-
+	storage.ThisShardMap[int(lastEpochBlock.Height)] = storage.ThisShardID
 	epochMining(lastBlock.Hash, lastBlock.Height)
 
 	return nil
@@ -346,7 +348,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 		prevBlockIsEpochBlock = false
 
 		// The variable 'lastblock' is one before the next epoch block, thus the next block will be an epoch block
-		if (lastBlock.Height == uint32(lastEpochBlock.Height)+uint32(activeParameters.epoch_length)) {
+		if (lastBlock.Height == uint32(lastEpochBlock.Height)+uint32(ActiveParameters.Epoch_length)) {
 			epochBlock = protocol.NewEpochBlock([][32]byte{lastBlock.Hash}, lastBlock.Height+1)
 			logger.Printf("epochblock beingprocessed height: %d\n", epochBlock.Height)
 
@@ -424,7 +426,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 	blockValidation.Lock()
 	currentBlock := newBlock(hashPrevBlock, [crypto.COMM_PROOF_LENGTH]byte{}, heightPrevBlock+1)
 
-	//Set shard identifier in block
+	//Set shard identifier in block (not necessary? It's already written inside the block)
 	currentBlock.ShardId = storage.ThisShardID
 	logger.Printf("This shard ID: %d", storage.ThisShardID)
 
@@ -448,6 +450,8 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 		if err == nil {
 
 			//Generate state transition for this block. This data is needed by the other shards to update their local states.
+			//use the freshly updated shardId, because the block always has to be in the new epoch already. If it was in the old epoch,
+			//the epoch block would not have been generated either
 			stateTransition := protocol.NewStateTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, currentBlock.Hash,
 				currentBlock.ContractTxData, currentBlock.FundsTxData, currentBlock.ConfigTxData, currentBlock.StakeTxData)
 
@@ -485,7 +489,7 @@ func initRootKey(rootKey *ecdsa.PublicKey) error {
 	var commPubKey [crypto.COMM_KEY_LENGTH]byte
 	copy(commPubKey[:], rootCommPrivKey.N.Bytes())
 
-	rootAcc := protocol.NewAccount(address, [32]byte{}, activeParameters.Staking_minimum, true, commPubKey, nil, nil)
+	rootAcc := protocol.NewAccount(address, [32]byte{}, ActiveParameters.Staking_minimum, true, commPubKey, nil, nil)
 	storage.State[addressHash] = &rootAcc
 	storage.RootKeys[addressHash] = &rootAcc
 
@@ -497,7 +501,7 @@ Number of Shards is determined based on the total number of validators in the ne
 one validator per shard, thus Number of Shards = Number of Validators.
 */
 func DetNumberOfShards() (numberOfShards int) {
-	return int(math.Ceil(float64(GetValidatorsCount()) / float64(activeParameters.validators_per_shard)))
+	return int(math.Ceil(float64(GetValidatorsCount()) / float64(ActiveParameters.validators_per_shard)))
 }
 
 /**
@@ -525,7 +529,7 @@ func AssignValidatorsToShards() map[[64]byte]int {
 	from the map above and set is bool 'assigned' to TRUE*/
 	rand.Seed(time.Now().Unix())
 
-	for j := 1; j <= int(activeParameters.validators_per_shard); j++ {
+	for j := 1; j <= int(ActiveParameters.validators_per_shard); j++ {
 		for i := 1; i <= NumberOfShards; i++ {
 
 			if len(validatorSlices) == 0 {

@@ -71,7 +71,7 @@ func TestSlashingCondition(t *testing.T) {
 	}
 
 	//Check whether the slashing reward is added after a slashing proof is provided
-	expectedBalance := initBalance+4*activeParameters.Block_reward+activeParameters.Slash_reward-activeParameters.Staking_minimum
+	expectedBalance := initBalance+4*ActiveParameters.Block_reward+ ActiveParameters.Slash_reward- ActiveParameters.Staking_minimum
 	if !reflect.DeepEqual(expectedBalance, myAcc.Balance) {
 		t.Error("Slashing reward is not properly added.", initBalance, myAcc.Balance, expectedBalance)
 	}

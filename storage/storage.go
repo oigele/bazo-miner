@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/oigele/bazo-miner/protocol"
 	"github.com/boltdb/bolt"
+	"github.com/oigele/bazo-miner/protocol"
 )
 
 var (
@@ -40,6 +40,8 @@ var (
 	//Added by Kürsat
 	ThisShardID             int // ID of the shard this validator is assigned to
 	ThisShardIDDelayed		int
+	ThisShardMap			= make(map[int]int)
+	EpochLength				int
 	ReceivedStateStash                      = protocol.NewStateStash()
 	memPoolMutex                        = &sync.Mutex{}
 )
@@ -179,3 +181,5 @@ func Init(dbname string, bootstrapIpport string) {
 func TearDown() {
 	db.Close()
 }
+
+

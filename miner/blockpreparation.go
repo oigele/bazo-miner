@@ -36,8 +36,8 @@ func prepareBlock(block *protocol.Block) {
 	tmpCopy = opentxs
 	sort.Sort(tmpCopy)
 
-	nonAggregatableTxCounter = 0                             //Counter for all transactions which will not be aggregated. (Stake-, config-, acctx)
-	blockSize = int(activeParameters.Block_size) - (650 + 8) //Set blocksize - (fixed space + Bloomfiltersize
+	nonAggregatableTxCounter = 0                                     //Counter for all transactions which will not be aggregated. (Stake-, config-, acctx)
+	blockSize = int(ActiveParameters.Block_size) - (650 + 8) //Set blocksize - (fixed space + Bloomfiltersize
 	logger.Printf("block.GetBloomFilterSize() %v", block.GetBloomFilterSize())
 	transactionHashSize = 32 //It is 32 bytes
 
@@ -100,8 +100,8 @@ func prepareBlock(block *protocol.Block) {
 	for _, sender := range missingTxCntSender {
 
 		//This limits the searching process to teh block interval * TX_FETCH_TIMEOUT
-		if len(missingTxCntSender[sender.senderAddress].missingTransactions) > int(activeParameters.Block_interval) {
-			missingTxCntSender[sender.senderAddress].missingTransactions = missingTxCntSender[sender.senderAddress].missingTransactions[0:int(activeParameters.Block_interval)]
+		if len(missingTxCntSender[sender.senderAddress].missingTransactions) > int(ActiveParameters.Block_interval) {
+			missingTxCntSender[sender.senderAddress].missingTransactions = missingTxCntSender[sender.senderAddress].missingTransactions[0:int(ActiveParameters.Block_interval)]
 		}
 
 		if len(missingTxCntSender[sender.senderAddress].missingTransactions) > 0 {
@@ -257,7 +257,7 @@ func prepareBlock(block *protocol.Block) {
 	for _, tx := range opentxToAdd {
 		switch tx.(type) {
 		case *protocol.StakeTx:
-			if (int(lastBlock.Height) == int(lastEpochBlock.Height)+int(activeParameters.epoch_length)-1) {
+			if (int(lastBlock.Height) == int(lastEpochBlock.Height)+int(ActiveParameters.Epoch_length)-1) {
 				err := addTx(block, tx)
 				if err != nil {
 					//If the tx is invalid, we remove it completely, prevents starvation in the mempool.

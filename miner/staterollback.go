@@ -160,8 +160,9 @@ func configStateChangeRollback(txSlice []*protocol.ConfigTx, blockHash [32]byte)
 
 	//remove the latest entry in the parameters slice$
 	parameterSlice = parameterSlice[:len(parameterSlice)-1]
-	activeParameters = &parameterSlice[len(parameterSlice)-1]
-	logger.Printf("Config parameters rolled back. New configuration: %v", *activeParameters)
+	ActiveParameters = &parameterSlice[len(parameterSlice)-1]
+	storage.EpochLength = ActiveParameters.Epoch_length
+	logger.Printf("Config parameters rolled back. New configuration: %v", *ActiveParameters)
 }
 
 func stakeStateChangeRollback(txSlice []*protocol.StakeTx) {
@@ -216,7 +217,7 @@ func collectSlashRewardRollback(reward uint64, block *protocol.Block) {
 		slashedAcc, _ := storage.GetAccount(block.SlashedAddress)
 
 		minerAcc.Balance -= reward
-		slashedAcc.Balance += activeParameters.Staking_minimum
+		slashedAcc.Balance += ActiveParameters.Staking_minimum
 		slashedAcc.IsStaking = true
 	}
 }

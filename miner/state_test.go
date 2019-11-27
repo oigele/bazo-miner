@@ -68,10 +68,10 @@ func TestFundsTxStateChange(t *testing.T) {
 		t.Error("Fee Collection failed!")
 	}
 
-	t.Log(activeParameters)
+	t.Log(ActiveParameters)
 	balBeforeRew := validatorAcc.Balance
-	collectBlockReward(activeParameters.Block_reward, minerAccHash)
-	if validatorAcc.Balance != balBeforeRew+activeParameters.Block_reward {
+	collectBlockReward(ActiveParameters.Block_reward, minerAccHash)
+	if validatorAcc.Balance != balBeforeRew+ActiveParameters.Block_reward {
 		t.Error("Block reward collection failed!")
 	}
 }
@@ -171,10 +171,10 @@ func TestConfigTxStateChange(t *testing.T) {
 		}
 	}
 
-	parameterSet := *activeParameters
+	parameterSet := *ActiveParameters
 	tmpLen := len(parameterSlice)
 	configStateChange(configs, [32]byte{'0', '1'})
-	parameterSet2 := *activeParameters
+	parameterSet2 := *ActiveParameters
 	if tmpLen != len(parameterSlice)-1 || reflect.DeepEqual(parameterSet, parameterSet2) {
 		t.Errorf("Config State Change malfunctioned: %v != %v\n", tmpLen, len(parameterSlice)-1)
 	}
@@ -205,17 +205,17 @@ func TestConfigTxStateChange(t *testing.T) {
 	configs2 = append(configs2, tx10)
 
 	configStateChange(configs2, [32]byte{})
-	if activeParameters.Block_size != 1000 ||
-		activeParameters.Diff_interval != 2000 ||
-		activeParameters.Fee_minimum != 3000 ||
-		activeParameters.Block_interval != 4000 ||
-		activeParameters.Block_reward != 5000 ||
-		activeParameters.Staking_minimum != 6000 ||
-		activeParameters.Waiting_minimum != 7 ||
-		activeParameters.Accepted_time_diff != 8 ||
-		activeParameters.Slashing_window_size != 9000 ||
-		activeParameters.Slash_reward != 10000 {
-		t.Error("Config StateChanged didn't set the correct parameters!", activeParameters)
+	if ActiveParameters.Block_size != 1000 ||
+		ActiveParameters.Diff_interval != 2000 ||
+		ActiveParameters.Fee_minimum != 3000 ||
+		ActiveParameters.Block_interval != 4000 ||
+		ActiveParameters.Block_reward != 5000 ||
+		ActiveParameters.Staking_minimum != 6000 ||
+		ActiveParameters.Waiting_minimum != 7 ||
+		ActiveParameters.Accepted_time_diff != 8 ||
+		ActiveParameters.Slashing_window_size != 9000 ||
+		ActiveParameters.Slash_reward != 10000 {
+		t.Error("Config StateChanged didn't set the correct parameters!", ActiveParameters)
 	}
 }
 
@@ -238,13 +238,13 @@ func TestConfigTxStateChangeUnknown(t *testing.T) {
 
 	configStateChange(configs, [32]byte{'0', '1'})
 
-	if !reflect.DeepEqual(tmpParameter, *activeParameters) {
+	if !reflect.DeepEqual(tmpParameter, *ActiveParameters) {
 		t.Error("Parameter state changed even though it shouldn't have.")
 	}
 
 	configStateChangeRollback(configs, [32]byte{'0', '1'})
 
-	if !reflect.DeepEqual(tmpParameter, *activeParameters) {
+	if !reflect.DeepEqual(tmpParameter, *ActiveParameters) {
 		t.Error("Parameter state changed even though it shouldn't have.")
 	}
 
@@ -254,20 +254,20 @@ func TestConfigTxStateChangeUnknown(t *testing.T) {
 
 	configStateChange(configs, [32]byte{'0', '1'})
 
-	if reflect.DeepEqual(tmpParameter, *activeParameters) {
+	if reflect.DeepEqual(tmpParameter, *ActiveParameters) {
 		t.Error("Parameter state changed even though it shouldn't have.")
 	}
 
 	configStateChangeRollback(configs, [32]byte{'0', '1'})
 
-	if !reflect.DeepEqual(tmpParameter, *activeParameters) {
+	if !reflect.DeepEqual(tmpParameter, *ActiveParameters) {
 		t.Error("Parameter state changed even though it shouldn't have.")
 	}
 
 	configStateChange(configs, [32]byte{'0', '1'})
 	configStateChangeRollback(configs, [32]byte{'0'})
 	//Only change if block hashes match
-	if reflect.DeepEqual(tmpParameter, *activeParameters) {
+	if reflect.DeepEqual(tmpParameter, *ActiveParameters) {
 		t.Error("Parameter state changed even though it shouldn't have.")
 	}
 }

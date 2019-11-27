@@ -51,6 +51,7 @@ func processEpochBlock(eb []byte) {
 		ValidatorShardMap = epochBlock.ValMapping
 		NumberOfShards = epochBlock.NofShards
 		storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
+		storage.ThisShardMap[int(epochBlock.Height)] = storage.ThisShardID
 		lastEpochBlock = epochBlock
 		storage.WriteClosedEpochBlock(epochBlock)
 
@@ -98,14 +99,14 @@ func processBlock(payload []byte) {
 	//What follows is Kürsat's mechanism to deal with any incoming blocks (not Epoch Blocks)
 	if(lastEpochBlock != nil){
 		logger.Printf("Received block (%x) from shard %d with height: %d\n", block.Hash[0:8],block.ShardId,block.Height)
-
+		//For blocks, generally don't use the delayed shard id.
 		if(!storage.BlockAlreadyInStash(storage.ReceivedBlockStash,block.Hash) && block.ShardId != storage.ThisShardID){
 			storage.WriteToReceivedStash(block)
 			broadcastBlock(block)
 		} else {
 			logger.Printf("Received block (%x) already in block stash\n",block.Hash[0:8])
 		}
-
+		//for blocks, generally use the non-delayed shard id
 		if block.ShardId == storage.ThisShardID && block.Height > lastEpochBlock.Height {
 			//Block already confirmed and validated
 			if storage.ReadClosedBlock(block.Hash) != nil {
