@@ -33,7 +33,6 @@ func InitLogger() *log.Logger {
 //Needed by miner and p2p package
 func GetAccount(hash [32]byte) (acc *protocol.Account, err error) {
 	if acc = State[hash]; acc != nil {
-		logger.Printf("Acc (%x) in the state:", hash[0:8])
 		return acc, nil
 	} else {
 		return nil, errors.New(fmt.Sprintf("Acc (%x) not in the state.", hash[0:8]))

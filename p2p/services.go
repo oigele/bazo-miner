@@ -76,6 +76,7 @@ func sendAndSearchMessages(msg []byte) {
 			_, _ = isConnectionAlreadyInSendingMap(p.peer, sendingMap)
 
 			receiver := sendingMap[p.peer.getIPPort()].peer
+			//receiver.conn.Write(msg)
 			receiver.ch <- msg
 
 			//Send previously stored messages for this miner as well.

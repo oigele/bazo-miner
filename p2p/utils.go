@@ -10,7 +10,9 @@ import (
 	"net"
 	"strings"
 	"time"
+	"sync"
 )
+var lock sync.Mutex
 
 func Connect(connectionString string) *net.TCPConn {
 	tcpAddr, err := net.ResolveTCPAddr("tcp", connectionString)
@@ -28,6 +30,7 @@ func Connect(connectionString string) *net.TCPConn {
 }
 
 func RcvData(p *peer) (header *Header, payload []byte, err error) {
+
 	reader := bufio.NewReader(p.conn)
 	header, err = ReadHeader(reader)
 	if err != nil {
@@ -62,7 +65,6 @@ func RcvData(p *peer) (header *Header, payload []byte, err error) {
 
 
 	//logger.Printf("Receive message:\nSender: %v\nType: %v\nPayload length: %v\n", p.getIPPort(), LogMapping[header.TypeID], len(payload))
-
 	return header, payload, nil
 }
 
@@ -126,11 +128,12 @@ func BuildPacket(typeID uint8, payload []byte) (packet []byte) {
 	packet = make([]byte, HEADER_LEN+len(payload))
 	binary.BigEndian.PutUint32(payloadLen[:], uint32(len(payload)))
 	copy(packet[0:4], payloadLen[:])
-	if LogMapping[typeID] == "" {
-		logger.Printf("Build Packet with Strange TypeID: %v", typeID)
-	}
 	packet[4] = byte(typeID)
 	copy(packet[5:], payload)
+	//changed to check what's actually inside the message
+	if LogMapping[packet[4]] == "" {
+		logger.Printf("Build Packet with Strange TypeID: %v", typeID)
+	}
 
 	return packet
 }
@@ -141,6 +144,7 @@ func ReadHeader(reader *bufio.Reader) (*Header, error) {
 	var headerArr [HEADER_LEN]byte
 
 	//Reading byte by byte is surprisingly fast and works a lot better for concurrent connections.
+
 	for i := range headerArr {
 		extr, err := reader.ReadByte()
 		if err != nil {
@@ -160,7 +164,8 @@ func ReadHeader(reader *bufio.Reader) (*Header, error) {
 
 	//Check if the payload length does not exceed the MAX_BLOCK_SIZE defined in configtx.go
 	if header.Len > protocol.MAX_BLOCK_SIZE {
-		return nil, errors.New("Header: Payload exceeds MAX_BLOCK_SIZE")
+		logger.Printf("Payload exceeds maxblocksize. typeID: %v, length: %d", header.TypeID, header.Len)
+		return nil, errors.New("Header: Payload exceeds MAX_BLOCK_SIZE.")
 	}
 
 	return header, nil
@@ -174,7 +179,7 @@ func extractHeader(headerData []byte) *Header {
 	packetLen := binary.BigEndian.Uint32(lenBuf[:])
 
 	header.Len = packetLen
-	header.TypeID = uint8(headerData[4])
+	header.TypeID = headerData[4]
 
 	return header
 }

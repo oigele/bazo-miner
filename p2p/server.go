@@ -37,7 +37,10 @@ func Init(ipport string) {
 	peers.clientConns = make(map[*peer]bool)
 
 	//Start all services that are running concurrently
+	//----------------------------------------------//
+	//add and delete peers
 	go peerService()
+	//waits for stuff to broadcast. Careful enough with concurrency?
 	go minerBroadcastService()
 	go clientBroadcastService()
 	go checkHealthService()
