@@ -276,6 +276,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					var stateTransition *protocol.StateTransition
 
 					//it might be possible that a new validator started mining an epoch block too late. In this case, the bootstrap can broadcast the epoch block again
+					//also, maybe a node got stuck. Help it
 					if p2p.IsBootstrap() {
 						broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 						time.Sleep(time.Second)
@@ -340,59 +341,73 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 		prevBlockIsEpochBlock = false
 
 		// The variable 'lastblock' is one before the next epoch block, thus the next block will be an epoch block
+		//really naive sortition: ShardID one can mint the epoch block
 		if (lastBlock.Height == uint32(lastEpochBlock.Height)+uint32(ActiveParameters.Epoch_length)) {
-			epochBlock = protocol.NewEpochBlock([][32]byte{lastBlock.Hash}, lastBlock.Height+1)
-			logger.Printf("epochblock beingprocessed height: %d\n", epochBlock.Height)
+			if (storage.ThisShardID == 1) {
+				epochBlock = protocol.NewEpochBlock([][32]byte{lastBlock.Hash}, lastBlock.Height+1)
+				logger.Printf("epochblock beingprocessed height: %d\n", epochBlock.Height)
 
-			if (NumberOfShards != 1) {
-				//Extract the hashes of the last blocks of the other shards, needed to create the epoch block
-				//The hashes of the blocks are stored in the state transitions of the other shards
-				LastShardHashes = protocol.ReturnShardHashesForHeight(storage.ReceivedStateStash, lastBlock.Height)
-				epochBlock.PrevShardHashes = append(epochBlock.PrevShardHashes, LastShardHashes...)
-			}
+				if (NumberOfShards != 1) {
+					//Extract the hashes of the last blocks of the other shards, needed to create the epoch block
+					//The hashes of the blocks are stored in the state transitions of the other shards
+					LastShardHashes = protocol.ReturnShardHashesForHeight(storage.ReceivedStateStash, lastBlock.Height)
+					epochBlock.PrevShardHashes = append(epochBlock.PrevShardHashes, LastShardHashes...)
+				}
 
-			logger.Printf("Before finalizeEpochBlock() ---- Height: %d\n", epochBlock.Height)
-			//Finalize creation of the epoch block. In case another epoch block was mined in the meantime, abort PoS here
-			err := finalizeEpochBlock(epochBlock)
-			logger.Printf("After finalizeEpochBlock() ---- Height: %d\n", epochBlock.Height)
+				logger.Printf("Before finalizeEpochBlock() ---- Height: %d\n", epochBlock.Height)
+				//Finalize creation of the epoch block. In case another epoch block was mined in the meantime, abort PoS here
+				err := finalizeEpochBlock(epochBlock)
+				logger.Printf("After finalizeEpochBlock() ---- Height: %d\n", epochBlock.Height)
 
-			if err != nil {
-				logger.Printf("%v\n", err)
+				if err != nil {
+					logger.Printf("%v\n", err)
+				} else {
+					logger.Printf("EPOCH BLOCK mined (%x)\n", epochBlock.Hash[0:8])
+				}
+
+				//Successfully mined epoch block
+				if err == nil {
+					logger.Printf("Broadcast epoch block (%x)\n", epochBlock.Hash[0:8])
+					//Broadcast epoch block to other nodes such that they can update their validator-shard assignment
+					broadcastEpochBlock(epochBlock)
+					storage.WriteClosedEpochBlock(epochBlock)
+					storage.DeleteAllLastClosedEpochBlock()
+					storage.WriteLastClosedEpochBlock(epochBlock)
+					lastEpochBlock = epochBlock
+
+					logger.Printf("Created Validator Shard Mapping :\n")
+					logger.Printf(ValidatorShardMap.String())
+					logger.Printf("Inserting EPOCH BLOCK: %v\n", epochBlock.String())
+					logger.Printf("Created Validator Shard Mapping :\n")
+					logger.Printf(ValidatorShardMap.String() + "\n")
+					logger.Printf("Inserting EPOCH BLOCK: %v\n", epochBlock.String())
+
+					for _, prevHash := range epochBlock.PrevShardHashes {
+						//FileConnections.WriteString(fmt.Sprintf("'%x' -> 'EPOCH BLOCK: %x'\n", prevHash[0:15], epochBlock.Hash[0:15]))
+						logger.Printf(`"Hash : %x \n Height : %d" -> "EPOCH BLOCK: \n Hash : %x \n Height : %d \nMPT : %x"`+"\n", prevHash[0:8], epochBlock.Height-1, epochBlock.Hash[0:8], epochBlock.Height, epochBlock.MerklePatriciaRoot[0:8])
+						logger.Printf(`"EPOCH BLOCK: \n Hash : %x \n Height : %d \nMPT : %x"`+`[color = red, shape = box]`+"\n", epochBlock.Hash[0:8], epochBlock.Height, epochBlock.MerklePatriciaRoot[0:8])
+					}
+				}
+
+				//Introduce some delay in case there was a fork of the epoch block.
+				//Even though the states of both epoch blocks are the same, the validator-shard assignment is likely to be different
+				//General rule: Accept the last received epoch block as the valid one.
+				//Idea: We just accept the last received epoch block. There is no rollback for epoch blocks in place.
+				//Kürsat hopes that the last received Epoch block will be the same for all blocks.
+				//This pseudo sortition mechanism of waiting probably wont be needed anymore
+				//time.Sleep(5 * time.Second)
+			// I'm not shard number one so I just wait until I receive the next epoch block
 			} else {
-				logger.Printf("EPOCH BLOCK mined (%x)\n", epochBlock.Hash[0:8])
-			}
-
-			//Successfully mined epoch block
-			if err == nil {
-				logger.Printf("Broadcast epoch block (%x)\n", epochBlock.Hash[0:8])
-				//Broadcast epoch block to other nodes such that they can update their validator-shard assignment
-				broadcastEpochBlock(epochBlock)
-				storage.WriteClosedEpochBlock(epochBlock)
-				storage.DeleteAllLastClosedEpochBlock()
-				storage.WriteLastClosedEpochBlock(epochBlock)
-				lastEpochBlock = epochBlock
-
-				logger.Printf("Created Validator Shard Mapping :\n")
-				logger.Printf(ValidatorShardMap.String())
-				logger.Printf("Inserting EPOCH BLOCK: %v\n", epochBlock.String())
-				logger.Printf("Created Validator Shard Mapping :\n")
-				logger.Printf(ValidatorShardMap.String() + "\n")
-				logger.Printf("Inserting EPOCH BLOCK: %v\n", epochBlock.String())
-
-				for _, prevHash := range epochBlock.PrevShardHashes {
-					//FileConnections.WriteString(fmt.Sprintf("'%x' -> 'EPOCH BLOCK: %x'\n", prevHash[0:15], epochBlock.Hash[0:15]))
-					logger.Printf(`"Hash : %x \n Height : %d" -> "EPOCH BLOCK: \n Hash : %x \n Height : %d \nMPT : %x"`+"\n", prevHash[0:8], epochBlock.Height-1, epochBlock.Hash[0:8], epochBlock.Height, epochBlock.MerklePatriciaRoot[0:8])
-					logger.Printf(`"EPOCH BLOCK: \n Hash : %x \n Height : %d \nMPT : %x"`+`[color = red, shape = box]`+"\n", epochBlock.Hash[0:8], epochBlock.Height, epochBlock.MerklePatriciaRoot[0:8])
+				//wait until epoch block is received
+				epochBlockReceived := false
+				for !epochBlockReceived {
+					newEpochBlock := <- p2p.EpochBlockReceivedChan
+					if newEpochBlock.Height == lastBlock.Height + 1 {
+						broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
+						epochBlockReceived = true
+					}
 				}
 			}
-
-			//Introduce some delay in case there was a fork of the epoch block.
-			//Even though the states of both epoch blocks are the same, the validator-shard assignment is likely to be different
-			//General rule: Accept the last received epoch block as the valid one.
-			//Idea: We just accept the last received epoch block. There is no rollback for epoch blocks in place.
-			//Kürsat hopes that the last received Epoch block will be the same for all blocks.
-			time.Sleep(5 * time.Second)
-
 			prevBlockIsEpochBlock = true
 			firstEpochOver = true
 			//Continue mining with the hash of the last epoch block

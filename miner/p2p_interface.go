@@ -58,6 +58,8 @@ func processEpochBlock(eb []byte) {
 		storage.DeleteAllLastClosedEpochBlock()
 		storage.WriteLastClosedEpochBlock(epochBlock)
 
+		p2p.EpochBlockReceivedChan <- *lastEpochBlock
+
 		broadcastEpochBlock(lastEpochBlock)
 	}
 }

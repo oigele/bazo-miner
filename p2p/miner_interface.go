@@ -25,6 +25,8 @@ var (
 	//EpochBlock from the miner, to the network
 	EpochBlockOut = make(chan []byte)
 
+	EpochBlockReceivedChan = make(chan protocol.EpochBlock)
+
 
 	VerifiedTxsOut = make(chan []byte)
 	VerifiedTxsBrdcstOut = make(chan []byte, 1000)
