@@ -56,10 +56,18 @@ func prepareBlock(block *protocol.Block) {
 
 	//Get Best combination of transactions
 	//In here, the check happens if the Tx is in the right shard
-	opentxToAdd = checkBestCombination(opentxs)
 
-	//this is just for compatability. Should work because sharding is perfomed according to sender
-	//opentxToAdd = opentxs
+	openTxsOfShard := []protocol.Transaction{}
+	for _, tx := range opentxs {
+		txAssignedShard := assignTransactionToShard(tx)
+		//Makes sure we only validate the transactions of our own shard
+		if int(txAssignedShard) == ValidatorShardMap.ValMapping[validatorAccAddress] {
+			openTxsOfShard = append(openTxsOfShard, tx)
+		}
+	}
+
+	opentxToAdd = checkBestCombination(openTxsOfShard)
+
 
 
 
@@ -296,11 +304,7 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 	for moreOpenTx {
 		var intermediateTxToAppend []protocol.Transaction
 		for i, tx := range openTxs {
-			txAssignedShard := assignTransactionToShard(tx)
-			//Makes sure we only validate the transactions of our own shard
-			if int(txAssignedShard) != ValidatorShardMap.ValMapping[validatorAccAddress] {
-				continue
-			}
+			// not really appending anything here. This is just legacy code, counting how many different senders we have (in case it needs to be compared to different receivers)
 			switch tx.(type) {
 			case *protocol.FundsTx:
 				storage.DifferentSenders[tx.(*protocol.FundsTx).From] = storage.DifferentSenders[tx.(*protocol.FundsTx).From] + 1
@@ -313,7 +317,10 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 				if (nonAggregatableTxCounter+1)*transactionHashSize < blockSize {
 					nonAggregatableTxCounter += 1
 					TxToAppend = append(TxToAppend, tx)
+					//openTxs is shrinking because element i might be excluded. as soon as i is larger than the length of remaining slice, stop.
+					//They are cut out because they
 					if i != len(openTxs){
+						//this excludes element i from the slice. Selects access a half-open range which includes the first element but not the last one
 						openTxs = append(openTxs[:i], openTxs[i+1:]...)
 					}
 				} else {
