@@ -115,6 +115,10 @@ func GetFundsTxPubKeys(fundsTxData [][32]byte) (fundsTxPubKeys [][32]byte) {
 		if tx == nil {
 			tx = ReadOpenTx(txHash)
 		}
+		//nil check for null pointer safety
+		if tx == nil {
+			continue
+		}
 
 		fundsTx = tx.(*protocol.FundsTx)
 		fundsTxPubKeys = append(fundsTxPubKeys, fundsTx.From)
