@@ -279,10 +279,9 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 					//it might be possible that a new validator started mining an epoch block too late. In this case, the bootstrap can broadcast the epoch block again
 					//also, maybe a node got stuck. Help it
-					if storage.ThisShardID == 1 {
-						broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
-						time.Sleep(time.Second)
-					}
+					//Quickfix. TODO: find a better mechanism for that
+					broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
+					time.Sleep(time.Second)
 
 					logger.Printf("requesting state transition for lastblock height: %d shard: %d\n", lastBlock.Height, id)
 
