@@ -314,8 +314,8 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						//It the requested state transition has not been received, then continue with requesting the other missing ones
 						logger.Printf("broadcasting state transition from last block height %d again in case it couldnt be transmitted", int(lastBlock.Height) - 1)
 						lastTransition := storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height) - 1)
-						//overwrite in case the previous block is an epoch block. then we need to go further back
-						if prevBlockIsEpochBlock {
+						//overwrite in case the previous block is an epoch block. then the last transition for that height is nil and we need to go further back
+						if lastTransition == nil {
 							lastTransition = storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height) - 2)
 						}
 						if lastTransition != nil {
