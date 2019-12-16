@@ -13,7 +13,6 @@ import (
 	"github.com/oigele/bazo-miner/p2p"
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
-	"github.com/oigele/bazo-miner/vm"
 	"golang.org/x/crypto/sha3"
 )
 
@@ -237,7 +236,7 @@ func addTx(b *protocol.Block, tx protocol.Transaction) error {
 	case *protocol.FundsTx:
 		err := addFundsTx(b, tx.(*protocol.FundsTx))
 		if err != nil {
-			//logger.Printf("Adding fundsTx (%x) failed (%v): %v\n",tx.Hash(), err, tx.(*protocol.FundsTx))
+			logger.Printf("Adding fundsTx (%x) failed (%v): %v\n",tx.Hash(), err, tx.(*protocol.FundsTx))
 			//logger.Printf("Adding fundsTx (%x) failed (%v)",tx.Hash(), err)
 			return err
 		}
@@ -265,7 +264,10 @@ func addAccTx(b *protocol.Block, tx *protocol.AccTx) error {
 	//set in the header (2nd bit).
 	if tx.Header&0x02 != 0x02 {
 		if _, exists := storage.State[accHash]; exists {
-			return errors.New("Account already exists.")
+			//return errors.New("Account already exists.")
+			storage.WriteClosedTx(tx)
+			storage.DeleteOpenTx(tx)
+			return nil
 		}
 	}
 
@@ -323,6 +325,8 @@ func addFundsTx(b *protocol.Block, tx *protocol.FundsTx) error {
 	}
 
 	//Transaction count need to match the state, preventing replay attacks.
+	//add the whole block back it (until */)
+	/*
 	if b.StateCopy[tx.From].TxCnt != tx.TxCnt {
 		if tx.TxCnt < b.StateCopy[tx.From].TxCnt {
 			closedTx := storage.ReadClosedTx(tx.Hash())
@@ -367,7 +371,7 @@ func addFundsTx(b *protocol.Block, tx *protocol.FundsTx) error {
 		//Update changes vm has made to the contract variables
 		context.PersistChanges()
 	}
-
+ */
 	//Update state copy.
 	accSender := b.StateCopy[tx.From]
 	accSender.TxCnt += 1

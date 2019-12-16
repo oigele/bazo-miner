@@ -463,6 +463,7 @@ func fundsStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 		accSender, err = storage.GetAccount(tx.From)
 		accReceiver, err = storage.GetAccount(tx.To)
 
+		/* TODO RB: PUT BACK IN
 		//Check transaction counter
 		if !initialSetup && tx.Aggregated == false && tx.TxCnt != accSender.TxCnt {
 			if tx.TxCnt < accSender.TxCnt {
@@ -471,6 +472,7 @@ func fundsStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 				err = errors.New(fmt.Sprintf("Sender (%x) txCnt in %x does not match: %v (tx.txCnt) vs. %v (state txCnt).", accSender.Address[0:8], tx.Hash(), tx.TxCnt, accSender.TxCnt))
 			}
 		}
+		 */
 
 		//Check sender balance
 		// "!initialSetup" does allow a "Credit" like behaviour where there is no error, regarding the balance. In the end it should match the wanted state.

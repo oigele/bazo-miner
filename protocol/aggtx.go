@@ -105,7 +105,7 @@ func (tx AggTx) String() string {
 			"|  Fee: %v\n"+
 			"|  From: %x\n"+
 			"|  To: %x\n"+
-			"|  Transactions: %x\n"+
+			//"|  Transactions: %x\n"+
 			"|  Merkle Root: %x\n"+
 			"|  #Tx: %v\n"+
 			"|  Aggregated: %t\n" +
@@ -115,7 +115,7 @@ func (tx AggTx) String() string {
 		tx.Fee,
 		tx.From,
 		tx.To,
-		tx.AggregatedTxSlice,
+		//tx.AggregatedTxSlice,
 		tx.MerkleRoot,
 		len(tx.AggregatedTxSlice),
 		tx.Aggregated,

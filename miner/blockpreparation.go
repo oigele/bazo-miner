@@ -2,11 +2,9 @@ package miner
 
 import (
 	"encoding/binary"
-	"github.com/oigele/bazo-miner/p2p"
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
 	"sort"
-	"time"
 )
 
 //The code here is needed if a new block is built. All open (not yet validated) transactions are first fetched
@@ -28,6 +26,7 @@ func prepareBlock(block *protocol.Block) {
 	//Fetch all txs from mempool (opentxs).
 	opentxs := storage.ReadAllOpenTxs()
 	opentxs = append(opentxs, storage.ReadAllINVALIDOpenTx()...)
+	logger.Printf("Number of OpenTxs: %d", len(opentxs))
 	var opentxToAdd []protocol.Transaction
 
 	//This copy is strange, but seems to be necessary to leverage the sort interface.
@@ -52,7 +51,7 @@ func prepareBlock(block *protocol.Block) {
 		missingTransactions []uint32
 	}
 
-	var missingTxCntSender = map[[32]byte]*senderTxCounterForMissingTransactions{}
+	//var missingTxCntSender = map[[32]byte]*senderTxCounterForMissingTransactions{}
 
 	//Get Best combination of transactions
 	//In here, the check happens if the Tx is in the right shard
@@ -66,10 +65,13 @@ func prepareBlock(block *protocol.Block) {
 		}
 	}
 
+	logger.Printf("length of tx assigned to shard: %d", len(openTxsOfShard))
+
 	opentxToAdd = checkBestCombination(openTxsOfShard)
 
+	logger.Printf("length of open tx to add with best combination: %d", len(opentxToAdd))
 
-
+	/* START OF THE SEARCH ALGORITHM
 
 	//Search missing transactions for the transactions which will be added...
 	for _, tx := range opentxToAdd {
@@ -211,6 +213,9 @@ func prepareBlock(block *protocol.Block) {
 	sort.Sort(tmpCopy)
 
 
+	 */
+
+	// END OF THE SEARCH ALGORITHM
 
 	/* TODO evaluate if this block of code might ever be useful anymore
 	//Here Kürsats Sharding Logic Begins
@@ -261,6 +266,9 @@ func prepareBlock(block *protocol.Block) {
 	//Here Kürsats Sharding Logic Ends
 	//*********************************************************//
 
+
+	logger.Printf("Number of OpenTxs to add right before they get added: %d", len(opentxToAdd))
+
 	//Add previous selected transactions.
 	for _, tx := range opentxToAdd {
 		switch tx.(type) {
@@ -275,6 +283,7 @@ func prepareBlock(block *protocol.Block) {
 		default:
 			err := addTx(block, tx)
 			if err != nil {
+				logger.Printf("Error in add tx routine: %s", err)
 				//If the tx is invalid, we remove it completely, prevents starvation in the mempool.
 				storage.DeleteOpenTx(tx)
 			}
@@ -282,8 +291,8 @@ func prepareBlock(block *protocol.Block) {
 	}
 
 		// In miner\block.go --> AddFundsTx the transactions get added into storage.TxBeforeAggregation.
-		//TODO check this line of code. Is it still valid after tx aggregation? There could be a tx in this pool, but it might not be in the correct shard. Currently it looks like this approach is valid because the write operation takes part in addtx(couple of lines above)
 		if len(storage.ReadFundsTxBeforeAggregation()) > 0 {
+			logger.Printf("Adding funds tx before aggregation")
 			splitSortedAggregatableTransactions(block)
 		}
 
@@ -319,7 +328,7 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 					TxToAppend = append(TxToAppend, tx)
 					//openTxs is shrinking because element i might be excluded. as soon as i is larger than the length of remaining slice, stop.
 					//They are cut out because they
-					if i != len(openTxs){
+					if i < len(openTxs){
 						//this excludes element i from the slice. Selects access a half-open range which includes the first element but not the last one
 						openTxs = append(openTxs[:i], openTxs[i+1:]...)
 					}
@@ -328,6 +337,31 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 				}
 			}
 		}
+
+
+		//TODO realfix hotfix! Remove duplicates:
+		var newOpenTxs []protocol.Transaction
+		duplicateChecker := make(map[[64]byte]protocol.Transaction)
+		for _,tx1 := range openTxs {
+
+			switch tx1.(type) {
+			case *protocol.AccTx:
+				//we dont have it yet
+				if duplicateChecker[tx1.(*protocol.AccTx).PubKey] == nil {
+					newOpenTxs = append(newOpenTxs, tx1)
+					continue
+				} else {
+					duplicateChecker[tx1.(*protocol.AccTx).PubKey] = tx1
+				}
+			default:
+				newOpenTxs = append(newOpenTxs, tx1)
+				continue
+			}
+		}
+
+ 		openTxs = newOpenTxs
+
+ 		//End of hotfix
 
 		//first return value maxSender not needed anymore. We dont need to compare max sender and max receiver anymore.
 		//this is still useful because we aggregate the senders with the most transactions first
@@ -451,9 +485,10 @@ func Abs(x int32) int32 {
 During the synchronisation phase at every block height, the validator also receives the transaction hashes which were validated
 by the other shards. To avoid starvation, delete those transactions from the mempool
 */
-func DeleteTransactionFromMempool(contractData [][32]byte, fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte) {
+func DeleteTransactionFromMempool(contractData [][32]byte, fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte, aggTxData[][32]byte) {
 	for _,fundsTX := range fundsData{
 		if(storage.ReadOpenTx(fundsTX) != nil){
+			storage.WriteClosedTx(storage.ReadOpenTx(fundsTX))
 			storage.DeleteOpenTx(storage.ReadOpenTx(fundsTX))
 			logger.Printf("Deleted transaction (%x) from the MemPool.\n",fundsTX)
 		}
@@ -461,6 +496,7 @@ func DeleteTransactionFromMempool(contractData [][32]byte, fundsData [][32]byte,
 
 	for _,configTX := range configData{
 		if(storage.ReadOpenTx(configTX) != nil){
+			storage.WriteClosedTx(storage.ReadOpenTx(configTX))
 			storage.DeleteOpenTx(storage.ReadOpenTx(configTX))
 			logger.Printf("Deleted transaction (%x) from the MemPool.\n",configTX)
 		}
@@ -468,6 +504,7 @@ func DeleteTransactionFromMempool(contractData [][32]byte, fundsData [][32]byte,
 
 	for _,stakeTX := range stakeData{
 		if(storage.ReadOpenTx(stakeTX) != nil){
+			storage.WriteClosedTx(storage.ReadOpenTx(stakeTX))
 			storage.DeleteOpenTx(storage.ReadOpenTx(stakeTX))
 			logger.Printf("Deleted transaction (%x) from the MemPool.\n",stakeTX)
 		}
@@ -475,12 +512,21 @@ func DeleteTransactionFromMempool(contractData [][32]byte, fundsData [][32]byte,
 
 	for _,contractTX := range contractData{
 		if(storage.ReadOpenTx(contractTX) != nil){
+			storage.WriteClosedTx(storage.ReadOpenTx(contractTX))
 			storage.DeleteOpenTx(storage.ReadOpenTx(contractTX))
 			logger.Printf("Deleted transaction (%x) from the MemPool.\n",contractTX)
 		}
 	}
 
-	logger.Printf("Deleted transaction count: %d - New Mempool Size: %d\n",len(contractData)+len(fundsData)+len(configData)+ len(stakeData),storage.GetMemPoolSize())
+	for _,TX := range aggTxData {
+		if (storage.ReadOpenTx(TX) != nil) {
+			storage.WriteClosedTx(storage.ReadOpenTx(TX))
+			storage.DeleteOpenTx(storage.ReadOpenTx(TX))
+			logger.Printf("Deleted transaction (%x) from the MemPool. \n",TX)
+		}
+	}
+
+	logger.Printf("Deleted transaction count: %d - New Mempool Size: %d\n",len(contractData)+len(fundsData)+len(configData)+ len(stakeData) + len(aggTxData),storage.GetMemPoolSize())
 }
 
 //End code from Kürsat

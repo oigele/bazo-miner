@@ -20,6 +20,7 @@ type StateTransition struct {
 	FundsTxData  				[][32]byte
 	ConfigTxData 				[][32]byte
 	StakeTxData  				[][32]byte
+	AggTxData					[][32]byte
 }
 
 /**
@@ -38,7 +39,7 @@ type RelativeAccount struct {
 }
 
 func NewStateTransition(stateChange map[[32]byte]*RelativeAccount, height int, shardid int, blockHash [32]byte, contractData [][32]byte,
-	fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte) *StateTransition {
+	fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte, aggTxData [][32]byte) *StateTransition {
 	newTransition := StateTransition{
 		stateChange,
 		height,
@@ -48,6 +49,7 @@ func NewStateTransition(stateChange map[[32]byte]*RelativeAccount, height int, s
 		fundsData,
 		configData,
 		stakeData,
+		aggTxData,
 	}
 
 	return &newTransition

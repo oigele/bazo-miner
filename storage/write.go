@@ -80,6 +80,7 @@ func WriteLastClosedBlock(block *protocol.Block) (err error) {
 }
 
 //Changing the "tx" shortcut here and using "transaction" to distinguish between bolt's transactions
+//write open tx doesnt allow for a tx to be added twice
 func WriteOpenTx(transaction protocol.Transaction) {
 	openTxMutex.Lock()
 	txMemPool[transaction.Hash()] = transaction

@@ -258,7 +258,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						storage.State = storage.ApplyRelativeState(storage.State, st.RelativeStateChange)
 						//Delete transactions from Mempool (Transaction pool), which were validated
 						//by the other shards to avoid starvation in the mempool
-						DeleteTransactionFromMempool(st.ContractTxData, st.FundsTxData, st.ConfigTxData, st.StakeTxData)
+						DeleteTransactionFromMempool(st.ContractTxData, st.FundsTxData, st.ConfigTxData, st.StakeTxData, st.AggTxData)
 						//Set the particular shard as being processed
 						shardIDStateBoolMap[st.ShardID] = true
 
@@ -302,7 +302,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
 
 						//Delete transactions from mempool, which were validated by the other shards
-						DeleteTransactionFromMempool(stateTransition.ContractTxData, stateTransition.FundsTxData, stateTransition.ConfigTxData, stateTransition.StakeTxData)
+						DeleteTransactionFromMempool(stateTransition.ContractTxData, stateTransition.FundsTxData, stateTransition.ConfigTxData, stateTransition.StakeTxData, stateTransition.AggTxData)
 
 						shardIDStateBoolMap[stateTransition.ShardID] = true
 
@@ -461,7 +461,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			//use the freshly updated shardId, because the block always has to be in the new epoch already. If it was in the old epoch,
 			//the epoch block would not have been generated either
 			stateTransition := protocol.NewStateTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, currentBlock.Hash,
-				currentBlock.ContractTxData, currentBlock.FundsTxData, currentBlock.ConfigTxData, currentBlock.StakeTxData)
+				currentBlock.ContractTxData, currentBlock.FundsTxData, currentBlock.ConfigTxData, currentBlock.StakeTxData, currentBlock.AggTxData)
 
 			logger.Printf("Broadcast state transition for height %d\n", currentBlock.Height)
 			//Broadcast state transition to other shards

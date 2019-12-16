@@ -23,6 +23,7 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 		var fTx *protocol.FundsTx
 		fTx = fTx.Decode(payload)
 		if fTx == nil {
+			logger.Printf("有问题")
 			return
 		}
 		tx = fTx
@@ -62,6 +63,11 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 		packet := BuildPacket(TX_BRDCST_ACK, nil)
 		sendData(p, packet)
 	}
+
+	//var fTx *protocol.FundsTx
+	//fTx = fTx.Decode(payload)
+	//logger.Printf("Tx from %x with count %d", fTx.From, fTx.TxCnt)
+
 
 	if storage.ReadOpenTx(tx.Hash()) != nil {
 		//logger.Printf("Received transaction (%x) already in the mempool.\n", tx.Hash())

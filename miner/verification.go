@@ -3,11 +3,9 @@ package miner
 import (
 	"crypto/ecdsa"
 	"crypto/elliptic"
-	"math/big"
-	"reflect"
-
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
+	"math/big"
 )
 
 //We can't use polymorphism, e.g. we can't use tx.verify() because the Transaction interface doesn't declare
@@ -33,8 +31,10 @@ func verify(tx protocol.Transaction) bool {
 	return verified
 }
 
+//Todo redo the verification. But kürsats testbed doesnt require this kind of verification so I will leave it out
 func verifyFundsTx(tx *protocol.FundsTx) bool {
-	if tx == nil {
+	return true
+	/*if tx == nil {
 		return false
 	}
 
@@ -94,10 +94,12 @@ func verifyFundsTx(tx *protocol.FundsTx) bool {
 	}
 
 	return validSig1 && validSig2
+	 */
 }
 
 func verifyAccTx(tx *protocol.AccTx) bool {
 	if tx == nil {
+		logger.Printf("Acctx is nil")
 		return false
 	}
 
@@ -117,6 +119,8 @@ func verifyAccTx(tx *protocol.AccTx) bool {
 		//Only the hash of the pubkey is hashed and verified here
 		if ecdsa.Verify(&pubKey, txHash[:], r, s) == true {
 			return true
+		} else {
+			logger.Printf("Pubkey cant be verified from the AccTx")
 		}
 	}
 
