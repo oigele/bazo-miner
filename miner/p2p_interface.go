@@ -67,7 +67,6 @@ func processEpochBlock(eb []byte) {
 func processStateData(payload []byte) {
 	var stateTransition *protocol.StateTransition
 	stateTransition = stateTransition.DecodeTransition(payload)
-
 	if(lastEpochBlock != nil){
 		//removed the check whether the shard id is the same as the id now. This will never lead to any inconsistencies and makes it easier to handle state transitions which reach over an epoch block.
 			stateHash := stateTransition.HashTransition()

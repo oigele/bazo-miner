@@ -255,7 +255,11 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				for _, st := range stateStashForHeight {
 					if (shardIDStateBoolMap[st.ShardID] == false && st.ShardID != storage.ThisShardIDDelayed) {
 						//Apply all relative account changes to my local state
+
+						logger.Printf("Transactions to delete in this miner count: %d - New Mempool Size: %d\n",len(st.ContractTxData)+len(st.FundsTxData)+len(st.ConfigTxData)+ len(st.StakeTxData) + len(st.AggTxData),storage.GetMemPoolSize())
+
 						storage.State = storage.ApplyRelativeState(storage.State, st.RelativeStateChange)
+
 						//Delete transactions from Mempool (Transaction pool), which were validated
 						//by the other shards to avoid starvation in the mempool
 						DeleteTransactionFromMempool(st.ContractTxData, st.FundsTxData, st.ConfigTxData, st.StakeTxData, st.AggTxData)
@@ -462,6 +466,8 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			//the epoch block would not have been generated either
 			stateTransition := protocol.NewStateTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, currentBlock.Hash,
 				currentBlock.ContractTxData, currentBlock.FundsTxData, currentBlock.ConfigTxData, currentBlock.StakeTxData, currentBlock.AggTxData)
+
+			logger.Printf("Transactions to delete in other miners count: %d - New Mempool Size: %d\n",len(stateTransition.ContractTxData)+len(stateTransition.FundsTxData)+len(stateTransition.ConfigTxData)+ len(stateTransition.StakeTxData) + len(stateTransition.AggTxData),storage.GetMemPoolSize())
 
 			logger.Printf("Broadcast state transition for height %d\n", currentBlock.Height)
 			//Broadcast state transition to other shards

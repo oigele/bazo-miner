@@ -1662,7 +1662,7 @@ func postValidate(data blockData, initialSetup bool) {
 
 		//Broadcast AggTx to the neighbors, such that they do not have to request them later.
 		if len(data.aggTxSlice) > 0 {
-			//broadcastVerifiedAggTxsToOtherMiners(data.aggTxSlice)
+			broadcastVerifiedAggTxsToOtherMiners(data.aggTxSlice)
 		}
 
 		//It might be that block is not in the openblock storage, but this doesn't matter.

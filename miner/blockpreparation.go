@@ -2,9 +2,11 @@ package miner
 
 import (
 	"encoding/binary"
+	"github.com/oigele/bazo-miner/p2p"
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
 	"sort"
+	"time"
 )
 
 //The code here is needed if a new block is built. All open (not yet validated) transactions are first fetched
@@ -27,6 +29,14 @@ func prepareBlock(block *protocol.Block) {
 	opentxs := storage.ReadAllOpenTxs()
 	opentxs = append(opentxs, storage.ReadAllINVALIDOpenTx()...)
 	logger.Printf("Number of OpenTxs: %d", len(opentxs))
+
+	for _,tx := range opentxs{
+		switch tx.(type) {
+		case *protocol.AccTx:
+			logger.Printf("Acc Tx PubKey: (%x)", tx.(*protocol.AccTx).PubKey)
+		}
+	}
+
 	var opentxToAdd []protocol.Transaction
 
 	//This copy is strange, but seems to be necessary to leverage the sort interface.
@@ -343,15 +353,15 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 		var newOpenTxs []protocol.Transaction
 		duplicateChecker := make(map[[64]byte]protocol.Transaction)
 		for _,tx1 := range openTxs {
-
 			switch tx1.(type) {
 			case *protocol.AccTx:
 				//we dont have it yet
-				if duplicateChecker[tx1.(*protocol.AccTx).PubKey] == nil {
-					newOpenTxs = append(newOpenTxs, tx1)
-					continue
-				} else {
+				_,exists := duplicateChecker[tx1.(*protocol.AccTx).PubKey]
+				if !exists {
 					duplicateChecker[tx1.(*protocol.AccTx).PubKey] = tx1
+					newOpenTxs = append(newOpenTxs, tx1)
+				} else {
+					continue
 				}
 			default:
 				newOpenTxs = append(newOpenTxs, tx1)
@@ -518,14 +528,71 @@ func DeleteTransactionFromMempool(contractData [][32]byte, fundsData [][32]byte,
 		}
 	}
 
+	//here, the AggTX only carries the hashes of the transactions that should be deleted
 	for _,TX := range aggTxData {
 		if (storage.ReadOpenTx(TX) != nil) {
+			aggTx := storage.ReadOpenTx(TX)
 			storage.WriteClosedTx(storage.ReadOpenTx(TX))
 			storage.DeleteOpenTx(storage.ReadOpenTx(TX))
 			logger.Printf("Deleted transaction (%x) from the MemPool. \n",TX)
+			for _,fundsTX := range aggTx.(*protocol.AggTx).AggregatedTxSlice {
+				if(storage.ReadOpenTx(fundsTX) != nil){
+					storage.WriteClosedTx(storage.ReadOpenTx(fundsTX))
+					storage.DeleteOpenTx(storage.ReadOpenTx(fundsTX))
+				}
+			}
+		} else {
+			var aggTx protocol.Transaction
+			//Aggregated Transaction need to be fetched from the network.
+			cnt := 0
+			HERE:
+			logger.Printf("Request AGGTX: %x", TX)
+			err := p2p.TxReq(TX, p2p.AGGTX_REQ)
+			if err != nil {
+				logger.Printf("Could not fetch AggTX")
+				return
+			}
+
+			select {
+			case aggTx = <-p2p.AggTxChan:
+				storage.WriteOpenTx(aggTx)
+				logger.Printf("  Received AGGTX: %x", TX)
+			case <-time.After(TXFETCH_TIMEOUT * time.Second):
+				stash := p2p.ReceivedAggTxStash
+				if p2p.AggTxAlreadyInStash(stash, TX){
+					for _, tx := range stash {
+						if tx.Hash() == TX {
+							aggTx = tx
+							logger.Printf("  FOUND: Request AGGTX: %x", aggTx.Hash())
+							break
+						}
+					}
+					break
+				}
+				if cnt < 2 {
+					cnt ++
+					goto HERE
+				}
+				logger.Printf("TIME OUT: Request AGGTX: %x", TX)
+				return
+			}
+			if aggTx.Hash() != TX {
+				logger.Printf("Received AggTxHash did not correspond to our request.")
+				return
+			}
+			logger.Printf("Received requested AggTX %x", aggTx.Hash())
+			//now delete
+			storage.WriteClosedTx(storage.ReadOpenTx(TX))
+			storage.DeleteOpenTx(storage.ReadOpenTx(TX))
+			logger.Printf("Deleted transaction (%x) from the MemPool. \n",TX)
+			for _,fundsTX := range aggTx.(*protocol.AggTx).AggregatedTxSlice {
+				if (storage.ReadOpenTx(fundsTX) != nil) {
+					storage.WriteClosedTx(storage.ReadOpenTx(fundsTX))
+					storage.DeleteOpenTx(storage.ReadOpenTx(fundsTX))
+				}
+			}
 		}
 	}
-
 	logger.Printf("Deleted transaction count: %d - New Mempool Size: %d\n",len(contractData)+len(fundsData)+len(configData)+ len(stakeData) + len(aggTxData),storage.GetMemPoolSize())
 }
 

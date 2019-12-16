@@ -116,6 +116,7 @@ func (st *StateTransition) EncodeTransition() []byte {
 		FundsTxData:				st.FundsTxData,
 		ConfigTxData:				st.ConfigTxData,
 		StakeTxData:				st.StakeTxData,
+		AggTxData:					st.AggTxData,
 	}
 
 	buffer := new(bytes.Buffer)
