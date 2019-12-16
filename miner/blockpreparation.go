@@ -358,9 +358,11 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 				//we dont have it yet
 				_,exists := duplicateChecker[tx1.(*protocol.AccTx).PubKey]
 				if !exists {
+					logger.Printf("Pubkey not existent yet: (%x)", tx1.(*protocol.AccTx).PubKey)
 					duplicateChecker[tx1.(*protocol.AccTx).PubKey] = tx1
 					newOpenTxs = append(newOpenTxs, tx1)
 				} else {
+					logger.Printf("the previous routine failed. Found a duplicate")
 					continue
 				}
 			default:
