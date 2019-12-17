@@ -225,7 +225,6 @@ func initState() (initialBlock *protocol.Block, err error) {
 		storage.WriteClosedBlock(initialBlock)
 	}
 
-	//TODO why is this done?
 	if !p2p.IsBootstrap() {
 		allClosedBlocks = InvertBlockArray(allClosedBlocks)
 	}

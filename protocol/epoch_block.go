@@ -15,13 +15,14 @@ type EpochBlock struct {
 	Height       		uint32
 
 	//Body
-	Timestamp             int64
-	MerkleRoot            [32]byte
-	MerklePatriciaRoot    [32]byte
-	CommitmentProof       [crypto.COMM_PROOF_LENGTH]byte
-	State				  map[[32]byte]*Account
-	ValMapping			  *ValShardMapping
-	NofShards			  int
+	Timestamp          int64
+	MerkleRoot         [32]byte
+	MerklePatriciaRoot [32]byte
+	CommitmentProof    [crypto.COMM_PROOF_LENGTH]byte
+	State              map[[32]byte]*Account
+	ValMapping         *ValShardMapping
+	ShardBlockMapping  *ShardBlockMapping
+	NofShards          int
 }
 
 func NewEpochBlock(prevShardHashes [][32]byte, height uint32) *EpochBlock {

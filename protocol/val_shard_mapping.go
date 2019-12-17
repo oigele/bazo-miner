@@ -12,7 +12,7 @@ type ValShardMapping struct {
 	EpochHeight		  int
 }
 
-func NewMapping() *ValShardMapping {
+func NewValShardMapping() *ValShardMapping {
 	newMapping := new(ValShardMapping)
 	newMapping.ValMapping = make(map[[64]byte]int)
 	newMapping.EpochHeight = 0

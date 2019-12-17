@@ -26,8 +26,10 @@ var (
 	multisigPubKey               *ecdsa.PublicKey
 	commPrivKey, rootCommPrivKey *rsa.PrivateKey
 	// This map keeps track of the validator assignment to the shards
-	ValidatorShardMap *protocol.ValShardMapping
-	NumberOfShards    int
+	ValidatorShardMap     *protocol.ValShardMapping
+	ShardBlockMap 	      *protocol.ShardBlockMapping
+	NumberOfShards    	  int
+	NumberOfMinersInShard int
 	// This slice stores the hashes of the last blocks from the other shards, needed to create the next epoch block.
 	LastShardHashes [][32]byte
 
@@ -70,7 +72,7 @@ func InitFirstStart(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey
 	storage.DeleteAllLastClosedEpochBlock()
 	storage.WriteLastClosedEpochBlock(initialEpochBlock)
 
-	firstValMapping := protocol.NewMapping()
+	firstValMapping := protocol.NewValShardMapping()
 	initialEpochBlock.ValMapping = firstValMapping
 
 	return Init(validatorWallet, multisigWallet, rootWallet, validatorCommitment, rootCommitment)
@@ -194,9 +196,11 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 
 	/*First validator assignment is done by the bootstrapping node, the others will be done based on PoS at the end of each epoch*/
 	if (p2p.IsBootstrap()) {
-		var validatorShardMapping = protocol.NewMapping()
-		validatorShardMapping.ValMapping = AssignValidatorsToShards()
+		var validatorShardMapping = protocol.NewValShardMapping()
+		var shardBlockMapping = protocol.NewShardBlockMapping()
+		validatorShardMapping.ValMapping, shardBlockMapping.ShardBlockMapping = AssignValidatorsToShards()
 		validatorShardMapping.EpochHeight = int(lastEpochBlock.Height)
+		shardBlockMapping.EpochHeight = int(lastEpochBlock.Height)
 		ValidatorShardMap = validatorShardMapping
 		logger.Printf("Validator Shard Mapping:\n")
 		logger.Printf(validatorShardMapping.String())
@@ -522,10 +526,11 @@ func DetNumberOfShards() (numberOfShards int) {
 This function assigns the validators to the single shards in a random fashion. In case multiple validators per shard are supported,
 they would be assigned to the shards uniformly.
 */
-func AssignValidatorsToShards() map[[64]byte]int {
+func AssignValidatorsToShards() (map[[64]byte]int, map[[64]byte]int) {
 
 	/*This map denotes which validator is assigned to which shard index*/
 	validatorShardAssignment := make(map[[64]byte]int)
+	nodeToBlockAssignment := make(map[[64]byte]int)
 
 	/*Fill 'validatorAssignedMap' with the validators of the current state.
 	The bool value indicates whether the validator has been assigned to a shard
@@ -547,7 +552,7 @@ func AssignValidatorsToShards() map[[64]byte]int {
 		for i := 1; i <= NumberOfShards; i++ {
 
 			if len(validatorSlices) == 0 {
-				return validatorShardAssignment
+				return validatorShardAssignment, nodeToBlockAssignment
 			}
 
 			randomIndex := rand.Intn(len(validatorSlices))
@@ -555,12 +560,17 @@ func AssignValidatorsToShards() map[[64]byte]int {
 
 			//Assign validator to shard ID
 			validatorShardAssignment[randomValidator] = i
+
+			//already got the random
+			nodeToBlockAssignment[randomValidator] = j
 			//Remove assigned validator from active list
 			validatorSlices = removeValidator(validatorSlices, randomIndex)
 		}
 	}
-	return validatorShardAssignment
+	return validatorShardAssignment, nodeToBlockAssignment
 }
+
+
 
 //Helper functions
 

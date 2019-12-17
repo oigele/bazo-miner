@@ -164,15 +164,20 @@ func finalizeEpochBlock(epochBlock *protocol.EpochBlock) error {
 	NumberOfShards = DetNumberOfShards()
 
 	//generate new validator mapping and include mappping in the epoch block
-	valMapping := protocol.NewMapping()
-	valMapping.ValMapping = AssignValidatorsToShards()
+	//map the nodes inside the same shard to their block
+	valMapping := protocol.NewValShardMapping()
+	var shardBlockMapping = protocol.NewShardBlockMapping()
+	valMapping.ValMapping, shardBlockMapping.ShardBlockMapping = AssignValidatorsToShards()
 	valMapping.EpochHeight = int(epochBlock.Height)
+	shardBlockMapping.EpochHeight = int(epochBlock.Height)
 
 	epochBlock.ValMapping = valMapping
 	ValidatorShardMap = epochBlock.ValMapping
+	ShardBlockMap = epochBlock.ShardBlockMapping
 	epochBlock.NofShards = DetNumberOfShards()
 
 	storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
+	storage.ThisBlockID = ShardBlockMap.ShardBlockMapping[validatorAccAddress]
 	storage.ThisShardMap[int(epochBlock.Height)] = storage.ThisShardID
 
 	epochBlock.State = storage.State
