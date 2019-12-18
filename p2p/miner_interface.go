@@ -20,6 +20,9 @@ var (
 	//State transition from the network to the miner
 	StateTransitionIn = make(chan []byte)
 
+	//Block transition from the network to the miner
+	BlockTransitionIn = make(chan []byte)
+
 	//EpochBlock from the network, to the miner
 	EpochBlockIn = make(chan []byte)
 	//EpochBlock from the miner, to the network
@@ -291,6 +294,9 @@ func forwardStateTransitionToMiner(p *peer, payload []byte) () {
 	StateTransitionIn <- payload
 }
 
+func forwardBlockTransitionToMiner(p *peer, payload []byte) () {
+	BlockTransitionIn <- payload
+}
 
 func forwardLastEpochBlockToMiner(p *peer, payload []byte)  {
 	LastEpochBlockReqChan <- payload

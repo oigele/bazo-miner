@@ -153,7 +153,8 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	go incomingEpochData()
 	//Listen for incoming state transitions the network
 	go incomingStateData()
-
+	//Listen for incoming block data transitions from the network
+	go incomingBlockStateData()
 
 	//Since new validators only join after the currently running epoch ends, they do no need to download the whole shardchain history,
 	//but can continue with their work after the next epoch block and directly set their state to the global state of the first received epoch block
@@ -208,6 +209,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 
 	storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
 	storage.ThisShardMap[int(lastEpochBlock.Height)] = storage.ThisShardID
+	storage.ThisBlockMap[int(lastEpochBlock.Height)] = storage.ThisBlockID
 	epochMining(lastBlock.Hash, lastBlock.Height)
 
 	return nil

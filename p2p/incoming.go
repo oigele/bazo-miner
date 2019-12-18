@@ -25,6 +25,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		forwardEpochBlockToMinerIn(p, payload)
 	case STATE_TRANSITION_BRDCST:
 		forwardStateTransitionToMiner(p,payload)
+	case BLOCK_TRANSITION_BRDCST:
+		forwardBlockTransitionToMiner(p,payload)
 
 		//REQUESTS
 	case FUNDSTX_REQ:

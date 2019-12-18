@@ -36,6 +36,13 @@ func incomingStateData(){
 	}
 }
 
+func incomingBlockStateData() {
+	for {
+		blockTransition := <- p2p.BlockTransitionIn
+		processBlockStateData(blockTransition)
+	}
+}
+
 //Code from Kürsat
 func processEpochBlock(eb []byte) {
 	var epochBlock *protocol.EpochBlock
@@ -90,6 +97,9 @@ func processStateData(payload []byte) {
 
 //End code from Kürsat
 
+func processBlockStateData(payload []byte) {
+	//todo implement
+}
 
 //ReceivedBlockStash is a stash with all Blocks received such that we can prevent forking
 func processBlock(payload []byte) {
