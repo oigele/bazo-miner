@@ -49,6 +49,13 @@ func WriteLastClosedEpochBlock(epochBlock *protocol.EpochBlock) (err error) {
 	})
 }
 
+func WriteLastClosedShardBlock(shardBlock *protocol.ShardBlock) (err error) {
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(LASTCLOSEDSHARDBLOCK_BUCKET))
+		return b.Put(shardBlock.Hash[:], shardBlock.Encode())
+	})
+}
+
 func WriteGenesis(genesis *protocol.Genesis) error {
 	return db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(GENESIS_BUCKET))

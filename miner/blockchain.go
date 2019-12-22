@@ -299,7 +299,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					//Blocking wait
 					select {
 					case encodedStateTransition := <-p2p.StateTransitionShardReqChan:
-						stateTransition = stateTransition.DecodeTransition(encodedStateTransition)
+						stateTransition = stateTransition.DecodeStateTransition(encodedStateTransition)
 						//weird check that has to be done (run into an infinite loop when I dint)
 						if stateTransition.ShardID != id {
 							logger.Printf("Error: Id of the iteration: %d --- Id of the received transition: %d", id, stateTransition.ShardID)
@@ -467,24 +467,55 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 		err := validate(currentBlock, false)
 		if err == nil {
 
-			//Generate state transition for this block. This data is needed by the other shards to update their local states.
-			//use the freshly updated shardId, because the block always has to be in the new epoch already. If it was in the old epoch,
-			//the epoch block would not have been generated either
-			stateTransition := protocol.NewStateTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, currentBlock.Hash,
+			//TODO change this piece of code into the intra-shard comminication/sending schmeme
+			//the intra-shard communications will be sent out here and there will be a blocking wait until it's finished
+			//note that there is a possibility to accelerate the process
+
+			blockTransition := protocol.NewBlockTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, storage.ThisBlockID, currentBlock.Hash,
 				currentBlock.ContractTxData, currentBlock.FundsTxData, currentBlock.ConfigTxData, currentBlock.StakeTxData, currentBlock.AggTxData)
 
-			logger.Printf("Transactions to delete in other miners count: %d - New Mempool Size: %d\n",len(stateTransition.ContractTxData)+len(stateTransition.FundsTxData)+len(stateTransition.ConfigTxData)+ len(stateTransition.StakeTxData) + len(stateTransition.AggTxData),storage.GetMemPoolSize())
+			broadcastBlockTransition(blockTransition)
 
-			logger.Printf("Broadcast state transition for height %d\n", currentBlock.Height)
-			//Broadcast state transition to other shards
-			broadcastStateTransition(stateTransition)
-			//Write state transition to own stash. Needed in case the network requests it at a later stage.
-			storage.WriteToOwnStateTransitionkStash(stateTransition)
-			storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
+			//This node is the leader in the shard
+			if storage.ThisBlockID == 1 {
+
+
+
+
+				//Generate state transition for this block. This data is needed by the other shards to update their local states.
+				//use the freshly updated shardId, because the block always has to be in the new epoch already. If it was in the old epoch,
+				//the epoch block would not have been generated either
+				stateTransition := protocol.NewStateTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, currentBlock.Hash,
+					currentBlock.ContractTxData, currentBlock.FundsTxData, currentBlock.ConfigTxData, currentBlock.StakeTxData, currentBlock.AggTxData)
+
+				logger.Printf("Transactions to delete in other miners count: %d - New Mempool Size: %d\n",len(stateTransition.ContractTxData)+len(stateTransition.FundsTxData)+len(stateTransition.ConfigTxData)+ len(stateTransition.StakeTxData) + len(stateTransition.AggTxData),storage.GetMemPoolSize())
+
+				logger.Printf("Broadcast state transition for height %d\n", currentBlock.Height)
+				//Broadcast state transition to other shards
+				broadcastStateTransition(stateTransition)
+				//Write state transition to own stash. Needed in case the network requests it at a later stage.
+				storage.WriteToOwnStateTransitionkStash(stateTransition)
+				storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
+			} else {
+				//wait until epoch block is received
+				shardBlockReceived := false
+				for !shardBlockReceived {
+					newShardBlock := <- p2p.ShardBlockReceivedChan
+					if newShardBlock.Height == lastBlock.Height + 1 {
+						broadcastShardBlock(storage.ReadLastClosedShardBlock())
+						shardBlockReceived = true
+					}
+				}
+			}
+
+
+
 			logger.Printf("Broadcast block for height %d\n", currentBlock.Height)
 
 			broadcastBlock(currentBlock)
 			logger.Printf("Validated block (mined): %vState:\n%v", currentBlock, getState())
+
+
 		} else {
 			logger.Printf("Mined block (%x) could not be validated: %v\n", currentBlock.Hash[0:8], err)
 		}
@@ -498,6 +529,8 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 	FirstStartAfterEpoch = false
 	NumberOfShardsDelayed = NumberOfShards
 	storage.ThisShardIDDelayed = storage.ThisShardID
+
+
 
 }
 

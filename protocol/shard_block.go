@@ -22,6 +22,7 @@ type ShardBlock struct {
 	ShardState			  map[[32]byte]*Account
 	ValMapping			  *ValShardMapping
 	NofMiners			  int
+	ShardID				  int
 }
 
 func NewShardBlock(prevBlockHash [32]byte, height uint32) *ShardBlock {
@@ -48,6 +49,7 @@ func (shardBlock *ShardBlock) HashShardBlock() [32]byte {
 		shardState					  map[[32]byte]*Account
 		valMapping					  *ValShardMapping
 		noMiners					  int
+		shardID						  int
 	}{
 		shardBlock.PrevBlockHash,
 		shardBlock.Timestamp,
@@ -58,6 +60,7 @@ func (shardBlock *ShardBlock) HashShardBlock() [32]byte {
 		shardBlock.ShardState,
 		shardBlock.ValMapping,
 		shardBlock.NofMiners,
+		shardBlock.ShardID,
 	}
 	return SerializeHashContent(blockHash)
 }
@@ -79,6 +82,7 @@ func (shardBlock *ShardBlock) Encode() []byte {
 		ShardState:			   shardBlock.ShardState,
 		ValMapping:			   shardBlock.ValMapping,
 		NofMiners:			   shardBlock.NofMiners,
+		ShardID:			   shardBlock.ShardID,
 	}
 
 	buffer := new(bytes.Buffer)
@@ -125,7 +129,8 @@ func (shardBlock ShardBlock) String() string {
 		"Commitment Proof: %x\n" +
 		"Shard State: \n%v\n" +
 		"Validator Shard Mapping: %s\n" +
-		"Number of Miners: %d\n",
+		"Number of Miners: %d\n" +
+		"Shard ID: %d\n",
 		shardBlock.Hash[0:8],
 		shardBlock.PrevBlockHash,
 		shardBlock.Timestamp,
@@ -136,6 +141,7 @@ func (shardBlock ShardBlock) String() string {
 		shardBlock.StringShardState(),
 		shardBlock.ValMapping.String(),
 		shardBlock.NofMiners,
+		shardBlock.ShardID,
 	)
 }
 

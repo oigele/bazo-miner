@@ -72,6 +72,15 @@ func DeleteAllLastClosedEpochBlock() error {
 	})
 }
 
+func DeleteAllLastClosedShardBlock() error {
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(LASTCLOSEDSHARDBLOCK_BUCKET))
+		return b.ForEach(func(k, v []byte) error {
+			return b.Delete(k)
+		})
+	})
+}
+
 func DeleteOpenTx(transaction protocol.Transaction) {
 	openTxMutex.Lock()
 	delete(txMemPool, transaction.Hash())

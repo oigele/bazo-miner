@@ -24,8 +24,8 @@ func NewStateStash() *StateStash {
 
 /*This function includes a key and tracks its order in the slice*/
 func (m *StateStash) Set(k KeyState, v ValueState) {
-	stateMutex.Lock()
-	defer stateMutex.Unlock()
+	stateBlockMutex.Lock()
+	defer stateBlockMutex.Unlock()
 	/*Check if the map does not contain the key*/
 	if _, ok := m.M[k]; !ok {
 		m.Keys = append(m.Keys, k)

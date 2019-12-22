@@ -65,6 +65,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		intermediateNodesRes(p, payload)
 	case STATE_TRANSITION_REQ:
 		stateTransitionRes(p,payload)
+	case BLOCK_TRANSITION_REQ:
+		blockTransitionRes(p,payload)
 	case GENESIS_REQ:
 		genesisRes(p, payload)
 	case FIRST_EPOCH_BLOCK_REQ:
@@ -89,6 +91,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		forwardTxReqToMiner(p, payload, ACCTX_RES)
 	case STATE_TRANSITION_RES:
 		forwardStateTransitionShardReqToMiner(p,payload)
+	case BLOCK_TRANSITION_RES:
+		forwardBlockTransitionShardReqToMiner(p,payload)
 	case CONFIGTX_RES:
 		forwardTxReqToMiner(p, payload, CONFIGTX_RES)
 	case STAKETX_RES:

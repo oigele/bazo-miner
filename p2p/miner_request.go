@@ -148,3 +148,19 @@ func StateTransitionReqShard(shardID int,height int) {
 
 	StateTransitionShardOut <- []byte(strRequest)
 }
+
+func BlockTransitionReqShard(shardID int, blockID int, height int) {
+	strShardID := strconv.Itoa(shardID)
+	strBlockID := strconv.Itoa(blockID)
+	strHeight := strconv.Itoa(height)
+
+	strRequest := ""
+	strRequest += strShardID
+	strRequest += ":"
+	strRequest += strBlockID
+	strRequest += ":"
+	strRequest += strHeight
+
+	BlockTransitionShardOut <- []byte(strRequest)
+
+}

@@ -301,7 +301,21 @@ func ReadLastClosedEpochBlock() (epochBlock *protocol.EpochBlock) {
 
 	return epochBlock
 }
+func ReadLastClosedShardBlock() (shardBlock *protocol.ShardBlock) {
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(LASTCLOSEDSHARDBLOCK_BUCKET))
+		cb := b.Cursor()
+		_, encodedBlock := cb.First()
+		shardBlock = shardBlock.Decode(encodedBlock)
+		return nil
+	})
 
+	if shardBlock == nil {
+		return nil
+	}
+
+	return shardBlock
+}
 
 func GetMemPoolSize() int {
 	memPoolMutex.Lock()
@@ -383,5 +397,14 @@ func ReadStateTransitionFromOwnStash(height int) *protocol.StateTransition {
 		}
 	}
 
+	return nil
+}
+
+func ReadBlockTransitionFromOwnStash(height int) *protocol.BlockTransition {
+	for _, bt := range OwnBlockTransitionStash {
+		if bt.Height == height {
+			return bt
+		}
+	}
 	return nil
 }

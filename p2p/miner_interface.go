@@ -17,6 +17,9 @@ var (
 	//State transition from the miner to the network
 	StateTransitionOut = make(chan []byte)
 
+	//Block Transition from the miner to the network
+	BlockTransitionOut = make(chan []byte)
+
 	//State transition from the network to the miner
 	StateTransitionIn = make(chan []byte)
 
@@ -28,7 +31,16 @@ var (
 	//EpochBlock from the miner, to the network
 	EpochBlockOut = make(chan []byte)
 
+	//ShardBlock from the network, to the miner
+	ShardBlockIn = make(chan []byte)
+
+	//EpochBlock from the miner, to the network
+	ShardBlockOut = make(chan []byte)
+
 	EpochBlockReceivedChan = make(chan protocol.EpochBlock)
+
+	ShardBlockReceivedChan = make(chan protocol.ShardBlock)
+
 
 
 	VerifiedTxsOut = make(chan []byte)
@@ -44,6 +56,10 @@ var (
 	BlockReqChan = make(chan []byte)
 	StateTransitionShardReqChan 	= make(chan []byte)
 	StateTransitionShardOut 		= make(chan []byte)
+
+	BlockTransitionShardReqChan 	= make(chan []byte)
+	BlockTransitionShardOut 		= make(chan []byte)
+
 
 	FirstEpochBlockReqChan 	= make(chan []byte)
 	EpochBlockReqChan 	= make(chan []byte)
@@ -97,6 +113,23 @@ func forwardStateTransitionBrdcstToMiner()  {
 	for {
 		st := <-StateTransitionOut
 		toBrdcst := BuildPacket(STATE_TRANSITION_BRDCST, st)
+		minerBrdcstMsg <- toBrdcst
+	}
+}
+
+func forwardBlockTransitionBrdcstToMiner()  {
+	for {
+		bt := <-BlockTransitionOut
+		toBrdcst := BuildPacket(BLOCK_TRANSITION_BRDCST, bt)
+		minerBrdcstMsg <- toBrdcst
+	}
+}
+
+func forwardEpochBlockBrdcstToMiner() {
+	for {
+		epochBlock := <-EpochBlockOut
+		toBrdcst := BuildPacket(EPOCH_BLOCK_BRDCST, epochBlock)
+		logger.Printf("Build Epoch Block Brdcst Packet...\n")
 		minerBrdcstMsg <- toBrdcst
 	}
 }
@@ -305,6 +338,11 @@ func forwardLastEpochBlockToMiner(p *peer, payload []byte)  {
 func forwardStateTransitionShardReqToMiner(p *peer, payload []byte) {
 	logger.Printf("received state transition response..\n")
 	StateTransitionShardReqChan <- payload
+}
+
+func forwardBlockTransitionShardReqToMiner(p *peer, payload []byte) {
+	logger.Printf("received block transition response..\n")
+	BlockTransitionShardReqChan <- payload
 }
 
 func forwardGenesisReqToMiner(p *peer, payload []byte) {

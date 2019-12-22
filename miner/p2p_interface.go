@@ -73,7 +73,7 @@ func processEpochBlock(eb []byte) {
 
 func processStateData(payload []byte) {
 	var stateTransition *protocol.StateTransition
-	stateTransition = stateTransition.DecodeTransition(payload)
+	stateTransition = stateTransition.DecodeStateTransition(payload)
 	if(lastEpochBlock != nil){
 		//removed the check whether the shard id is the same as the id now. This will never lead to any inconsistencies and makes it easier to handle state transitions which reach over an epoch block.
 			stateHash := stateTransition.HashTransition()
@@ -99,6 +99,14 @@ func processStateData(payload []byte) {
 
 func processBlockStateData(payload []byte) {
 	//todo implement
+	var blockTransition *protocol.BlockTransition
+	blockTransition = blockTransition.DecodeBlockTransition(payload)
+	if(lastEpochBlock != nil){
+		hash := blockTransition.HashTransition()
+		if !storage.ReceivedBlockTransitionStash.BlockTransitionIncluded(hash) {
+
+		}
+	}
 }
 
 //ReceivedBlockStash is a stash with all Blocks received such that we can prevent forking
@@ -173,11 +181,21 @@ func broadcastEpochBlock(epochBlock *protocol.EpochBlock) {
 	p2p.EpochBlockOut <- epochBlock.Encode()
 }
 
-func broadcastStateTransition(st *protocol.StateTransition) {
-	p2p.StateTransitionOut <- st.EncodeTransition()
+func broadcastShardBlock(shardBlock *protocol.ShardBlock) {
+	logger.Printf("Writing Shard block (%x) to channel ShardBlockOut\n", shardBlock.Hash[0:8])
+	p2p.ShardBlockOut <- shardBlock.Encode()
 }
 
+func broadcastStateTransition(st *protocol.StateTransition) {
+	p2p.StateTransitionOut <- st.EncodeStateTransition()
+}
+
+
 //here Kürsat's code ends
+
+func broadcastBlockTransition(st *protocol.BlockTransition) {
+	p2p.BlockTransitionOut <- st.EncodeBlockTransition()
+}
 
 //p2p.BlockOut is a channel whose data get consumed by the p2p package
 func broadcastBlock(block *protocol.Block) {
