@@ -12,6 +12,7 @@ var (
 	dummyLastBlock	  = protocol.NewBlock([32]byte{},0)
 	blockBeingProcessed *protocol.Block
 	lastEpochBlock	  *protocol.EpochBlock
+	lastShardBlock		*protocol.ShardBlock
 	globalBlockCount  = int64(-1)
 	localBlockCount   = int64(-1)
 	target            []uint8    //Stores the history of target values

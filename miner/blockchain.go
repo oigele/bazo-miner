@@ -7,6 +7,7 @@ import (
 	"github.com/oigele/bazo-miner/p2p"
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
+	"golang.org/x/crypto/blowfish"
 	"log"
 	"math"
 	"math/rand"
@@ -469,19 +470,25 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 			//TODO change this piece of code into the intra-shard comminication/sending schmeme
 			//the intra-shard communications will be sent out here and there will be a blocking wait until it's finished
-			//note that there is a possibility to accelerate the process
+			//note that there is a possibility to accelerate the process. But this acceleration takes time to implement. Check notes.
 
 			blockTransition := protocol.NewBlockTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, storage.ThisBlockID, currentBlock.Hash,
 				currentBlock.ContractTxData, currentBlock.FundsTxData, currentBlock.ConfigTxData, currentBlock.StakeTxData, currentBlock.AggTxData)
 
 			broadcastBlockTransition(blockTransition)
 
-			//This node is the leader in the shard
+			storage.WriteToOwnBlockTransitionkStash(blockTransition)
+			storage.ReceivedBlockTransitionStash.Set(blockTransition.HashTransition(), blockTransition)
+
+			
+
+			//This node is the leader in the shard. It has to mint the shard block and send the transitions out to the network.
 			if storage.ThisBlockID == 1 {
 
 
-
-
+				currentShardBlock := protocol.NewShardBlock(currentBlock.Hash, currentBlock.Height + 1)
+				currentShardBlock.ShardID = storage.ThisShardID
+				currentShardBlock.
 				//Generate state transition for this block. This data is needed by the other shards to update their local states.
 				//use the freshly updated shardId, because the block always has to be in the new epoch already. If it was in the old epoch,
 				//the epoch block would not have been generated either
@@ -497,7 +504,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				storage.WriteToOwnStateTransitionkStash(stateTransition)
 				storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
 			} else {
-				//wait until epoch block is received
+				//wait until shard block is received
 				shardBlockReceived := false
 				for !shardBlockReceived {
 					newShardBlock := <- p2p.ShardBlockReceivedChan
@@ -507,8 +514,6 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					}
 				}
 			}
-
-
 
 			logger.Printf("Broadcast block for height %d\n", currentBlock.Height)
 

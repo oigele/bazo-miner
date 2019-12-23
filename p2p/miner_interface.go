@@ -134,11 +134,11 @@ func forwardEpochBlockBrdcstToMiner() {
 	}
 }
 
-func forwardEpochBlockBrdcstToMiner() {
+func forwardShardBlockBrdcstToMiner() {
 	for {
-		epochBlock := <-EpochBlockOut
-		toBrdcst := BuildPacket(EPOCH_BLOCK_BRDCST, epochBlock)
-		logger.Printf("Build Epoch Block Brdcst Packet...\n")
+		shardBlock := <-ShardBlockOut
+		toBrdcst := BuildPacket(SHARD_BLOCK_BRDCST, shardBlock)
+		logger.Printf("Build Shard Block Brdcst Packet...\n")
 		minerBrdcstMsg <- toBrdcst
 	}
 }

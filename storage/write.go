@@ -181,3 +181,11 @@ func WriteToOwnStateTransitionkStash(st *protocol.StateTransition) {
 		OwnStateTransitionStash = append(OwnStateTransitionStash[:0], OwnStateTransitionStash[1:]...)
 	}
 }
+
+func WriteToOwnBlockTransitionkStash(bt *protocol.BlockTransition) {
+	OwnBlockTransitionStash = append(OwnBlockTransitionStash,bt)
+
+	if(len(OwnBlockTransitionStash) > 20){
+		OwnBlockTransitionStash = append(OwnBlockTransitionStash[:0], OwnBlockTransitionStash[1:]...)
+	}
+}

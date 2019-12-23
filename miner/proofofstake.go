@@ -288,6 +288,96 @@ func proofOfStakeEpoch(diff uint8,
 	return timestamp, nil
 }
 
+
+func proofOfStakeShard(diff uint8,
+	prevHashShardBlock [32]byte,
+	height uint32,
+	balance uint64,
+	commitmentProof [crypto.COMM_PROOF_LENGTH]byte) (int64, error) {
+
+	var (
+		pos    [32]byte
+		byteNr uint8
+		abort  bool
+
+		timestampBuf [8]byte
+		heightBuf    [4]byte
+
+		timestamp int64
+
+		hashArgs []byte
+	)
+
+	// allocate memory
+	// COMM_KEY_LENGTH bytes (localCommPubKey) + 8 bytes (count) = 256 + 1 + 8
+	hashArgs = make([]byte, crypto.COMM_PROOF_LENGTH + 4 + 8)
+
+	binary.BigEndian.PutUint32(heightBuf[:], height)
+
+	index := 0
+
+	copy(hashArgs[index:index + crypto.COMM_PROOF_LENGTH], commitmentProof[:]) // COMM_KEY_LENGTH bytes
+	index += crypto.COMM_PROOF_LENGTH
+	copy(hashArgs[index:index + 4], heightBuf[:]) 		// 4 bytes
+	index += 4
+
+	timestampBufIndexStart := index
+	timestampBufIndexEnd := index + 8
+
+	for range time.Tick(time.Second) {
+		// lastBlock is a global variable which points to the last block. This check makes sure we abort if another
+		// block has been validated. In the current implementation this should not matter because only one block is concurrently mining the shard block
+		// still I leave this here in case the code is expanded later
+		if prevHashShardBlock != lastShardBlock.Hash {
+			logger.Printf("Abort mining EPOCH BLOCK, another one has been successfully validated in the meantime")
+			return -1, errors.New("Abort mining EPOCH BLOCK, another one has been successfully validated in the meantime")
+		}
+
+		abort = false
+
+		//add the number of seconds that have passed since the Unix epoch (00:00:00 UTC, 1 January 1970)
+		timestamp = time.Now().Unix()
+		binary.BigEndian.PutUint64(timestampBuf[:], uint64(timestamp))
+		copy(hashArgs[timestampBufIndexStart:timestampBufIndexEnd], timestampBuf[:]) //8 bytes
+
+		//calculate the hash
+		pos = sha3.Sum256(hashArgs[:])
+
+		//divide the hash by the balance (should not happen but possible in a testing environment)
+		data := binary.BigEndian.Uint64(pos[:])
+		if balance == 0 {
+			return -1, errors.New("Zero division: Account owns 0 coins.")
+		}
+		data = data / balance
+		var buf bytes.Buffer
+		binary.Write(&buf, binary.BigEndian, data)
+
+		copy(pos[0:32], buf.Bytes())
+
+		//TODO @simibac What do you do here?
+		//Byte check
+		for byteNr = 0; byteNr < (uint8)(diff/8); byteNr++ {
+			if pos[byteNr] != 0 {
+				//continue begins the next iteration of the innermost
+				abort = true
+				break
+			}
+		}
+
+		if abort {
+			continue
+		}
+		//Bit check
+		if diff%8 != 0 && pos[byteNr] >= 1<<(8-diff%8) {
+			continue
+		}
+		break
+	}
+
+	return timestamp, nil
+
+}
+
 //TODO uncomment
 func GetLatestProofs(n int, block *protocol.Block) (prevProofs [][crypto.COMM_PROOF_LENGTH]byte) {
 

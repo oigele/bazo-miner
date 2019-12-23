@@ -22,6 +22,7 @@ type Block struct {
 	//Header
 	Header      	 	byte
 	ShardId		 		int
+	BlockId				int
 	Hash         		[32]byte
 	PrevHash     		[32]byte
 //	HashWithoutTx   	[32]byte 			//valid hash once all tx are aggregated
@@ -115,6 +116,8 @@ func (block *Block) HashBlockWithoutMerkleRoot() [32]byte {
 		prevHash              			[32]byte
 //		prevHashWithoutTx	  			[32]byte
 		timestamp             			int64
+		shardId							int
+		blockId							int
 		merkleRoot            			[32]byte
 		beneficiary           			[32]byte
 		commitmentProof       			[crypto.COMM_PROOF_LENGTH]byte
@@ -128,6 +131,8 @@ func (block *Block) HashBlockWithoutMerkleRoot() [32]byte {
 		block.PrevHash,
 //		block.PrevHashWithoutTx,
 		block.Timestamp,
+		block.ShardId,
+		block.BlockId,
 		[32]byte{},
 		block.Beneficiary,
 		block.CommitmentProof,

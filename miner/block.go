@@ -52,6 +52,8 @@ func newBlock(prevHash [32]byte, commitmentProof [crypto.COMM_PROOF_LENGTH]byte,
 	block.StateCopy = make(map[[32]byte]*protocol.Account)
 	//Doesnt get the delayed shard id, because a newly mined block will always have the fresh shard assignment.
 	block.ShardId = storage.ThisShardID
+	block.BlockId = storage.ThisBlockID
+
 
 	return block
 }
@@ -1288,11 +1290,14 @@ func validate(b *protocol.Block, initialSetup bool) error {
 
 			storage.RelativeState = storage.GetRelativeState(previousStateCopy,storage.State)
 
+			storage.State = previousStateCopy
+
 			postValidate(blockDataMap[block.Hash], initialSetup)
 			if i != len(blocksToValidate)-1 {
 				logger.Printf("Validated block (During Validation of other block %v): %vState:\n%v", b.Hash[0:8] , block, getState())
 			}
 		}
+		//TODO implement rollback method
 	} else {
 		//Rollback
 		for _, block := range blocksToRollback {
