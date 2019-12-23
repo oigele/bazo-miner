@@ -7,7 +7,6 @@ import (
 	"github.com/oigele/bazo-miner/p2p"
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
-	"golang.org/x/crypto/blowfish"
 	"log"
 	"math"
 	"math/rand"
@@ -146,6 +145,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	storage.DeleteBootstrapReceivedMempool()
 
 	var initialBlock *protocol.Block
+	var initialShardBlock *protocol.ShardBlock
 
 
 	//Listen for incoming blocks from the network
@@ -167,6 +167,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 			return err
 		}
 		lastBlock = initialBlock
+		lastShardBlock = initialShardBlock
 	} else {
 		for {
 			//As the non-bootstrapping node, wait until I receive the last epoch block as well as the validator assignment
@@ -182,6 +183,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 					storage.ThisShardMap[int(lastEpochBlock.Height)] = storage.ThisShardID
 					FirstStartAfterEpoch = true
 					lastBlock = dummyLastBlock
+					lastShardBlock = dummyLastShardBlock
 					epochMining(lastEpochBlock.Hash, lastEpochBlock.Height) //start mining based on the received Epoch Block
 					//set the ID to 0 such that there wont be any answers to requests that shouldnt be answered
 					storage.ThisShardIDDelayed = 0
@@ -255,7 +257,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			logger.Printf("Shards this epoch: %d", NumberOfShardsDelayed)
 			logger.Printf("My Shard ID this epoch %d", storage.ThisShardIDDelayed)
 			//Retrieve all state transitions from the local state with the height of my last block
-			stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, lastBlock.Height)
+			stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, lastShardBlock.Height)
 
 			if (len(stateStashForHeight) != 0) {
 				//Iterate through state transitions and apply them to local state, keep track of processed shards
@@ -294,9 +296,9 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 					time.Sleep(time.Second)
 
-					logger.Printf("requesting state transition for lastblock height: %d shard: %d\n", lastBlock.Height, id)
+					logger.Printf("requesting state transition for lastblock height: %d shard: %d\n", lastShardBlock.Height, id)
 
-					p2p.StateTransitionReqShard(id, int(lastBlock.Height))
+					p2p.StateTransitionReqShard(id, int(lastShardBlock.Height))
 					//Blocking wait
 					select {
 					case encodedStateTransition := <-p2p.StateTransitionShardReqChan:
@@ -321,13 +323,13 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 
 					case <-time.After(5 * time.Second):
-						logger.Printf("have been waiting for 5 seconds for lastblock height: %d\n", lastBlock.Height)
+						logger.Printf("have been waiting for 5 seconds for lastblock height: %d\n", lastShardBlock.Height)
 						//It the requested state transition has not been received, then continue with requesting the other missing ones
-						logger.Printf("broadcasting state transition from last block height %d again in case it couldnt be transmitted", int(lastBlock.Height) - 1)
-						lastTransition := storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height) - 1)
+						logger.Printf("broadcasting state transition from last block height %d again in case it couldnt be transmitted", int(lastShardBlock.Height) - 1)
+						lastTransition := storage.ReadStateTransitionFromOwnStash(int(lastShardBlock.Height) - 2)
 						//overwrite in case the previous block is an epoch block. then the last transition for that height is nil and we need to go further back
 						if lastTransition == nil {
-							lastTransition = storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height) - 2)
+							lastTransition = storage.ReadStateTransitionFromOwnStash(int(lastShardBlock.Height) - 3)
 						}
 						if lastTransition != nil {
 							broadcastStateTransition(lastTransition)
@@ -468,27 +470,112 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 		err := validate(currentBlock, false)
 		if err == nil {
 
+			broadcastBlock(currentBlock)
 			//TODO change this piece of code into the intra-shard comminication/sending schmeme
 			//the intra-shard communications will be sent out here and there will be a blocking wait until it's finished
 			//note that there is a possibility to accelerate the process. But this acceleration takes time to implement. Check notes.
-
 			blockTransition := protocol.NewBlockTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, storage.ThisBlockID, currentBlock.Hash,
 				currentBlock.ContractTxData, currentBlock.FundsTxData, currentBlock.ConfigTxData, currentBlock.StakeTxData, currentBlock.AggTxData)
-
-			broadcastBlockTransition(blockTransition)
-
 			storage.WriteToOwnBlockTransitionkStash(blockTransition)
 			storage.ReceivedBlockTransitionStash.Set(blockTransition.HashTransition(), blockTransition)
 
-			
+
+			//generate sequence of all shard IDs starting from 1
+			blockIDs := makeRange(1, NumberOfMinersInShard)
+			logger.Printf("Number of miners in shard: %d\n", NumberOfMinersInShard)
+
+			//This map keeps track of the shards whose state transitions have been processed.
+			//Once all entries are set to true, the synchronisation is done and the validator can continue with mining of the next shard block
+			BlockTransitionBoolMap := make(map[int]bool)
+			for k, _ := range BlockTransitionBoolMap {
+				BlockTransitionBoolMap[k] = false
+			}
+
+			for {
+				if NumberOfMinersInShard == 1 {
+					break
+				}
+
+				broadcastBlockTransition(blockTransition)
+
+				logger.Printf("Shards this epoch: %d", NumberOfShardsDelayed)
+				logger.Printf("My Shard ID this epoch %d", storage.ThisShardIDDelayed)
+				//Retrieve all state transitions from the local state with the height of my last block
+				blockTransitionStashForHeight := protocol.ReturnBlockTransitionForHeight(storage.ReceivedBlockTransitionStash, lastBlock.Height)
+
+				if (len(blockTransitionStashForHeight) != 0) {
+					//Iterate through block transitions and apply them to local state, keep track of processed shards
+					//We only accept block transitions to our stash if they have our own shard ID
+					for _, bt := range blockTransitionStashForHeight {
+						if (BlockTransitionBoolMap[bt.BlockID] == false && bt.BlockID != storage.ThisBlockID) {
+							//safety check. This shouldnt happen. Watch out for it in error log
+							if (bt.ShardID != storage.ThisShardID) {
+								logger.Printf("We got a problem. Transition shard ID != this shard ID")
+							}
+							//Apply all relative account changes to my local state
+							storage.State = storage.ApplyRelativeState(storage.State, bt.RelativeStateChange)
+							//Delete transactions from Mempool (Transaction pool), which were validated
+							//by the other shards to avoid starvation in the mempool
+							DeleteTransactionFromMempool(bt.ContractTxData, bt.FundsTxData, bt.ConfigTxData, bt.StakeTxData, bt.AggTxData)
+							//Set the particular shard as being processed
+							BlockTransitionBoolMap[bt.BlockID] = true
+							logger.Printf("Processed block transition of block nr: %d\n", bt.BlockID)
+						}
+					}
+					//If all state transitions have been received, stop synchronisation. Note that the state stash also includes the own transition
+					if (len(blockTransitionStashForHeight) == NumberOfMinersInShard) {
+						logger.Printf("Already received all block transitions")
+						break
+					}
+				}
+				for _, blockId := range blockIDs {
+					if (blockId != storage.ThisShardID && BlockTransitionBoolMap[blockId] == false) {
+						var blockTransition *protocol.BlockTransition
+
+
+						logger.Printf("requesting block transition for lastblock height: %d shard: %d\n", lastBlock.Height, blockId)
+
+						p2p.BlockTransitionReqShard(storage.ThisShardID, blockId, int(lastBlock.Height))
+						//Blocking wait
+						select {
+						case encodedBlockTransition := <-p2p.BlockTransitionShardReqChan:
+							blockTransition = blockTransition.DecodeBlockTransition(encodedBlockTransition)
+							if blockTransition.ShardID != blockId {
+								logger.Printf("Error: Id of the iteration: %d --- Id of the received transition: %d", blockId, blockTransition.ShardID)
+								continue
+							}
+							//Apply state transition to my local state
+							storage.State = storage.ApplyRelativeState(storage.State, blockTransition.RelativeStateChange)
+
+							logger.Printf("Writing state back to stash Shard ID: %v  VS my shard ID: %v - Height: %d\n", blockTransition.ShardID, storage.ThisShardID, blockTransition.Height)
+							storage.ReceivedBlockTransitionStash.Set(blockTransition.HashTransition(), blockTransition)
+
+							//Delete transactions from mempool, which were validated by the other shards
+							DeleteTransactionFromMempool(blockTransition.ContractTxData, blockTransition.FundsTxData, blockTransition.ConfigTxData, blockTransition.StakeTxData, blockTransition.AggTxData)
+
+							BlockTransitionBoolMap[blockTransition.BlockID] = true
+
+							logger.Printf("Processed state transition of shard: %d\n", blockTransition.ShardID)
+
+
+						case <-time.After(5 * time.Second):
+							logger.Printf("have been waiting for 5 seconds for lastblock height: %d\n", lastBlock.Height)
+							//It the requested state transition has not been received, then continue with requesting the other missing ones
+							//just in case i'm the blocking element, broadcast transition again
+							broadcastBlockTransition(storage.ReadBlockTransitionFromOwnStash(int(lastBlock.Height)))
+							time.Sleep(time.Second)
+							continue
+						}
+					}
+				}
+			}
 
 			//This node is the leader in the shard. It has to mint the shard block and send the transitions out to the network.
 			if storage.ThisBlockID == 1 {
-
-
 				currentShardBlock := protocol.NewShardBlock(currentBlock.Hash, currentBlock.Height + 1)
 				currentShardBlock.ShardID = storage.ThisShardID
-				currentShardBlock.
+
+				//Todo finalize shard block and send it through the network
 				//Generate state transition for this block. This data is needed by the other shards to update their local states.
 				//use the freshly updated shardId, because the block always has to be in the new epoch already. If it was in the old epoch,
 				//the epoch block would not have been generated either
@@ -513,6 +600,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						shardBlockReceived = true
 					}
 				}
+				//todo implement request structure
 			}
 
 			logger.Printf("Broadcast block for height %d\n", currentBlock.Height)
@@ -562,6 +650,16 @@ func DetNumberOfShards() (numberOfShards int) {
 	return int(math.Ceil(float64(GetValidatorsCount()) / float64(ActiveParameters.validators_per_shard)))
 }
 
+func DetNumberOfBlocksInThisShard(ValidatorShardMap protocol.ValShardMapping, shardId int) int {
+	numberOfBlocksInThisShard := 0
+	for _, ID := range ValidatorShardMap.ValMapping {
+		if ID == shardId {
+			numberOfBlocksInThisShard += 1
+		}
+	}
+	return numberOfBlocksInThisShard
+}
+
 /**
 This function assigns the validators to the single shards in a random fashion. In case multiple validators per shard are supported,
 they would be assigned to the shards uniformly.
@@ -571,6 +669,9 @@ func AssignValidatorsToShards() (map[[64]byte]int, map[[64]byte]int) {
 	/*This map denotes which validator is assigned to which shard index*/
 	validatorShardAssignment := make(map[[64]byte]int)
 	nodeToBlockAssignment := make(map[[64]byte]int)
+
+
+
 
 	/*Fill 'validatorAssignedMap' with the validators of the current state.
 	The bool value indicates whether the validator has been assigned to a shard
@@ -603,6 +704,8 @@ func AssignValidatorsToShards() (map[[64]byte]int, map[[64]byte]int) {
 
 			//already got the random
 			nodeToBlockAssignment[randomValidator] = j
+
+
 			//Remove assigned validator from active list
 			validatorSlices = removeValidator(validatorSlices, randomIndex)
 		}

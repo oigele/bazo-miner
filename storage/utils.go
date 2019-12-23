@@ -3,6 +3,7 @@ package storage
 import (
 	"errors"
 	"fmt"
+	"github.com/KuersatAydinli/bazo-miner/storage"
 	"github.com/oigele/bazo-miner/protocol"
 	"io"
 	"log"
@@ -155,4 +156,59 @@ func ApplyRelativeState(statePrev map[[32]byte]*protocol.Account, stateRel map[[
 		}
 	}
 	return statePrev
+}
+
+func AggregateBlockTransitionsToStateTransition(height int, shardid int, blockHash [32]byte) *protocol.StateTransition  {
+
+	//keep in mind that this stash should only contain block transitions from the own shard
+	blockTransitionStashForHeight := protocol.ReturnBlockTransitionForHeight(ReceivedBlockTransitionStash, uint32(height))
+
+	var ContractTxData [][32]byte
+	var FundsTxData [][32]byte
+	var ConfigTxData [][32]byte
+	var StakeTxData [][32]byte
+	var AggTxData [][32]byte
+	var RelativeState map[[32]byte]*protocol.RelativeAccount
+
+	//aggregate slices and aggregate relative state
+	for _, transition := range blockTransitionStashForHeight {
+		ContractTxData = append(ContractTxData, transition.ContractTxData...)
+		FundsTxData = append(FundsTxData, transition.FundsTxData...)
+		ConfigTxData = append(ConfigTxData, transition.ConfigTxData...)
+		StakeTxData = append(StakeTxData, transition.StakeTxData...)
+		AggTxData = append(AggTxData, transition.AggTxData...)
+		RelativeState = AggregateRelativeState(RelativeState, transition.RelativeStateChange)
+	}
+
+	return protocol.NewStateTransition(RelativeState, height, shardid, blockHash, ContractTxData, FundsTxData, ConfigTxData, StakeTxData, AggTxData)
+
+}
+
+func AggregateRelativeState(stateRelPrev map[[32]byte]*protocol.RelativeAccount, stateRel map[[32]byte]*protocol.RelativeAccount) map[[32]byte]*protocol.RelativeAccount {
+
+	//iterate through all accounts in the new relative account. check if the current relative state is missing this account
+	for krel,_ := range stateRel {
+		if _, ok := stateRelPrev[krel]; !ok {
+			accNewRel := stateRel[krel]
+			accNew := protocol.NewRelativeAccount(stateRel[krel].Address, [32]byte{}, accNewRel.Balance, accNewRel.IsStaking, accNewRel.CommitmentKey, accNewRel.Contract, accNewRel.ContractVariables)
+			accNew.TxCnt = accNewRel.TxCnt
+			accNew.StakingBlockHeight = accNewRel.StakingBlockHeight
+			stateRelPrev[krel] = &accNew
+		} else {
+			accRelPrev := stateRelPrev[krel]
+			accRel := stateRel[krel]
+
+			//Adjust the account information
+			accRelPrev.Balance = accRelPrev.Balance + accRel.Balance
+			accRelPrev.TxCnt = accRelPrev.TxCnt + accRel.TxCnt
+			accRelPrev.StakingBlockHeight = accRelPrev.StakingBlockHeight + accRel.StakingBlockHeight
+			//Staking Tx can only be positive. So only take the info from the relative state if currently not staking (otherwhise we might accidentally change the state back)
+			//Also take over commitment key.
+			if accRelPrev.IsStaking == false {
+				accRelPrev.IsStaking = accRel.IsStaking
+				accRelPrev.CommitmentKey = accRel.CommitmentKey
+			}
+		}
+	}
+	return stateRelPrev
 }

@@ -142,6 +142,25 @@ func finalizeBlock(block *protocol.Block) error {
 	return nil
 }
 
+func finalizeShardBlock(shardBlock *protocol.ShardBlock) error {
+	validatorAcc, err := storage.ReadAccount(validatorAccAddress)
+	if err != nil {
+		return err
+	}
+
+	// The commitment proof stores a signed message of the Height that this block was created at.
+	commitmentProof, err := crypto.SignMessageWithRSAKey(commPrivKey, fmt.Sprint(shardBlock.Height))
+	if err != nil {
+		return err
+	}
+
+	partialHash := shardBlock.HashShardBlock()
+
+
+
+	return nil
+}
+
 /**
 Code from Kürsat
 */
@@ -1290,7 +1309,6 @@ func validate(b *protocol.Block, initialSetup bool) error {
 
 			storage.RelativeState = storage.GetRelativeState(previousStateCopy,storage.State)
 
-			storage.State = previousStateCopy
 
 			postValidate(blockDataMap[block.Hash], initialSetup)
 			if i != len(blocksToValidate)-1 {

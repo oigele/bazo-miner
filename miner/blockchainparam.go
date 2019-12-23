@@ -10,6 +10,7 @@ import (
 var (
 	lastBlock         *protocol.Block
 	dummyLastBlock	  = protocol.NewBlock([32]byte{},0)
+	dummyLastShardBlock = protocol.NewShardBlock([32]byte{},0)
 	blockBeingProcessed *protocol.Block
 	lastEpochBlock	  *protocol.EpochBlock
 	lastShardBlock		*protocol.ShardBlock
