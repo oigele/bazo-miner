@@ -430,6 +430,11 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 	logger.Printf("\n\n __________________________________________________ New Mining Round __________________________________________________")
+
+	logger.Printf("Creating local changes")
+
+
+
 	logger.Printf("Create Next Block")
 	//This is the same mutex that is claimed at the beginning of a block validation. The reason we do this is
 	//that before start mining a new block we empty the mempool which contains tx data that is likely to be
