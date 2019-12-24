@@ -34,6 +34,13 @@ func WriteClosedEpochBlock(epochBlock *protocol.EpochBlock) error {
 	})
 }
 
+func WriteClosedShardBlock(shardBlock *protocol.ShardBlock) error {
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(CLOSEDSHARDBLOCK_BUCKET))
+		return b.Put(shardBlock.Hash[:], shardBlock.Encode())
+	})
+}
+
 func WriteFirstEpochBlock(epochBlock *protocol.EpochBlock) error {
 	return db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(CLOSEDEPOCHBLOCK_BUCKET))

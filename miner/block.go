@@ -157,6 +157,18 @@ func finalizeShardBlock(shardBlock *protocol.ShardBlock) error {
 	partialHash := shardBlock.HashShardBlock()
 
 
+	nonce, err := proofOfStakeShard(getDifficulty(), lastEpochBlock.Hash, shardBlock.Height, validatorAcc.Balance, commitmentProof)
+
+
+
+	var nonceBuf [8]byte
+	binary.BigEndian.PutUint64(nonceBuf[:], uint64(nonce))
+	shardBlock.Timestamp = nonce
+
+	//Put pieces together to get the final hash.
+	shardBlock.Hash = sha3.Sum256(append(nonceBuf[:], partialHash[:]...))
+
+	copy(shardBlock.CommitmentProof[0:crypto.COMM_PROOF_LENGTH], commitmentProof[:])
 
 	return nil
 }

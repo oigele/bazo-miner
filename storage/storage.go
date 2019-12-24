@@ -53,6 +53,7 @@ var (
 const (
 	ERROR_MSG = "Initiate storage aborted: "
 	CLOSEDEPOCHBLOCK_BUCKET = "closedepochblocks"
+	CLOSEDSHARDBLOCK_BUCKET = "closedshardblocks"
 	LASTCLOSEDEPOCHBLOCK_BUCKET = "lastclosedepochblocks"
 	LASTCLOSEDSHARDBLOCK_BUCKET = "lastclosedshardblocks"
 	OPENEPOCHBLOCK_BUCKET	= "openepochblock"
@@ -169,6 +170,13 @@ func Init(dbname string, bootstrapIpport string) {
 	})
 	db.Update(func(tx *bolt.Tx) error {
 		_, err = tx.CreateBucket([]byte(CLOSEDEPOCHBLOCK_BUCKET))
+		if err != nil {
+			return fmt.Errorf(ERROR_MSG+"Create bucket: %s", err)
+		}
+		return nil
+	})
+	db.Update(func(tx *bolt.Tx) error {
+		_, err = tx.CreateBucket([]byte(CLOSEDSHARDBLOCK_BUCKET))
 		if err != nil {
 			return fmt.Errorf(ERROR_MSG+"Create bucket: %s", err)
 		}

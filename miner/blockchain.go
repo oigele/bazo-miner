@@ -471,7 +471,6 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 		if err == nil {
 
 			broadcastBlock(currentBlock)
-			//TODO change this piece of code into the intra-shard comminication/sending schmeme
 			//the intra-shard communications will be sent out here and there will be a blocking wait until it's finished
 			//note that there is a possibility to accelerate the process. But this acceleration takes time to implement. Check notes.
 			blockTransition := protocol.NewBlockTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, storage.ThisBlockID, currentBlock.Hash,
@@ -571,16 +570,33 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			}
 
 			//This node is the leader in the shard. It has to mint the shard block and send the transitions out to the network.
+
+			//first mint the shard block
 			if storage.ThisBlockID == 1 {
 				currentShardBlock := protocol.NewShardBlock(currentBlock.Hash, currentBlock.Height + 1)
 				currentShardBlock.ShardID = storage.ThisShardID
 
-				//Todo finalize shard block and send it through the network
+				err := finalizeShardBlock(currentShardBlock)
+
+				if err == nil {
+
+					broadcastShardBlock(currentShardBlock)
+
+					storage.WriteClosedShardBlock(currentShardBlock)
+					storage.DeleteAllLastClosedEpochBlock()
+					storage.WriteLastClosedShardBlock(currentShardBlock)
+					lastShardBlock = currentShardBlock
+
+				} else {
+						logger.Printf("%v\n", err)
+				}
+
 				//Generate state transition for this block. This data is needed by the other shards to update their local states.
 				//use the freshly updated shardId, because the block always has to be in the new epoch already. If it was in the old epoch,
 				//the epoch block would not have been generated either
-				stateTransition := protocol.NewStateTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, currentBlock.Hash,
-					currentBlock.ContractTxData, currentBlock.FundsTxData, currentBlock.ConfigTxData, currentBlock.StakeTxData, currentBlock.AggTxData)
+
+				//this state transition aggregates all block transitions from the last step to one state transition
+				stateTransition := storage.AggregateBlockTransitionsToStateTransition(int(lastBlock.Height), lastBlock.ShardId,currentShardBlock.HashShardBlock())
 
 				logger.Printf("Transactions to delete in other miners count: %d - New Mempool Size: %d\n",len(stateTransition.ContractTxData)+len(stateTransition.FundsTxData)+len(stateTransition.ConfigTxData)+ len(stateTransition.StakeTxData) + len(stateTransition.AggTxData),storage.GetMemPoolSize())
 
@@ -590,6 +606,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				//Write state transition to own stash. Needed in case the network requests it at a later stage.
 				storage.WriteToOwnStateTransitionkStash(stateTransition)
 				storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
+
 			} else {
 				//wait until shard block is received
 				shardBlockReceived := false
