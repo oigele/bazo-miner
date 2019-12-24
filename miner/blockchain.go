@@ -491,6 +491,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			}
 
 			for {
+				// if I am the only miner in the shard, I dont need to perform any intra-shard synchronozation
 				if NumberOfMinersInShard == 1 {
 					break
 				}

@@ -3,7 +3,6 @@ package storage
 import (
 	"errors"
 	"fmt"
-	"github.com/KuersatAydinli/bazo-miner/storage"
 	"github.com/oigele/bazo-miner/protocol"
 	"io"
 	"log"
