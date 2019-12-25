@@ -157,7 +157,7 @@ func finalizeShardBlock(shardBlock *protocol.ShardBlock) error {
 	partialHash := shardBlock.HashShardBlock()
 
 
-	nonce, err := proofOfStakeShard(getDifficulty(), lastEpochBlock.Hash, shardBlock.Height, validatorAcc.Balance, commitmentProof)
+	nonce, err := proofOfStakeShard(getDifficulty(), shardBlock.PrevBlockHash, shardBlock.Height, validatorAcc.Balance, commitmentProof)
 
 
 
@@ -196,7 +196,7 @@ func finalizeEpochBlock(epochBlock *protocol.EpochBlock) error {
 	/*Determine new number of shards needed based on current state*/
 	NumberOfShards = DetNumberOfShards()
 
-	//generate new validator mapping and include mappping in the epoch block
+	//generate new validator mapping and include mapping in the epoch block
 	//map the nodes inside the same shard to their block
 	valMapping := protocol.NewValShardMapping()
 	var shardBlockMapping = protocol.NewShardBlockMapping()
@@ -205,6 +205,7 @@ func finalizeEpochBlock(epochBlock *protocol.EpochBlock) error {
 	shardBlockMapping.EpochHeight = int(epochBlock.Height)
 
 	epochBlock.ValMapping = valMapping
+	epochBlock.ShardBlockMapping = shardBlockMapping
 	ValidatorShardMap = epochBlock.ValMapping
 	ShardBlockMap = epochBlock.ShardBlockMapping
 	epochBlock.NofShards = DetNumberOfShards()

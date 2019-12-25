@@ -95,6 +95,7 @@ func initState() (initialBlock *protocol.Block, err error) {
 
 	genesis, err := initGenesis()
 	initialEpochBlock, err := initEpochBlock()
+	//initialShardBlock, err := initShardBlock()
 
 	//Request last epoch block from the network
 	//This code is taken by Kürsat
@@ -107,12 +108,15 @@ func initState() (initialBlock *protocol.Block, err error) {
 		}
 	} else {
 		lastEpochBlock, err = getLastEpochBlock()
+		//lastShardBlock, err = getLastShardBlock()
 		if err != nil {
 			return nil, err
 		}
 	}
 
 	storage.State = lastEpochBlock.State
+
+	NumberOfMinersInShard = 1
 
 	initRootAccounts(genesis)
 
@@ -284,7 +288,7 @@ func initEpochBlock() (initialEpochBlock *protocol.EpochBlock, err error) {
 	}
 
 	if initialEpochBlock == nil {
-		p2p.FirstEpochBlockReq()
+		p2p.FirstShardBlockReq()
 
 		select {
 		case encodedFirstEpochBlock := <-p2p.FirstEpochBlockReqChan:
@@ -302,6 +306,31 @@ func initEpochBlock() (initialEpochBlock *protocol.EpochBlock, err error) {
 	}
 	return initialEpochBlock, nil
 }
+
+func initShardBlock() (initialShardBlock *protocol.ShardBlock, err error) {
+	if initialShardBlock, err = storage.ReadFirstShardBlock(); err != nil {
+		return nil, err
+	}
+
+	if initialShardBlock == nil {
+		p2p.FirstEpochBlockReq()
+
+		select {
+		case encodedFirstShardBlock := <-p2p.FirstShardBlockReqChan:
+			initialShardBlock = initialShardBlock.Decode(encodedFirstShardBlock)
+			logger.Printf("Received first Shard Block: %v\n", initialShardBlock.String())
+		case <-time.After(EPOCHBLOCKFETCH_TIMEOUT* time.Second):
+			return nil, errors.New("shard block fetch timeout")
+		}
+
+		storage.WriteClosedShardBlock(initialShardBlock)
+
+		storage.DeleteAllLastClosedShardBlock()
+		storage.WriteLastClosedShardBlock(initialShardBlock)
+	}
+	return initialShardBlock, nil
+}
+
 func getInitialBlock(lastEpochBlock *protocol.EpochBlock) (initialBlock *protocol.Block, err error) {
 	if len(storage.AllClosedBlocksAsc) > 0 {
 		//Set the last closed block as the initial block
@@ -326,6 +355,8 @@ func getInitialBlock(lastEpochBlock *protocol.EpochBlock) (initialBlock *protoco
 
 	return initialBlock, nil
 }
+
+
 
 
 

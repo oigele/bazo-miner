@@ -286,6 +286,16 @@ func ReadFirstEpochBlock() (firstEpochBlock *protocol.EpochBlock, err error) {
 	})
 	return firstEpochBlock, err
 }
+
+func ReadFirstShardBlock() (firstShardBlock *protocol.ShardBlock, err error) {
+	err = db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte(CLOSEDEPOCHBLOCK_BUCKET))
+		encoded := b.Get([]byte("firstshardblock"))
+		firstShardBlock = firstShardBlock.Decode(encoded)
+		return nil
+	})
+	return firstShardBlock, err
+}
 func ReadLastClosedEpochBlock() (epochBlock *protocol.EpochBlock) {
 	db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(LASTCLOSEDEPOCHBLOCK_BUCKET))

@@ -62,6 +62,7 @@ var (
 
 
 	FirstEpochBlockReqChan 	= make(chan []byte)
+	FirstShardBlockReqChan  = make(chan []byte)
 	EpochBlockReqChan 	= make(chan []byte)
 	LastEpochBlockReqChan 	= make(chan []byte)
 	GenesisReqChan 	= make(chan []byte)
@@ -351,6 +352,10 @@ func forwardGenesisReqToMiner(p *peer, payload []byte) {
 
 func forwardFirstEpochBlockToMiner(p *peer, payload []byte) {
 	FirstEpochBlockReqChan <- payload
+}
+
+func forwardFirstShardBlockToMiner(p *peer, payload []byte) {
+	FirstShardBlockReqChan <- payload
 }
 
 func forwardEpochBlockToMiner(p *peer, payload []byte) {

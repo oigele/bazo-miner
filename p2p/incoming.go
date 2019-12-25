@@ -71,6 +71,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		genesisRes(p, payload)
 	case FIRST_EPOCH_BLOCK_REQ:
 		FirstEpochBlockRes(p,payload)
+	case FIRST_SHARD_BLOCK_REQ:
+		FirstShardBlockRes(p, payload)
 	case EPOCH_BLOCK_REQ:
 		EpochBlockRes(p,payload)
 	case LAST_EPOCH_BLOCK_REQ:
@@ -103,6 +105,9 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		forwardGenesisReqToMiner(p, payload)
 	case FIRST_EPOCH_BLOCK_RES:
 		forwardFirstEpochBlockToMiner(p,payload)
+
+	case FIRST_SHARD_BLOCK_RES:
+		forwardFirstShardBlockToMiner(p,payload)
 	case EPOCH_BLOCK_RES:
 		forwardEpochBlockToMiner(p,payload)
 	case LAST_EPOCH_BLOCK_RES:

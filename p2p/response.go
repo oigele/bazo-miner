@@ -528,6 +528,19 @@ func FirstEpochBlockRes(p *peer, payload []byte) {
 	sendData(p, packet)
 }
 
+func FirstShardBlockRes(p *peer, payload []byte) {
+	var packet []byte
+	firstShardBlock, err := storage.ReadFirstShardBlock()
+
+	if err == nil && firstShardBlock != nil {
+		packet = BuildPacket(FIRST_SHARD_BLOCK_RES, firstShardBlock.Encode())
+	} else {
+		packet = BuildPacket(NOT_FOUND, nil)
+	}
+
+	sendData(p, packet)
+}
+
 func LastEpochBlockRes(p *peer, payload []byte) {
 	var packet []byte
 

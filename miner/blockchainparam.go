@@ -19,6 +19,7 @@ var (
 	target            []uint8    //Stores the history of target values
 	currentTargetTime *timerange //Corresponds to the active timerange
 	FirstEpochBlock	  *protocol.EpochBlock
+	FirstShardBlock   *protocol.ShardBlock
 	firstEpochOver	  bool
 )
 

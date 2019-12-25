@@ -162,12 +162,14 @@ func AggregateBlockTransitionsToStateTransition(height int, shardid int, blockHa
 	//keep in mind that this stash should only contain block transitions from the own shard
 	blockTransitionStashForHeight := protocol.ReturnBlockTransitionForHeight(ReceivedBlockTransitionStash, uint32(height))
 
-	var ContractTxData [][32]byte
-	var FundsTxData [][32]byte
-	var ConfigTxData [][32]byte
-	var StakeTxData [][32]byte
-	var AggTxData [][32]byte
-	var RelativeState map[[32]byte]*protocol.RelativeAccount
+	ContractTxData := make([][32]byte, 0)
+	FundsTxData := make([][32]byte, 0)
+	ConfigTxData := make([][32]byte, 0)
+	StakeTxData := make([][32]byte, 0)
+	AggTxData := make([][32]byte, 0)
+	RelativeState := make(map[[32]byte]*protocol.RelativeAccount)
+
+
 
 	//aggregate slices and aggregate relative state
 	for _, transition := range blockTransitionStashForHeight {

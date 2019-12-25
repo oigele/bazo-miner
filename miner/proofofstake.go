@@ -325,13 +325,7 @@ func proofOfStakeShard(diff uint8,
 	timestampBufIndexEnd := index + 8
 
 	for range time.Tick(time.Second) {
-		// lastBlock is a global variable which points to the last block. This check makes sure we abort if another
-		// block has been validated. In the current implementation this should not matter because only one block is concurrently mining the shard block
-		// still I leave this here in case the code is expanded later
-		if prevHashShardBlock != lastShardBlock.Hash {
-			logger.Printf("Abort mining EPOCH BLOCK, another one has been successfully validated in the meantime")
-			return -1, errors.New("Abort mining EPOCH BLOCK, another one has been successfully validated in the meantime")
-		}
+
 
 		abort = false
 

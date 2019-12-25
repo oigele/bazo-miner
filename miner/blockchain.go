@@ -61,15 +61,22 @@ func InitFirstStart(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey
 
 	/*Write First Epoch block chained to the genesis block*/
 	initialEpochBlock := protocol.NewEpochBlock([][32]byte{genesis.Hash()}, 0)
+	initialShardBlock := protocol.NewShardBlock([32]byte{}, 0)
 	initialEpochBlock.Hash = initialEpochBlock.HashEpochBlock()
+	initialShardBlock.Hash = initialShardBlock.HashShardBlock()
 	FirstEpochBlock = initialEpochBlock
+	FirstShardBlock = initialShardBlock
 	initialEpochBlock.State = storage.State
 
 	storage.WriteFirstEpochBlock(initialEpochBlock)
+	storage.WriteFirstShardBlock(initialShardBlock)
 
 	storage.WriteClosedEpochBlock(initialEpochBlock)
+	storage.WriteClosedShardBlock(initialShardBlock)
 
 	storage.DeleteAllLastClosedEpochBlock()
+	storage.DeleteAllLastClosedShardBlock()
+	storage.WriteClosedShardBlock(initialShardBlock)
 	storage.WriteLastClosedEpochBlock(initialEpochBlock)
 
 	firstValMapping := protocol.NewValShardMapping()
@@ -206,11 +213,13 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 		validatorShardMapping.EpochHeight = int(lastEpochBlock.Height)
 		shardBlockMapping.EpochHeight = int(lastEpochBlock.Height)
 		ValidatorShardMap = validatorShardMapping
+		ShardBlockMap = shardBlockMapping
 		logger.Printf("Validator Shard Mapping:\n")
 		logger.Printf(validatorShardMapping.String())
 	}
 
 	storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
+	storage.ThisBlockID = ShardBlockMap.ShardBlockMapping[validatorAccAddress]
 	storage.ThisShardMap[int(lastEpochBlock.Height)] = storage.ThisShardID
 	storage.ThisBlockMap[int(lastEpochBlock.Height)] = storage.ThisBlockID
 	epochMining(lastBlock.Hash, lastBlock.Height)
@@ -572,6 +581,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 			//This node is the leader in the shard. It has to mint the shard block and send the transitions out to the network.
 
+			logger.Printf("This block ID: %d", storage.ThisBlockID)
 			//first mint the shard block
 			if storage.ThisBlockID == 1 {
 				currentShardBlock := protocol.NewShardBlock(currentBlock.Hash, currentBlock.Height + 1)
@@ -579,12 +589,16 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 				err := finalizeShardBlock(currentShardBlock)
 
+				logger.Printf("Finalized shard Block")
+
 				if err == nil {
 
 					broadcastShardBlock(currentShardBlock)
 
+					logger.Printf("Write to storage and broadcast shard block")
+
 					storage.WriteClosedShardBlock(currentShardBlock)
-					storage.DeleteAllLastClosedEpochBlock()
+					storage.DeleteAllLastClosedShardBlock()
 					storage.WriteLastClosedShardBlock(currentShardBlock)
 					lastShardBlock = currentShardBlock
 

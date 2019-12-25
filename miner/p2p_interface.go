@@ -56,6 +56,7 @@ func processEpochBlock(eb []byte) {
 		//valiadator-shard mapping. Upon successful acceptance, broadcast the epoch block
 		logger.Printf("Received Epoch Block: %v\n", epochBlock.String())
 		ValidatorShardMap = epochBlock.ValMapping
+		ShardBlockMap = epochBlock.ShardBlockMapping
 		NumberOfShards = epochBlock.NofShards
 		storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
 		storage.ThisShardMap[int(epochBlock.Height)] = storage.ThisShardID

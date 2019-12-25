@@ -48,6 +48,7 @@ func (epochBlock *EpochBlock) HashEpochBlock() [32]byte {
 		commitmentProof       		  [crypto.COMM_PROOF_LENGTH]byte
 		state					      map[[32]byte]*Account
 		valmapping					  *ValShardMapping
+		ShardBlockMapping			  *ShardBlockMapping
 		noshards					  int
 	}{
 		epochBlock.PrevShardHashes,
@@ -58,6 +59,7 @@ func (epochBlock *EpochBlock) HashEpochBlock() [32]byte {
 		epochBlock.CommitmentProof,
 		epochBlock.State,
 		epochBlock.ValMapping,
+		epochBlock.ShardBlockMapping,
 		epochBlock.NofShards,
 	}
 	return SerializeHashContent(blockHash)
@@ -79,6 +81,7 @@ func (epochBlock *EpochBlock) Encode() []byte {
 		CommitmentProof:	   epochBlock.CommitmentProof,
 		State:				   epochBlock.State,
 		ValMapping:			   epochBlock.ValMapping,
+		ShardBlockMapping:     epochBlock.ShardBlockMapping,
 		NofShards:			   epochBlock.NofShards,
 	}
 
