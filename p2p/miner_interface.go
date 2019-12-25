@@ -110,6 +110,15 @@ func forwardStateTransitionShardToMiner(){
 	}
 }
 
+func forwardBlockTransitionShardToMiner(){
+	for {
+		bt := <- BlockTransitionShardOut
+		logger.Printf("Building block transition request packet\n")
+		toBrdcst := BuildPacket(BLOCK_TRANSITION_REQ, bt)
+		minerBrdcstMsg <- toBrdcst
+	}
+}
+
 func forwardStateTransitionBrdcstToMiner()  {
 	for {
 		st := <-StateTransitionOut
@@ -322,6 +331,11 @@ func forwardBlockReqToMiner(p *peer, payload []byte) {
 func forwardEpochBlockToMinerIn(p *peer, payload []byte) {
 	logger.Printf("Writing Epoch block to channel EpochBlockIn.\n")
 	EpochBlockIn <- payload
+}
+
+func forwardShardBlockToMinerIn(p *peer, payload []byte) {
+	logger.Printf("Writing Shard block to channel ShardBlockIn.\n")
+	ShardBlockIn <- payload
 }
 
 func forwardStateTransitionToMiner(p *peer, payload []byte) () {

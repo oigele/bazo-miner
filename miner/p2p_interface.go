@@ -28,6 +28,14 @@ func incomingEpochData() {
 	}
 }
 
+func incomingShardBlockData() {
+	//receive shard blocl
+	for {
+		shardBlock := <- p2p.ShardBlockIn
+		processShardBlock(shardBlock)
+	}
+}
+
 //Constantly listen to incoming state transition data from the network
 func incomingStateData(){
 	for{
@@ -73,6 +81,27 @@ func processEpochBlock(eb []byte) {
 	}
 }
 
+func processShardBlock(sb []byte) {
+	var shardBlock *protocol.ShardBlock
+	shardBlock = shardBlock.Decode(sb)
+
+	if storage.ReadClosedShardBlock(shardBlock.Hash) != nil {
+		logger.Printf("Received Shard Block (%x) already in storage\n", shardBlock.Hash[0:8])
+		return
+	} else if shardBlock.ShardID == storage.ThisShardID {
+		logger.Printf("Got my shard block")
+		storage.WriteClosedShardBlock(shardBlock)
+		storage.WriteLastClosedShardBlock(shardBlock)
+		p2p.ShardBlockReceivedChan <- *shardBlock
+		broadcastShardBlock(shardBlock)
+	} else {
+		storage.WriteClosedShardBlock(shardBlock)
+		storage.WriteLastClosedShardBlock(shardBlock)
+		broadcastShardBlock(shardBlock)
+	}
+
+}
+
 func processStateData(payload []byte) {
 	var stateTransition *protocol.StateTransition
 	stateTransition = stateTransition.DecodeStateTransition(payload)
@@ -107,9 +136,10 @@ func processBlockStateData(payload []byte) {
 		//only accept block transitions from same shard
 		hash := blockTransition.HashTransition()
 		if !storage.ReceivedBlockTransitionStash.BlockTransitionIncluded(hash) && blockTransition.ShardID == storage.ThisShardID {
-			logger.Printf("Writing block Transition to stash Shard ID: %v BlockID: %v  VS my shard ID: %v - Height: %d - Hash: %x\n",blockTransition.ShardID, blockTransition.BlockID, storage.ThisShardID,blockTransition.Height,hash[0:8])
+			logger.Printf("Writing block Transition to stash Shard ID: %v BlockID: %v  VS my bloxk ID: %v - Height: %d - Hash: %x\n",blockTransition.ShardID, blockTransition.BlockID, storage.ThisBlockID,blockTransition.Height,hash[0:8])
 			storage.ReceivedBlockTransitionStash.Set(hash, blockTransition)
 			broadcastBlockTransition(blockTransition)
+
 			//This is done this way because usually the bootstrap has the best connections
 		} else if p2p.IsBootstrap() {
 			logger.Printf("Sharing state transition of shard: %d, blockNo: %d, height: %d, in case it hasnt reached its destination yet", blockTransition.ShardID, blockTransition.BlockID, blockTransition.Height)

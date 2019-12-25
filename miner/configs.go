@@ -29,6 +29,6 @@ const (
 	NUM_INCL_PREV_PROOFS 	= 5       //Number of previous proofs included in the PoS condition
 	NO_EMPTYING_LENGTH		= 100	  //Number of blocks after the newest block which are not moved to the empty block bucket
 	EPOCH_LENGTH         = 9 //blocks
-	VALIDATORS_PER_SHARD = 1 //validators
+	VALIDATORS_PER_SHARD = 2 //validators
 	EPOCHBLOCKFETCH_TIMEOUT 	= 20 //Sec
 )

@@ -77,9 +77,17 @@ func InitLogging() {
 	LogMapping[131] = "LAST_EPOCH_BLOCK_RES"
 	LogMapping[132] = "LAST_EPOCH_BLOCK_REQ"
 	LogMapping[133] = "STATE_TRANSITION_BRDCST"
+	LogMapping[134] = "BLOCK_TRANSITION_BRDCST"
 	LogMapping[136] = "STATE_TRANSITION_REQ"
 	LogMapping[137] = "STATE_TRANSITION_RES"
 	LogMapping[138] = "GENESIS_RES"
+	LogMapping[139] = "BLOCK_TRANSITION_RES"
+	LogMapping[141] = "BLOCK_TRANSITION_REQ"
+	LogMapping[142] = "SHARD_BLOCK_BRDCST"
+	LogMapping[143] = "FIRST_SHARD_BLOCK_RES"
+	LogMapping[144] = "FIRST_SHARD_BLOCK_REQ"
+
+
 
 
 }

@@ -268,6 +268,8 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			//Retrieve all state transitions from the local state with the height of my last block
 			stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, lastShardBlock.Height)
 
+			logger.Printf("Length of statestashforheight: %d", len(stateStashForHeight))
+
 			if (len(stateStashForHeight) != 0) {
 				//Iterate through state transitions and apply them to local state, keep track of processed shards
 				for _, st := range stateStashForHeight {
@@ -313,7 +315,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					case encodedStateTransition := <-p2p.StateTransitionShardReqChan:
 						stateTransition = stateTransition.DecodeStateTransition(encodedStateTransition)
 						//weird check that has to be done (run into an infinite loop when I dint)
-						if stateTransition.ShardID != id {
+						if stateTransition.ShardID != id || stateTransition.Height != int(lastShardBlock.Height) {
 							logger.Printf("Error: Id of the iteration: %d --- Id of the received transition: %d", id, stateTransition.ShardID)
 							continue
 						}
@@ -542,7 +544,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						var blockTransition *protocol.BlockTransition
 
 
-						logger.Printf("requesting block transition for lastblock height: %d shard: %d\n", lastBlock.Height, blockId)
+						logger.Printf("requesting block transition for lastblock height: %d blockid: %d\n", lastBlock.Height, blockId)
 
 						p2p.BlockTransitionReqShard(storage.ThisShardID, blockId, int(lastBlock.Height))
 						//Blocking wait
@@ -553,6 +555,8 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 								logger.Printf("Error: Id of the iteration: %d --- Id of the received transition: %d", blockId, blockTransition.ShardID)
 								continue
 							}
+							//help with the bootstrapping process
+							broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 							//Apply state transition to my local state
 							storage.State = storage.ApplyRelativeState(storage.State, blockTransition.RelativeStateChange)
 
@@ -572,6 +576,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 							//It the requested state transition has not been received, then continue with requesting the other missing ones
 							//just in case i'm the blocking element, broadcast transition again
 							broadcastBlockTransition(storage.ReadBlockTransitionFromOwnStash(int(lastBlock.Height)))
+							broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 							time.Sleep(time.Second)
 							continue
 						}
@@ -584,7 +589,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			logger.Printf("This block ID: %d", storage.ThisBlockID)
 			//first mint the shard block
 			if storage.ThisBlockID == 1 {
-				currentShardBlock := protocol.NewShardBlock(currentBlock.Hash, currentBlock.Height + 1)
+				currentShardBlock := protocol.NewShardBlock(currentBlock.Hash, currentBlock.Height)
 				currentShardBlock.ShardID = storage.ThisShardID
 
 				err := finalizeShardBlock(currentShardBlock)

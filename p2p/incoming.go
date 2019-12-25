@@ -27,6 +27,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		forwardStateTransitionToMiner(p,payload)
 	case BLOCK_TRANSITION_BRDCST:
 		forwardBlockTransitionToMiner(p,payload)
+	case SHARD_BLOCK_BRDCST:
+		forwardShardBlockToMinerIn(p,payload)
 
 		//REQUESTS
 	case FUNDSTX_REQ:

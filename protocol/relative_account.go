@@ -180,10 +180,11 @@ func (bt *BlockTransition) EncodeBlockTransition() []byte {
 		return nil
 	}
 
-	encoded := StateTransition{
+	encoded := BlockTransition{
 		RelativeStateChange:		bt.RelativeStateChange,
 		Height:						bt.Height,
 		ShardID:					bt.ShardID,
+		BlockID:					bt.BlockID,
 		BlockHash:					bt.BlockHash,
 		ContractTxData:				bt.ContractTxData,
 		FundsTxData:				bt.FundsTxData,
