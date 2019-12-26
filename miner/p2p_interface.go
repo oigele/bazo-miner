@@ -29,7 +29,7 @@ func incomingEpochData() {
 }
 
 func incomingShardBlockData() {
-	//receive shard blocl
+	//receive shard block
 	for {
 		shardBlock := <- p2p.ShardBlockIn
 		processShardBlock(shardBlock)
@@ -89,12 +89,13 @@ func processShardBlock(sb []byte) {
 		logger.Printf("Received Shard Block (%x) already in storage\n", shardBlock.Hash[0:8])
 		return
 	} else if shardBlock.ShardID == storage.ThisShardID {
-		logger.Printf("Got my shard block")
+		logger.Printf("Got my shard block (%x)",shardBlock.Hash[0:8])
 		storage.WriteClosedShardBlock(shardBlock)
 		storage.WriteLastClosedShardBlock(shardBlock)
 		p2p.ShardBlockReceivedChan <- *shardBlock
 		broadcastShardBlock(shardBlock)
 	} else {
+		logger.Printf("Shard Block Shard ID: %d vs My Shard ID: %d wasn't the shard Block that I was looking for", shardBlock.ShardID,storage.ThisShardID)
 		storage.WriteClosedShardBlock(shardBlock)
 		storage.WriteLastClosedShardBlock(shardBlock)
 		broadcastShardBlock(shardBlock)

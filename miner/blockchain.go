@@ -161,6 +161,8 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	go incomingEpochData()
 	//Listen for incoming state transitions the network
 	go incomingStateData()
+	//Listen to incoming shard blocksS
+	go incomingShardBlockData()
 	//Listen for incoming block data transitions from the network
 	go incomingBlockStateData()
 
@@ -368,7 +370,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 		// The variable 'lastblock' is one before the next epoch block, thus the next block will be an epoch block
 		//really naive sortition: ShardID one can mint the epoch block
 		if (lastBlock.Height == uint32(lastEpochBlock.Height)+uint32(ActiveParameters.Epoch_length)) {
-			if (storage.ThisShardID == 1) {
+			if (storage.ThisShardID == 1 && storage.ThisShardID == 1) {
 				epochBlock = protocol.NewEpochBlock([][32]byte{lastBlock.Hash}, lastBlock.Height+1)
 				logger.Printf("epochblock beingprocessed height: %d\n", epochBlock.Height)
 
@@ -461,6 +463,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 	//Set shard identifier in block (not necessary? It's already written inside the block)
 	currentBlock.ShardId = storage.ThisShardID
 	logger.Printf("This shard ID: %d", storage.ThisShardID)
+	logger.Printf("This block ID: %d", storage.ThisBlockID)
 
 	logger.Printf("Prepare Next Block")
 	prepareBlock(currentBlock)
@@ -481,7 +484,10 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 		err := validate(currentBlock, false)
 		if err == nil {
 
+			logger.Printf("Broadcast block for height %d\n", currentBlock.Height)
+
 			broadcastBlock(currentBlock)
+			logger.Printf("Validated block (mined): %vState:\n%v", currentBlock, getState())
 			//the intra-shard communications will be sent out here and there will be a blocking wait until it's finished
 			//note that there is a possibility to accelerate the process. But this acceleration takes time to implement. Check notes.
 			blockTransition := protocol.NewBlockTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, storage.ThisBlockID, currentBlock.Hash,
@@ -493,6 +499,8 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			//generate sequence of all shard IDs starting from 1
 			blockIDs := makeRange(1, NumberOfMinersInShard)
 			logger.Printf("Number of miners in shard: %d\n", NumberOfMinersInShard)
+
+			logger.Printf("This shard ID: %d and this block ID: %d", storage.ThisShardID, storage.ThisBlockID)
 
 			//This map keeps track of the shards whose state transitions have been processed.
 			//Once all entries are set to true, the synchronisation is done and the validator can continue with mining of the next shard block
@@ -540,7 +548,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					}
 				}
 				for _, blockId := range blockIDs {
-					if (blockId != storage.ThisShardID && BlockTransitionBoolMap[blockId] == false) {
+					if (blockId != storage.ThisBlockID && BlockTransitionBoolMap[blockId] == false) {
 						var blockTransition *protocol.BlockTransition
 
 
@@ -551,7 +559,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						select {
 						case encodedBlockTransition := <-p2p.BlockTransitionShardReqChan:
 							blockTransition = blockTransition.DecodeBlockTransition(encodedBlockTransition)
-							if blockTransition.ShardID != blockId {
+							if blockTransition.ShardID != storage.ThisShardID || blockTransition.BlockID == storage.ThisBlockID {
 								logger.Printf("Error: Id of the iteration: %d --- Id of the received transition: %d", blockId, blockTransition.ShardID)
 								continue
 							}
@@ -632,7 +640,8 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				shardBlockReceived := false
 				for !shardBlockReceived {
 					newShardBlock := <- p2p.ShardBlockReceivedChan
-					if newShardBlock.Height == lastBlock.Height + 1 {
+					logger.Printf("Received Shard Block")
+					if newShardBlock.Height == lastBlock.Height  {
 						broadcastShardBlock(storage.ReadLastClosedShardBlock())
 						shardBlockReceived = true
 					}
@@ -640,10 +649,6 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				//todo implement request structure
 			}
 
-			logger.Printf("Broadcast block for height %d\n", currentBlock.Height)
-
-			broadcastBlock(currentBlock)
-			logger.Printf("Validated block (mined): %vState:\n%v", currentBlock, getState())
 
 
 		} else {
