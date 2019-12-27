@@ -79,6 +79,8 @@ func (block *Block) HashBlock() [32]byte {
 
 	blockHash := struct {
 		prevHash              			[32]byte
+		blockID							int
+		shardID							int
 //		prevHashWithoutTx     			[32]byte
 		timestamp             			int64
 		merkleRoot            			[32]byte
@@ -92,6 +94,8 @@ func (block *Block) HashBlock() [32]byte {
 //		Aggregated			  			bool
 	}{
 		block.PrevHash,
+		block.BlockId,
+		block.ShardId,
 //		block.PrevHashWithoutTx,
 		block.Timestamp,
 		block.MerkleRoot,
@@ -236,6 +240,8 @@ func (block *Block) Encode() []byte {
 		Header:                			block.Header,
 		Hash:                  			block.Hash,
 		PrevHash:              			block.PrevHash,
+		BlockId:						block.BlockId,
+		ShardId:						block.ShardId,
 //		HashWithoutTx:         			block.HashWithoutTx,
 //		PrevHashWithoutTx:     			block.PrevHashWithoutTx,
 //		Aggregated:			   			block.Aggregated,
@@ -324,6 +330,8 @@ func (block Block) String() string {
 		"Amount of aggTx: %v --> %x\n"+
 		"Total Transactions in this block: %v\n"+
 		"Height: %d\n"+
+		"Block ID: %d\n"+
+		"Shard ID: %d\n" +
 		"Commitment Proof: %x\n"+
 		"Slashed Address:%x\n",
 //		"Conflicted Block Hashes 1:%x  =  %x\n"+
@@ -344,6 +352,8 @@ func (block Block) String() string {
 		block.NrAggTx, block.AggTxData,
 		uint16(block.NrFundsTx) + uint16(block.NrAccTx) + uint16(block.NrConfigTx) + uint16(block.NrStakeTx) + uint16(block.NrAggTx),
 		block.Height,
+		block.BlockId,
+		block.ShardId,
 		block.CommitmentProof[0:8],
 		block.SlashedAddress[0:8],
 //		block.ConflictingBlockHash1[0:8], block.ConflictingBlockHashWithoutTx1[0:8],
