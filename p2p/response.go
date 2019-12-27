@@ -479,7 +479,7 @@ func blockTransitionRes(p *peer, payload []byte) {
 				packet = BuildPacket(NOT_FOUND, nil)
 			}
 		} else {
-			if shardID == int64(storage.ThisShardIDDelayed) && blockID == int64(storage.ThisBlockID) {
+			if shardID == int64(storage.ThisShardIDDelayed) && blockID == int64(storage.ThisBlockIDDelayed) {
 				bt = storage.ReadBlockTransitionFromOwnStash(int(height))
 				if (bt != nil) {
 					if int64(bt.ShardID) == shardID {

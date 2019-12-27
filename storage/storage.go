@@ -42,6 +42,7 @@ var (
 	ThisShardID             int // ID of the shard this validator is assigned to
 	ThisBlockID				int // block number to be mined
 	ThisShardIDDelayed		int
+	ThisBlockIDDelayed		int
 	ThisShardMap			= make(map[int]int)
 	ThisBlockMap			= make(map[int]int)
 	EpochLength				int

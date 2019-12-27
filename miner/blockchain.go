@@ -196,6 +196,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 					epochMining(lastEpochBlock.Hash, lastEpochBlock.Height) //start mining based on the received Epoch Block
 					//set the ID to 0 such that there wont be any answers to requests that shouldnt be answered
 					storage.ThisShardIDDelayed = 0
+					storage.ThisBlockIDDelayed = 0
 				}
 			}
 		}
@@ -350,6 +351,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						} else {
 							logger.Printf("We got a problem")
 						}
+						
 						time.Sleep(time.Second)
 						continue
 					}
@@ -403,6 +405,12 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					storage.WriteLastClosedEpochBlock(epochBlock)
 					lastEpochBlock = epochBlock
 
+					// todo figure out where to place this piece of code
+					//might fit here because after this the epoch block is fixed
+					NumberOfShardsDelayed = NumberOfShards
+					storage.ThisShardIDDelayed = storage.ThisShardID
+					storage.ThisBlockIDDelayed = storage.ThisBlockID
+
 					logger.Printf("Created Validator Shard Mapping :\n")
 					logger.Printf(ValidatorShardMap.String())
 					logger.Printf("Inserting EPOCH BLOCK: %v\n", epochBlock.String())
@@ -433,6 +441,10 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					if newEpochBlock.Height == lastBlock.Height + 1 {
 						broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 						epochBlockReceived = true
+						// todo figure out where to place this piece of code
+						NumberOfShardsDelayed = NumberOfShards
+						storage.ThisShardIDDelayed = storage.ThisShardID
+						storage.ThisBlockIDDelayed = storage.ThisBlockID
 					}
 				}
 			}
@@ -666,9 +678,6 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 	FirstStartAfterEpoch = false
 
-	// todo figure out where to place this piece of code
-	NumberOfShardsDelayed = NumberOfShards
-	storage.ThisShardIDDelayed = storage.ThisShardID
 
 }
 
