@@ -348,7 +348,11 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 							broadcastStateTransition(lastTransition)
 							time.Sleep(500 * time.Millisecond)
 						}
-						broadcastStateTransition(storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height)))
+						//avoid sending an empty transition
+						if storage.ThisBlockID == 1 {
+							broadcastStateTransition(storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height)))
+
+						}
 						time.Sleep(time.Second)
 						continue
 					}
