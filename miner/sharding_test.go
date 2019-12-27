@@ -86,6 +86,9 @@ func TestShardIterative(t *testing.T) {
 		if err := SendTx("127.0.0.1:8001", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
+		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
 
 		newNodeAddress := crypto.GetAddressFromPubKey(&newAccAddress.PublicKey)
 		hasherNewNode := protocol.SerializeHashContent(newNodeAddress)
@@ -94,7 +97,7 @@ func TestShardIterative(t *testing.T) {
 		nodeList = append(nodeList, hasherNewNode)
 
 		t.Log(hasherNewNode)
-		time.Sleep(10 * time.Second)
+		time.Sleep(30 * time.Second)
 
 	}
 
@@ -121,6 +124,9 @@ func TestShardIterative(t *testing.T) {
 			t.Log(fmt.Sprintf("Error"))
 		}
 		if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}
+		if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 			t.Log(fmt.Sprintf("Error"))
 		}
 
@@ -153,6 +159,9 @@ func TestShardIterative(t *testing.T) {
 				t.Log(fmt.Sprintf("Error"))
 			}
 			if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
+				t.Log(fmt.Sprintf("Error"))
+			}
+			if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 				t.Log(fmt.Sprintf("Error"))
 			}
 		}

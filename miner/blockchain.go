@@ -339,19 +339,16 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						logger.Printf("have been waiting for 5 seconds for lastblock height: %d\n", lastShardBlock.Height)
 						//It the requested state transition has not been received, then continue with requesting the other missing ones
 						logger.Printf("broadcasting state transition from last block height %d again in case it couldnt be transmitted", int(lastShardBlock.Height) - 1)
-						lastTransition := storage.ReadStateTransitionFromOwnStash(int(lastShardBlock.Height) - 2)
+						lastTransition := storage.ReadStateTransitionFromOwnStash(int(lastShardBlock.Height) - 1)
 						//overwrite in case the previous block is an epoch block. then the last transition for that height is nil and we need to go further back
 						if lastTransition == nil {
-							lastTransition = storage.ReadStateTransitionFromOwnStash(int(lastShardBlock.Height) - 3)
+							lastTransition = storage.ReadStateTransitionFromOwnStash(int(lastShardBlock.Height) - 2)
 						}
 						if lastTransition != nil {
 							broadcastStateTransition(lastTransition)
 							time.Sleep(500 * time.Millisecond)
-						}
-						//avoid sending an empty transition
-						if storage.ThisBlockID == 1 {
-							broadcastStateTransition(storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height)))
-
+						} else {
+							logger.Printf("We got a problem")
 						}
 						time.Sleep(time.Second)
 						continue

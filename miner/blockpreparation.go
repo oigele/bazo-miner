@@ -33,7 +33,7 @@ func prepareBlock(block *protocol.Block) {
 	for _,tx := range opentxs{
 		switch tx.(type) {
 		case *protocol.AccTx:
-			logger.Printf("Acc Tx PubKey: (%x)", tx.(*protocol.AccTx).PubKey)
+			logger.Printf("Acc Tx PubKey: (%x), AccTx Hash:(%x)", tx.(*protocol.AccTx).PubKey, tx.Hash())
 		}
 	}
 

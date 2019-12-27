@@ -1618,6 +1618,7 @@ func postValidate(data blockData, initialSetup bool) {
 	if !p2p.IsBootstrap() || !initialSetup {
 		//Write all open transactions to closed/validated storage.
 		for _, tx := range data.accTxSlice {
+			logger.Printf("Deleted Acc TX (%x)", tx.Hash())
 			storage.WriteClosedTx(tx)
 			storage.DeleteOpenTx(tx)
 		}
