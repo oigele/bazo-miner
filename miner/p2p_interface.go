@@ -172,14 +172,16 @@ func processBlock(payload []byte) {
 				logger.Printf("Received block (%x) has already been validated.\n", block.Hash[0:8])
 				return
 			}
+			/*
 			//If block belongs to my shard, validate it
+			//Actually no more validation. This hasn't been done in Kürsats implementation either.
 			err := validate(block, false)
 			if err == nil {
 				logger.Printf("Received Validated block: %vState:\n%v\n", block, getState())
 			} else {
 				logger.Printf("Received block (%x) could not be validated: %v\n", block.Hash[0:8], err)
 			}
-
+			 */
 			if(block.Height == lastEpochBlock.Height +1){
 				logger.Printf(`"EPOCH BLOCK: \n Hash : %x \n Height : %d \nMPT : %x" -> "Hash : %x \n Height : %d"`+"\n", block.PrevHash[0:8],lastEpochBlock.Height,lastEpochBlock.MerklePatriciaRoot[0:8],block.Hash[0:8],block.Height)
 				logger.Printf(`"EPOCH BLOCK: \n Hash : %x \n Height : %d \nMPT : %x"`+`[color = red, shape = box]`+"\n",block.PrevHash[0:8],lastEpochBlock.Height,lastEpochBlock.MerklePatriciaRoot[0:8])

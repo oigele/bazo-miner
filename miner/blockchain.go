@@ -629,7 +629,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 				logger.Printf("Transactions to delete in other miners count: %d - New Mempool Size: %d\n",len(stateTransition.ContractTxData)+len(stateTransition.FundsTxData)+len(stateTransition.ConfigTxData)+ len(stateTransition.StakeTxData) + len(stateTransition.AggTxData),storage.GetMemPoolSize())
 
-				logger.Printf("Broadcast state transition for height %d\n", currentBlock.Height)
+				logger.Printf("Broadcast state transition for height %d\n", currentShardBlock.Height)
 				//Broadcast state transition to other shards
 				broadcastStateTransition(stateTransition)
 				//Write state transition to own stash. Needed in case the network requests it at a later stage.
