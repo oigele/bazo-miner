@@ -458,8 +458,8 @@ func blockTransitionRes(p *peer, payload []byte) {
 		logger.Printf("Haven't stored last epoch block yet.")
 		packet = BuildPacket(NOT_FOUND, nil)
 	} else {
-		//the edge case happens on a height 2 blocks before the epoch block (one before is the shard block)
-		if height == int64(storage.ReadLastClosedEpochBlock().Height-2) {
+		//the edge case happens on a height 1 block before the epoch block (one before is the shard block)
+		if height == int64(storage.ReadLastClosedEpochBlock().Height-1) {
 			logger.Printf("Got a request for a block transition before the epoch block. Height: %d", height)
 			//go back to see and check my assignment in the last epoch block
 			//the requested block transition was in my shard and in my block
@@ -485,6 +485,9 @@ func blockTransitionRes(p *peer, payload []byte) {
 					if int64(bt.ShardID) == shardID {
 						packet = BuildPacket(BLOCK_TRANSITION_RES, bt.EncodeBlockTransition())
 						logger.Printf("sent block transition response for height: %d\n", height)
+					} else {
+						packet = BuildPacket(NOT_FOUND, nil)
+						logger.Printf("Unexpected error while retrieving the block transition. The shard ID of the queried transition: %d wasnt the one that I was acutally looking for %d", bt.ShardID,shardID)
 					}
 				} else {
 					packet = BuildPacket(NOT_FOUND, nil)
