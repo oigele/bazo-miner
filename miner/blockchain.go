@@ -585,6 +585,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 							//just in case i'm the blocking element, broadcast transition again
 							broadcastBlockTransition(storage.ReadBlockTransitionFromOwnStash(int(lastBlock.Height)))
 							broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
+							broadcastShardBlock(storage.ReadLastClosedShardBlock())
 							time.Sleep(time.Second)
 							continue
 						}
@@ -624,7 +625,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				//the epoch block would not have been generated either
 
 				//this state transition aggregates all block transitions from the last step to one state transition
-				stateTransition := storage.AggregateBlockTransitionsToStateTransition(int(lastBlock.Height), lastBlock.ShardId,currentShardBlock.HashShardBlock())
+				stateTransition := storage.AggregateBlockTransitionsToStateTransition(int(lastShardBlock.Height), lastShardBlock.ShardID ,lastShardBlock.HashShardBlock())
 
 				logger.Printf("Transactions to delete in other miners count: %d - New Mempool Size: %d\n",len(stateTransition.ContractTxData)+len(stateTransition.FundsTxData)+len(stateTransition.ConfigTxData)+ len(stateTransition.StakeTxData) + len(stateTransition.AggTxData),storage.GetMemPoolSize())
 
