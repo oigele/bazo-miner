@@ -521,18 +521,16 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 				broadcastBlockTransition(blockTransition)
 
-				logger.Printf("Shards this epoch: %d", NumberOfShardsDelayed)
-				logger.Printf("My Shard ID this epoch %d", storage.ThisShardIDDelayed)
 				//Retrieve all state transitions from the local state with the height of my last block
 				blockTransitionStashForHeight := protocol.ReturnBlockTransitionForHeight(storage.ReceivedBlockTransitionStash, lastBlock.Height)
 
-				if (len(blockTransitionStashForHeight) != 0) {
+				if len(blockTransitionStashForHeight) != 0 {
 					//Iterate through block transitions and apply them to local state, keep track of processed shards
 					//We only accept block transitions to our stash if they have our own shard ID
 					for _, bt := range blockTransitionStashForHeight {
 						if (BlockTransitionBoolMap[bt.BlockID] == false && bt.BlockID != storage.ThisBlockID) {
 							//safety check. This shouldnt happen. Watch out for it in error log
-							if (bt.ShardID != storage.ThisShardID) {
+							if bt.ShardID != storage.ThisShardID {
 								logger.Printf("We got a problem. Transition shard ID != this shard ID")
 							}
 							//Apply all relative account changes to my local state
@@ -589,7 +587,9 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 							//just in case i'm the blocking element, broadcast transition again
 							broadcastBlockTransition(storage.ReadBlockTransitionFromOwnStash(int(lastBlock.Height)))
 							broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
-							broadcastShardBlock(storage.ReadLastClosedShardBlock())
+							if storage.ReadLastClosedShardBlock() != nil {
+								broadcastShardBlock(storage.ReadLastClosedShardBlock())
+							}
 							time.Sleep(time.Second)
 							continue
 						}
@@ -668,10 +668,10 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 
 	FirstStartAfterEpoch = false
+
+	// todo figure out where to place this piece of code
 	NumberOfShardsDelayed = NumberOfShards
 	storage.ThisShardIDDelayed = storage.ThisShardID
-
-
 
 }
 

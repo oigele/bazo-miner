@@ -71,7 +71,10 @@ func prepareBlock(block *protocol.Block) {
 		txAssignedShard := assignTransactionToShard(tx)
 		//Makes sure we only validate the transactions of our own shard
 		if int(txAssignedShard) == ValidatorShardMap.ValMapping[validatorAccAddress] {
-			openTxsOfShard = append(openTxsOfShard, tx)
+			txAssignedBlock := assignTransactionToBlock(tx)
+			if txAssignedBlock == ShardBlockMap.ShardBlockMapping[validatorAccAddress] {
+				openTxsOfShard = append(openTxsOfShard, tx)
+			}
 		}
 	}
 
@@ -481,6 +484,31 @@ func assignTransactionToShard(transaction protocol.Transaction) (shardNr int) {
 		var calculatedInt int
 		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
 		return int((Abs(int32(calculatedInt)) % int32(NumberOfShards)) + 1)
+	default:
+		return 1 // default shard ID
+	}
+}
+
+func assignTransactionToBlock(transaction protocol.Transaction) (blockId int) {
+	switch transaction.(type) {
+	case *protocol.FundsTx:
+		var byteToConvert [32]byte
+		byteToConvert = transaction.(*protocol.FundsTx).From
+		var calculatedInt int
+		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
+		return int((Abs(int32(calculatedInt)) % int32(NumberOfMinersInShard)) + 1)
+	case *protocol.ConfigTx:
+		var byteToConvert [64]byte
+		byteToConvert = transaction.(*protocol.ConfigTx).Sig
+		var calculatedInt int
+		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
+		return int((Abs(int32(calculatedInt)) % int32(NumberOfMinersInShard)) + 1)
+	case *protocol.StakeTx:
+		var byteToConvert [32]byte
+		byteToConvert = transaction.(*protocol.StakeTx).Account
+		var calculatedInt int
+		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
+		return int((Abs(int32(calculatedInt)) % int32(NumberOfMinersInShard)) + 1)
 	default:
 		return 1 // default shard ID
 	}
