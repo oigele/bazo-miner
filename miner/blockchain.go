@@ -370,7 +370,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 		// The variable 'lastblock' is one before the next epoch block, thus the next block will be an epoch block
 		//really naive sortition: ShardID one can mint the epoch block
 		if (lastBlock.Height == uint32(lastEpochBlock.Height)+uint32(ActiveParameters.Epoch_length)) {
-			if (storage.ThisShardID == 1 && storage.ThisShardID == 1) {
+			if (storage.ThisShardID == 1 && storage.ThisBlockID == 1) {
 				epochBlock = protocol.NewEpochBlock([][32]byte{lastBlock.Hash}, lastBlock.Height+1)
 				logger.Printf("epochblock beingprocessed height: %d\n", epochBlock.Height)
 
