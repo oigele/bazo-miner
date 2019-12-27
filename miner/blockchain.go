@@ -644,6 +644,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					if newShardBlock.Height == lastBlock.Height  {
 						broadcastShardBlock(storage.ReadLastClosedShardBlock())
 						shardBlockReceived = true
+						lastShardBlock = &newShardBlock
 					}
 				}
 				//todo implement request structure
