@@ -130,12 +130,12 @@ func processStateData(payload []byte) {
 //End code from Kürsat
 
 func processBlockStateData(payload []byte) {
-	//todo make sure that only data from the same shard is processed
 	var blockTransition *protocol.BlockTransition
 	blockTransition = blockTransition.DecodeBlockTransition(payload)
 	if(lastEpochBlock != nil){
 		//only accept block transitions from same shard
 		hash := blockTransition.HashTransition()
+		// dont use delayed shard ID for the check here because the state transition mechanism after
 		if !storage.ReceivedBlockTransitionStash.BlockTransitionIncluded(hash) && blockTransition.ShardID == storage.ThisShardID {
 			logger.Printf("Writing block Transition to stash Shard ID: %v BlockID: %v  VS my bloxk ID: %v - Height: %d - Hash: %x\n",blockTransition.ShardID, blockTransition.BlockID, storage.ThisBlockID,blockTransition.Height,hash[0:8])
 			storage.ReceivedBlockTransitionStash.Set(hash, blockTransition)
