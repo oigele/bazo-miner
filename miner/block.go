@@ -271,10 +271,26 @@ func addAccTx(b *protocol.Block, tx *protocol.AccTx) error {
 		}
 	}
 
+	//check to avoid weird error
+	if !containsAccTx(b.AccTxData, tx.Hash()) {
+		//Add the tx hash to the block header and write it to open storage (non-validated transactions).
+		b.AccTxData = append(b.AccTxData, tx.Hash())
+		logger.Printf("Added tx (%x) to the AccTxData slice: %v", tx.Hash(), *tx)
+	} else {
+		logger.Printf("might have a problem")
+	}
+
 	//Add the tx hash to the block header and write it to open storage (non-validated transactions).
-	b.AccTxData = append(b.AccTxData, tx.Hash())
-	logger.Printf("Added tx (%x) to the AccTxData slice: %v", tx.Hash(), *tx)
 	return nil
+}
+
+func containsAccTx(s [][32]byte, e [32]byte) bool {
+	for _, a := range s {
+		if a == e {
+			return true
+		}
+	}
+	return false
 }
 
 func addFundsTx(b *protocol.Block, tx *protocol.FundsTx) error {

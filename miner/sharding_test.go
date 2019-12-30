@@ -65,8 +65,8 @@ func TestShardIterative(t *testing.T) {
 	fromPrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
 	var nodeList [][32]byte
 
-	//create 10 new accounts
-	for i := 1; i <= 10; i++ {
+	//create 20 new accounts
+	for i := 1; i <= 20; i++ {
 
 		accTx, newAccAddress, err := protocol.ConstrAccTx(
 			byte(0),
@@ -98,7 +98,6 @@ func TestShardIterative(t *testing.T) {
 
 	}
 
-	time.Sleep(200 * time.Second)
 
 	i := 1
 
@@ -130,7 +129,6 @@ func TestShardIterative(t *testing.T) {
 
 	}
 
-	time.Sleep(200 * time.Second)
 
 
 	start := time.Now()
@@ -181,8 +179,8 @@ func TestShard(t *testing.T) {
 	fromPrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
 	var nodeList [][32]byte
 
-	//create 10 new accounts
-	for i := 1; i <= 10; i++ {
+	//create 20 new accounts
+	for i := 1; i <= 20; i++ {
 
 		accTx, newAccAddress, err := protocol.ConstrAccTx(
 			byte(0),
@@ -258,13 +256,12 @@ func TestShard(t *testing.T) {
 	for _, hasher := range nodeList {
 		go func([32]byte, *sync.WaitGroup) {
 			defer wg.Done()
-			t.Log(hasher[0:8])
 			//now send tx back to the root account. Note that I never did anything manually with the new account
 			for txCount := 0; txCount < 10000; txCount++ {
 				tx, _ := protocol.ConstrFundsTx(
 					byte(0),
 					uint64(10),
-					uint64(1),
+					uint64(10),
 					uint32(txCount),
 					hasher,
 					hasherRootNode,
@@ -278,11 +275,7 @@ func TestShard(t *testing.T) {
 				if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
 					t.Log(fmt.Sprintf("Error"))
 				}
-				if txCount == 9999 {
-					t.Log(hasher[0:8])
-				}
 			}
-			t.Log("One is finished")
 		}(hasher, &wg)
 		time.Sleep(2 * time.Second)
 	}

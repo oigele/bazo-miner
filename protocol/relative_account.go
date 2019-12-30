@@ -16,6 +16,7 @@ type StateTransition struct {
 	Height						int
 	ShardID						int
 	BlockHash					[32]byte
+	AccTxData					[][32]byte
 	ContractTxData  			[][32]byte
 	FundsTxData  				[][32]byte
 	ConfigTxData 				[][32]byte
@@ -38,13 +39,14 @@ type RelativeAccount struct {
 	ContractVariables  []ByteArray           // Arbitrary length
 }
 
-func NewStateTransition(stateChange map[[32]byte]*RelativeAccount, height int, shardid int, blockHash [32]byte, contractData [][32]byte,
+func NewStateTransition(stateChange map[[32]byte]*RelativeAccount, height int, shardid int, blockHash [32]byte, accTxData [][32]byte, contractData [][32]byte,
 	fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte, aggTxData [][32]byte) *StateTransition {
 	newTransition := StateTransition{
 		stateChange,
 		height,
 		shardid,
 		blockHash,
+		accTxData,
 		contractData,
 		fundsData,
 		configData,
@@ -112,6 +114,7 @@ func (st *StateTransition) EncodeTransition() []byte {
 		Height:						st.Height,
 		ShardID:					st.ShardID,
 		BlockHash:					st.BlockHash,
+		AccTxData:					st.AccTxData,
 		ContractTxData:				st.ContractTxData,
 		FundsTxData:				st.FundsTxData,
 		ConfigTxData:				st.ConfigTxData,

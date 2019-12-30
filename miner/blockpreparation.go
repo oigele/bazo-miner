@@ -414,6 +414,7 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 		nrWhenCombinedBest = nrWhenCombinedBest + 1
 
 		//Stop when block is full
+		//nr when combined best is +1 for each agg tx as well
 		if (nrWhenCombinedBest+nonAggregatableTxCounter)*transactionHashSize >= blockSize {
 			moreOpenTx = false
 			break
@@ -497,7 +498,16 @@ func Abs(x int32) int32 {
 During the synchronisation phase at every block height, the validator also receives the transaction hashes which were validated
 by the other shards. To avoid starvation, delete those transactions from the mempool
 */
-func DeleteTransactionFromMempool(contractData [][32]byte, fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte, aggTxData[][32]byte) {
+func DeleteTransactionFromMempool(acctTxData [][32]byte, contractData [][32]byte, fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte, aggTxData[][32]byte) {
+
+	for _,accTx := range acctTxData{
+		if(storage.ReadOpenTx(accTx) != nil){
+			storage.WriteClosedTx(storage.ReadOpenTx(accTx))
+			storage.DeleteOpenTx(storage.ReadOpenTx(accTx))
+			logger.Printf("Deleted transaction (%x) from the MemPool.\n",accTx)
+		}
+	}
+
 	for _,fundsTX := range fundsData{
 		if(storage.ReadOpenTx(fundsTX) != nil){
 			storage.WriteClosedTx(storage.ReadOpenTx(fundsTX))

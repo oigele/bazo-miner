@@ -262,7 +262,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 						//Delete transactions from Mempool (Transaction pool), which were validated
 						//by the other shards to avoid starvation in the mempool
-						DeleteTransactionFromMempool(st.ContractTxData, st.FundsTxData, st.ConfigTxData, st.StakeTxData, st.AggTxData)
+						DeleteTransactionFromMempool(st.AccTxData, st.ContractTxData, st.FundsTxData, st.ConfigTxData, st.StakeTxData, st.AggTxData)
 						//Set the particular shard as being processed
 						shardIDStateBoolMap[st.ShardID] = true
 
@@ -305,8 +305,9 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						logger.Printf("Writing state back to stash Shard ID: %v  VS my shard ID: %v - Height: %d\n", stateTransition.ShardID, storage.ThisShardID, stateTransition.Height)
 						storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
 
+						logger.Printf("Transactions to delete in this miner count: %d - New Mempool Size: %d\n",len(stateTransition.ContractTxData)+len(stateTransition.FundsTxData)+len(stateTransition.ConfigTxData)+ len(stateTransition.StakeTxData) + len(stateTransition.AggTxData),storage.GetMemPoolSize())
 						//Delete transactions from mempool, which were validated by the other shards
-						DeleteTransactionFromMempool(stateTransition.ContractTxData, stateTransition.FundsTxData, stateTransition.ConfigTxData, stateTransition.StakeTxData, stateTransition.AggTxData)
+						DeleteTransactionFromMempool(stateTransition.AccTxData, stateTransition.ContractTxData, stateTransition.FundsTxData, stateTransition.ConfigTxData, stateTransition.StakeTxData, stateTransition.AggTxData)
 
 						shardIDStateBoolMap[stateTransition.ShardID] = true
 
@@ -465,7 +466,8 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			//use the freshly updated shardId, because the block always has to be in the new epoch already. If it was in the old epoch,
 			//the epoch block would not have been generated either
 			stateTransition := protocol.NewStateTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, currentBlock.Hash,
-				currentBlock.ContractTxData, currentBlock.FundsTxData, currentBlock.ConfigTxData, currentBlock.StakeTxData, currentBlock.AggTxData)
+				currentBlock.AccTxData, currentBlock.ContractTxData, currentBlock.FundsTxData, currentBlock.ConfigTxData, currentBlock.StakeTxData, currentBlock.AggTxData)
+
 
 			logger.Printf("Transactions to delete in other miners count: %d - New Mempool Size: %d\n",len(stateTransition.ContractTxData)+len(stateTransition.FundsTxData)+len(stateTransition.ConfigTxData)+ len(stateTransition.StakeTxData) + len(stateTransition.AggTxData),storage.GetMemPoolSize())
 
