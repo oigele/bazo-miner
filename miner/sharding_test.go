@@ -210,7 +210,7 @@ func TestShard(t *testing.T) {
 		nodeList = append(nodeList, hasherNewNode)
 
 		t.Log(hasherNewNode)
-		time.Sleep(20 * time.Second)
+		time.Sleep(10 * time.Second)
 
 	}
 
@@ -255,8 +255,6 @@ func TestShard(t *testing.T) {
 
 	start := time.Now()
 
-	hasherDelayed := hasherRootNode
-
 	for _, hasher := range nodeList {
 		go func([32]byte, *sync.WaitGroup) {
 			defer wg.Done()
@@ -269,7 +267,7 @@ func TestShard(t *testing.T) {
 					uint64(1),
 					uint32(txCount),
 					hasher,
-					hasherDelayed,
+					hasherRootNode,
 					fromPrivKey,
 					fromPrivKey,
 					nil)
@@ -287,7 +285,6 @@ func TestShard(t *testing.T) {
 			t.Log("One is finished")
 		}(hasher, &wg)
 		time.Sleep(2 * time.Second)
-		hasherDelayed = hasher
 	}
 
 
