@@ -22,38 +22,185 @@ var (
 	TotalNodes			int
 )
 
-func TestGenerateNodes(t *testing.T) {
-	if testing.Short() {
-		t.Skip("Skipping TestGenerateNodes...")
-	} else {
-		fmt.Printf("Generating nodes for testing \n")
-	}
-	TotalNodes = 10
+func TestShardSemiIterative(t *testing.T) {
+	rootNode := fmt.Sprintf("WalletA.txt")
+	rootNodePubKey, _ := crypto.ExtractECDSAPublicKeyFromFile(rootNode)
+	rootNodePrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
+	rootNodeAddress := crypto.GetAddressFromPubKey(rootNodePubKey)
+	hasherRootNode := protocol.SerializeHashContent(rootNodeAddress)
 
-	//Generate wallet directories for all nodes, i.e., validators and non-validators
-	for i := 1; i <= TotalNodes; i++ {
-		strNode := fmt.Sprintf("Node_%d",i)
-		fmt.Printf("Generating node %d \n", i)
-		if(!stringAlreadyInSlice(NodeNames,strNode)){
-			NodeNames = append(NodeNames,strNode)
+	fromPrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
+	var nodeList [][32]byte
+
+	//create 30 new accounts
+	for i := 1; i <= 30; i++ {
+
+		accTx, newAccAddress, err := protocol.ConstrAccTx(
+			byte(0),
+			uint64(1),
+			[64]byte{},
+			rootNodePrivKey,
+			nil,
+			nil)
+
+		if err != nil {
+			t.Log("got an issue")
 		}
-		if _, err := os.Stat(NodesDirectory+strNode); os.IsNotExist(err) {
-			err = os.MkdirAll(NodesDirectory+strNode, 0755)
-			if err != nil {
-				t.Errorf("Error while creating node directory %v\n",err)
+
+		if err := SendTx("127.0.0.1:8000", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
+		if err := SendTx("127.0.0.1:8001", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
+		/*if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}*/
+
+		newNodeAddress := crypto.GetAddressFromPubKey(&newAccAddress.PublicKey)
+		hasherNewNode := protocol.SerializeHashContent(newNodeAddress)
+
+		//append all 20 hashers to a new list
+		nodeList = append(nodeList, hasherNewNode)
+
+		t.Log(hasherNewNode)
+	}
+
+
+	i := 1
+	z := 1
+	y := 1
+
+	for _, hasherNewNode := range nodeList {
+
+
+		//send funds to new account
+		tx, _ := protocol.ConstrFundsTx(
+			byte(0),
+			uint64(1000000),
+			uint64(1),
+			uint32(i),
+			hasherRootNode,
+			hasherNewNode,
+			fromPrivKey,
+			fromPrivKey,
+			nil)
+
+		if err := SendTx("127.0.0.1:8000", tx, p2p.FUNDSTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}
+		if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}
+		if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}
+
+		i += 1
+	}
+
+
+
+
+	var wg sync.WaitGroup
+	//because we send to 2 nodes
+	wg.Add(1)
+	start := time.Now()
+
+	//amount of tx per inner loop
+	j := 150
+
+
+	go func() {
+		defer wg.Done()
+		for i = 1; i <= 20; i++ {
+			for _, hasher := range nodeList {
+				for txCount := 1; txCount <= j; txCount++ {
+					tx, _ := protocol.ConstrFundsTx(
+						byte(0),
+						uint64(10),
+						uint64(1),
+						//can do it like this because no txcount check. the important part is that the txcount is unique
+						uint32(i*j-txCount),
+						hasher,
+						hasherRootNode,
+						fromPrivKey,
+						fromPrivKey,
+						nil)
+
+					if err := SendTx("127.0.0.1:8000", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+				}
 			}
 		}
-		storage.Init(NodesDirectory+strNode+"/storage.db", TestIpPort)
-		_, err := crypto.ExtractECDSAPublicKeyFromFile(NodesDirectory+strNode+"/wallet.key")
-		if err != nil {
-			return
+	}()
+
+	time.Sleep(100 * time.Millisecond)
+
+	go func() {
+		defer wg.Done()
+		for z = 1; z <= 20; z++ {
+			for _, hasher := range nodeList {
+				for txCount := 1; txCount <= j; txCount++ {
+					tx, _ := protocol.ConstrFundsTx(
+						byte(0),
+						uint64(10),
+						uint64(1),
+						//can do it like this because no txcount check. the important part is that the txcount is unique
+						uint32(z*j-txCount),
+						hasher,
+						hasherRootNode,
+						fromPrivKey,
+						fromPrivKey,
+						nil)
+
+					if err := SendTx2("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+				}
+			}
 		}
-		_, err = crypto.ExtractRSAKeyFromFile(NodesDirectory+strNode+"/commitment.key")
-		if err != nil {
-			return
+	}()
+
+	go func() {
+		defer wg.Done()
+		for y = 1; y <= 20; y++ {
+			for _, hasher := range nodeList {
+				for txCount := 1; txCount <= j; txCount++ {
+					tx, _ := protocol.ConstrFundsTx(
+						byte(0),
+						uint64(10),
+						uint64(1),
+						//can do it like this because no txcount check. the important part is that the txcount is unique
+						uint32(z*j-txCount),
+						hasher,
+						hasherRootNode,
+						fromPrivKey,
+						fromPrivKey,
+						nil)
+
+					if err := SendTx3("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+				}
+			}
 		}
-	}
+	}()
+
+	wg.Wait()
+
+	t.Log("Waiting for goroutines to finish")
+
+	elapsed := time.Now().Sub(start)
+
+
+	t.Log(elapsed.Seconds())
+	t.Log(elapsed.Nanoseconds())
+
+
 }
+
 
 func TestShardIterative(t *testing.T) {
 	rootNode := fmt.Sprintf("WalletA.txt")
@@ -65,8 +212,8 @@ func TestShardIterative(t *testing.T) {
 	fromPrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
 	var nodeList [][32]byte
 
-	//create 20 new accounts
-	for i := 1; i <= 20; i++ {
+	//create 30 new accounts
+	for i := 1; i <= 30; i++ {
 
 		accTx, newAccAddress, err := protocol.ConstrAccTx(
 			byte(0),
@@ -94,8 +241,6 @@ func TestShardIterative(t *testing.T) {
 		nodeList = append(nodeList, hasherNewNode)
 
 		t.Log(hasherNewNode)
-		time.Sleep(10 * time.Second)
-
 	}
 
 
@@ -124,34 +269,36 @@ func TestShardIterative(t *testing.T) {
 		}
 
 		i += 1
-
-		time.Sleep(2 * time.Second)
-
 	}
 
 
 
 	start := time.Now()
 
-	//Sending all TX sequentially
-	for _, hasher := range nodeList {
-		for txCount := 0; txCount < 10000; txCount++ {
-			tx, _ := protocol.ConstrFundsTx(
-				byte(0),
-				uint64(10),
-				uint64(1),
-				uint32(txCount),
-				hasher,
-				hasherRootNode,
-				fromPrivKey,
-				fromPrivKey,
-				nil)
+	//amount of tx per inner loop
+	j := 150
 
-			if err := SendTx("127.0.0.1:8000", tx, p2p.FUNDSTX_BRDCST); err != nil {
-				t.Log(fmt.Sprintf("Error"))
-			}
-			if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
-				t.Log(fmt.Sprintf("Error"))
+	for i = 1; i <= 20; i++ {
+		for _, hasher := range nodeList {
+			for txCount := 1; txCount <= j; txCount++ {
+				tx, _ := protocol.ConstrFundsTx(
+					byte(0),
+					uint64(10),
+					uint64(1),
+					//can do it like this because no txcount check. the important part is that the txcount is unique
+					uint32(i*j - txCount),
+					hasher,
+					hasherRootNode,
+					fromPrivKey,
+					fromPrivKey,
+					nil)
+
+				if err := SendTx("127.0.0.1:8000", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					t.Log(fmt.Sprintf("Error"))
+				}
+				if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					t.Log(fmt.Sprintf("Error"))
+				}
 			}
 		}
 	}
@@ -165,8 +312,9 @@ func TestShardIterative(t *testing.T) {
 	t.Log(elapsed.Nanoseconds())
 
 
-}
 
+
+}
 
 func TestShard(t *testing.T) {
 
@@ -180,7 +328,7 @@ func TestShard(t *testing.T) {
 	var nodeList [][32]byte
 
 	//create 20 new accounts
-	for i := 1; i <= 20; i++ {
+	for i := 1; i <= 30; i++ {
 
 		accTx, newAccAddress, err := protocol.ConstrAccTx(
 			byte(0),
@@ -208,7 +356,6 @@ func TestShard(t *testing.T) {
 		nodeList = append(nodeList, hasherNewNode)
 
 		t.Log(hasherNewNode)
-		time.Sleep(10 * time.Second)
 
 	}
 
@@ -217,7 +364,6 @@ func TestShard(t *testing.T) {
 	i := 1
 
 	for _, hasherNewNode := range nodeList {
-
 
 		//send funds to new account
 		tx, _ := protocol.ConstrFundsTx(
@@ -240,24 +386,21 @@ func TestShard(t *testing.T) {
 
 		i += 1
 
-		time.Sleep(2 * time.Second)
-
 	}
-
 
 	var wg sync.WaitGroup
 
+	start := time.Now()
 
+	time.Sleep(10 * time.Millisecond)
 
 	wg.Add(len(nodeList))
-
-	start := time.Now()
 
 	for _, hasher := range nodeList {
 		go func([32]byte, *sync.WaitGroup) {
 			defer wg.Done()
 			//now send tx back to the root account. Note that I never did anything manually with the new account
-			for txCount := 0; txCount < 10000; txCount++ {
+			for txCount := 0; txCount < 1000; txCount++ {
 				tx, _ := protocol.ConstrFundsTx(
 					byte(0),
 					uint64(10),
@@ -272,20 +415,14 @@ func TestShard(t *testing.T) {
 				if err := SendTx("127.0.0.1:8000", tx, p2p.FUNDSTX_BRDCST); err != nil {
 					t.Log(fmt.Sprintf("Error"))
 				}
-				if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
+				/*if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
 					t.Log(fmt.Sprintf("Error"))
-				}
+				}*/
 			}
 		}(hasher, &wg)
-		time.Sleep(2 * time.Second)
+		//concurrency safety
+		time.Sleep(10 * time.Millisecond)
 	}
-
-
-	t.Log("Waiting for goroutines to finish")
-
-	elapsed1 := time.Now().Sub(start)
-
-	t.Log(elapsed1.Seconds())
 
 	wg.Wait()
 
@@ -690,6 +827,43 @@ func transferFundsToWallets() {
 }
 
 func SendTx(dial string, tx protocol.Transaction, typeID uint8) (err error) {
+	if conn := p2p.Connect(dial); conn != nil {
+		packet := p2p.BuildPacket(typeID, tx.Encode())
+		conn.Write(packet)
+
+		header, payload, err := p2p.RcvData_(conn)
+		if err != nil || header.TypeID == p2p.NOT_FOUND {
+			err = errors.New(string(payload[:]))
+		}
+		conn.Close()
+
+		return err
+	}
+
+	txHash := tx.Hash()
+	return errors.New(fmt.Sprintf("Sending tx %x failed.", txHash[:8]))
+}
+
+
+func SendTx2(dial string, tx protocol.Transaction, typeID uint8) (err error) {
+	if conn := p2p.Connect(dial); conn != nil {
+		packet := p2p.BuildPacket(typeID, tx.Encode())
+		conn.Write(packet)
+
+		header, payload, err := p2p.RcvData_(conn)
+		if err != nil || header.TypeID == p2p.NOT_FOUND {
+			err = errors.New(string(payload[:]))
+		}
+		conn.Close()
+
+		return err
+	}
+
+	txHash := tx.Hash()
+	return errors.New(fmt.Sprintf("Sending tx %x failed.", txHash[:8]))
+}
+
+func SendTx3(dial string, tx protocol.Transaction, typeID uint8) (err error) {
 	if conn := p2p.Connect(dial); conn != nil {
 		packet := p2p.BuildPacket(typeID, tx.Encode())
 		conn.Write(packet)

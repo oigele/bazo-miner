@@ -23,6 +23,7 @@ type FundsTx struct {
 	To     		[32]byte
 	Sig1   		[64]byte
 	Sig2   		[64]byte
+	//says if the fundsTx has been aggregated into an aggtx. This boolean isn't needed in the current version
 	Aggregated 	bool
 	Block		[32]byte //This saves the blockHashWithoutTransactions into which the transaction was usually validated. Needed for rollback.
 	Data   		[]byte

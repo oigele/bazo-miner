@@ -959,6 +959,7 @@ func fetchStakeTxData(block *protocol.Block, stakeTxSlice []*protocol.StakeTx, i
 
 //This function fetches the funds transactions recursively --> When a aggTx is agregated in another aggTx.
 // This is mainly needed for the startup process. It is recursively searching until only funds transactions are in the list.
+// Won't be needed anymore as doubly linked blockchains are currently not implemented
 func fetchFundsTxRecursively(AggregatedTxSlice [][32]byte) (aggregatedFundsTxSlice []*protocol.FundsTx, err error){
 	for _, txHash := range AggregatedTxSlice {
 		//Try To read the transaction from closed storage.

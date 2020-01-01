@@ -18,6 +18,7 @@ type AggTx struct {
 	From   				[][32]byte
 	To    				[][32]byte
 	AggregatedTxSlice 	[][32]byte
+	//says if the AggTx has been aggregated into another AggTx. not needed anymore.
 	Aggregated			bool
 	Block				[32]byte //This saves the blockHashWithoutTransactions into which the transaction was usually validated. Needed for rollback.
 	MerkleRoot          [32]byte
