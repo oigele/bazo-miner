@@ -609,7 +609,9 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 			logger.Printf("This block ID: %d", storage.ThisBlockID)
 			//first mint the shard block
-			if storage.ThisBlockID == 1 {
+			//if storage.ThisBlockID == 1 {
+			//experimental: all blocks create the aggregated transition(should be the same everywhere)
+			if true {
 				//currentShardBlock := protocol.NewShardBlock(currentBlock.Hash, currentBlock.Height)
 				//currentShardBlock.ShardID = storage.ThisShardID
 
@@ -661,7 +663,6 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						lastShardBlock = &newShardBlock
 					}
 				}
-				//todo implement request structure
 			}*/
 
 
