@@ -73,8 +73,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		genesisRes(p, payload)
 	case FIRST_EPOCH_BLOCK_REQ:
 		FirstEpochBlockRes(p,payload)
-	case FIRST_SHARD_BLOCK_REQ:
-		FirstShardBlockRes(p, payload)
+	/*case FIRST_SHARD_BLOCK_REQ:
+		FirstShardBlockRes(p, payload)*/
 	case EPOCH_BLOCK_REQ:
 		EpochBlockRes(p,payload)
 	case LAST_EPOCH_BLOCK_REQ:

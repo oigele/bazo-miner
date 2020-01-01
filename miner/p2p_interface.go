@@ -28,13 +28,13 @@ func incomingEpochData() {
 	}
 }
 
-func incomingShardBlockData() {
+/*func incomingShardBlockData() {
 	//receive shard block
 	for {
 		shardBlock := <- p2p.ShardBlockIn
 		processShardBlock(shardBlock)
 	}
-}
+}*/
 
 //Constantly listen to incoming state transition data from the network
 func incomingStateData(){
@@ -81,7 +81,7 @@ func processEpochBlock(eb []byte) {
 	}
 }
 
-func processShardBlock(sb []byte) {
+/*func processShardBlock(sb []byte) {
 	var shardBlock *protocol.ShardBlock
 	shardBlock = shardBlock.Decode(sb)
 
@@ -101,7 +101,7 @@ func processShardBlock(sb []byte) {
 		broadcastShardBlock(shardBlock)
 	}
 
-}
+}*/
 
 func processStateData(payload []byte) {
 	var stateTransition *protocol.StateTransition
@@ -135,7 +135,7 @@ func processBlockStateData(payload []byte) {
 	if(lastEpochBlock != nil){
 		//only accept block transitions from same shard
 		hash := blockTransition.HashTransition()
-		// dont use delayed shard ID for the check here because the state transition mechanism after
+		// dont use delayed shard ID for the check here because the state transition mechanism is after
 		if !storage.ReceivedBlockTransitionStash.BlockTransitionIncluded(hash) && blockTransition.ShardID == storage.ThisShardID {
 			logger.Printf("Writing block Transition to stash Shard ID: %v BlockID: %v  VS my bloxk ID: %v - Height: %d - Hash: %x\n",blockTransition.ShardID, blockTransition.BlockID, storage.ThisBlockID,blockTransition.Height,hash[0:8])
 			storage.ReceivedBlockTransitionStash.Set(hash, blockTransition)
@@ -223,10 +223,10 @@ func broadcastEpochBlock(epochBlock *protocol.EpochBlock) {
 	p2p.EpochBlockOut <- epochBlock.Encode()
 }
 
-func broadcastShardBlock(shardBlock *protocol.ShardBlock) {
+/*func broadcastShardBlock(shardBlock *protocol.ShardBlock) {
 	logger.Printf("Writing Shard block (%x) to channel ShardBlockOut\n", shardBlock.Hash[0:8])
 	p2p.ShardBlockOut <- shardBlock.Encode()
-}
+}*/
 
 func broadcastStateTransition(st *protocol.StateTransition) {
 	p2p.StateTransitionOut <- st.EncodeStateTransition()

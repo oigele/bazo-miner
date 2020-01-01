@@ -142,7 +142,7 @@ func finalizeBlock(block *protocol.Block) error {
 	return nil
 }
 
-func finalizeShardBlock(shardBlock *protocol.ShardBlock) error {
+/*func finalizeShardBlock(shardBlock *protocol.ShardBlock) error {
 	validatorAcc, err := storage.ReadAccount(validatorAccAddress)
 	if err != nil {
 		return err
@@ -171,7 +171,7 @@ func finalizeShardBlock(shardBlock *protocol.ShardBlock) error {
 	copy(shardBlock.CommitmentProof[0:crypto.COMM_PROOF_LENGTH], commitmentProof[:])
 
 	return nil
-}
+}*/
 
 /**
 Code from Kürsat

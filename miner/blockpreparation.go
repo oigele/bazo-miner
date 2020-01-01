@@ -525,7 +525,16 @@ func Abs(x int32) int32 {
 During the synchronisation phase at every block height, the validator also receives the transaction hashes which were validated
 by the other shards. To avoid starvation, delete those transactions from the mempool
 */
-func DeleteTransactionFromMempool(contractData [][32]byte, fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte, aggTxData[][32]byte) {
+func DeleteTransactionFromMempool(accTxData [][32]byte, contractData [][32]byte, fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte, aggTxData[][32]byte) {
+	for _,accTX := range accTxData {
+		if(storage.ReadOpenTx(accTX) != nil){
+			storage.WriteClosedTx(storage.ReadOpenTx(accTX))
+			storage.DeleteOpenTx(storage.ReadOpenTx(accTX))
+			logger.Printf("Deleted transaction (%x) from the MemPool.\n",accTX)
+		}
+	}
+
+
 	for _,fundsTX := range fundsData{
 		if(storage.ReadOpenTx(fundsTX) != nil){
 			storage.WriteClosedTx(storage.ReadOpenTx(fundsTX))

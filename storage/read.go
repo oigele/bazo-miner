@@ -71,7 +71,7 @@ func ReadClosedEpochBlock(hash [32]byte) (epochBlock *protocol.EpochBlock) {
 	return epochBlock
 }
 
-func ReadClosedShardBlock(hash [32]byte) (shardBlock *protocol.ShardBlock) {
+/*func ReadClosedShardBlock(hash [32]byte) (shardBlock *protocol.ShardBlock) {
 	db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(CLOSEDSHARDBLOCK_BUCKET))
 		encodedBlock := b.Get(hash[:])
@@ -84,7 +84,7 @@ func ReadClosedShardBlock(hash [32]byte) (shardBlock *protocol.ShardBlock) {
 	}
 
 	return shardBlock
-}
+}*/
 
 //This function does read all blocks without transactions inside.
 func ReadClosedBlockWithoutTx(hash [32]byte) (block *protocol.Block) {
@@ -302,7 +302,7 @@ func ReadFirstEpochBlock() (firstEpochBlock *protocol.EpochBlock, err error) {
 	return firstEpochBlock, err
 }
 
-func ReadFirstShardBlock() (firstShardBlock *protocol.ShardBlock, err error) {
+/*func ReadFirstShardBlock() (firstShardBlock *protocol.ShardBlock, err error) {
 	err = db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(CLOSEDEPOCHBLOCK_BUCKET))
 		encoded := b.Get([]byte("firstshardblock"))
@@ -310,7 +310,7 @@ func ReadFirstShardBlock() (firstShardBlock *protocol.ShardBlock, err error) {
 		return nil
 	})
 	return firstShardBlock, err
-}
+}*/
 func ReadLastClosedEpochBlock() (epochBlock *protocol.EpochBlock) {
 	db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(LASTCLOSEDEPOCHBLOCK_BUCKET))
@@ -326,7 +326,7 @@ func ReadLastClosedEpochBlock() (epochBlock *protocol.EpochBlock) {
 
 	return epochBlock
 }
-func ReadLastClosedShardBlock() (shardBlock *protocol.ShardBlock) {
+/*func ReadLastClosedShardBlock() (shardBlock *protocol.ShardBlock) {
 	db.View(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(LASTCLOSEDSHARDBLOCK_BUCKET))
 		cb := b.Cursor()
@@ -340,7 +340,7 @@ func ReadLastClosedShardBlock() (shardBlock *protocol.ShardBlock) {
 	}
 
 	return shardBlock
-}
+}*/
 
 func GetMemPoolSize() int {
 	memPoolMutex.Lock()

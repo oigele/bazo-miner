@@ -459,45 +459,24 @@ func blockTransitionRes(p *peer, payload []byte) {
 		packet = BuildPacket(NOT_FOUND, nil)
 	} else {
 		//the edge case happens on a height 1 block before the epoch block (one before is the shard block)
-		if height == int64(storage.ReadLastClosedEpochBlock().Height-1) {
-			logger.Printf("Got a request for a block transition before the epoch block. Height: %d", height)
-			//go back to see and check my assignment in the last epoch block
-			//the requested block transition was in my shard and in my block
-			if shardID == int64(storage.ThisShardMap[int(storage.ReadLastClosedEpochBlock().Height)-storage.EpochLength-1]) && blockID == int64(storage.ThisBlockMap[int(storage.ReadLastClosedEpochBlock().Height)-storage.EpochLength-1]) {
-				logger.Printf("Request was for my old shard: %d and block: %d", shardID, blockID)
-				bt = storage.ReadBlockTransitionFromOwnStash(int(height))
-				if bt != nil {
-					packet = BuildPacket(BLOCK_TRANSITION_RES, bt.EncodeBlockTransition())
-					logger.Printf("sent state transition response for height: %d\n", height)
-				} else {
-					logger.Printf("the state transition should have been mine but I couldn't find it...")
-					packet = BuildPacket(NOT_FOUND, nil)
-				}
-				//the requested block transition wasn't in my shard or in my block
+		//the requested block transition was in my shard and in my block
+		//no checks needed like in the shard Transitions, because the intra-shard communication takes place before the inter-shard
+		if shardID == int64(storage.ThisShardID) && blockID == int64(storage.ThisBlockID) {
+			logger.Printf("Request was for my old shard: %d and block: %d", shardID, blockID)
+			bt = storage.ReadBlockTransitionFromOwnStash(int(height))
+			if bt != nil {
+				packet = BuildPacket(BLOCK_TRANSITION_RES, bt.EncodeBlockTransition())
+				logger.Printf("sent state transition response for height: %d\n", height)
 			} else {
-				logger.Printf("Shard ID was %d and Block ID was %d,  not mine", shardID, blockID)
+				logger.Printf("the state transition should have been mine but I couldn't find it...")
 				packet = BuildPacket(NOT_FOUND, nil)
 			}
+			//the requested block transition wasn't in my shard or in my block
 		} else {
-			if shardID == int64(storage.ThisShardIDDelayed) && blockID == int64(storage.ThisBlockIDDelayed) {
-				bt = storage.ReadBlockTransitionFromOwnStash(int(height))
-				if (bt != nil) {
-					if int64(bt.ShardID) == shardID {
-						packet = BuildPacket(BLOCK_TRANSITION_RES, bt.EncodeBlockTransition())
-						logger.Printf("sent block transition response for height: %d\n", height)
-					} else {
-						packet = BuildPacket(NOT_FOUND, nil)
-						logger.Printf("Unexpected error while retrieving the block transition. The shard ID of the queried transition: %d wasnt the one that I was acutally looking for %d", bt.ShardID,shardID)
-					}
-				} else {
-					packet = BuildPacket(NOT_FOUND, nil)
-					logger.Printf("block transition for height %d was nil.\n", height)
-				}
-			} else {
-				logger.Printf("Shard ID was %d and Block ID was %d, not mine", shardID, blockID)
-				packet = BuildPacket(NOT_FOUND, nil)
-			}
+			logger.Printf("Shard ID was %d and Block ID was %d,  not mine", shardID, blockID)
+			packet = BuildPacket(NOT_FOUND, nil)
 		}
+
 	}
 	sendData(p, packet)
 }
@@ -531,7 +510,7 @@ func FirstEpochBlockRes(p *peer, payload []byte) {
 	sendData(p, packet)
 }
 
-func FirstShardBlockRes(p *peer, payload []byte) {
+/*func FirstShardBlockRes(p *peer, payload []byte) {
 	var packet []byte
 	firstShardBlock, err := storage.ReadFirstShardBlock()
 
@@ -542,7 +521,7 @@ func FirstShardBlockRes(p *peer, payload []byte) {
 	}
 
 	sendData(p, packet)
-}
+}*/
 
 func LastEpochBlockRes(p *peer, payload []byte) {
 	var packet []byte

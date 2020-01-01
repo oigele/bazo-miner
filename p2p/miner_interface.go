@@ -39,7 +39,7 @@ var (
 
 	EpochBlockReceivedChan = make(chan protocol.EpochBlock)
 
-	ShardBlockReceivedChan = make(chan protocol.ShardBlock)
+	//ShardBlockReceivedChan = make(chan protocol.ShardBlock)
 
 
 

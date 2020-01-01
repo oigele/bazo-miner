@@ -16,6 +16,7 @@ type StateTransition struct {
 	Height						int
 	ShardID						int
 	BlockHash					[32]byte
+	AccTxData					[][32]byte
 	ContractTxData  			[][32]byte
 	FundsTxData  				[][32]byte
 	ConfigTxData 				[][32]byte
@@ -33,6 +34,7 @@ type BlockTransition struct {
 	ShardID						int
 	BlockID						int
 	BlockHash					[32]byte
+	AccTxData					[][32]byte
 	ContractTxData  			[][32]byte
 	FundsTxData  				[][32]byte
 	ConfigTxData 				[][32]byte
@@ -55,13 +57,14 @@ type RelativeAccount struct {
 	ContractVariables  []ByteArray           // Arbitrary length
 }
 
-func NewStateTransition(stateChange map[[32]byte]*RelativeAccount, height int, shardid int, blockHash [32]byte, contractData [][32]byte,
+func NewStateTransition(stateChange map[[32]byte]*RelativeAccount, height int, shardid int, blockHash [32]byte,  accTxData [][32]byte, contractData [][32]byte,
 	fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte, aggTxData [][32]byte) *StateTransition {
 	newTransition := StateTransition{
 		stateChange,
 		height,
 		shardid,
 		blockHash,
+		accTxData,
 		contractData,
 		fundsData,
 		configData,
@@ -72,7 +75,7 @@ func NewStateTransition(stateChange map[[32]byte]*RelativeAccount, height int, s
 	return &newTransition
 }
 
-func NewBlockTransition(stateChange map[[32]byte]*RelativeAccount, height int, shardid int, blockid int, blockHash [32]byte, contractData [][32]byte,
+func NewBlockTransition(stateChange map[[32]byte]*RelativeAccount, height int, shardid int, blockid int, blockHash [32]byte, accData [][32]byte, contractData [][32]byte,
 	fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte, aggTxData [][32]byte) *BlockTransition {
 	newTransition := BlockTransition{
 		stateChange,
@@ -80,6 +83,7 @@ func NewBlockTransition(stateChange map[[32]byte]*RelativeAccount, height int, s
 		shardid,
 		blockid,
 		blockHash,
+		accData,
 		contractData,
 		fundsData,
 		configData,
@@ -163,6 +167,7 @@ func (st *StateTransition) EncodeStateTransition() []byte {
 		Height:						st.Height,
 		ShardID:					st.ShardID,
 		BlockHash:					st.BlockHash,
+		AccTxData:					st.AccTxData,
 		ContractTxData:				st.ContractTxData,
 		FundsTxData:				st.FundsTxData,
 		ConfigTxData:				st.ConfigTxData,
@@ -186,6 +191,7 @@ func (bt *BlockTransition) EncodeBlockTransition() []byte {
 		ShardID:					bt.ShardID,
 		BlockID:					bt.BlockID,
 		BlockHash:					bt.BlockHash,
+		AccTxData: 					bt.AccTxData,
 		ContractTxData:				bt.ContractTxData,
 		FundsTxData:				bt.FundsTxData,
 		ConfigTxData:				bt.ConfigTxData,

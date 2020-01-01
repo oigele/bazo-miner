@@ -307,7 +307,7 @@ func initEpochBlock() (initialEpochBlock *protocol.EpochBlock, err error) {
 	return initialEpochBlock, nil
 }
 
-func initShardBlock() (initialShardBlock *protocol.ShardBlock, err error) {
+/*func initShardBlock() (initialShardBlock *protocol.ShardBlock, err error) {
 	if initialShardBlock, err = storage.ReadFirstShardBlock(); err != nil {
 		return nil, err
 	}
@@ -329,7 +329,7 @@ func initShardBlock() (initialShardBlock *protocol.ShardBlock, err error) {
 		storage.WriteLastClosedShardBlock(initialShardBlock)
 	}
 	return initialShardBlock, nil
-}
+}*/
 
 func getInitialBlock(lastEpochBlock *protocol.EpochBlock) (initialBlock *protocol.Block, err error) {
 	if len(storage.AllClosedBlocksAsc) > 0 {

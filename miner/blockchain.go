@@ -61,22 +61,22 @@ func InitFirstStart(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey
 
 	/*Write First Epoch block chained to the genesis block*/
 	initialEpochBlock := protocol.NewEpochBlock([][32]byte{genesis.Hash()}, 0)
-	initialShardBlock := protocol.NewShardBlock([32]byte{}, 0)
+	//initialShardBlock := protocol.NewShardBlock([32]byte{}, 0)
 	initialEpochBlock.Hash = initialEpochBlock.HashEpochBlock()
-	initialShardBlock.Hash = initialShardBlock.HashShardBlock()
+	//initialShardBlock.Hash = initialShardBlock.HashShardBlock()
 	FirstEpochBlock = initialEpochBlock
-	FirstShardBlock = initialShardBlock
+	//FirstShardBlock = initialShardBlock
 	initialEpochBlock.State = storage.State
 
 	storage.WriteFirstEpochBlock(initialEpochBlock)
-	storage.WriteFirstShardBlock(initialShardBlock)
+	//storage.WriteFirstShardBlock(initialShardBlock)
 
 	storage.WriteClosedEpochBlock(initialEpochBlock)
-	storage.WriteClosedShardBlock(initialShardBlock)
+	//storage.WriteClosedShardBlock(initialShardBlock)
 
 	storage.DeleteAllLastClosedEpochBlock()
 	storage.DeleteAllLastClosedShardBlock()
-	storage.WriteClosedShardBlock(initialShardBlock)
+	//storage.WriteClosedShardBlock(initialShardBlock)
 	storage.WriteLastClosedEpochBlock(initialEpochBlock)
 
 	firstValMapping := protocol.NewValShardMapping()
@@ -152,7 +152,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	storage.DeleteBootstrapReceivedMempool()
 
 	var initialBlock *protocol.Block
-	var initialShardBlock *protocol.ShardBlock
+	//var initialShardBlock *protocol.ShardBlock
 
 
 	//Listen for incoming blocks from the network
@@ -162,7 +162,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	//Listen for incoming state transitions the network
 	go incomingStateData()
 	//Listen to incoming shard blocksS
-	go incomingShardBlockData()
+	//go incomingShardBlockData()
 	//Listen for incoming block data transitions from the network
 	go incomingBlockStateData()
 
@@ -176,7 +176,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 			return err
 		}
 		lastBlock = initialBlock
-		lastShardBlock = initialShardBlock
+		//lastShardBlock = initialShardBlock
 	} else {
 		for {
 			//As the non-bootstrapping node, wait until I receive the last epoch block as well as the validator assignment
@@ -192,11 +192,13 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 					storage.ThisShardMap[int(lastEpochBlock.Height)] = storage.ThisShardID
 					FirstStartAfterEpoch = true
 					lastBlock = dummyLastBlock
-					lastShardBlock = dummyLastShardBlock
+					//its safe to change them here because we are after bootstrap
+					storage.ThisShardIDDelayed = storage.ThisShardID
+					NumberOfShardsDelayed = NumberOfShards
+					//lastShardBlock = dummyLastShardBlock
 					epochMining(lastEpochBlock.Hash, lastEpochBlock.Height) //start mining based on the received Epoch Block
 					//set the ID to 0 such that there wont be any answers to requests that shouldnt be answered
 					storage.ThisShardIDDelayed = 0
-					storage.ThisBlockIDDelayed = 0
 				}
 			}
 		}
@@ -224,7 +226,6 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
 	storage.ThisBlockID = ShardBlockMap.ShardBlockMapping[validatorAccAddress]
 	storage.ThisShardMap[int(lastEpochBlock.Height)] = storage.ThisShardID
-	storage.ThisBlockMap[int(lastEpochBlock.Height)] = storage.ThisBlockID
 	epochMining(lastBlock.Hash, lastBlock.Height)
 
 	return nil
@@ -269,12 +270,13 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			logger.Printf("Shards this epoch: %d", NumberOfShardsDelayed)
 			logger.Printf("My Shard ID this epoch %d", storage.ThisShardIDDelayed)
 			//Retrieve all state transitions from the local state with the height of my last block
-			stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, lastShardBlock.Height)
+			stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, lastBlock.Height)
 
 			logger.Printf("Length of statestashforheight: %d", len(stateStashForHeight))
 
 			if (len(stateStashForHeight) != 0) {
 				//Iterate through state transitions and apply them to local state, keep track of processed shards
+				//keep this the same as in the merged version of bazo
 				for _, st := range stateStashForHeight {
 					if (shardIDStateBoolMap[st.ShardID] == false && st.ShardID != storage.ThisShardIDDelayed) {
 						//Apply all relative account changes to my local state
@@ -285,7 +287,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 						//Delete transactions from Mempool (Transaction pool), which were validated
 						//by the other shards to avoid starvation in the mempool
-						DeleteTransactionFromMempool(st.ContractTxData, st.FundsTxData, st.ConfigTxData, st.StakeTxData, st.AggTxData)
+						DeleteTransactionFromMempool(st.AccTxData, st.ContractTxData, st.FundsTxData, st.ConfigTxData, st.StakeTxData, st.AggTxData)
 						//Set the particular shard as being processed
 						shardIDStateBoolMap[st.ShardID] = true
 
@@ -310,15 +312,15 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 					time.Sleep(time.Second)
 
-					logger.Printf("requesting state transition for lastblock height: %d shard: %d\n", lastShardBlock.Height, id)
+					logger.Printf("requesting state transition for lastblock height: %d shard: %d\n", lastBlock.Height, id)
 
-					p2p.StateTransitionReqShard(id, int(lastShardBlock.Height))
+					p2p.StateTransitionReqShard(id, int(lastBlock.Height))
 					//Blocking wait
 					select {
 					case encodedStateTransition := <-p2p.StateTransitionShardReqChan:
 						stateTransition = stateTransition.DecodeStateTransition(encodedStateTransition)
 						//weird check that has to be done (run into an infinite loop when I dint)
-						if stateTransition.ShardID != id || stateTransition.Height != int(lastShardBlock.Height) {
+						if stateTransition.ShardID != id || stateTransition.Height != int(lastBlock.Height) {
 							logger.Printf("Error: Id of the iteration: %d --- Id of the received transition: %d", id, stateTransition.ShardID)
 							continue
 						}
@@ -329,7 +331,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
 
 						//Delete transactions from mempool, which were validated by the other shards
-						DeleteTransactionFromMempool(stateTransition.ContractTxData, stateTransition.FundsTxData, stateTransition.ConfigTxData, stateTransition.StakeTxData, stateTransition.AggTxData)
+						DeleteTransactionFromMempool(stateTransition.AccTxData, stateTransition.ContractTxData, stateTransition.FundsTxData, stateTransition.ConfigTxData, stateTransition.StakeTxData, stateTransition.AggTxData)
 
 						shardIDStateBoolMap[stateTransition.ShardID] = true
 
@@ -337,13 +339,13 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 
 					case <-time.After(5 * time.Second):
-						logger.Printf("have been waiting for 5 seconds for lastblock height: %d\n", lastShardBlock.Height)
+						logger.Printf("have been waiting for 5 seconds for lastblock height: %d\n", lastBlock.Height)
 						//It the requested state transition has not been received, then continue with requesting the other missing ones
-						logger.Printf("broadcasting state transition from last block height %d again in case it couldnt be transmitted", int(lastShardBlock.Height) - 1)
-						lastTransition := storage.ReadStateTransitionFromOwnStash(int(lastShardBlock.Height) - 1)
+						logger.Printf("broadcasting state transition from last block height %d again in case it couldnt be transmitted", int(lastBlock.Height) - 1)
+						lastTransition := storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height) - 1)
 						//overwrite in case the previous block is an epoch block. then the last transition for that height is nil and we need to go further back
 						if lastTransition == nil {
-							lastTransition = storage.ReadStateTransitionFromOwnStash(int(lastShardBlock.Height) - 2)
+							lastTransition = storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height) - 2)
 						}
 						if lastTransition != nil {
 							broadcastStateTransition(lastTransition)
@@ -371,7 +373,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 		prevBlockIsEpochBlock = false
 
 		// The variable 'lastblock' is one before the next epoch block, thus the next block will be an epoch block
-		//really naive sortition: ShardID one can mint the epoch block
+		//really naive sortition: ShardID = 1 and Block ID = 1 can mint the epoch block
 		if (lastBlock.Height == uint32(lastEpochBlock.Height)+uint32(ActiveParameters.Epoch_length)) {
 			if (storage.ThisShardID == 1 && storage.ThisBlockID == 1) {
 				epochBlock = protocol.NewEpochBlock([][32]byte{lastBlock.Hash}, lastBlock.Height+1)
@@ -409,7 +411,6 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					//might fit here because after this the epoch block is fixed
 					NumberOfShardsDelayed = NumberOfShards
 					storage.ThisShardIDDelayed = storage.ThisShardID
-					storage.ThisBlockIDDelayed = storage.ThisBlockID
 
 					logger.Printf("Created Validator Shard Mapping :\n")
 					logger.Printf(ValidatorShardMap.String())
@@ -444,7 +445,6 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						// todo figure out where to place this piece of code
 						NumberOfShardsDelayed = NumberOfShards
 						storage.ThisShardIDDelayed = storage.ThisShardID
-						storage.ThisBlockIDDelayed = storage.ThisBlockID
 					}
 				}
 			}
@@ -454,6 +454,8 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			mining(lastEpochBlock.Hash, lastEpochBlock.Height)
 		} else if (lastEpochBlock.Height == lastBlock.Height+1) {
 			prevBlockIsEpochBlock = true
+			NumberOfShardsDelayed = NumberOfShards
+			storage.ThisShardIDDelayed = storage.ThisShardID
 			mining(lastEpochBlock.Hash, lastEpochBlock.Height) //lastblock was received before we started creation of next epoch block
 		} else {
 			mining(lastBlock.Hash, lastBlock.Height)
@@ -503,7 +505,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			logger.Printf("Validated block (mined): %vState:\n%v", currentBlock, getState())
 			//the intra-shard communications will be sent out here and there will be a blocking wait until it's finished
 			//note that there is a possibility to accelerate the process. But this acceleration takes time to implement. Check notes.
-			blockTransition := protocol.NewBlockTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, storage.ThisBlockID, currentBlock.Hash,
+			blockTransition := protocol.NewBlockTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, storage.ThisBlockID, currentBlock.Hash, currentBlock.AccTxData,
 				currentBlock.ContractTxData, currentBlock.FundsTxData, currentBlock.ConfigTxData, currentBlock.StakeTxData, currentBlock.AggTxData)
 			storage.WriteToOwnBlockTransitionkStash(blockTransition)
 			storage.ReceivedBlockTransitionStash.Set(blockTransition.HashTransition(), blockTransition)
@@ -546,7 +548,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 							storage.State = storage.ApplyRelativeState(storage.State, bt.RelativeStateChange)
 							//Delete transactions from Mempool (Transaction pool), which were validated
 							//by the other shards to avoid starvation in the mempool
-							DeleteTransactionFromMempool(bt.ContractTxData, bt.FundsTxData, bt.ConfigTxData, bt.StakeTxData, bt.AggTxData)
+							DeleteTransactionFromMempool(bt.AccTxData, bt.ContractTxData, bt.FundsTxData, bt.ConfigTxData, bt.StakeTxData, bt.AggTxData)
 							//Set the particular shard as being processed
 							BlockTransitionBoolMap[bt.BlockID] = true
 							logger.Printf("Processed block transition of block nr: %d\n", bt.BlockID)
@@ -583,7 +585,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 							storage.ReceivedBlockTransitionStash.Set(blockTransition.HashTransition(), blockTransition)
 
 							//Delete transactions from mempool, which were validated by the other shards
-							DeleteTransactionFromMempool(blockTransition.ContractTxData, blockTransition.FundsTxData, blockTransition.ConfigTxData, blockTransition.StakeTxData, blockTransition.AggTxData)
+							DeleteTransactionFromMempool(blockTransition.AccTxData, blockTransition.ContractTxData, blockTransition.FundsTxData, blockTransition.ConfigTxData, blockTransition.StakeTxData, blockTransition.AggTxData)
 
 							BlockTransitionBoolMap[blockTransition.BlockID] = true
 
@@ -596,9 +598,6 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 							//just in case i'm the blocking element, broadcast transition again
 							broadcastBlockTransition(storage.ReadBlockTransitionFromOwnStash(int(lastBlock.Height)))
 							broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
-							if storage.ReadLastClosedShardBlock() != nil {
-								broadcastShardBlock(storage.ReadLastClosedShardBlock())
-							}
 							time.Sleep(time.Second)
 							continue
 						}
@@ -611,26 +610,26 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			logger.Printf("This block ID: %d", storage.ThisBlockID)
 			//first mint the shard block
 			if storage.ThisBlockID == 1 {
-				currentShardBlock := protocol.NewShardBlock(currentBlock.Hash, currentBlock.Height)
-				currentShardBlock.ShardID = storage.ThisShardID
+				//currentShardBlock := protocol.NewShardBlock(currentBlock.Hash, currentBlock.Height)
+				//currentShardBlock.ShardID = storage.ThisShardID
 
-				err := finalizeShardBlock(currentShardBlock)
+				//err := finalizeShardBlock(currentShardBlock)
 
-				logger.Printf("Finalized shard Block")
+				//logger.Printf("Finalized shard Block")
 
-				if err == nil {
+				//if err == nil {
 
-					broadcastShardBlock(currentShardBlock)
+					//broadcastShardBlock(currentShardBlock)
 
 					logger.Printf("Write to storage and broadcast shard block")
 
-					storage.WriteClosedShardBlock(currentShardBlock)
-					storage.DeleteAllLastClosedShardBlock()
-					storage.WriteLastClosedShardBlock(currentShardBlock)
-					lastShardBlock = currentShardBlock
+					//storage.WriteClosedShardBlock(currentShardBlock)
+					//storage.DeleteAllLastClosedShardBlock()
+					//storage.WriteLastClosedShardBlock(currentShardBlock)
+					//lastShardBlock = currentShardBlock
 
-				} else {
-						logger.Printf("%v\n", err)
+				//} else {
+						//logger.Printf("%v\n", err)
 				}
 
 				//Generate state transition for this block. This data is needed by the other shards to update their local states.
@@ -638,18 +637,19 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				//the epoch block would not have been generated either
 
 				//this state transition aggregates all block transitions from the last step to one state transition
-				stateTransition := storage.AggregateBlockTransitionsToStateTransition(int(lastShardBlock.Height), lastShardBlock.ShardID ,lastShardBlock.HashShardBlock())
+				stateTransition := storage.AggregateBlockTransitionsToStateTransition(int(lastBlock.Height), storage.ThisShardID ,lastBlock.HashBlock())
 
 				logger.Printf("Transactions to delete in other miners count: %d - New Mempool Size: %d\n",len(stateTransition.ContractTxData)+len(stateTransition.FundsTxData)+len(stateTransition.ConfigTxData)+ len(stateTransition.StakeTxData) + len(stateTransition.AggTxData),storage.GetMemPoolSize())
 
-				logger.Printf("Broadcast state transition for height %d\n", currentShardBlock.Height)
+				logger.Printf("Broadcast state transition for height %d\n", currentBlock.Height)
 				//Broadcast state transition to other shards
 				broadcastStateTransition(stateTransition)
 				//Write state transition to own stash. Needed in case the network requests it at a later stage.
 				storage.WriteToOwnStateTransitionkStash(stateTransition)
 				storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
 
-			} else {
+				//shard block reception
+			/*} else {
 				//wait until shard block is received
 				shardBlockReceived := false
 				for !shardBlockReceived {
@@ -662,7 +662,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					}
 				}
 				//todo implement request structure
-			}
+			}*/
 
 
 

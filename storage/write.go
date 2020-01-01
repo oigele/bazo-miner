@@ -34,12 +34,12 @@ func WriteClosedEpochBlock(epochBlock *protocol.EpochBlock) error {
 	})
 }
 
-func WriteClosedShardBlock(shardBlock *protocol.ShardBlock) error {
+/*func WriteClosedShardBlock(shardBlock *protocol.ShardBlock) error {
 	return db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(CLOSEDSHARDBLOCK_BUCKET))
 		return b.Put(shardBlock.Hash[:], shardBlock.Encode())
 	})
-}
+}*/
 
 func WriteFirstEpochBlock(epochBlock *protocol.EpochBlock) error {
 	return db.Update(func(tx *bolt.Tx) error {
@@ -48,12 +48,12 @@ func WriteFirstEpochBlock(epochBlock *protocol.EpochBlock) error {
 	})
 }
 
-func WriteFirstShardBlock(epochBlock *protocol.ShardBlock) error {
+/*func WriteFirstShardBlock(epochBlock *protocol.ShardBlock) error {
 	return db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(CLOSEDEPOCHBLOCK_BUCKET))
 		return b.Put([]byte("firstshardblock"), epochBlock.Encode())
 	})
-}
+}*/
 
 
 func WriteLastClosedEpochBlock(epochBlock *protocol.EpochBlock) (err error) {
@@ -63,12 +63,12 @@ func WriteLastClosedEpochBlock(epochBlock *protocol.EpochBlock) (err error) {
 	})
 }
 
-func WriteLastClosedShardBlock(shardBlock *protocol.ShardBlock) (err error) {
+/*func WriteLastClosedShardBlock(shardBlock *protocol.ShardBlock) (err error) {
 	return db.Update(func(tx *bolt.Tx) error {
 		b := tx.Bucket([]byte(LASTCLOSEDSHARDBLOCK_BUCKET))
 		return b.Put(shardBlock.Hash[:], shardBlock.Encode())
 	})
-}
+}*/
 
 func WriteGenesis(genesis *protocol.Genesis) error {
 	return db.Update(func(tx *bolt.Tx) error {

@@ -17,7 +17,7 @@ const (
 	//Default Block params
 	BLOCKHASH_SIZE       	= 32      //Byte
 	FEE_MINIMUM          	= 1       //Coins
-	BLOCK_SIZE           	= 5000 	  //Byte
+	BLOCK_SIZE           	= 800 	  //Byte
 	DIFF_INTERVAL        	= 25      //Blocks
 	BLOCK_INTERVAL       	= 15      //Sec
 	BLOCK_REWARD         	= 0       //Coins
@@ -28,7 +28,7 @@ const (
 	SLASH_REWARD         	= 2       //Coins
 	NUM_INCL_PREV_PROOFS 	= 5       //Number of previous proofs included in the PoS condition
 	NO_EMPTYING_LENGTH		= 100	  //Number of blocks after the newest block which are not moved to the empty block bucket
-	EPOCH_LENGTH         = 9 //blocks
+	EPOCH_LENGTH         = 19 //blocks
 	VALIDATORS_PER_SHARD = 2 //validators
 	EPOCHBLOCKFETCH_TIMEOUT 	= 20 //Sec
 )
