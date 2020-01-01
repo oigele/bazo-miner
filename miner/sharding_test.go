@@ -53,9 +53,9 @@ func TestShardSemiIterative(t *testing.T) {
 		if err := SendTx("127.0.0.1:8001", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
-		/*if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
+		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
-		}*/
+		}
 
 		newNodeAddress := crypto.GetAddressFromPubKey(&newAccAddress.PublicKey)
 		hasherNewNode := protocol.SerializeHashContent(newNodeAddress)
@@ -104,7 +104,7 @@ func TestShardSemiIterative(t *testing.T) {
 
 	var wg sync.WaitGroup
 	//because we send to 2 nodes
-	wg.Add(1)
+	wg.Add(3)
 	start := time.Now()
 
 	//amount of tx per inner loop
