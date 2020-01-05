@@ -99,7 +99,7 @@ func sendAndSearchMessages(msg []byte) {
 			}
 
 			//Store message for this specific miner connection.
-			p.delayedMessages = append(messages, msg)
+			//p.delayedMessages = append(messages, msg)
 		}
 	}
 }
