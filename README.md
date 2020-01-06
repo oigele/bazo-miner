@@ -65,7 +65,7 @@ Miner B
 Commands
 
 ```bash
-./bazo-miner start --database StoreA.db --address localhost:8000 --bootstrap localhost:8000 --wallet WalletA.txt --commitment CommitmentA.txt --multisig WalletA.txt --rootwallet WalletA.txt --rootcommitment CommitmentA.txt
+./bazo-miner start --database StoreA.db --address 127.0.0.1:8000 --bootstrap 127.0.0.1:8000 --wallet WalletA.txt --commitment CommitmentA.txt --multisig WalletA.txt --rootwallet WalletA.txt --rootcommitment CommitmentA.txt
 ```
 
 We start miner A at address and port `localhost:8000` and connect to itself by setting the bootstrap address to the same address.
@@ -95,7 +95,7 @@ Then, miner B has to join the pool of validators (enable staking):
 Start miner B, using the generated `WalletB.txt` and `CommitmentB.txt` (i.e. copy the files to the Bazo miner directory):
 
 ```bash
-./bazo-miner start --database StoreB.db --address localhost:8001 --bootstrap localhost:8000 --wallet WalletB.txt --commitment CommitmentB.txt --rootwallet WalletA.txt --rootcommitment CommitmentA.txt
+./bazo-miner start --database StoreB.db --address 127.0.0.1:8001 --bootstrap 127.0.0.1:8000 --wallet WalletB.txt --commitment CommitmentB.txt --rootwallet WalletA.txt --rootcommitment CommitmentA.txt
 ```
 
 Note that both files specified for `--rootwallet` and `--rootcommitment` only require to contain the wallet and commitemt public key respectively.
