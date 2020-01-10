@@ -93,6 +93,20 @@ func WriteOpenTx(transaction protocol.Transaction) {
 	openTxMutex.Unlock()
 }
 
+func WriteOpenTxHashToDelete(hash [32]byte) {
+	openTxToDeleteMutex.Lock()
+	defer openTxToDeleteMutex.Unlock()
+	openTxToDeleteMempool[hash] = true
+
+}
+
+func ResetOpenTxHashToDeleteMempool() {
+	openTxToDeleteMutex.Lock()
+	defer openTxToDeleteMutex.Unlock()
+	openTxToDeleteMempool = make(map[[32]byte]bool)
+}
+
+
 func WriteTxcntToTx(transaction *protocol.FundsTx) {
 	txcntToTxMapMutex.Lock()
 	TxcntToTxMap[transaction.TxCnt] = append(TxcntToTxMap[transaction.TxCnt], transaction.Hash())

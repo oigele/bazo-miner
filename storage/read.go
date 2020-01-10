@@ -220,6 +220,13 @@ func ReadOpenTx(hash [32]byte) (transaction protocol.Transaction) {
 	return txMemPool[hash]
 }
 
+func ReadOpenTxHashToDelete(hash [32]byte) (contains bool) {
+	openTxToDeleteMutex.Lock()
+	defer openTxToDeleteMutex.Unlock()
+	_,ok := openTxToDeleteMempool[hash]
+	return ok
+}
+
 func ReadTxcntToTx(txCnt uint32) (transactions [][32]byte) {
 	txcntToTxMapMutex.Lock()
 	defer txcntToTxMapMutex.Unlock()

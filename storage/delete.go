@@ -78,6 +78,7 @@ func DeleteOpenTx(transaction protocol.Transaction) {
 	openTxMutex.Unlock()
 }
 
+
 func DeleteINVALIDOpenTx(transaction protocol.Transaction) {
 	openINVALIDTxMutex.Lock()
 	delete(txINVALIDMemPool, transaction.Hash())

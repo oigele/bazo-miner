@@ -78,8 +78,8 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 		return
 	}
 
-	if storage.ReadClosedTx(tx.Hash()) != nil {
-		//logger.Printf("Received transaction (%x) already validated.\n", tx.Hash())
+	if storage.ReadOpenTxHashToDelete(tx.Hash()) == true {
+		logger.Printf("stopped transaction from being added")
 		return
 	}
 
@@ -87,8 +87,8 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 	//logger.Printf("Received Tx %x from %v", tx.Hash(), p.getIPPort())
 	//Write to mempool and rebroadcast
 	storage.WriteOpenTx(tx)
-	toBrdcst := BuildPacket(brdcstType, payload)
-	minerBrdcstMsg <- toBrdcst
+	//toBrdcst := BuildPacket(brdcstType, payload)
+	//minerBrdcstMsg <- toBrdcst
 
 }
 

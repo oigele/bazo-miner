@@ -507,6 +507,7 @@ by the other shards. To avoid starvation, delete those transactions from the mem
 */
 func DeleteTransactionFromMempool(acctTxData [][32]byte, contractData [][32]byte, fundsData [][32]byte, configData [][32]byte, stakeData [][32]byte, aggTxData[][32]byte) {
 
+
 	for _,accTx := range acctTxData{
 		if(storage.ReadOpenTx(accTx) != nil){
 			storage.WriteClosedTx(storage.ReadOpenTx(accTx))
@@ -563,6 +564,9 @@ func DeleteTransactionFromMempool(acctTxData [][32]byte, contractData [][32]byte
 					fundsTxToDelete = append(fundsTxToDelete, *storage.ReadOpenTx(fundsTX).(*protocol.FundsTx))
 					//storage.WriteClosedTx(storage.ReadOpenTx(fundsTX))
 					storage.DeleteOpenTx(storage.ReadOpenTx(fundsTX))
+				} else {
+					logger.Printf("Got a problem. The TX is not in the open tx space yet")
+					storage.WriteOpenTxHashToDelete(fundsTX)
 				}
 			}
 			//delete all at once
@@ -620,6 +624,9 @@ func DeleteTransactionFromMempool(acctTxData [][32]byte, contractData [][32]byte
 					//again asserting that no aggTxs are aggregated in another aggtx
 					fundsTxToDelete = append(fundsTxToDelete, *storage.ReadOpenTx(fundsTX).(*protocol.FundsTx))
 					storage.DeleteOpenTx(storage.ReadOpenTx(fundsTX))
+				} else {
+					storage.WriteOpenTxHashToDelete(fundsTX)
+					logger.Printf("Got a problem. The TX is not in the open tx space yet after request")
 				}
 			}
 			//delete all at once

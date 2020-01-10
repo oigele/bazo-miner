@@ -239,6 +239,9 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			shardIDStateBoolMap[k] = false
 		}
 
+		//try if its good here
+		storage.ResetOpenTxHashToDeleteMempool()
+
 		for {
 			//If there is only one shard, then skip synchronisation mechanism
 			if (NumberOfShards == 1) {
