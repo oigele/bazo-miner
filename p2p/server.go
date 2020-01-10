@@ -72,6 +72,7 @@ func bootstrap() {
 	go peerConn(p)
 }
 
+
 func initiateNewMinerConnection(dial string) (*peer, error) {
 	var conn net.Conn
 
@@ -127,6 +128,8 @@ func PrepareHandshake(pingType uint8, localPort int) ([]byte, error) {
 	return packet, nil
 }
 
+//listener keeps listening to new connections
+//the argument is the node's own IPPort
 func listener(ipport string) {
 	//Listen on all interfaces, this NAT stuff easier
 	listener, err := net.Listen("tcp", ":"+strings.Split(ipport, ":")[1])
@@ -145,7 +148,10 @@ func listener(ipport string) {
 		conn.(*net.TCPConn).SetKeepAlive(true)
 		conn.(*net.TCPConn).SetKeepAlivePeriod(1 * time.Minute)
 
+		//the listener port is kept empty here. It will be finished after a handshake is performed
 		p := newPeer(conn, "", 0)
+		//infinite for loop means that this goroutine will run indefinitely
+		//this goroutine will read the content of the newly instantiated message
 		go handleNewConn(p)
 	}
 }
@@ -187,6 +193,7 @@ func peerConn(p *peer) {
 				lastpeerMutex.Lock()
 				if getLastTriedPeer() != p.getIPPort() {
 					logger.Printf("Try To Reconnect to %v", p.getIPPort())
+					//iplistChan gets consumed in checkhelthservice
 					iplistChan <- p.getIPPort()
 					setLastTriedPeer(p.getIPPort())
 				}

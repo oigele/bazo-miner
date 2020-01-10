@@ -19,6 +19,7 @@ type peer struct {
 	conn         net.Conn
 	ch           chan []byte
 	l            sync.Mutex
+	//listenerPort is basically the port of the peer
 	listenerPort string
 	time         int64
 	peerType     uint

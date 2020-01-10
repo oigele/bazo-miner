@@ -53,14 +53,17 @@ func TestShardSemiIterative(t *testing.T) {
 		if err := SendTx("127.0.0.1:8001", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
-		/*if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
+		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
+		/*if err := SendTx("127.0.0.1:8003", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}*/
 
 		newNodeAddress := crypto.GetAddressFromPubKey(&newAccAddress.PublicKey)
 		hasherNewNode := protocol.SerializeHashContent(newNodeAddress)
 
-		//append all 20 hashers to a new list
+		//append all 30 hashers to a new list
 		nodeList = append(nodeList, hasherNewNode)
 
 		t.Log(hasherNewNode)
@@ -70,6 +73,7 @@ func TestShardSemiIterative(t *testing.T) {
 	i := 1
 	z := 1
 	y := 1
+	/*x := 1*/
 
 	for _, hasherNewNode := range nodeList {
 
@@ -95,6 +99,9 @@ func TestShardSemiIterative(t *testing.T) {
 		if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 			t.Log(fmt.Sprintf("Error"))
 		}
+		/*if err := SendTx("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}*/
 
 		i += 1
 	}
@@ -103,17 +110,19 @@ func TestShardSemiIterative(t *testing.T) {
 
 
 	var wg sync.WaitGroup
-	//because we send to 2 nodes
-	wg.Add(1)
+	//because we send to x nodes
+	wg.Add(3)
 	start := time.Now()
 
 	//amount of tx per inner loop
 	j := 150
 
+	numberOfRounds := 20
+
 
 	go func() {
 		defer wg.Done()
-		for i = 1; i <= 20; i++ {
+		for i = 1; i <= numberOfRounds; i++ {
 			for _, hasher := range nodeList {
 				for txCount := 1; txCount <= j; txCount++ {
 					tx, _ := protocol.ConstrFundsTx(
@@ -140,7 +149,7 @@ func TestShardSemiIterative(t *testing.T) {
 
 	go func() {
 		defer wg.Done()
-		for z = 1; z <= 20; z++ {
+		for z = 1; z <= numberOfRounds; z++ {
 			for _, hasher := range nodeList {
 				for txCount := 1; txCount <= j; txCount++ {
 					tx, _ := protocol.ConstrFundsTx(
@@ -163,9 +172,11 @@ func TestShardSemiIterative(t *testing.T) {
 		}
 	}()
 
+	time.Sleep(100 * time.Millisecond)
+
 	go func() {
 		defer wg.Done()
-		for y = 1; y <= 20; y++ {
+		for y = 1; y <= numberOfRounds; y++ {
 			for _, hasher := range nodeList {
 				for txCount := 1; txCount <= j; txCount++ {
 					tx, _ := protocol.ConstrFundsTx(
@@ -187,6 +198,31 @@ func TestShardSemiIterative(t *testing.T) {
 			}
 		}
 	}()
+
+	/*go func() {
+		defer wg.Done()
+		for x = 1; x <= numberOfRounds; x++ {
+			for _, hasher := range nodeList {
+				for txCount := 1; txCount <= j; txCount++ {
+					tx, _ := protocol.ConstrFundsTx(
+						byte(0),
+						uint64(10),
+						uint64(1),
+						//can do it like this because no txcount check. the important part is that the txcount is unique
+						uint32(z*j-txCount),
+						hasher,
+						hasherRootNode,
+						fromPrivKey,
+						fromPrivKey,
+						nil)
+
+					if err := SendTx4("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+				}
+			}
+		}
+	}()*/
 
 	wg.Wait()
 
@@ -864,6 +900,24 @@ func SendTx2(dial string, tx protocol.Transaction, typeID uint8) (err error) {
 }
 
 func SendTx3(dial string, tx protocol.Transaction, typeID uint8) (err error) {
+	if conn := p2p.Connect(dial); conn != nil {
+		packet := p2p.BuildPacket(typeID, tx.Encode())
+		conn.Write(packet)
+
+		header, payload, err := p2p.RcvData_(conn)
+		if err != nil || header.TypeID == p2p.NOT_FOUND {
+			err = errors.New(string(payload[:]))
+		}
+		conn.Close()
+
+		return err
+	}
+
+	txHash := tx.Hash()
+	return errors.New(fmt.Sprintf("Sending tx %x failed.", txHash[:8]))
+}
+
+func SendTx4(dial string, tx protocol.Transaction, typeID uint8) (err error) {
 	if conn := p2p.Connect(dial); conn != nil {
 		packet := p2p.BuildPacket(typeID, tx.Encode())
 		conn.Write(packet)

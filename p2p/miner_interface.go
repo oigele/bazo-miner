@@ -67,9 +67,6 @@ func forwardBlockBrdcstToMiner() {
 	for {
 		block := <-BlockOut
 		toBrdcst := BuildPacket(BLOCK_BRDCST, block)
-		if len(minerBrdcstMsg) > 0 {
-			logger.Printf("Inside forwardBlockBrdcstToMiner len(minerBrdcstMsg) %v", len(minerBrdcstMsg))
-		}
 		minerBrdcstMsg <- toBrdcst
 	}
 }

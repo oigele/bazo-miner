@@ -210,7 +210,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 }
 
 /**
-Main function of Bazo which is running all the time with the goal of mining blocks and competing for the creation of epoch blocks.
+Main function of Bazo which is running all the time with the goal of mining blocks.
 */
 func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
@@ -285,8 +285,13 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					//also, maybe a node got stuck. Help it
 					//Quickfix. TODO: find a better mechanism for that
 					broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
-					time.Sleep(time.Second)
 
+					//Maybe the transition was received in the meantime
+					foundSt := searchStateTransition(id, int(lastBlock.Height))
+					if foundSt != nil {
+						logger.Printf("skip planned request for shardID %d", id)
+						continue
+					}
 					logger.Printf("requesting state transition for lastblock height: %d shard: %d\n", lastBlock.Height, id)
 
 					p2p.StateTransitionReqShard(id, int(lastBlock.Height))
@@ -299,6 +304,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 							logger.Printf("Error: Id of the iteration: %d --- Id of the received transition: %d", id, stateTransition.ShardID)
 							continue
 						}
+						logger.Printf("received state transition for lastblock height: %d shard: %d\n", lastBlock.Height, id)
 						//Apply state transition to my local state
 						storage.State = storage.ApplyRelativeState(storage.State, stateTransition.RelativeStateChange)
 
@@ -314,8 +320,9 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						logger.Printf("Processed state transition of shard: %d\n", stateTransition.ShardID)
 
 
-					case <-time.After(5 * time.Second):
-						logger.Printf("have been waiting for 5 seconds for lastblock height: %d\n", lastBlock.Height)
+						//made requests slimmer
+					case <-time.After(2 * time.Second):
+						logger.Printf("have been waiting for 2 seconds for lastblock height: %d\n", lastBlock.Height)
 						//It the requested state transition has not been received, then continue with requesting the other missing ones
 						logger.Printf("broadcasting state transition from last block height %d again in case it couldnt be transmitted", int(lastBlock.Height) - 1)
 						lastTransition := storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height) - 1)
@@ -325,10 +332,8 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						}
 						if lastTransition != nil {
 							broadcastStateTransition(lastTransition)
-							time.Sleep(500 * time.Millisecond)
 						}
 						broadcastStateTransition(storage.ReadStateTransitionFromOwnStash(int(lastBlock.Height)))
-						time.Sleep(time.Second)
 						continue
 					}
 				}
@@ -563,6 +568,18 @@ func AssignValidatorsToShards() map[[64]byte]int {
 	}
 	return validatorShardAssignment
 }
+
+
+func searchStateTransition(shardID int, height int) *protocol.StateTransition {
+	stateStash := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, uint32(height))
+	for _,st := range stateStash {
+		if st.ShardID == shardID {
+			return st
+		}
+	}
+	return nil
+}
+
 
 //Helper functions
 

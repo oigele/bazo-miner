@@ -1624,11 +1624,16 @@ func postValidate(data blockData, initialSetup bool) {
 		}
 
 		for _, tx := range data.aggTxSlice {
+			var fundsTxToDelete []protocol.FundsTx
+			//make a new one to make sure it's empty at the beginning of the loop
+			fundsTxToDelete = make([]protocol.FundsTx, 0)
 
 			//delete FundsTx per aggTx in open storage and write them to the closed storage.
 			for _, aggregatedTxHash := range tx.AggregatedTxSlice {
 				trx := storage.ReadClosedTx(aggregatedTxHash)
+				//transaction processed?
 				if trx != nil {
+					//yes
 					switch trx.(type){
 					case *protocol.AggTx:
 						trx.(*protocol.AggTx).Aggregated = true
@@ -1636,6 +1641,8 @@ func postValidate(data blockData, initialSetup bool) {
 						trx.(*protocol.FundsTx).Aggregated = true
 					}
 				} else {
+					//not processed yet
+					//transaction in open Tx, so it can be processed
 					trx = storage.ReadOpenTx(aggregatedTxHash)
 					if trx == nil {
 						for _, i := range data.aggregatedFundsTxSlice {
@@ -1650,13 +1657,15 @@ func postValidate(data blockData, initialSetup bool) {
 					case *protocol.FundsTx:
 //						trx.(*protocol.FundsTx).Block = data.block.HashWithoutTx
 						trx.(*protocol.FundsTx).Aggregated = true
+						fundsTxToDelete = append(fundsTxToDelete, *trx.(*protocol.FundsTx))
 					}
 				}
 				if trx == nil {
 					break
 				}
 
-				storage.WriteClosedTx(trx)
+				//dont delete the individual tx anymore
+				//storage.WriteClosedTx(trx)
 				storage.DeleteOpenTx(trx)
 				storage.DeleteINVALIDOpenTx(tx)
 			}
@@ -1665,6 +1674,7 @@ func postValidate(data blockData, initialSetup bool) {
 			//TODO UNCOMMENT
 //			tx.Block = data.block.HashWithoutTx
 			tx.Aggregated = false
+			storage.WriteClosedFundsTxFromAggTxSlice(fundsTxToDelete)
 			storage.WriteClosedTx(tx)
 			storage.DeleteOpenTx(tx)
 			storage.DeleteINVALIDOpenTx(tx)

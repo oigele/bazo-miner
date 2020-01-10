@@ -138,6 +138,26 @@ func BlockAlreadyInStash(slice []*protocol.Block, newBlockHash [32]byte) bool {
 	return false
 }
 
+func WriteClosedFundsTxFromAggTxSlice(transactions []protocol.FundsTx) (err error) {
+	bucket := "closedfunds"
+	err = db.Update(func(tx *bolt.Tx) error {
+		var err error
+		b := tx.Bucket([]byte(bucket))
+		for _, transaction := range transactions {
+			hash := transaction.Hash()
+			err = b.Put(hash[:], transaction.Encode())
+			if err != nil {
+				logger.Printf("We GOT AN ERROR")
+			}
+			nrClosedTransactions = nrClosedTransactions + 1
+			totalTransactionSize = totalTransactionSize + float32(transaction.Size())
+			averageTxSize = totalTransactionSize/nrClosedTransactions
+		}
+		return err
+	})
+	return err
+}
+
 func WriteClosedTx(transaction protocol.Transaction) (err error) {
 
 	var bucket string

@@ -79,8 +79,8 @@ func processStateData(payload []byte) {
 				broadcastStateTransition(stateTransition)
 			//There are a lot of connectivity problems. Oftentimes, only the root node is connected to all other nodes. Therefore, the root node will in all cases broadcast any incoming state transitions.
 			} else if p2p.IsBootstrap() {
-				logger.Printf("Sharing state transition of shard: %d height: %d, in case it hasnt reached its destination yet", stateTransition.ShardID, stateTransition.Height)
-				broadcastStateTransition(stateTransition)
+				//logger.Printf("Sharing state transition of shard: %d height: %d, in case it hasnt reached its destination yet", stateTransition.ShardID, stateTransition.Height)
+				//broadcastStateTransition(stateTransition)
 			} else {
 				logger.Printf("Received state transition already included: Shard ID: %v  VS my shard ID: %v - Height: %d - Hash: %x\n",stateTransition.ShardID,storage.ThisShardID,stateTransition.Height,stateHash[0:8])
 				return
@@ -103,7 +103,7 @@ func processBlock(payload []byte) {
 		//For blocks, generally don't use the delayed shard id.
 		if(!storage.BlockAlreadyInStash(storage.ReceivedBlockStash,block.Hash) && block.ShardId != storage.ThisShardID){
 			storage.WriteToReceivedStash(block)
-			broadcastBlock(block)
+			//broadcastBlock(block)
 		} else {
 			logger.Printf("Received block (%x) already in block stash\n",block.Hash[0:8])
 		}
@@ -159,7 +159,6 @@ func processBlock(payload []byte) {
 
 
 func broadcastEpochBlock(epochBlock *protocol.EpochBlock) {
-	logger.Printf("Writing Epoch block (%x) to channel EpochBlockOut\n", epochBlock.Hash[0:8])
 	p2p.EpochBlockOut <- epochBlock.Encode()
 }
 

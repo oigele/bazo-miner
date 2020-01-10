@@ -41,10 +41,13 @@ func minerBroadcastService() {
 		select {
 		case msg := <-minerBrdcstMsg:
 			go sendAndSearchMessages(msg)
+			time.Sleep(100 * time.Millisecond)
 		}
 	}
 
 }
+
+
 
 func clientBroadcastService() {
 
@@ -99,7 +102,7 @@ func sendAndSearchMessages(msg []byte) {
 			}
 
 			//Store message for this specific miner connection.
-			p.delayedMessages = append(messages, msg)
+			//p.delayedMessages = append(messages, msg)
 		}
 	}
 }
@@ -144,6 +147,7 @@ func checkHealthService() {
 
 		time.Sleep(time.Duration(nrOfMiners) * 5 * time.Second)  //Dynamic searching for neighbours interval --> 5 times the number of miners
 
+		//if I'm not connected to bootstrap, connect to bootstrap
 		if Ipport != storage.Bootstrap_Server && !peers.contains(storage.Bootstrap_Server, PEERTYPE_MINER) {
 			p, err := initiateNewMinerConnection(storage.Bootstrap_Server)
 			if p == nil || err != nil {
@@ -165,6 +169,7 @@ func checkHealthService() {
 	RETRY:
 		select {
 		//iplistChan gets filled with every incoming neighborRes, they're consumed here.
+		//basically, the neighbour res contains a list of all ip addresses that the other miners know about.
 		case ipaddr := <- iplistChan:
 			if !peerExists(ipaddr) && !peerSelfConn(ipaddr) {
 				p, err := initiateNewMinerConnection(ipaddr)
@@ -175,6 +180,7 @@ func checkHealthService() {
 				if p == nil || err != nil {
 					goto RETRY
 				}
+				//only go peerConn if the connection got lost
 				go peerConn(p)
 			}
 			//GOTO Retry until channel is empty...

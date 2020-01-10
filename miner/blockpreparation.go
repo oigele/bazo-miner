@@ -30,12 +30,6 @@ func prepareBlock(block *protocol.Block) {
 	opentxs = append(opentxs, storage.ReadAllINVALIDOpenTx()...)
 	logger.Printf("Number of OpenTxs: %d", len(opentxs))
 
-	for _,tx := range opentxs{
-		switch tx.(type) {
-		case *protocol.AccTx:
-			logger.Printf("Acc Tx PubKey: (%x)", tx.(*protocol.AccTx).PubKey)
-		}
-	}
 
 	var opentxToAdd []protocol.Transaction
 
@@ -322,7 +316,7 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 	moreOpenTx := true
 	for moreOpenTx {
 		var intermediateTxToAppend []protocol.Transaction
-		for i, tx := range openTxs {
+		for _, tx := range openTxs {
 			// not really appending anything here. This is just legacy code, counting how many different senders we have (in case it needs to be compared to different receivers)
 			switch tx.(type) {
 			case *protocol.FundsTx:
@@ -338,42 +332,16 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 					TxToAppend = append(TxToAppend, tx)
 					//openTxs is shrinking because element i might be excluded. as soon as i is larger than the length of remaining slice, stop.
 					//They are cut out because they
-					if i < len(openTxs){
+					/*if i < len(openTxs){
 						//this excludes element i from the slice. Selects access a half-open range which includes the first element but not the last one
 						openTxs = append(openTxs[:i], openTxs[i+1:]...)
-					}
+					}*/
 				} else {
 					return TxToAppend
 				}
 			}
 		}
 
-
-		//TODO realfix hotfix! Remove duplicates:
-		var newOpenTxs []protocol.Transaction
-		duplicateChecker := make(map[[64]byte]protocol.Transaction)
-		for _,tx1 := range openTxs {
-			switch tx1.(type) {
-			case *protocol.AccTx:
-				//we dont have it yet
-				_,exists := duplicateChecker[tx1.(*protocol.AccTx).PubKey]
-				if !exists {
-					logger.Printf("Pubkey not existent yet: (%x)", tx1.(*protocol.AccTx).PubKey)
-					duplicateChecker[tx1.(*protocol.AccTx).PubKey] = tx1
-					newOpenTxs = append(newOpenTxs, tx1)
-				} else {
-					logger.Printf("the previous routine failed. Found a duplicate")
-					continue
-				}
-			default:
-				newOpenTxs = append(newOpenTxs, tx1)
-				continue
-			}
-		}
-
- 		openTxs = newOpenTxs
-
- 		//End of hotfix
 
 		//first return value maxSender not needed anymore. We dont need to compare max sender and max receiver anymore.
 		//this is still useful because we aggregate the senders with the most transactions first
@@ -430,6 +398,45 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 			moreOpenTx = false
 		}
 	}
+
+	//TODO realfix hotfix! Remove duplicates:
+	var newOpenTxs []protocol.Transaction
+	duplicateCheckerAccount := make(map[[64]byte]protocol.Transaction)
+	duplicateCheckerStake := make(map[[32]byte]protocol.Transaction)
+	for _,tx1 := range TxToAppend {
+		switch tx1.(type) {
+		case *protocol.AccTx:
+			//we dont have it yet
+			_,exists := duplicateCheckerAccount[tx1.(*protocol.AccTx).PubKey]
+			if !exists {
+				logger.Printf("Pubkey not existent yet: (%x). Good", tx1.(*protocol.AccTx).PubKey)
+				duplicateCheckerAccount[tx1.(*protocol.AccTx).PubKey] = tx1
+				newOpenTxs = append(newOpenTxs, tx1)
+			} else {
+				logger.Printf("the previous routine failed. Found a duplicate")
+				//continue
+			}
+		case *protocol.StakeTx:
+			//we dont have it yet
+			_,exists := duplicateCheckerStake[tx1.(*protocol.StakeTx).Account]
+			if !exists {
+				logger.Printf("Pubkey not existent yet: (%x). Good", tx1.(*protocol.StakeTx).Account)
+				duplicateCheckerStake[tx1.(*protocol.StakeTx).Account] = tx1
+				newOpenTxs = append(newOpenTxs, tx1)
+			} else {
+				logger.Printf("the previous routine failed. Found a duplicate")
+				//continue
+			}
+		default:
+			newOpenTxs = append(newOpenTxs, tx1)
+			//continue
+		}
+	}
+
+	TxToAppend = newOpenTxs
+
+	//End of hotfix
+
 
 	return TxToAppend
 }
@@ -543,16 +550,23 @@ func DeleteTransactionFromMempool(acctTxData [][32]byte, contractData [][32]byte
 	//here, the AggTX only carries the hashes of the transactions that should be deleted
 	for _,TX := range aggTxData {
 		if (storage.ReadOpenTx(TX) != nil) {
+			var fundsTxToDelete []protocol.FundsTx
+			//make a new one to make sure it's empty at the beginning of the loop
+			fundsTxToDelete = make([]protocol.FundsTx, 0)
 			aggTx := storage.ReadOpenTx(TX)
 			storage.WriteClosedTx(storage.ReadOpenTx(TX))
 			storage.DeleteOpenTx(storage.ReadOpenTx(TX))
 			logger.Printf("Deleted transaction (%x) from the MemPool. \n",TX)
 			for _,fundsTX := range aggTx.(*protocol.AggTx).AggregatedTxSlice {
 				if(storage.ReadOpenTx(fundsTX) != nil){
-					storage.WriteClosedTx(storage.ReadOpenTx(fundsTX))
+					//asserting that we don't put aggTx into another aggTx
+					fundsTxToDelete = append(fundsTxToDelete, *storage.ReadOpenTx(fundsTX).(*protocol.FundsTx))
+					//storage.WriteClosedTx(storage.ReadOpenTx(fundsTX))
 					storage.DeleteOpenTx(storage.ReadOpenTx(fundsTX))
 				}
 			}
+			//delete all at once
+			storage.WriteClosedFundsTxFromAggTxSlice(fundsTxToDelete)
 		} else {
 			var aggTx protocol.Transaction
 			//Aggregated Transaction need to be fetched from the network.
@@ -597,12 +611,19 @@ func DeleteTransactionFromMempool(acctTxData [][32]byte, contractData [][32]byte
 			storage.WriteClosedTx(storage.ReadOpenTx(TX))
 			storage.DeleteOpenTx(storage.ReadOpenTx(TX))
 			logger.Printf("Deleted transaction (%x) from the MemPool. \n",TX)
+			var fundsTxToDelete []protocol.FundsTx
+			//make a new one to make sure it's empty at the beginning of the loop
+			fundsTxToDelete = make([]protocol.FundsTx, 0)
 			for _,fundsTX := range aggTx.(*protocol.AggTx).AggregatedTxSlice {
 				if (storage.ReadOpenTx(fundsTX) != nil) {
-					storage.WriteClosedTx(storage.ReadOpenTx(fundsTX))
+					//storage.WriteClosedTx(storage.ReadOpenTx(fundsTX))
 					storage.DeleteOpenTx(storage.ReadOpenTx(fundsTX))
+					//again asserting that no aggTxs are aggregated in another aggtx
+					fundsTxToDelete = append(fundsTxToDelete, *storage.ReadOpenTx(fundsTX).(*protocol.FundsTx))
 				}
 			}
+			//delete all at once
+			storage.WriteClosedFundsTxFromAggTxSlice(fundsTxToDelete)
 		}
 	}
 	logger.Printf("Deleted transaction count: %d - New Mempool Size: %d\n",len(contractData)+len(fundsData)+len(configData)+ len(stakeData) + len(aggTxData),storage.GetMemPoolSize())
