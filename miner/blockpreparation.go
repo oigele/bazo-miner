@@ -617,9 +617,9 @@ func DeleteTransactionFromMempool(acctTxData [][32]byte, contractData [][32]byte
 			for _,fundsTX := range aggTx.(*protocol.AggTx).AggregatedTxSlice {
 				if (storage.ReadOpenTx(fundsTX) != nil) {
 					//storage.WriteClosedTx(storage.ReadOpenTx(fundsTX))
-					storage.DeleteOpenTx(storage.ReadOpenTx(fundsTX))
 					//again asserting that no aggTxs are aggregated in another aggtx
 					fundsTxToDelete = append(fundsTxToDelete, *storage.ReadOpenTx(fundsTX).(*protocol.FundsTx))
+					storage.DeleteOpenTx(storage.ReadOpenTx(fundsTX))
 				}
 			}
 			//delete all at once
