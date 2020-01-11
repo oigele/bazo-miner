@@ -20,6 +20,7 @@ var (
 
 	iplistChan      = make(chan string, MIN_MINERS * MIN_MINERS)
 	minerBrdcstMsg  = make(chan []byte, 1000)
+	minerTxBrdcstMsg= make(chan []byte, 1000)
 	clientBrdcstMsg = make(chan []byte)
 	register        = make(chan *peer, MIN_MINERS)
 	disconnect      = make(chan *peer)
@@ -42,6 +43,7 @@ func Init(ipport string) {
 	go peerService()
 	//waits for stuff to broadcast. Careful enough with concurrency?
 	go minerBroadcastService()
+	go minerTxBroadcastService()
 	go clientBroadcastService()
 	go checkHealthService()
 	go timeService()
