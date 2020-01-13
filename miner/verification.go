@@ -6,6 +6,7 @@ import (
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
 	"math/big"
+	"reflect"
 )
 
 //We can't use polymorphism, e.g. we can't use tx.verify() because the Transaction interface doesn't declare
@@ -31,10 +32,11 @@ func verify(tx protocol.Transaction) bool {
 	return verified
 }
 
-//Todo redo the verification. But kürsats testbed doesnt require this kind of verification so I will leave it out
 func verifyFundsTx(tx *protocol.FundsTx) bool {
-	return true
-	/*if tx == nil {
+
+
+
+	if tx == nil {
 		return false
 	}
 
@@ -94,7 +96,7 @@ func verifyFundsTx(tx *protocol.FundsTx) bool {
 	}
 
 	return validSig1 && validSig2
-	 */
+
 }
 
 func verifyAccTx(tx *protocol.AccTx) bool {
@@ -196,11 +198,11 @@ func verifyAggTx(tx *protocol.AggTx) bool {
 	}
 
 	//Check if accounts are existent
-	//accSender, err := storage.GetAccount(tx.From)
-	//if tx.From //!= protocol.SerializeHashContent(accSender.Address) || tx.To == nil || err != nil {
-	//	logger.Printf("Account non existent. From: %v\nTo: %v\n%v", tx.From, tx.To, err)
-	//	return false
-	//}
+	/*accSender, err := storage.GetAccount(tx.From)
+	if tx.From //!= protocol.SerializeHashContent(accSender.Address) || tx.To == nil || err != nil {
+		logger.Printf("Account non existent. From: %v\nTo: %v\n%v", tx.From, tx.To, err)
+		return false
+	}*/
 
 	return true
 }
