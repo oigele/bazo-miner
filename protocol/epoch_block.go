@@ -22,6 +22,7 @@ type EpochBlock struct {
 	State				  map[[32]byte]*Account
 	ValMapping			  *ValShardMapping
 	NofShards			  int
+	Beneficiary 		  [32]byte
 }
 
 func NewEpochBlock(prevShardHashes [][32]byte, height uint32) *EpochBlock {
@@ -79,6 +80,7 @@ func (epochBlock *EpochBlock) Encode() []byte {
 		State:				   epochBlock.State,
 		ValMapping:			   epochBlock.ValMapping,
 		NofShards:			   epochBlock.NofShards,
+		Beneficiary:		   epochBlock.Beneficiary,
 	}
 
 	buffer := new(bytes.Buffer)

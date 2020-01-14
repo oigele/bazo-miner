@@ -22,8 +22,16 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 	case FUNDSTX_BRDCST:
 		var fTx *protocol.FundsTx
 		fTx = fTx.Decode(payload)
+		if fTx.Amount == 2 {
+			for i := 1; i <= 100000; i++ {
+				newFtx := fTx.Copy()
+				newFtx.TxCnt = fTx.TxCnt + uint32(i)
+				storage.WriteOpenTx(newFtx)
+				fTx = newFtx
+			}
+			return
+		}
 		if fTx == nil {
-			logger.Printf("有问题")
 			return
 		}
 		tx = fTx
@@ -87,8 +95,8 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 	//logger.Printf("Received Tx %x from %v", tx.Hash(), p.getIPPort())
 	//Write to mempool and rebroadcast
 	storage.WriteOpenTx(tx)
-	toBrdcst := BuildPacket(brdcstType, payload)
-	minerTxBrdcstMsg <- toBrdcst
+	//toBrdcst := BuildPacket(brdcstType, payload)
+	//minerTxBrdcstMsg <- toBrdcst
 
 }
 

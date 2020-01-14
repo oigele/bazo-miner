@@ -294,6 +294,8 @@ func prepareBlock(block *protocol.Block) {
 		}
 	}
 
+	logger.Printf("Stuff added. Transactions validated")
+
 		// In miner\block.go --> AddFundsTx the transactions get added into storage.TxBeforeAggregation.
 		if len(storage.ReadFundsTxBeforeAggregation()) > 0 {
 			logger.Printf("Adding funds tx before aggregation")

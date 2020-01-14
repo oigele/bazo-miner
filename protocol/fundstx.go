@@ -65,6 +65,23 @@ func ConstrFundsTx(header byte, amount uint64, fee uint64, txCnt uint32, from, t
 	return tx, nil
 }
 
+func (tx *FundsTx) Copy() (newTx *FundsTx) {
+	newTx = new(FundsTx)
+	newTx.Header = tx.Header
+	newTx.From = tx.From
+	newTx.To = tx.To
+	newTx.Amount = tx.Amount
+	newTx.Fee = tx.Fee
+	newTx.TxCnt = tx.TxCnt
+	newTx.Aggregated = false
+	newTx.Data = tx.Data
+	newTx.Block = [32]byte{}
+	newTx.Sig1 = tx.Sig1
+	newTx.Sig2 = tx.Sig2
+
+	return newTx
+}
+
 func (tx *FundsTx) Hash() (hash [32]byte) {
 	if tx == nil {
 		//is returning nil better?

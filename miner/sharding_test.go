@@ -1,6 +1,7 @@
 package miner
 
 import (
+	"crypto/ecdsa"
 	"errors"
 	"fmt"
 	"github.com/oigele/bazo-miner/crypto"
@@ -22,7 +23,7 @@ var (
 	TotalNodes			int
 )
 
-func TestShardSemiIterative(t *testing.T) {
+func TestShardInitiator(t *testing.T) {
 	rootNode := fmt.Sprintf("WalletA.txt")
 	rootNodePubKey, _ := crypto.ExtractECDSAPublicKeyFromFile(rootNode)
 	rootNodePrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
@@ -30,7 +31,7 @@ func TestShardSemiIterative(t *testing.T) {
 	hasherRootNode := protocol.SerializeHashContent(rootNodeAddress)
 
 	fromPrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
-	var nodeList [][32]byte
+	var nodeMap = make(map[[32]byte]*ecdsa.PrivateKey)
 
 	//create 30 new accounts
 	for i := 1; i <= 30; i++ {
@@ -50,6 +51,115 @@ func TestShardSemiIterative(t *testing.T) {
 		if err := SendTx("127.0.0.1:8000", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
+		/*if err := SendTx("127.0.0.1:8001", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
+		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
+		if err := SendTx("127.0.0.1:8003", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}*/
+
+		newNodeAddress := crypto.GetAddressFromPubKey(&newAccAddress.PublicKey)
+		hasherNewNode := protocol.SerializeHashContent(newNodeAddress)
+
+		//append all 30 hashers to a new map
+		nodeMap[hasherNewNode] = newAccAddress
+	}
+
+
+	i := 1
+	/*z := 1
+	y := 1
+	x := 1*/
+
+	for hasherNewNode, _ := range nodeMap {
+	//send funds to new account. Need A LOT
+		tx, _ := protocol.ConstrFundsTx(
+			byte(0),
+			uint64(1000000),
+			uint64(1),
+			uint32(i),
+			hasherRootNode,
+			hasherNewNode,
+			fromPrivKey,
+			fromPrivKey,
+			nil)
+
+		if err := SendTx("127.0.0.1:8000", tx, p2p.FUNDSTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}
+		/*if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}
+		if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}
+		if err := SendTx("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}*/
+
+		i += 1
+	}
+
+	for hasherNewNode, _ := range nodeMap {
+		tx, _ := protocol.ConstrFundsTx(
+			byte(0),
+			uint64(2),
+			uint64(1),
+			uint32(i),
+			hasherNewNode,
+			hasherRootNode,
+			nodeMap[hasherNewNode],
+			fromPrivKey,
+			nil)
+
+		if err := SendTx("127.0.0.1:8000", tx, p2p.FUNDSTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}
+		/*if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}
+		if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}
+		if err := SendTx("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}*/
+
+		i += 1
+
+	}
+
+
+}
+
+func TestShardSemiIterative(t *testing.T) {
+	rootNode := fmt.Sprintf("WalletA.txt")
+	rootNodePubKey, _ := crypto.ExtractECDSAPublicKeyFromFile(rootNode)
+	rootNodePrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
+	rootNodeAddress := crypto.GetAddressFromPubKey(rootNodePubKey)
+	hasherRootNode := protocol.SerializeHashContent(rootNodeAddress)
+
+	fromPrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
+	var nodeMap = make(map[[32]byte]*ecdsa.PrivateKey)
+
+	//create 30 new accounts
+	for i := 1; i <= 30; i++ {
+
+		accTx, newAccAddress, _ := protocol.ConstrAccTx(
+			byte(0),
+			uint64(1),
+			[64]byte{},
+			rootNodePrivKey,
+			nil,
+			nil)
+
+
+		if err := SendTx("127.0.0.1:8000", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
 		if err := SendTx("127.0.0.1:8001", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
@@ -64,7 +174,7 @@ func TestShardSemiIterative(t *testing.T) {
 		hasherNewNode := protocol.SerializeHashContent(newNodeAddress)
 
 		//append all 30 hashers to a new list
-		nodeList = append(nodeList, hasherNewNode)
+		nodeMap[hasherNewNode] = newAccAddress
 
 		t.Log(hasherNewNode)
 	}
@@ -75,13 +185,11 @@ func TestShardSemiIterative(t *testing.T) {
 	y := 1
 	/*x := 1*/
 
-	for _, hasherNewNode := range nodeList {
-
-
+	for hasherNewNode, _ := range nodeMap {
 		//send funds to new account
 		tx, _ := protocol.ConstrFundsTx(
 			byte(0),
-			uint64(1000000),
+			uint64(100000),
 			uint64(1),
 			uint32(i),
 			hasherRootNode,
@@ -89,6 +197,7 @@ func TestShardSemiIterative(t *testing.T) {
 			fromPrivKey,
 			fromPrivKey,
 			nil)
+
 
 		if err := SendTx("127.0.0.1:8000", tx, p2p.FUNDSTX_BRDCST); err != nil {
 			t.Log(fmt.Sprintf("Error"))
@@ -104,6 +213,7 @@ func TestShardSemiIterative(t *testing.T) {
 		}*/
 
 		i += 1
+
 	}
 
 
@@ -119,11 +229,13 @@ func TestShardSemiIterative(t *testing.T) {
 
 	numberOfRounds := 20
 
+//1st fromprivkey
+//2nd multisig priv key (root priv key)
 
 	go func() {
 		defer wg.Done()
-		for i = 1; i <= numberOfRounds; i++ {
-			for _, hasher := range nodeList {
+		for i = 1; i <= numberOfRounds; i++ {m
+			for hasher,_  := range nodeMap {
 				for txCount := 1; txCount <= j; txCount++ {
 					tx, _ := protocol.ConstrFundsTx(
 						byte(0),
@@ -133,7 +245,7 @@ func TestShardSemiIterative(t *testing.T) {
 						uint32(i*j-txCount),
 						hasher,
 						hasherRootNode,
-						fromPrivKey,
+						nodeMap[hasher],
 						fromPrivKey,
 						nil)
 
@@ -145,12 +257,12 @@ func TestShardSemiIterative(t *testing.T) {
 		}
 	}()
 
-	time.Sleep(100 * time.Millisecond)
+	time.Sleep(5 * time.Millisecond)
 
 	go func() {
 		defer wg.Done()
 		for z = 1; z <= numberOfRounds; z++ {
-			for _, hasher := range nodeList {
+			for hasher,_  := range nodeMap {
 				for txCount := 1; txCount <= j; txCount++ {
 					tx, _ := protocol.ConstrFundsTx(
 						byte(0),
@@ -160,11 +272,11 @@ func TestShardSemiIterative(t *testing.T) {
 						uint32(z*j-txCount),
 						hasher,
 						hasherRootNode,
-						fromPrivKey,
+						nodeMap[hasher],
 						fromPrivKey,
 						nil)
 
-					if err := SendTx2("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
 				}
@@ -172,22 +284,22 @@ func TestShardSemiIterative(t *testing.T) {
 		}
 	}()
 
-	time.Sleep(100 * time.Millisecond)
+	time.Sleep(5 * time.Millisecond)
 
 	go func() {
 		defer wg.Done()
 		for y = 1; y <= numberOfRounds; y++ {
-			for _, hasher := range nodeList {
+			for hasher,_  := range nodeMap {
 				for txCount := 1; txCount <= j; txCount++ {
 					tx, _ := protocol.ConstrFundsTx(
 						byte(0),
 						uint64(10),
 						uint64(1),
 						//can do it like this because no txcount check. the important part is that the txcount is unique
-						uint32(z*j-txCount),
+						uint32(y*j-txCount),
 						hasher,
 						hasherRootNode,
-						fromPrivKey,
+						nodeMap[hasher],
 						fromPrivKey,
 						nil)
 
@@ -202,17 +314,17 @@ func TestShardSemiIterative(t *testing.T) {
 	/*go func() {
 		defer wg.Done()
 		for x = 1; x <= numberOfRounds; x++ {
-			for _, hasher := range nodeList {
+			for hasher,_  := range nodeMap {
 				for txCount := 1; txCount <= j; txCount++ {
 					tx, _ := protocol.ConstrFundsTx(
 						byte(0),
 						uint64(10),
 						uint64(1),
 						//can do it like this because no txcount check. the important part is that the txcount is unique
-						uint32(z*j-txCount),
+						uint32(x*j-txCount),
 						hasher,
 						hasherRootNode,
-						fromPrivKey,
+						nodeMap[hasher],
 						fromPrivKey,
 						nil)
 

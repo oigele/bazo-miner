@@ -45,6 +45,15 @@ func processEpochBlock(eb []byte) {
 		logger.Printf("Received Epoch Block (%x) already in storage\n", epochBlock.Hash[0:8])
 		return
 	} else {
+		if _,err := storage.GetAccount(epochBlock.Beneficiary); err == nil {
+			//validate epoch block
+			logger.Printf("can try to validate the epoch block because I have the beneficiary in my local state")
+			validateEpochBlock(epochBlock)
+		} else {
+			logger.Printf("could not validate epoch block yet because I dont have the beneficiary stored in my syetem yet")
+			logger.Printf("beneficiary: %x", epochBlock.Beneficiary)
+		}
+
 		//Accept the last received epoch block as the valid one. From the epoch block, retrieve the global state and the
 		//valiadator-shard mapping. Upon successful acceptance, broadcast the epoch block
 		logger.Printf("Received Epoch Block: %v\n", epochBlock.String())

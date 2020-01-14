@@ -13,6 +13,7 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 var validateMutex = sync.Mutex{}
+var validateEpochMutex = sync.Mutex{}
 //Tests whether the first diff bits are zero
 func validateProofOfStake(diff uint8,
 	prevProofs [][crypto.COMM_PROOF_LENGTH]byte,
@@ -118,6 +119,17 @@ func proofOfStake(diff uint8,
 	timestampBufIndexStart := index
 	timestampBufIndexEnd := index + 8
 
+	//here the custom implementation of block mining starts
+	logger.Printf("Start PoS Simulation")
+	time.Sleep(5 * time.Second)
+	timestamp = time.Now().Unix()
+	logger.Printf("End PoS Simulation")
+	return timestamp, nil
+
+
+
+	//after this, the normal PoS continues
+
 	cnt := 0
 	for range time.Tick(time.Second) {
 		// lastBlock is a global variable which points to the last block. This check makes sure we abort if another
@@ -199,6 +211,62 @@ func proofOfStake(diff uint8,
 	return timestamp, nil
 }
 
+func validateProofOfStakeEpoch(diff uint8,
+	height uint32,
+	balance uint64,
+	commitmentProof [crypto.COMM_PROOF_LENGTH]byte,
+	timestamp int64) bool {
+
+	validateMutex.Lock()
+	defer validateMutex.Unlock()
+
+	var (
+		heightBuf    [4]byte
+		timestampBuf [8]byte
+		hashArgs     []byte
+	)
+
+	// allocate memory
+	// COMM_KEY_LENGTH bytes (localCommPubKey) + 8 bytes (count) = 256 + 1 + 8
+	hashArgs = make([]byte, crypto.COMM_PROOF_LENGTH + 4 + 8)
+
+	binary.BigEndian.PutUint32(heightBuf[:], height)
+	binary.BigEndian.PutUint64(timestampBuf[:], uint64(timestamp))
+
+	index := 0
+
+	copy(hashArgs[index:index + crypto.COMM_PROOF_LENGTH], commitmentProof[:]) // COMM_KEY_LENGTH bytes
+	index += crypto.COMM_PROOF_LENGTH
+	copy(hashArgs[index:index + 4], heightBuf[:]) 		// 4 bytes
+	index += 4
+
+	copy(hashArgs[index:index+8], timestampBuf[:])
+
+	//calculate the hash
+	pos := sha3.Sum256(hashArgs[:])
+
+	data := binary.BigEndian.Uint64(pos[:])
+	data = data / balance
+	var buf bytes.Buffer
+	binary.Write(&buf, binary.BigEndian, data)
+
+	copy(pos[0:32], buf.Bytes())
+
+	var byteNr uint8
+	//Bytes check
+	for byteNr = 0; byteNr < (uint8)(diff/8); byteNr++ {
+		if pos[byteNr] != 0 {
+			return false
+		}
+	}
+	//Bits check
+	if diff%8 != 0 && pos[byteNr] >= 1<<(8-diff%8) {
+		return false
+	}
+	return true
+}
+
+
 //Method from Kürsat
 //TODO check if it's consistent with the other proof of stake
 func proofOfStakeEpoch(diff uint8,
@@ -235,6 +303,17 @@ func proofOfStakeEpoch(diff uint8,
 
 	timestampBufIndexStart := index
 	timestampBufIndexEnd := index + 8
+
+	//here the custom implementation of block mining starts
+	/*logger.Printf("Start PoS Simulation")
+	time.Sleep(100 * time.Second)
+	timestamp = time.Now().Unix()
+	logger.Printf("End PoS Simulation")
+	return timestamp, nil
+	*/
+
+
+	//after this, the normal PoS continues
 
 	for range time.Tick(time.Second) {
 		// lastBlock is a global variable which points to the last block. This check makes sure we abort if another

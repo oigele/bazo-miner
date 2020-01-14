@@ -17,6 +17,7 @@ import (
 var (
 	logger                       *log.Logger
 	blockValidation              = &sync.Mutex{}
+	epochBlockValidation	     = &sync.Mutex{}
 	parameterSlice               []Parameters
 	ActiveParameters 			*Parameters
 	uptodate                     bool
@@ -370,7 +371,22 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 				logger.Printf("Before finalizeEpochBlock() ---- Height: %d\n", epochBlock.Height)
 				//Finalize creation of the epoch block. In case another epoch block was mined in the meantime, abort PoS here
-				err := finalizeEpochBlock(epochBlock)
+
+
+				//add the beneficiary to the epoch block
+				validatorAcc, err := storage.GetAccount(protocol.SerializeHashContent(validatorAccAddress))
+				if err != nil {
+					logger.Printf("problem with getting the validator acc")
+				}
+
+				validatorAccHash := validatorAcc.Hash()
+
+				logger.Printf("validator acc hash: %x", validatorAccHash)
+
+				copy(epochBlock.Beneficiary[:], validatorAccHash[:])
+
+				err = finalizeEpochBlock(epochBlock)
+
 				logger.Printf("After finalizeEpochBlock() ---- Height: %d\n", epochBlock.Height)
 
 				if err != nil {
