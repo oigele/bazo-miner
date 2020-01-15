@@ -85,6 +85,7 @@ func InitLogging() {
 	LogMapping[142] = "SHARD_BLOCK_RES"
 	LogMapping[143] = "TRANSACTION_ASSIGNMENT_REQ"
 	LogMapping[144] = "TRANSACTION_ASSIGNMENT_RES"
+	LogMapping[145] = "TRANSACTION_ASSIGNMENT_BRDCST"
 
 
 }

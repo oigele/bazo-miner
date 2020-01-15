@@ -3,6 +3,7 @@ package miner
 import (
 	"crypto/ecdsa"
 	"crypto/rsa"
+	"fmt"
 	"github.com/oigele/bazo-miner/crypto"
 	"github.com/oigele/bazo-miner/p2p"
 	"github.com/oigele/bazo-miner/protocol"
@@ -32,6 +33,8 @@ var (
 	// This slice stores the hashes of the last blocks from the other shards, needed to create the next epoch block.
 	LastShardHashes [][32]byte
 
+	FirstStartCommittee  bool
+
 	//Kursat Extras
 	prevBlockIsEpochBlock bool
 	FirstStartAfterEpoch  bool
@@ -46,6 +49,7 @@ var (
 
 
 func InitCommittee() {
+
 
 	FirstStartAfterEpoch = true
 	storage.IsCommittee = true
@@ -74,6 +78,13 @@ func InitCommittee() {
 	logger.Printf("\n\n\n-------------------- START Committee Member ---------------------")
 	logger.Printf("This Miners IP-Address: %v\n\n", p2p.Ipport)
 
+	currentTargetTime = new(timerange)
+	target = append(target, 13)
+
+	parameterSlice = append(parameterSlice, NewDefaultParameters())
+	ActiveParameters = &parameterSlice[0]
+	storage.EpochLength = ActiveParameters.Epoch_length
+
 	//Listen for incoming blocks from the network
 	go incomingData()
 	//Listen for incoming epoch blocks from the network
@@ -100,15 +111,21 @@ func InitCommittee() {
 	shardIDs := makeRange(1,NumberOfShards)
 	logger.Printf("Number of shards: %d\n",NumberOfShards)
 
-	for range shardIDs {
-		logger.Printf("broadcasting assignment data")
-		broadcastAssignmentData(new(protocol.TransactionAssignment))
+	for _, shardId := range shardIDs {
+		var ta *protocol.TransactionAssignment
+		logger.Printf("broadcasting assignment data for ShardId: %d", shardId)
+		ta = new(protocol.TransactionAssignment)
+		ta.Height = 1
+		ta.ShardID = 1
+
+		broadcastAssignmentData(ta)
 	}
 
 	for {
-
 		//the committee member is now bootstrapped. In an infinite for-loop, perform its task
+		logger.Printf("height being inspected: %d", lastEpochBlock.Height - 1)
 		blockStashForHeight := protocol.ReturnBlockStashForHeight(storage.ReceivedShardBlockStash, lastEpochBlock.Height-1)
+		logger.Printf("length of block stash for height: %d", len(blockStashForHeight))
 		if len(blockStashForHeight) != 0 {
 			//Iterate through state transitions and apply them to local state, keep track of processed shards
 			for _, b := range blockStashForHeight {
@@ -116,15 +133,54 @@ func InitCommittee() {
 
 					blockIDBoolMap[b.ShardId] = true
 
+
+					//Check state contains beneficiary.
+					acc, err := storage.GetAccount(b.Beneficiary)
+					if err != nil {
+						logger.Printf("Don't have the beneficiary")
+						return
+					}
+
+					//Check if node is part of the validator set.
+					if !acc.IsStaking {
+						logger.Printf("Account isn't staking")
+						return
+					}
+
+					//First, initialize an RSA Public Key instance with the modulus of the proposer of the block (acc)
+					//Second, check if the commitment proof of the proposed block can be verified with the public key
+					//Invalid if the commitment proof can not be verified with the public key of the proposer
+					commitmentPubKey, err := crypto.CreateRSAPubKeyFromBytes(acc.CommitmentKey)
+					if err != nil {
+						logger.Printf("commitment key cannot be retrieved")
+						return
+					}
+
+					err = crypto.VerifyMessageWithRSAKey(commitmentPubKey, fmt.Sprint(b.Height), b.CommitmentProof)
+					logger.Printf("CommitmentPubKey: %x, --------------- Block Height: %d", commitmentPubKey, b.Height)
+					if err != nil {
+						logger.Printf("The submitted commitment proof can not be verified.")
+						return
+					}
+
+					//Invalid if PoS calculation is not correct. has to be built back in
+					prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, b)
+					validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp)
+
+					logger.Printf("proof of stake is valid")
+
 					logger.Printf("Processed block of shard: %d\n", b.ShardId)
 
-					//todo build in proof of stake check
+
 				}
 			}
 			//If all state transitions have been received, stop synchronisation
 			if len(blockStashForHeight) == NumberOfShards-1 {
 				logger.Printf("received all blocks for height. Break")
 				break
+			} else {
+				logger.Printf("height: %d",lastEpochBlock.Height-1)
+				logger.Printf("number of shards: %d", NumberOfShards)
 			}
 		}
 		time.Sleep(2 * time.Second)
@@ -396,7 +452,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			}
 			prevBlockIsEpochBlock = true
 			firstEpochOver = true
-
+			received := false
 			//now wait to receive the assignment from the
 			//Blocking wait
 			for {
@@ -407,10 +463,13 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					//overwrite the previous mempool. Take the new transactions
 					storage.AssignedTxMempool = transactionAssignment.Transactions
 					logger.Printf("Success")
-					break
+					received = true
 				case <-time.After(5 * time.Second):
 					p2p.TransactionAssignmentReq(int(lastEpochBlock.Height), storage.ThisShardID)
 					broadcastEpochBlock(lastEpochBlock)
+				}
+				if received {
+					break
 				}
 			}
 

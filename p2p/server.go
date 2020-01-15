@@ -52,6 +52,7 @@ func Init(ipport string) {
 	go forwardShardBlockRequestToMiner()
 	go forwardTransactionAssignmentRequestToMiner()
 	go forwardStateTransitionBrdcstToMiner()
+	go forwardTransactionAssignmentBrdcstToMiner()
 	go forwardEpochBlockBrdcstToMiner()
 	go forwardBlockHeaderBrdcstToMiner()
 	go forwardVerifiedTxsToMiner()

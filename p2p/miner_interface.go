@@ -125,6 +125,14 @@ func forwardStateTransitionBrdcstToMiner()  {
 	}
 }
 
+func forwardTransactionAssignmentBrdcstToMiner() {
+	for {
+		transactionAssignment := <- TransactionAssignmentOut
+		toBrdcst := BuildPacket(TRANSACTION_ASSIGNMENT_BRDCST, transactionAssignment)
+		minerBrdcstMsg <- toBrdcst
+	}
+}
+
 func forwardEpochBlockBrdcstToMiner() {
 	for {
 		epochBlock := <-EpochBlockOut
@@ -318,6 +326,9 @@ func forwardStateTransitionToMiner(p *peer, payload []byte) () {
 	StateTransitionIn <- payload
 }
 
+func forwardTransactionAssignmentToMinerIn(p *peer, payload []byte) {
+	TransactionAssignmentIn <- payload
+}
 
 func forwardLastEpochBlockToMiner(p *peer, payload []byte)  {
 	LastEpochBlockReqChan <- payload

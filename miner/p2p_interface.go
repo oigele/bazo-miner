@@ -62,22 +62,31 @@ func processEpochBlock(eb []byte) {
 			logger.Printf("beneficiary: %x", epochBlock.Beneficiary)
 		}
 
-		//Accept the last received epoch block as the valid one. From the epoch block, retrieve the global state and the
-		//valiadator-shard mapping. Upon successful acceptance, broadcast the epoch block
-		logger.Printf("Received Epoch Block: %v\n", epochBlock.String())
-		ValidatorShardMap = epochBlock.ValMapping
-		NumberOfShards = epochBlock.NofShards
-		storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
-		storage.ThisShardMap[int(epochBlock.Height)] = storage.ThisShardID
-		lastEpochBlock = epochBlock
-		storage.WriteClosedEpochBlock(epochBlock)
 
-		storage.DeleteAllLastClosedEpochBlock()
-		storage.WriteLastClosedEpochBlock(epochBlock)
+		if !storage.IsCommittee {
+			logger.Printf("Received Epoch Block: %v\n", epochBlock.String())
+			ValidatorShardMap = epochBlock.ValMapping
+			NumberOfShards = epochBlock.NofShards
+			storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
+			storage.ThisShardMap[int(epochBlock.Height)] = storage.ThisShardID
+			lastEpochBlock = epochBlock
+			storage.WriteClosedEpochBlock(epochBlock)
 
-		p2p.EpochBlockReceivedChan <- *lastEpochBlock
+			storage.DeleteAllLastClosedEpochBlock()
+			storage.WriteLastClosedEpochBlock(epochBlock)
 
-		broadcastEpochBlock(lastEpochBlock)
+			p2p.EpochBlockReceivedChan <- *lastEpochBlock
+
+			broadcastEpochBlock(lastEpochBlock)
+		} else {
+			logger.Printf("Received Epoch Block: %v\n", epochBlock.String())
+			lastEpochBlock = epochBlock
+			storage.WriteClosedEpochBlock(epochBlock)
+
+			storage.DeleteAllLastClosedEpochBlock()
+			storage.WriteLastClosedEpochBlock(epochBlock)
+			broadcastEpochBlock(lastEpochBlock)
+		}
 	}
 }
 
@@ -128,8 +137,8 @@ func processBlock(payload []byte) {
 		logger.Printf("Received block (%x) from shard %d with height: %d\n", block.Hash[0:8],block.ShardId,block.Height)
 		if storage.ReceivedShardBlockStash.BlockIncluded(blockHash) == false {
 			logger.Printf("Writing block to stash Shard ID: %v  - Height: %d - Hash: %x\n",block.ShardId, block.Height,blockHash[0:8])
-		}
 			storage.ReceivedShardBlockStash.Set(blockHash, block)
+		}
 		} else {
 			logger.Printf("Received block (%x) already in block stash\n",block.Hash[0:8])
 		}
