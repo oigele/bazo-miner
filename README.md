@@ -68,6 +68,11 @@ Commands
 ./bazo-miner start --database StoreA.db --address 127.0.0.1:8000 --bootstrap 127.0.0.1:8000 --wallet WalletA.txt --commitment CommitmentA.txt --multisig WalletA.txt --rootwallet WalletA.txt --rootcommitment CommitmentA.txt
 ```
 
+Starting a Committee Member:
+```bash
+./bazo-miner committee --database StoreB.db --address 127.0.0.1:8001 --bootstrap 127.0.0.1:8000
+```
+
 We start miner A at address and port `localhost:8000` and connect to itself by setting the bootstrap address to the same address.
 Note that we could have omitted these two options since they are passed by default with these values.
 Wallet and commitment keys are automatically created. Using this command, we define miner A as the root.
