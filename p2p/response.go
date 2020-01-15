@@ -384,6 +384,57 @@ func intermediateNodesRes(p *peer, payload []byte) {
 	sendData(p, packet)
 }
 
+func shardBlockRes(p *peer, payload []byte) {
+	var packet []byte
+	var b *protocol.Block
+
+	strPayload := string(payload)
+	shardID,_ := strconv.ParseInt(strings.Split(strPayload,":")[0],10,64)
+
+	height,_ := strconv.ParseInt(strings.Split(strPayload,":")[1],10,64)
+
+	logger.Printf("responding block request for shard %d for height: %d\n", shardID, height)
+
+	//security check becuase the listener to incoming blocks is a concurrent goroutine
+	if storage.ReadLastClosedEpochBlock() == nil || storage.ReadLastClosedBlock() == nil {
+		logger.Printf("Haven't stored last epoch block yet.")
+		packet = BuildPacket(NOT_FOUND, nil)
+	} else {
+		if shardID == int64(storage.ThisShardMap[int(storage.ReadLastClosedEpochBlock().Height)-storage.EpochLength-1]) {
+			b = storage.ReadLastClosedBlock()
+			packet = BuildPacket(SHARD_BLOCK_RES, b.Encode())
+		} else {
+			packet = BuildPacket(NOT_FOUND, nil)
+		}
+	}
+	sendData(p, packet)
+}
+
+func TransactionAssignmentRes(p *peer, payload []byte) {
+	var packet []byte
+	var ta *protocol.TransactionAssignment
+
+	strPayload := string(payload)
+	shardID,_ := strconv.ParseInt(strings.Split(strPayload,":")[0],10,64)
+
+	height,_ := strconv.ParseInt(strings.Split(strPayload,":")[1],10,64)
+
+	logger.Printf("responding transaction assignment request for shard %d for height: %d\n", shardID, height)
+
+	//security check becuase the listener to incoming blocks is a concurrent goroutine
+	if storage.ReadLastClosedEpochBlock() == nil {
+		logger.Printf("Haven't stored last epoch block yet.")
+		packet = BuildPacket(NOT_FOUND,nil)
+	} else {
+		// need to create a transaction assignment database first
+		ta = new(protocol.TransactionAssignment)
+		ta.Height = 1
+		ta.ShardID = 1
+		packet = BuildPacket(TRANSACTION_ASSIGNMENT_RES, ta.EncodeTransactionAssignment())
+	}
+	sendData(p, packet)
+}
+
 func stateTransitionRes(p *peer, payload []byte) {
 	var packet []byte
 	var st *protocol.StateTransition

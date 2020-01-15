@@ -18,6 +18,7 @@ func main() {
 	app.EnableBashCompletion = true
 	app.Commands = []cli2.Command {
 		cli.GetStartCommand(logger),
+		cli.GetStartCommitteeCommand(logger),
 		cli.GetGenerateWalletCommand(),
 		cli.GetGenerateCommitmentCommand(),
 	}

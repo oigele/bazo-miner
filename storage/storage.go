@@ -20,6 +20,10 @@ var (
 	OwnStateTransitionStash 		[]*protocol.StateTransition
 	RootKeys           				= make(map[[32]byte]*protocol.Account)
 	txMemPool          				= make(map[[32]byte]protocol.Transaction)
+
+	//designed a new mempool for this use case
+	AssignedTxMempool 				[]protocol.Transaction
+
 	openTxToDeleteMempool			= make(map[[32]byte]bool)
 	txINVALIDMemPool   				= make(map[[32]byte]protocol.Transaction)
 	bootstrapReceivedMemPool		= make(map[[32]byte]protocol.Transaction)
@@ -45,7 +49,10 @@ var (
 	ThisShardMap			= make(map[int]int)
 	EpochLength				int
 	ReceivedStateStash                      = protocol.NewStateStash()
+	ReceivedShardBlockStash					= protocol.NewShardBlockStash()
 	memPoolMutex                        = &sync.Mutex{}
+
+	IsCommittee			bool
 )
 
 const (

@@ -104,6 +104,71 @@ func GetStartCommand(logger *log.Logger) cli.Command {
 	}
 }
 
+func GetStartCommitteeCommand(logger *log.Logger) cli.Command {
+	return cli.Command {
+		Name:	"committee",
+		Usage:	"start the committee",
+		Action:	func(c *cli.Context) error {
+			args := &startArgs {
+				dbname: 				c.String("database"),
+				myNodeAddress: 			c.String("address"),
+				bootstrapNodeAddress: 	c.String("bootstrap"),
+			}
+
+			if !c.IsSet("bootstrap") {
+				args.bootstrapNodeAddress = args.myNodeAddress
+			}
+
+			err := args.ValidateCommitteeInput()
+			if err != nil {
+				return err
+			}
+
+			fmt.Println(args.String())
+
+			if c.Bool("confirm") {
+				fmt.Scanf("\n")
+			}
+
+			return StartCommittee(args, logger)
+		},
+		Flags:	[]cli.Flag {
+			cli.StringFlag {
+				Name: 	"database, d",
+				Usage: 	"load database of the disk-based key/value store from `FILE`",
+				Value:	"store.db",
+			},
+			cli.StringFlag {
+				Name: 	"address, a",
+				Usage: 	"start node at `IP:PORT`",
+				Value: 	"localhost:8000",
+			},
+			cli.StringFlag {
+				Name: 	"bootstrap, b",
+				Usage: 	"connect to bootstrap node at `IP:PORT`",
+				Value: 	"localhost:8000",
+			},
+			cli.BoolFlag {
+				Name: 	"confirm",
+				Usage: 	"user must press enter before starting the miner",
+			},
+		},
+	}
+}
+
+func StartCommittee(args *startArgs, logger *log.Logger) error {
+	storage.Init(args.dbname, args.bootstrapNodeAddress)
+	p2p.Init(args.myNodeAddress)
+
+	logger.Printf("Starting committee")
+
+
+	miner.InitCommittee()
+
+	return nil
+
+}
+
 func Start(args *startArgs, logger *log.Logger) error {
 	storage.Init(args.dbname, args.bootstrapNodeAddress)
 	p2p.Init(args.myNodeAddress)
@@ -179,6 +244,22 @@ func (args startArgs) ValidateInput() error {
 
 	if len(args.rootCommitmentFile) == 0 {
 		return errors.New("argument missing: rootCommitmentFile")
+	}
+
+	return nil
+}
+
+func (args startArgs) ValidateCommitteeInput() error {
+	if len(args.dbname) == 0 {
+		return errors.New("argument missing: dbname")
+	}
+
+	if len(args.myNodeAddress) == 0 {
+		return errors.New("argument missing: myNodeAddress")
+	}
+
+	if len(args.bootstrapNodeAddress) == 0 {
+		return errors.New("argument missing: bootstrapNodeAddress")
 	}
 
 	return nil

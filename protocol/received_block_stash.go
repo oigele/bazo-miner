@@ -3,46 +3,46 @@ package protocol
 import (
 	"sync"
 )
-/*This datastructe maintains a map of the form [32]byte - *StateTransition. It stores the state transitions received from other shards.
-This datastructure will be queried at every blockheight to check if we can continue mining the next block.
+/*This datastructe maintains a map of the form [32]byte - *Block. It stores the blcoks received from the shards.
+This datastructure will be queried after every epoch block to check if we can continue to the next epoch.
 Because we need to remove the first element of this datastructure and map access is random in Go, we additionally have a slice datastructure
 which keeps track of the order of the included state transition. Such that, using the slice structure, we can remove the first received block once this
 stash gets full*/
-type KeyState [32]byte   // Key: Hash of the block
-type ValueState *StateTransition // Value: Block
+type KeyBlock [32]byte   // Key: Hash of the block
+type ValueBlock *Block // Value: Block
 
-type StateStash struct {
-	M    map[KeyState]ValueState
-	Keys []KeyState
+type BlockStash struct {
+	M    map[KeyBlock]ValueBlock
+	Keys []KeyBlock
 }
 
-var stateMutex			= &sync.Mutex{}
+var blockMutex			= &sync.Mutex{}
 
-func NewStateStash() *StateStash {
-	return &StateStash{M: make(map[KeyState]ValueState)}
+func NewShardBlockStash() *BlockStash {
+	return &BlockStash{M: make(map[KeyBlock]ValueBlock)}
 }
 
 
 
 /*This function includes a key and tracks its order in the slice*/
-func (m *StateStash) Set(k KeyState, v ValueState) {
-	stateMutex.Lock()
-	defer stateMutex.Unlock()
+func (m *BlockStash) Set(k KeyBlock, v ValueBlock) {
+	blockMutex.Lock()
+	defer blockMutex.Unlock()
 	/*Check if the map does not contain the key*/
 	if _, ok := m.M[k]; !ok {
 		m.Keys = append(m.Keys, k)
 		m.M[k] = v
 	}
 
-	/*When lenght of stash is > 50 --> Remove first added Block*/
+	/*When length of stash is > 50 --> Remove first added Block*/
 	if(len(m.M) > 50){
 		m.DeleteFirstEntry()
 	}
 }
 
-func (m *StateStash) StateTransitionIncluded(k KeyState) bool {
-	stateMutex.Lock()
-	defer stateMutex.Unlock()
+func (m *BlockStash) BlockIncluded(k KeyBlock) bool {
+	blockMutex.Lock()
+	defer blockMutex.Unlock()
 	/*Check if the map does not contain the key*/
 	if _, ok := m.M[k]; !ok {
 		return false
@@ -52,69 +52,69 @@ func (m *StateStash) StateTransitionIncluded(k KeyState) bool {
 }
 
 /*This function includes a key and tracks its order in the slice. No need to put the lock because it is used from the calling function*/
-func (m *StateStash) DeleteFirstEntry() {
-	firstStateTransitionHash := m.Keys[0]
+func (m *BlockStash) DeleteFirstEntry() {
+	firstBlockHash := m.Keys[0]
 
-	if _, ok := m.M[firstStateTransitionHash]; ok {
-		delete(m.M,firstStateTransitionHash)
+	if _, ok := m.M[firstBlockHash]; ok {
+		delete(m.M,firstBlockHash)
 	}
 	m.Keys = append(m.Keys[:0], m.Keys[1:]...)
 }
 
-/*This function counts how many state transisitions in the stash have some predefined height*/
-func CheckForHeightStateTransition(statestash *StateStash, height uint32) int {
-	stateMutex.Lock()
-	defer stateMutex.Unlock()
-	numberOfStateTransisionsAtHeight := 0
-	for _,stateTransision := range statestash.M {
-		if(stateTransision.Height == int(height)){
-			numberOfStateTransisionsAtHeight = numberOfStateTransisionsAtHeight + 1
+/*This function counts how many blocks in the stash have some predefined height*/
+func CheckForHeightBlock(blockStash *BlockStash, height uint32) int {
+	blockMutex.Lock()
+	defer blockMutex.Unlock()
+	numberOfBlocksAtHeight := 0
+	for _,block := range blockStash.M {
+		if block.Height == height {
+			numberOfBlocksAtHeight++
 		}
 	}
-	return numberOfStateTransisionsAtHeight
+	return numberOfBlocksAtHeight
 }
 
-func ReturnStateTransitionForHeight(statestash *StateStash, height uint32) [] *StateTransition {
-	stateMutex.Lock()
-	defer stateMutex.Unlock()
+func ReturnBlockStashForHeight(blockStash *BlockStash, height uint32) [] *Block {
+	blockMutex.Lock()
+	defer blockMutex.Unlock()
 
-	stateTransitionSlice := []*StateTransition{}
+	blockSlice := []*Block{}
 
-	for _,st := range statestash.M {
-		if(st.Height == int(height)){
-			stateTransitionSlice = append(stateTransitionSlice,st)
+	for _,b := range blockStash.M {
+		if b.Height == height {
+			blockSlice = append(blockSlice,b)
 		}
 	}
 
-	return stateTransitionSlice
+	return blockSlice
 }
 
-func ReturnShardHashesForHeight(statestash *StateStash, height uint32) [][32]byte {
-	stateMutex.Lock()
-	defer stateMutex.Unlock()
+func ReturnBlockHashesForHeight(blockStash *BlockStash, height uint32) [][32]byte {
+	blockMutex.Lock()
+	defer blockMutex.Unlock()
 
 	hashSlice := [][32]byte{}
 
-	for _,st := range statestash.M {
-		if(st.Height == int(height)){
-			hashSlice = append(hashSlice,st.BlockHash)
+	for _,b := range blockStash.M {
+		if b.Height == height {
+			hashSlice = append(hashSlice,b.Hash)
 		}
 	}
 
 	return hashSlice
 }
 
-func ReturnStateTransitionForPosition(stateStash *StateStash, position int) (stateHash [32]byte, stateTransition *StateTransition) {
-	stateMutex.Lock()
-	defer stateMutex.Unlock()
+func ReturnBlockForPosition(blockStash *BlockStash, position int) (stateHash [32]byte, block *Block) {
+	blockMutex.Lock()
+	defer blockMutex.Unlock()
 
-	if(position > len(stateStash.Keys)-1){
+	if(position > len(blockStash.Keys)-1){
 		return [32]byte{}, nil
 	}
 
-	stateStashPos := stateStash.Keys[position]
+	stateStashPos := blockStash.Keys[position]
 
-	return stateStashPos, stateStash.M[stateStashPos]
+	return stateStashPos, blockStash.M[stateStashPos]
 }
 
 ///*This function returns the hashes of the blocks for some height*/

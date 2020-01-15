@@ -36,6 +36,14 @@ func incomingStateData(){
 	}
 }
 
+
+func incomingTransactionAssignment() {
+	for {
+		transactionAssignment := <- p2p.TransactionAssignmentIn
+		processAssignmentData(transactionAssignment)
+	}
+}
+
 //Code from Kürsat
 func processEpochBlock(eb []byte) {
 	var epochBlock *protocol.EpochBlock
@@ -99,71 +107,32 @@ func processStateData(payload []byte) {
 
 //End code from Kürsat
 
+func processAssignmentData(payload []byte) {
+	var transactionAssignment *protocol.TransactionAssignment
+	transactionAssignment = transactionAssignment.DecodeTransactionAssignment(payload)
+	//safety check and only store the transaction assignment of the own shard
+	if lastEpochBlock != nil && transactionAssignment.ShardID == storage.ThisShardID {
+		//got the desired transaction assignment. write it to the channel which will be consumed after epoch block reception
+		logger.Printf("received the transaction assignment from a broadcast. writing to request channel")
+		p2p.TransactionAssignmentReqChan <- payload
+	}
+}
 
-//ReceivedBlockStash is a stash with all Blocks received such that we can prevent forking
+
 func processBlock(payload []byte) {
-
 	var block *protocol.Block
 	block = block.Decode(payload)
+	blockHash := block.HashBlock()
 
-	//What follows is Kürsat's mechanism to deal with any incoming blocks (not Epoch Blocks)
 	if(lastEpochBlock != nil){
 		logger.Printf("Received block (%x) from shard %d with height: %d\n", block.Hash[0:8],block.ShardId,block.Height)
-		//For blocks, generally don't use the delayed shard id.
-		if(!storage.BlockAlreadyInStash(storage.ReceivedBlockStash,block.Hash) && block.ShardId != storage.ThisShardID){
-			storage.WriteToReceivedStash(block)
-			//broadcastBlock(block)
+		if storage.ReceivedShardBlockStash.BlockIncluded(blockHash) == false {
+			logger.Printf("Writing block to stash Shard ID: %v  - Height: %d - Hash: %x\n",block.ShardId, block.Height,blockHash[0:8])
+		}
+			storage.ReceivedShardBlockStash.Set(blockHash, block)
 		} else {
 			logger.Printf("Received block (%x) already in block stash\n",block.Hash[0:8])
 		}
-		//for blocks, generally use the non-delayed shard id
-		if block.ShardId == storage.ThisShardID && block.Height > lastEpochBlock.Height {
-			//Block already confirmed and validated
-			if storage.ReadClosedBlock(block.Hash) != nil {
-				logger.Printf("Received block (%x) has already been validated.\n", block.Hash[0:8])
-				return
-			}
-			//If block belongs to my shard, validate it
-			err := validate(block, false)
-			if err == nil {
-				logger.Printf("Received Validated block: %vState:\n%v\n", block, getState())
-			} else {
-				logger.Printf("Received block (%x) could not be validated: %v\n", block.Hash[0:8], err)
-			}
-
-			if(block.Height == lastEpochBlock.Height +1){
-				logger.Printf(`"EPOCH BLOCK: \n Hash : %x \n Height : %d \nMPT : %x" -> "Hash : %x \n Height : %d"`+"\n", block.PrevHash[0:8],lastEpochBlock.Height,lastEpochBlock.MerklePatriciaRoot[0:8],block.Hash[0:8],block.Height)
-				logger.Printf(`"EPOCH BLOCK: \n Hash : %x \n Height : %d \nMPT : %x"`+`[color = red, shape = box]`+"\n",block.PrevHash[0:8],lastEpochBlock.Height,lastEpochBlock.MerklePatriciaRoot[0:8])
-			} else {
-				logger.Printf(`"Hash : %x \n Height : %d" -> "Hash : %x \n Height : %d"`+"\n", block.PrevHash[0:8],block.Height-1,block.Hash[0:8],block.Height)
-			}
-		}
-	}
-
-
-
-/*
-	//Block already confirmed and validated
-	if storage.ReadClosedBlock(block.Hash) != nil {
-		logger.Printf("Received block (%x) has already been validated.\n", block.Hash[0:8])
-		return
-	}
-
-
-	//Append received Block to stash
-	storage.WriteToReceivedStash(block)
-
-
-	//Start validation process
-	receivedBlockInTheMeantime = true
-	err := validate(block, false)
-	receivedBlockInTheMeantime = false
-	if err == nil {
-		go broadcastBlock(block)
-		logger.Printf("Validated block (received): %vState:\n%v", block, getState())
-	} else {
-		logger.Printf("Received block (%x) could not be validated: %v\n", block.Hash[0:8], err)
-	}*/
 }
 
 
@@ -176,6 +145,10 @@ func broadcastStateTransition(st *protocol.StateTransition) {
 }
 
 //here Kürsat's code ends
+
+func broadcastAssignmentData(data *protocol.TransactionAssignment) {
+	p2p.TransactionAssignmentOut <- data.EncodeTransactionAssignment()
+}
 
 //p2p.BlockOut is a channel whose data get consumed by the p2p package
 func broadcastBlock(block *protocol.Block) {

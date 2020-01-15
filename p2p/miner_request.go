@@ -6,9 +6,7 @@ import (
 	"time"
 )
 
-//Both block and tx requests are handled asymmetricaly, using channels as inter-communication
-//All the request in this file are specifically initiated by the miner package
-//func BlockReq(hash [32]byte, hashWithoutTx [32]byte) error {
+//legacy code
 func BlockReq(hash [32]byte, hashWithoutTx [32]byte) error {
 
 	logger.Printf("Request Block %x, %x from the network (%v Miners)", hash[0:8], hashWithoutTx[0:8], peers.len(PEERTYPE_MINER))
@@ -41,6 +39,31 @@ func BlockReq(hash [32]byte, hashWithoutTx [32]byte) error {
 	}
 
 	return nil
+}
+
+//the committe node might have to request blocks from the network. shard blocks are uniquely identified with their block height and shard ID
+func ShardBlockReq(height int, shardID int) {
+	strShardID := strconv.Itoa(shardID)
+	strHeight := strconv.Itoa(height)
+
+	strRequest := ""
+	strRequest += strShardID
+	strRequest += ":"
+	strRequest += strHeight
+
+	ShardBlockShardOut <- []byte(strRequest)
+}
+
+func TransactionAssignmentReq(height int, shardID int) {
+	strShardID := strconv.Itoa(shardID)
+	strHeight := strconv.Itoa(height)
+
+	strRequest := ""
+	strRequest += strShardID
+	strRequest += ":"
+	strRequest += strHeight
+
+	TransactionAssignmentReqOut <- []byte(strRequest)
 }
 
 func FirstEpochBlockReq() error {

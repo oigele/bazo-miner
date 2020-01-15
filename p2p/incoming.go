@@ -47,6 +47,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		}
 	case BLOCK_REQ:
 		blockRes(p, payload)
+	case SHARD_BLOCK_REQ:
+		shardBlockRes(p, payload)
 	case BLOCK_HEADER_REQ:
 		blockHeaderRes(p, payload)
 	case ACC_REQ:
@@ -71,6 +73,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		EpochBlockRes(p,payload)
 	case LAST_EPOCH_BLOCK_REQ:
 		LastEpochBlockRes(p,payload)
+	case TRANSACTION_ASSIGNMENT_REQ:
+		TransactionAssignmentRes(p, payload)
 
 		//RESPONSES
 	case NEIGHBOR_RES:
@@ -101,6 +105,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		forwardEpochBlockToMiner(p,payload)
 	case LAST_EPOCH_BLOCK_RES:
 		forwardLastEpochBlockToMiner(p,payload)
+	case TRANSACTION_ASSIGNMENT_RES:
+		forwardTransactionAssignmentToMiner(p,payload)
 	}
 
 

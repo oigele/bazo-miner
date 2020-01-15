@@ -17,8 +17,14 @@ var (
 	//State transition from the miner to the network
 	StateTransitionOut = make(chan []byte)
 
+	//Transaction assignment from the committee to the network
+	TransactionAssignmentOut = make(chan []byte)
+
 	//State transition from the network to the miner
 	StateTransitionIn = make(chan []byte)
+
+	//Transaction Assignment from the network to the miner
+	TransactionAssignmentIn = make(chan []byte)
 
 	//EpochBlock from the network, to the miner
 	EpochBlockIn = make(chan []byte)
@@ -41,6 +47,12 @@ var (
 	BlockReqChan = make(chan []byte)
 	StateTransitionShardReqChan 	= make(chan []byte)
 	StateTransitionShardOut 		= make(chan []byte)
+	ShardBlockShardOut				= make(chan []byte)
+
+	TransactionAssignmentReqOut		= make(chan []byte)
+
+	ShardBlockReqChan				= make(chan []byte)
+	TransactionAssignmentReqChan    = make(chan []byte)
 
 	FirstEpochBlockReqChan 	= make(chan []byte)
 	EpochBlockReqChan 	= make(chan []byte)
@@ -83,6 +95,24 @@ func forwardStateTransitionShardToMiner(){
 		st := <- StateTransitionShardOut
 		logger.Printf("Building state transition request packet\n")
 		toBrdcst := BuildPacket(STATE_TRANSITION_REQ, st)
+		minerBrdcstMsg <- toBrdcst
+	}
+}
+
+func forwardShardBlockRequestToMiner() {
+	for {
+		block := <- ShardBlockShardOut
+		logger.Printf("Building shard block request packet\n")
+		toBrdcst := BuildPacket(SHARD_BLOCK_REQ, block)
+		minerBrdcstMsg <- toBrdcst
+	}
+}
+
+func forwardTransactionAssignmentRequestToMiner() {
+	for {
+		transactionAssignment := <- TransactionAssignmentReqOut
+		logger.Printf("Building transaction assignment request packet \n")
+		toBrdcst := BuildPacket(TRANSACTION_ASSIGNMENT_REQ, transactionAssignment)
 		minerBrdcstMsg <- toBrdcst
 	}
 }
@@ -296,6 +326,11 @@ func forwardLastEpochBlockToMiner(p *peer, payload []byte)  {
 func forwardStateTransitionShardReqToMiner(p *peer, payload []byte) {
 	logger.Printf("received state transition response..\n")
 	StateTransitionShardReqChan <- payload
+}
+
+func forwardTransactionAssignmentToMiner(p *peer, payload []byte) {
+	logger.Printf("received transaction assignment response...\n")
+	TransactionAssignmentReqChan <- payload
 }
 
 func forwardGenesisReqToMiner(p *peer, payload []byte) {
