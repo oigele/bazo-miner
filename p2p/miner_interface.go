@@ -344,6 +344,11 @@ func forwardTransactionAssignmentToMiner(p *peer, payload []byte) {
 	TransactionAssignmentReqChan <- payload
 }
 
+func forwardShardBlockToMiner(p *peer, payload []byte) {
+	logger.Printf("received shard block response... \n")
+	ShardBlockReqChan <- payload
+}
+
 func forwardGenesisReqToMiner(p *peer, payload []byte) {
 	GenesisReqChan <- payload
 }

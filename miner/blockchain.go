@@ -93,19 +93,22 @@ func InitCommittee() {
 	for {
 		time.Sleep(time.Second)
 		if (lastEpochBlock != nil) {
-			if (lastEpochBlock.Height > 0) {
+			if (lastEpochBlock.Height >= 2) {
+				logger.Printf("accepting the state of epoch block height: %d", lastEpochBlock.Height)
 				storage.State = lastEpochBlock.State
 				NumberOfShards = lastEpochBlock.NofShards
 				break
 			}
 		}
 	}
+	FirstStartCommittee = true
 	CommitteeMining(int(lastEpochBlock.Height))
 }
 
 
 
 func CommitteeMining(height int) {
+	logger.Printf("---------------------------------------- Committee Mining for Epoch Height: %d ----------------------------------------", height)
 	blockIDBoolMap := make(map[int]bool)
 	for k, _ := range blockIDBoolMap {
 		blockIDBoolMap[k] = false
@@ -115,116 +118,226 @@ func CommitteeMining(height int) {
 	shardIDs := makeRange(1,NumberOfShards)
 	logger.Printf("Number of shards: %d\n",NumberOfShards)
 
-	//generating the assignment data for the first round and saving it in a local database
+	//generating the assignment data
+	logger.Printf("before assigning transactions")
 	for _, shardId := range shardIDs {
 		var ta *protocol.TransactionAssignment
 		var accTxs []*protocol.AccTx
 		var stakeTxs []*protocol.StakeTx
 		var fundsTxs []*protocol.FundsTx
-		logger.Printf("broadcasting assignment data for ShardId: %d", shardId)
+
 		openTransactions := storage.ReadAllOpenTxs()
 
+		//empty the assignment and all the slices
+		ta = nil
+		accTxs = nil
+		stakeTxs = nil
+		fundsTxs = nil
+
+
+		//since shard number 1 writes the epoch block, it is required to process all acctx and stake tx
+		//the other transactions are distributed to the shards based on the public address of the sender
 		for _, openTransaction := range openTransactions {
 			switch openTransaction.(type) {
 			case *protocol.AccTx:
-				accTxs = append(accTxs, openTransaction.(*protocol.AccTx))
+				if shardId == 1 {
+					accTxs = append(accTxs, openTransaction.(*protocol.AccTx))
+				}
 			case *protocol.StakeTx:
-				stakeTxs = append(stakeTxs, openTransaction.(*protocol.StakeTx))
+				if shardId == 1 {
+					stakeTxs = append(stakeTxs, openTransaction.(*protocol.StakeTx))
+				}
 			case *protocol.FundsTx:
-				fundsTxs = append(fundsTxs, openTransaction.(*protocol.FundsTx))
+				if shardId == assignTransactionToShard(openTransaction) {
+					fundsTxs = append(fundsTxs, openTransaction.(*protocol.FundsTx))
+				}
 			}
 		}
 		ta = protocol.NewTransactionAssignment(height, shardId, accTxs, stakeTxs, fundsTxs)
 
 		logger.Printf("length of open transactions: %d", len(storage.ReadAllOpenTxs()))
 		storage.AssignedTxMap[shardId] = ta
-		logger.Printf("put the value in the assigned tx map")
+		logger.Printf("broadcasting assignment data for ShardId: %d", shardId)
+		logger.Printf("Length of AccTx: %d, StakeTx: %d, FundsTx: %d", len(accTxs), len(stakeTxs), len(fundsTxs))
 		broadcastAssignmentData(ta)
 	}
 	storage.AssignmentHeight = height
-	for {
-		//the committee member is now bootstrapped. In an infinite for-loop, perform its task
-		blockStashForHeight := protocol.ReturnBlockStashForHeight(storage.ReceivedShardBlockStash, lastEpochBlock.Height+1)
-		if len(blockStashForHeight) != 0 {
-			logger.Printf("height being inspected: %d", height)
-			logger.Printf("length of block stash for height: %d", len(blockStashForHeight))
-			//Iterate through state transitions and apply them to local state, keep track of processed shards
-			//Also perform some verification steps, i.e. proof of stake check
-			for _, b := range blockStashForHeight {
-				if blockIDBoolMap[b.ShardId] == false {
+	logger.Printf("After assigning transactions")
 
-					blockIDBoolMap[b.ShardId] = true
+	//no block validation in the first round to make sure that the genesis block isn't checked
+	if !FirstStartCommittee {
+		logger.Printf("before block validation")
+		for {
+			//the committee member is now bootstrapped. In an infinite for-loop, perform its task
+			blockStashForHeight := protocol.ReturnBlockStashForHeight(storage.ReceivedShardBlockStash, uint32(height+1))
+			if len(blockStashForHeight) != 0 {
+				logger.Printf("height being inspected: %d", height+1)
+				logger.Printf("length of block stash for height: %d", len(blockStashForHeight))
+				//Iterate through state transitions and apply them to local state, keep track of processed shards
+				//Also perform some verification steps, i.e. proof of stake check
+				for _, b := range blockStashForHeight {
+					if blockIDBoolMap[b.ShardId] == false {
 
-					//Check state contains beneficiary.
-					acc, err := storage.GetAccount(b.Beneficiary)
-					if err != nil {
-						logger.Printf("Don't have the beneficiary")
-						return
+						blockIDBoolMap[b.ShardId] = true
+
+						logger.Printf("Validation of block height: %d, ShardID: %d", b.Height, b.ShardId)
+
+						//Check state contains beneficiary.
+						acc, err := storage.GetAccount(b.Beneficiary)
+						if err != nil {
+							logger.Printf("Don't have the beneficiary")
+							return
+						}
+
+						//Check if node is part of the validator set.
+						if !acc.IsStaking {
+							logger.Printf("Account isn't staking")
+							return
+						}
+
+						//First, initialize an RSA Public Key instance with the modulus of the proposer of the block (acc)
+						//Second, check if the commitment proof of the proposed block can be verified with the public key
+						//Invalid if the commitment proof can not be verified with the public key of the proposer
+						commitmentPubKey, err := crypto.CreateRSAPubKeyFromBytes(acc.CommitmentKey)
+						if err != nil {
+							logger.Printf("commitment key cannot be retrieved")
+							return
+						}
+
+						err = crypto.VerifyMessageWithRSAKey(commitmentPubKey, fmt.Sprint(b.Height), b.CommitmentProof)
+						logger.Printf("CommitmentPubKey: %x, --------------- Block Height: %d", commitmentPubKey, b.Height)
+						if err != nil {
+							logger.Printf("The submitted commitment proof can not be verified.")
+							return
+						}
+
+						//Invalid if PoS calculation is not correct.
+						prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, b)
+						validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp)
+
+						logger.Printf("proof of stake is valid")
+
+						accTxs, fundsTxs, _, stakeTxs, _, aggregatedFundsTxSlice, err := preValidate(b, false)
+
+						fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
+
+						storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs)
+						storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs)
+
+						logger.Printf("Processed block of shard: %d\n", b.ShardId)
+
 					}
-
-					//Check if node is part of the validator set.
-					if !acc.IsStaking {
-						logger.Printf("Account isn't staking")
-						return
-					}
-
-					//First, initialize an RSA Public Key instance with the modulus of the proposer of the block (acc)
-					//Second, check if the commitment proof of the proposed block can be verified with the public key
-					//Invalid if the commitment proof can not be verified with the public key of the proposer
-					commitmentPubKey, err := crypto.CreateRSAPubKeyFromBytes(acc.CommitmentKey)
-					if err != nil {
-						logger.Printf("commitment key cannot be retrieved")
-						return
-					}
-
-					err = crypto.VerifyMessageWithRSAKey(commitmentPubKey, fmt.Sprint(b.Height), b.CommitmentProof)
-					logger.Printf("CommitmentPubKey: %x, --------------- Block Height: %d", commitmentPubKey, b.Height)
-					if err != nil {
-						logger.Printf("The submitted commitment proof can not be verified.")
-						return
-					}
-
-					//Invalid if PoS calculation is not correct.
-					prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, b)
-					validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp)
-
-					logger.Printf("proof of stake is valid")
-
-					accTxs, fundsTxs, _, stakeTxs, _, aggregatedFundsTxSlice, err := preValidate(b, false)
-
-					fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
-
-					storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs)
-					storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs)
-
-					logger.Printf("Processed block of shard: %d\n", b.ShardId)
-
+				}
+				//If all blocks have been received, stop synchronisation
+				if len(blockStashForHeight) == NumberOfShards {
+					logger.Printf("received all blocks for height. Break")
+					break
+				} else {
+					logger.Printf("height: %d", height+1)
+					logger.Printf("number of shards: %d", NumberOfShards)
 				}
 			}
-			//If all blocks have been received, stop synchronisation
-			if len(blockStashForHeight) == NumberOfShards {
-				logger.Printf("received all blocks for height. Break")
-				break
-			} else {
-				logger.Printf("height: %d", height + 1)
-				logger.Printf("number of shards: %d", NumberOfShards)
+			//for the blocks that haven't been processed yet, introduce request structure
+			//can still accelerate this structure
+			for _, shardIdReq := range shardIDs {
+				if !blockIDBoolMap[shardIdReq] {
+					var b *protocol.Block
+					logger.Printf("Requesting Block for Height: %d and ShardID %d",int(height)+1, shardIdReq)
+					p2p.ShardBlockReq(int(height)+1, shardIdReq)
+					//blocking wait
+					select {
+					//received the response, perform the verification and write in map
+					case encodedBlock := <-p2p.ShardBlockReqChan:
+						b = b.Decode(encodedBlock)
+
+						if b == nil {
+							logger.Printf("block is nil")
+						}
+
+						if b.ShardId != shardIdReq {
+							logger.Printf("Shard ID of received block %d vs shard ID of request %d. Continue", b.ShardId, shardIdReq)
+							continue
+						}
+						blockIDBoolMap[shardIdReq] = true
+
+						logger.Printf("Validation of block height: %d, ShardID: %d", b.Height, b.ShardId)
+
+						//Check state contains beneficiary.
+						acc, err := storage.GetAccount(b.Beneficiary)
+						if err != nil {
+							logger.Printf("Don't have the beneficiary")
+							return
+						}
+
+						//Check if node is part of the validator set.
+						if !acc.IsStaking {
+							logger.Printf("Account isn't staking")
+							return
+						}
+
+						//First, initialize an RSA Public Key instance with the modulus of the proposer of the block (acc)
+						//Second, check if the commitment proof of the proposed block can be verified with the public key
+						//Invalid if the commitment proof can not be verified with the public key of the proposer
+						commitmentPubKey, err := crypto.CreateRSAPubKeyFromBytes(acc.CommitmentKey)
+						if err != nil {
+							logger.Printf("commitment key cannot be retrieved")
+							return
+						}
+
+						err = crypto.VerifyMessageWithRSAKey(commitmentPubKey, fmt.Sprint(b.Height), b.CommitmentProof)
+						logger.Printf("CommitmentPubKey: %x, --------------- Block Height: %d", commitmentPubKey, b.Height)
+						if err != nil {
+							logger.Printf("The submitted commitment proof can not be verified.")
+							return
+						}
+
+						//Invalid if PoS calculation is not correct.
+						prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, b)
+						validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp)
+
+						logger.Printf("proof of stake is valid")
+
+						accTxs, fundsTxs, _, stakeTxs, _, aggregatedFundsTxSlice, err := preValidate(b, false)
+
+						fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
+
+						storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs)
+						storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs)
+
+						//store the block in the received block stash as well
+						blockHash := b.HashBlock()
+						if storage.ReceivedShardBlockStash.BlockIncluded(blockHash) == false {
+							logger.Printf("Writing block to stash Shard ID: %v  - Height: %d - Hash: %x\n", b.ShardId, b.Height, blockHash[0:8])
+							storage.ReceivedShardBlockStash.Set(blockHash, b)
+						}
+
+						logger.Printf("Processed block of shard: %d\n", b.ShardId)
+
+					case <-time.After(2 * time.Second):
+						logger.Printf("waited 2 seconds for lastblock height: %d, shardID: %d", int(height)+1, shardIdReq)
+						logger.Printf("Broadcast Epoch Block to bootstrap new nodes")
+						broadcastEpochBlock(lastEpochBlock)
+					}
+				}
 			}
 		}
+		logger.Printf("end of block validation for height: %d", storage.AssignmentHeight)
 	}
-	logger.Printf("end of code for assignment height %d", storage.AssignmentHeight)
 	//wait for next epoch block
 	epochBlockReceived := false
 	for !epochBlockReceived {
-		logger.Printf("waiting for epoch block height %d", uint32(storage.AssignmentHeight) + 1 + EPOCH_LENGTH)
-		newEpochBlock := <- p2p.EpochBlockReceivedChan
+		logger.Printf("waiting for epoch block height %d", uint32(storage.AssignmentHeight)+1+EPOCH_LENGTH)
+		newEpochBlock := <-p2p.EpochBlockReceivedChan
 		logger.Printf("received the desired epoch block")
-		if newEpochBlock.Height == uint32(storage.AssignmentHeight) + 1 + EPOCH_LENGTH {
+		if newEpochBlock.Height == uint32(storage.AssignmentHeight)+1+EPOCH_LENGTH {
 			//broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 			epochBlockReceived = true
 			storage.State = lastEpochBlock.State
 			NumberOfShards = lastEpochBlock.NofShards
 		}
 	}
+	FirstStartCommittee = false
+	logger.Printf("Received epoch block. Start next round")
 	CommitteeMining(int(lastEpochBlock.Height))
 }
 
@@ -487,7 +600,6 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				for !epochBlockReceived {
 					newEpochBlock := <- p2p.EpochBlockReceivedChan
 					if newEpochBlock.Height == lastBlock.Height + 1 {
-						broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 						epochBlockReceived = true
 					}
 				}
@@ -498,6 +610,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			//now delete old assignment and wait to receive the assignment from the committee
 			storage.AssignedTxMempool = nil
 			//Blocking wait
+			logger.Printf("Wait for transaction assignment")
 			for {
 				select {
 				case encodedTransactionAssignment := <-p2p.TransactionAssignmentReqChan:
@@ -516,8 +629,8 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					logger.Printf("Success. Received assignment for height: %d", transactionAssignment.Height)
 					received = true
 				case <-time.After(5 * time.Second):
+					logger.Printf("Requesting transaction assignment for shard ID: %d with height: %d", storage.ThisShardID, lastEpochBlock.Height)
 					p2p.TransactionAssignmentReq(int(lastEpochBlock.Height), storage.ThisShardID)
-					broadcastEpochBlock(lastEpochBlock)
 				}
 				if received {
 					break
@@ -637,6 +750,7 @@ they would be assigned to the shards uniformly.
 */
 func AssignValidatorsToShards() map[[64]byte]int {
 
+	logger.Printf("Assign validators to shards start")
 	/*This map denotes which validator is assigned to which shard index*/
 	validatorShardAssignment := make(map[[64]byte]int)
 
@@ -659,7 +773,27 @@ func AssignValidatorsToShards() map[[64]byte]int {
 	for j := 1; j <= int(ActiveParameters.validators_per_shard); j++ {
 		for i := 1; i <= NumberOfShards; i++ {
 
+			//finished the process of assigning the validators to shards
 			if len(validatorSlices) == 0 {
+				//The following code makes sure that the newly staking node gets to mine the next epoch block
+				if newStakingNode != [64]byte{} {
+					logger.Printf("There is a new staking node")
+					shardID := validatorShardAssignment[newStakingNode]
+					logger.Printf("Designated ShardID of the new staking node: %d", shardID)
+					//ned to fix the shard assignment
+					if shardID != 1 {
+						for designatedValidator, _ := range validatorShardAssignment {
+							if validatorShardAssignment[designatedValidator] == 1 {
+								logger.Printf("Validator with the designated shard ID 1: %x", designatedValidator[0:8])
+								validatorShardAssignment[designatedValidator] = shardID
+								validatorShardAssignment[newStakingNode] = 1
+								break
+							}
+						}
+					}
+				} else {
+					logger.Printf("Content of new staking node: %x", newStakingNode)
+				}
 				return validatorShardAssignment
 			}
 
@@ -671,6 +805,26 @@ func AssignValidatorsToShards() map[[64]byte]int {
 			//Remove assigned validator from active list
 			validatorSlices = removeValidator(validatorSlices, randomIndex)
 		}
+	}
+
+	//The following code makes sure that the newly staking node gets to mine the next epoch block
+	if newStakingNode != [64]byte{} {
+		logger.Printf("There is a new staking node")
+		shardID := validatorShardAssignment[newStakingNode]
+		logger.Printf("Designated ShardID of the new staking node: %d", shardID)
+		//ned to fix the shard assignment
+		if shardID != 1 {
+			for designatedValidator, _ := range validatorShardAssignment {
+				if validatorShardAssignment[designatedValidator] == 1 {
+					logger.Printf("Validator with the designated shard ID 1: %x", designatedValidator[0:8])
+					validatorShardAssignment[designatedValidator] = shardID
+					validatorShardAssignment[newStakingNode] = 1
+					break
+				}
+			}
+		}
+	} else {
+		logger.Printf("Content of new staking node: %x", newStakingNode)
 	}
 	return validatorShardAssignment
 }

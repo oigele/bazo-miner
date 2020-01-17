@@ -21,6 +21,7 @@ var (
 	nonAggregatableTxCounter 	int
 	blockSize					int
 	transactionHashSize			int
+	newStakingNode				[64]byte
 )
 
 
@@ -59,7 +60,8 @@ func prepareBlock(block *protocol.Block) {
 
 	//Get Best combination of transactions
 	//In here, the check happens if the Tx is in the right shard
-
+	//This won't be done anymore because the transactions are partitioned at the committee's side
+	/*
 	openTxsOfShard := []protocol.Transaction{}
 	for _, tx := range opentxs {
 		txAssignedShard := assignTransactionToShard(tx)
@@ -68,6 +70,9 @@ func prepareBlock(block *protocol.Block) {
 			openTxsOfShard = append(openTxsOfShard, tx)
 		}
 	}
+	 */
+
+	openTxsOfShard := opentxs
 
 	logger.Printf("length of tx assigned to shard: %d", len(openTxsOfShard))
 
@@ -221,63 +226,16 @@ func prepareBlock(block *protocol.Block) {
 
 	// END OF THE SEARCH ALGORITHM
 
-	/* TODO evaluate if this block of code might ever be useful anymore
-	//Here Kürsats Sharding Logic Begins
-
-	//Keep track of transactions from assigned for my shard and which are valid. Only consider these ones when filling a block
-	//Otherwhise we would also count invalid transactions from my shard, this prevents well-filled blocks.
-	txFromThisShard := 0
-
-
-	//Add previous selected transactions.
-	// Here the transactions get added to the block
-	for _, tx := range opentxToAdd {
-		txAssignedShard := assignTransactionToShard(tx)
-		logger.Printf("Assigned shard: %d", txAssignedShard)
-
-		if int(txAssignedShard) == ValidatorShardMap.ValMapping[validatorAccAddress] {
-			logger.Printf("---- Transaction (%x) in shard: %d\n", tx.Hash(), txAssignedShard)
-			//Prevent block size to overflow.
-			if int(block.GetSize()+10)+(txFromThisShard*int(len(tx.Hash()))) > int(activeParameters.Block_size) {
-				logger.Printf("Overflow prevented")
-				break
-			}
-
-			switch tx.(type) {
-			case *protocol.StakeTx:
-				//Add StakeTXs only when preparing the last block before the next epoch block
-				if (int(lastBlock.Height) == int(lastEpochBlock.Height)+int(activeParameters.epoch_length)-1) {
-					err := addTx(block, tx)
-					if err == nil {
-						txFromThisShard += 1
-					}
-				}
-			case *protocol.FundsTx, *protocol.ConfigTx, *protocol.AccTx:
-				err := addTx(block, tx)
-				if err != nil {
-					//If the tx is invalid, we remove it completely, prevents starvation in the mempool.
-					//storage.DeleteOpenTx(tx)
-					storage.WriteINVALIDOpenTx(tx)
-				} else {
-					txFromThisShard += 1
-				}
-			}
-		}
-	}
-
-	*/
-	//*********************************************************//
-	//Here Kürsats Sharding Logic Ends
-	//*********************************************************//
 
 
 	logger.Printf("Number of OpenTxs to add right before they get added: %d", len(opentxToAdd))
 
+	newStakingNode = [64]byte{}
 	//Add previous selected transactions.
 	for _, tx := range opentxToAdd {
 		switch tx.(type) {
 		case *protocol.StakeTx:
-			if (int(lastBlock.Height) == int(lastEpochBlock.Height)+int(ActiveParameters.Epoch_length)-1) {
+			if (int(lastBlock.Height) == int(lastEpochBlock.Height)+int(ActiveParameters.Epoch_length)-1) || ActiveParameters.Epoch_length == 1 {
 				err := addTx(block, tx)
 				if err != nil {
 					//If the tx is invalid, we remove it completely, prevents starvation in the mempool.

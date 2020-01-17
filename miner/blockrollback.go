@@ -156,6 +156,7 @@ func postValidateRollback(data blockData) {
 	storage.WriteToReceivedStash(data.block) //Write it to received stash, it will be deleted after X new blocks.
 
 	//Save the previous block as the last closed block.
+	logger.Printf("Rolling back. Deleting all last closed block. This should not happen")
 	storage.DeleteAllLastClosedBlock()
 	prevBlock := storage.ReadClosedBlock(data.block.PrevHash)
 	if prevBlock == nil {

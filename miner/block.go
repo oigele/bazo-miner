@@ -165,6 +165,7 @@ func finalizeEpochBlock(epochBlock *protocol.EpochBlock) error {
 
 	//generate new validator mapping and include mappping in the epoch block
 	valMapping := protocol.NewMapping()
+	logger.Printf("Initiating new mapping")
 	valMapping.ValMapping = AssignValidatorsToShards()
 	valMapping.EpochHeight = int(epochBlock.Height)
 
@@ -739,6 +740,10 @@ func addStakeTx(b *protocol.Block, tx *protocol.StakeTx) error {
 			return errors.New(fmt.Sprintf("Sender account not present in the state: %x\n", tx.Account))
 		}
 	}
+
+	//overwrite new staking node
+	logger.Printf("Overwriting new staking node to %x", storage.State[tx.Account].Address)
+	newStakingNode = storage.State[tx.Account].Address
 
 	//Root accounts are exempt from balance requirements. All other accounts need to have (at least)
 	//fee + minimum amount that is required for staking.
@@ -1766,7 +1771,9 @@ func postValidate(data blockData, initialSetup bool) {
 		 */
 
 		// Write last block to db and delete last block's ancestor.
+		logger.Printf("Delete all last closed blocks")
 		storage.DeleteAllLastClosedBlock()
+		logger.Printf("Wrriting last closed block. Height: %d", data.block.Height)
 		storage.WriteLastClosedBlock(data.block)
 	}
 }

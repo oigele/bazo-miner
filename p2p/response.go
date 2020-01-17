@@ -393,6 +393,12 @@ func shardBlockRes(p *peer, payload []byte) {
 
 	height,_ := strconv.ParseInt(strings.Split(strPayload,":")[1],10,64)
 
+	if storage.IsCommittee {
+		packet = BuildPacket(NOT_FOUND, nil)
+		sendData(p,packet)
+		return
+	}
+
 	logger.Printf("responding block request for shard %d for height: %d\n", shardID, height)
 
 	//security check becuase the listener to incoming blocks is a concurrent goroutine
@@ -400,10 +406,13 @@ func shardBlockRes(p *peer, payload []byte) {
 		logger.Printf("Haven't stored last epoch block yet.")
 		packet = BuildPacket(NOT_FOUND, nil)
 	} else {
-		if shardID == int64(storage.ThisShardMap[int(storage.ReadLastClosedEpochBlock().Height)-storage.EpochLength-1]) {
-			b = storage.ReadLastClosedBlock()
+		b = storage.ReadLastClosedBlock()
+		//block cannot be nil or the genesis block
+		if b != nil && b.Height != 1 && int(b.Height) == int(height) && b.ShardId == int(shardID) {
+			logger.Printf("Responding Shard Block Request with block height: %d from shard ID: %d", b.Height, shardID)
 			packet = BuildPacket(SHARD_BLOCK_RES, b.Encode())
 		} else {
+			//logger.Printf("Cannot read the last closed block yet, or don't have the block with the correct height available yet, or wrong shardID")
 			packet = BuildPacket(NOT_FOUND, nil)
 		}
 	}
@@ -421,6 +430,13 @@ func TransactionAssignmentRes(p *peer, payload []byte) {
 
 	logger.Printf("responding transaction assignment request for shard %d for height: %d\n", shardID, height)
 
+	if !storage.IsCommittee {
+		logger.Printf("Not a committee member. Cannot send an answer to the request")
+		packet = BuildPacket(NOT_FOUND,nil)
+		sendData(p, packet)
+		return
+	}
+
 	//security check becuase the listener to incoming blocks is a concurrent goroutine
 	if storage.ReadLastClosedEpochBlock() == nil {
 		logger.Printf("Haven't stored last epoch block yet.")
@@ -431,6 +447,7 @@ func TransactionAssignmentRes(p *peer, payload []byte) {
 		packet = BuildPacket(TRANSACTION_ASSIGNMENT_RES, ta.EncodeTransactionAssignment())
 
 	} else {
+		logger.Printf("Haven't reached latest assignment height yet. Can't send the transaction assignment yet. Assignment height: %d", storage.AssignmentHeight)
 		packet = BuildPacket(NOT_FOUND,nil)
 	}
 	sendData(p, packet)

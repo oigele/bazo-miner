@@ -79,10 +79,11 @@ func processEpochBlock(eb []byte) {
 
 			broadcastEpochBlock(lastEpochBlock)
 		} else {
+			//dont immediately take all attributes from the epoch block to local memory
 			logger.Printf("Received Epoch Block: %v\n", epochBlock.String())
 			lastEpochBlock = epochBlock
 			storage.WriteClosedEpochBlock(epochBlock)
-
+			storage.State = epochBlock.State
 			storage.DeleteAllLastClosedEpochBlock()
 			storage.WriteLastClosedEpochBlock(epochBlock)
 			p2p.EpochBlockReceivedChan <- *lastEpochBlock

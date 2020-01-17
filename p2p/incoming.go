@@ -109,6 +109,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		forwardLastEpochBlockToMiner(p,payload)
 	case TRANSACTION_ASSIGNMENT_RES:
 		forwardTransactionAssignmentToMiner(p,payload)
+	case SHARD_BLOCK_RES:
+		forwardShardBlockToMiner(p, payload)
 	}
 
 

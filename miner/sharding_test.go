@@ -50,7 +50,7 @@ func TestCommittee(t *testing.T) {
 		}
 
 		//send to the address of the committee
-		if err := SendTx("127.0.0.1:8001", accTx, p2p.ACCTX_BRDCST); err != nil {
+		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
 		/*if err := SendTx("127.0.0.1:8001", accTx, p2p.ACCTX_BRDCST); err != nil {
@@ -88,7 +88,7 @@ func TestCommittee(t *testing.T) {
 			fromPrivKey,
 			nil)
 
-		if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
+		if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 			t.Log(fmt.Sprintf("Error"))
 		}
 		/*if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
@@ -123,7 +123,7 @@ func TestCommittee(t *testing.T) {
 					fromPrivKey,
 					nil)
 
-				if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
+				if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 					t.Log(fmt.Sprintf("Error"))
 				}
 			}
