@@ -50,7 +50,6 @@ var (
 
 func InitCommittee() {
 
-
 	FirstStartAfterEpoch = true
 	storage.IsCommittee = true
 
@@ -101,7 +100,12 @@ func InitCommittee() {
 			}
 		}
 	}
+	CommitteeMining(int(lastEpochBlock.Height))
+}
 
+
+
+func CommitteeMining(height int) {
 	blockIDBoolMap := make(map[int]bool)
 	for k, _ := range blockIDBoolMap {
 		blockIDBoolMap[k] = false
@@ -111,28 +115,45 @@ func InitCommittee() {
 	shardIDs := makeRange(1,NumberOfShards)
 	logger.Printf("Number of shards: %d\n",NumberOfShards)
 
+	//generating the assignment data for the first round and saving it in a local database
 	for _, shardId := range shardIDs {
 		var ta *protocol.TransactionAssignment
+		var accTxs []*protocol.AccTx
+		var stakeTxs []*protocol.StakeTx
+		var fundsTxs []*protocol.FundsTx
 		logger.Printf("broadcasting assignment data for ShardId: %d", shardId)
-		ta = new(protocol.TransactionAssignment)
-		ta.Height = 1
-		ta.ShardID = 1
+		openTransactions := storage.ReadAllOpenTxs()
 
+		for _, openTransaction := range openTransactions {
+			switch openTransaction.(type) {
+			case *protocol.AccTx:
+				accTxs = append(accTxs, openTransaction.(*protocol.AccTx))
+			case *protocol.StakeTx:
+				stakeTxs = append(stakeTxs, openTransaction.(*protocol.StakeTx))
+			case *protocol.FundsTx:
+				fundsTxs = append(fundsTxs, openTransaction.(*protocol.FundsTx))
+			}
+		}
+		ta = protocol.NewTransactionAssignment(height, shardId, accTxs, stakeTxs, fundsTxs)
+
+		logger.Printf("length of open transactions: %d", len(storage.ReadAllOpenTxs()))
+		storage.AssignedTxMap[shardId] = ta
+		logger.Printf("put the value in the assigned tx map")
 		broadcastAssignmentData(ta)
 	}
-
+	storage.AssignmentHeight = height
 	for {
 		//the committee member is now bootstrapped. In an infinite for-loop, perform its task
-		logger.Printf("height being inspected: %d", lastEpochBlock.Height - 1)
-		blockStashForHeight := protocol.ReturnBlockStashForHeight(storage.ReceivedShardBlockStash, lastEpochBlock.Height-1)
-		logger.Printf("length of block stash for height: %d", len(blockStashForHeight))
+		blockStashForHeight := protocol.ReturnBlockStashForHeight(storage.ReceivedShardBlockStash, lastEpochBlock.Height+1)
 		if len(blockStashForHeight) != 0 {
+			logger.Printf("height being inspected: %d", height)
+			logger.Printf("length of block stash for height: %d", len(blockStashForHeight))
 			//Iterate through state transitions and apply them to local state, keep track of processed shards
+			//Also perform some verification steps, i.e. proof of stake check
 			for _, b := range blockStashForHeight {
 				if blockIDBoolMap[b.ShardId] == false {
 
 					blockIDBoolMap[b.ShardId] = true
-
 
 					//Check state contains beneficiary.
 					acc, err := storage.GetAccount(b.Beneficiary)
@@ -163,29 +184,50 @@ func InitCommittee() {
 						return
 					}
 
-					//Invalid if PoS calculation is not correct. has to be built back in
+					//Invalid if PoS calculation is not correct.
 					prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, b)
 					validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp)
 
 					logger.Printf("proof of stake is valid")
 
-					logger.Printf("Processed block of shard: %d\n", b.ShardId)
+					accTxs, fundsTxs, _, stakeTxs, _, aggregatedFundsTxSlice, err := preValidate(b, false)
 
+					fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
+
+					storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs)
+					storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs)
+
+					logger.Printf("Processed block of shard: %d\n", b.ShardId)
 
 				}
 			}
-			//If all state transitions have been received, stop synchronisation
-			if len(blockStashForHeight) == NumberOfShards-1 {
+			//If all blocks have been received, stop synchronisation
+			if len(blockStashForHeight) == NumberOfShards {
 				logger.Printf("received all blocks for height. Break")
 				break
 			} else {
-				logger.Printf("height: %d",lastEpochBlock.Height-1)
+				logger.Printf("height: %d", height + 1)
 				logger.Printf("number of shards: %d", NumberOfShards)
 			}
 		}
-		time.Sleep(2 * time.Second)
 	}
+	logger.Printf("end of code for assignment height %d", storage.AssignmentHeight)
+	//wait for next epoch block
+	epochBlockReceived := false
+	for !epochBlockReceived {
+		logger.Printf("waiting for epoch block height %d", uint32(storage.AssignmentHeight) + 1 + EPOCH_LENGTH)
+		newEpochBlock := <- p2p.EpochBlockReceivedChan
+		logger.Printf("received the desired epoch block")
+		if newEpochBlock.Height == uint32(storage.AssignmentHeight) + 1 + EPOCH_LENGTH {
+			//broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
+			epochBlockReceived = true
+			storage.State = lastEpochBlock.State
+			NumberOfShards = lastEpochBlock.NofShards
+		}
+	}
+	CommitteeMining(int(lastEpochBlock.Height))
 }
+
 
 func InitFirstStart(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validatorCommitment, rootCommitment *rsa.PrivateKey) error {
 	var err error
@@ -453,7 +495,8 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			prevBlockIsEpochBlock = true
 			firstEpochOver = true
 			received := false
-			//now wait to receive the assignment from the
+			//now delete old assignment and wait to receive the assignment from the committee
+			storage.AssignedTxMempool = nil
 			//Blocking wait
 			for {
 				select {
@@ -461,8 +504,16 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					var transactionAssignment *protocol.TransactionAssignment
 					transactionAssignment = transactionAssignment.DecodeTransactionAssignment(encodedTransactionAssignment)
 					//overwrite the previous mempool. Take the new transactions
-					storage.AssignedTxMempool = transactionAssignment.Transactions
-					logger.Printf("Success")
+					for _, transaction := range transactionAssignment.AccTxs {
+						storage.AssignedTxMempool = append(storage.AssignedTxMempool, transaction)
+					}
+					for _, transaction := range transactionAssignment.StakeTxs {
+						storage.AssignedTxMempool = append(storage.AssignedTxMempool, transaction)
+					}
+					for _, transaction := range transactionAssignment.FundsTxs {
+						storage.AssignedTxMempool = append(storage.AssignedTxMempool, transaction)
+					}
+					logger.Printf("Success. Received assignment for height: %d", transactionAssignment.Height)
 					received = true
 				case <-time.After(5 * time.Second):
 					p2p.TransactionAssignmentReq(int(lastEpochBlock.Height), storage.ThisShardID)

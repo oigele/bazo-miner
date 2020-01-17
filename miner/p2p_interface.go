@@ -85,6 +85,7 @@ func processEpochBlock(eb []byte) {
 
 			storage.DeleteAllLastClosedEpochBlock()
 			storage.WriteLastClosedEpochBlock(epochBlock)
+			p2p.EpochBlockReceivedChan <- *lastEpochBlock
 			broadcastEpochBlock(lastEpochBlock)
 		}
 	}
@@ -156,6 +157,9 @@ func broadcastStateTransition(st *protocol.StateTransition) {
 //here Kürsat's code ends
 
 func broadcastAssignmentData(data *protocol.TransactionAssignment) {
+	var ta *protocol.TransactionAssignment
+	ta = ta.DecodeTransactionAssignment(data.EncodeTransactionAssignment())
+	logger.Printf("broadcasting transaction assignment with height: %d and shard ID: %d", ta.Height, ta.ShardID)
 	p2p.TransactionAssignmentOut <- data.EncodeTransactionAssignment()
 }
 

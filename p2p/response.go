@@ -425,12 +425,13 @@ func TransactionAssignmentRes(p *peer, payload []byte) {
 	if storage.ReadLastClosedEpochBlock() == nil {
 		logger.Printf("Haven't stored last epoch block yet.")
 		packet = BuildPacket(NOT_FOUND,nil)
-	} else {
-		// need to create a transaction assignment database first
-		ta = new(protocol.TransactionAssignment)
-		ta.Height = 1
-		ta.ShardID = 1
+	} else if storage.AssignmentHeight == int(height){
+		ta = storage.AssignedTxMap[int(shardID)]
+		logger.Printf("responding assignment. Just read it from map. ShardID: %d Height: %d", shardID, height)
 		packet = BuildPacket(TRANSACTION_ASSIGNMENT_RES, ta.EncodeTransactionAssignment())
+
+	} else {
+		packet = BuildPacket(NOT_FOUND,nil)
 	}
 	sendData(p, packet)
 }

@@ -24,6 +24,9 @@ var (
 	//designed a new mempool for this use case
 	AssignedTxMempool 				[]protocol.Transaction
 
+	//map of transaction assignments for a given height. Key: ShardID. Value: Assignment
+	AssignedTxMap					= make(map[int]*protocol.TransactionAssignment)
+
 	openTxToDeleteMempool			= make(map[[32]byte]bool)
 	txINVALIDMemPool   				= make(map[[32]byte]protocol.Transaction)
 	bootstrapReceivedMemPool		= make(map[[32]byte]protocol.Transaction)
@@ -53,6 +56,7 @@ var (
 	memPoolMutex                        = &sync.Mutex{}
 
 	IsCommittee			bool
+	AssignmentHeight	int
 )
 
 const (

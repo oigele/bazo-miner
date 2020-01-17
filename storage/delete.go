@@ -78,6 +78,20 @@ func DeleteOpenTx(transaction protocol.Transaction) {
 	openTxMutex.Unlock()
 }
 
+func DeleteAllOpenTx(aggTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fundsTxs []*protocol.FundsTx) {
+	openTxMutex.Lock()
+	for _, transaction := range aggTxs {
+		delete(txMemPool, transaction.Hash())
+	}
+	for _, transaction := range stakeTxs {
+		delete(txMemPool, transaction.Hash())
+	}
+	for _, transaction := range fundsTxs {
+		delete(txMemPool, transaction.Hash())
+	}
+	openTxMutex.Unlock()
+}
+
 
 func DeleteINVALIDOpenTx(transaction protocol.Transaction) {
 	openINVALIDTxMutex.Lock()

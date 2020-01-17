@@ -172,6 +172,62 @@ func WriteClosedFundsTxFromAggTxSlice(transactions []protocol.FundsTx) (err erro
 	return err
 }
 
+func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fundsTxs []*protocol.FundsTx) (err error) {
+	bucket := "closedaccs"
+	err = db.Update(func(tx *bolt.Tx) error {
+		var err error
+		b := tx.Bucket([]byte(bucket))
+		for _, transaction := range accTxs {
+			hash := transaction.Hash()
+			err = b.Put(hash[:], transaction.Encode())
+			if err != nil {
+				logger.Printf("We GOT AN ERROR")
+			}
+			nrClosedTransactions = nrClosedTransactions + 1
+			totalTransactionSize = totalTransactionSize + float32(transaction.Size())
+			averageTxSize = totalTransactionSize/nrClosedTransactions
+		}
+		return err
+	})
+
+	bucket = "closedstakes"
+	err = db.Update(func(tx *bolt.Tx) error {
+		var err error
+		b := tx.Bucket([]byte(bucket))
+		for _, transaction := range stakeTxs {
+			hash := transaction.Hash()
+			err = b.Put(hash[:], transaction.Encode())
+			if err != nil {
+				logger.Printf("We GOT AN ERROR")
+			}
+			nrClosedTransactions = nrClosedTransactions + 1
+			totalTransactionSize = totalTransactionSize + float32(transaction.Size())
+			averageTxSize = totalTransactionSize/nrClosedTransactions
+		}
+		return err
+	})
+
+	bucket = "closedfunds"
+	err = db.Update(func(tx *bolt.Tx) error {
+		var err error
+		b := tx.Bucket([]byte(bucket))
+		for _, transaction := range fundsTxs {
+			hash := transaction.Hash()
+			err = b.Put(hash[:], transaction.Encode())
+			if err != nil {
+				logger.Printf("We GOT AN ERROR")
+			}
+			nrClosedTransactions = nrClosedTransactions + 1
+			totalTransactionSize = totalTransactionSize + float32(transaction.Size())
+			averageTxSize = totalTransactionSize/nrClosedTransactions
+		}
+		return err
+	})
+
+
+	return err
+}
+
 func WriteClosedTx(transaction protocol.Transaction) (err error) {
 
 	var bucket string

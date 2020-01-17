@@ -3,23 +3,28 @@ package protocol
 import (
 	"bytes"
 	"encoding/gob"
+	"os"
 )
 
 
 type TransactionAssignment struct {
 	Height						int
 	ShardID						int
-	Transactions 				[]Transaction
+	AccTxs 						[]*AccTx
+	StakeTxs					[]*StakeTx
+	FundsTxs					[]*FundsTx
 }
 
 
 
 
-func NewTransactionAssignment(height int, shardid int, transactions []Transaction) *TransactionAssignment {
+func NewTransactionAssignment(height int, shardid int, accTxs []*AccTx, stakeTxs []*StakeTx, fundsTxs []*FundsTx) *TransactionAssignment {
 	newTransition := TransactionAssignment{
 		height,
 		shardid,
-		transactions,
+		accTxs,
+		stakeTxs,
+		fundsTxs,
 	}
 
 	return &newTransition
@@ -45,13 +50,16 @@ func (ta *TransactionAssignment) HashTransactionAssignment() [32]byte {
 
 func (ta *TransactionAssignment) EncodeTransactionAssignment() []byte {
 	if ta == nil {
+		os.Exit(0)
 		return nil
 	}
 
 	encoded := TransactionAssignment{
 		Height:						ta.Height,
 		ShardID:					ta.ShardID,
-		Transactions:				ta.Transactions,
+		AccTxs:						ta.AccTxs,
+		StakeTxs:					ta.StakeTxs,
+		FundsTxs:					ta.FundsTxs,
 	}
 
 	buffer := new(bytes.Buffer)
