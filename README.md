@@ -70,7 +70,7 @@ Commands
 
 Starting a Committee Member:
 ```bash
-./bazo-miner committee --database StoreB.db --address 127.0.0.1:8001 --bootstrap 127.0.0.1:8000
+./bazo-miner committee --database StoreC.db --address 127.0.0.1:8002 --bootstrap 127.0.0.1:8000
 ```
 
 We start miner A at address and port `localhost:8000` and connect to itself by setting the bootstrap address to the same address.
