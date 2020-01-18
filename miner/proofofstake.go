@@ -145,7 +145,8 @@ func proofOfStake(diff uint8,
 
 
 
-		if (prevBlockIsEpochBlock == true || FirstStartAfterEpoch == true){
+		//this code isn't necessary in the IoT case anymore
+		/*if (prevBlockIsEpochBlock == true || FirstStartAfterEpoch == true){
 			//if(lastBlock.Height == lastEpochBlock.Height + 1 && lastBlock.ShardId == storage.ThisShardID){
 			if(lastBlock.PrevHash == lastEpochBlock.Hash && lastBlock.ShardId == storage.ThisShardID){
 				logger.Printf("Abort mining after epoch block, another block has been successfully validated in the meantime")
@@ -157,7 +158,7 @@ func proofOfStake(diff uint8,
 				logger.Printf("Abort mining, another block has been successfully validated in the meantime")
 				return -2, errors.New("Abort mining, another block has been successfully validated in the meantime")
 			}
-		}
+		}*/
 
 
 		abort = false

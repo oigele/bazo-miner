@@ -468,11 +468,12 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 			// The global variables 'lastEpochBlock' and 'ValidatorShardMap' are being set when they are received by the network
 			//seems the timeout is needed for nodes to be able to access
 			time.Sleep(time.Second)
-			if (lastEpochBlock != nil && ValidatorShardMap != nil) {
+			if lastEpochBlock != nil {
 				logger.Printf("First statement ok")
 				if (lastEpochBlock.Height > 0) {
 					storage.State = lastEpochBlock.State
 					NumberOfShards = lastEpochBlock.NofShards
+					ValidatorShardMap = lastEpochBlock.ValMapping
 					storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress] //Save my ShardID
 					storage.ThisShardMap[int(lastEpochBlock.Height)] = storage.ThisShardID
 					FirstStartAfterEpoch = true
@@ -599,10 +600,17 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				epochBlockReceived := false
 				for !epochBlockReceived {
 					newEpochBlock := <- p2p.EpochBlockReceivedChan
+					//the new epoch block from the channel is the epoch block that i need at the moment
 					if newEpochBlock.Height == lastBlock.Height + 1 {
 						epochBlockReceived = true
 						// take over state
 						storage.State = newEpochBlock.State
+						ValidatorShardMap = newEpochBlock.ValMapping
+						NumberOfShards = newEpochBlock.NofShards
+						storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
+						storage.ThisShardMap[int(newEpochBlock.Height)] = storage.ThisShardID
+						lastEpochBlock = &newEpochBlock
+						logger.Printf("Received  last epoch block with height %d. Continue mining", lastEpochBlock.Height)
 					}
 				}
 			}
@@ -618,6 +626,12 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				case encodedTransactionAssignment := <-p2p.TransactionAssignmentReqChan:
 					var transactionAssignment *protocol.TransactionAssignment
 					transactionAssignment = transactionAssignment.DecodeTransactionAssignment(encodedTransactionAssignment)
+					if transactionAssignment.Height != int(lastEpochBlock.Height) {
+						time.Sleep(2 * time.Second)
+						p2p.TransactionAssignmentReq(int(lastEpochBlock.Height), storage.ThisShardID)
+						logger.Printf("Assignment height: %d vs epoch height %d", transactionAssignment.Height, epochBlock.Height)
+						continue
+					}
 					//overwrite the previous mempool. Take the new transactions
 					for _, transaction := range transactionAssignment.AccTxs {
 						storage.AssignedTxMempool = append(storage.AssignedTxMempool, transaction)
@@ -634,9 +648,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					logger.Printf("Requesting transaction assignment for shard ID: %d with height: %d", storage.ThisShardID, lastEpochBlock.Height)
 					p2p.TransactionAssignmentReq(int(lastEpochBlock.Height), storage.ThisShardID)
 					//this is used to bootstrap the committee.
-					if storage.ThisShardID == 1 {
-						broadcastEpochBlock(lastEpochBlock)
-					}
+					broadcastEpochBlock(lastEpochBlock)
 				}
 				if received {
 					break

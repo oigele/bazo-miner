@@ -51,6 +51,7 @@ func processEpochBlock(eb []byte) {
 
 	if(storage.ReadClosedEpochBlock(epochBlock.Hash) != nil){
 		logger.Printf("Received Epoch Block (%x) already in storage\n", epochBlock.Hash[0:8])
+		p2p.EpochBlockReceivedChan <- *epochBlock
 		return
 	} else {
 		if _,err := storage.GetAccount(epochBlock.Beneficiary); err == nil {
@@ -64,20 +65,20 @@ func processEpochBlock(eb []byte) {
 
 
 		if !storage.IsCommittee {
-			logger.Printf("Received Epoch Block: %v\n", epochBlock.String())
-			ValidatorShardMap = epochBlock.ValMapping
-			NumberOfShards = epochBlock.NofShards
-			storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
-			storage.ThisShardMap[int(epochBlock.Height)] = storage.ThisShardID
-			lastEpochBlock = epochBlock
-			storage.WriteClosedEpochBlock(epochBlock)
+			//only take the epoch block if it's actually the following epoch block. If not, dont take it yet. It will be rebroadcasted later anyways
+			if lastEpochBlock == nil || epochBlock.Height == lastBlock.Height + 1 {
+				logger.Printf("Received Epoch Block: %v\n", epochBlock.String())
+				storage.WriteClosedEpochBlock(epochBlock)
 
-			storage.DeleteAllLastClosedEpochBlock()
-			storage.WriteLastClosedEpochBlock(epochBlock)
+				storage.DeleteAllLastClosedEpochBlock()
+				storage.WriteLastClosedEpochBlock(epochBlock)
 
-			p2p.EpochBlockReceivedChan <- *lastEpochBlock
+				lastEpochBlock = epochBlock
 
-			broadcastEpochBlock(lastEpochBlock)
+				p2p.EpochBlockReceivedChan <- *lastEpochBlock
+
+				broadcastEpochBlock(lastEpochBlock)
+			}
 		} else {
 			//dont immediately take all attributes from the epoch block to local memory
 			logger.Printf("Received Epoch Block: %v\n", epochBlock.String())
@@ -86,7 +87,6 @@ func processEpochBlock(eb []byte) {
 			storage.State = epochBlock.State
 			storage.DeleteAllLastClosedEpochBlock()
 			storage.WriteLastClosedEpochBlock(epochBlock)
-			p2p.EpochBlockReceivedChan <- *lastEpochBlock
 			broadcastEpochBlock(lastEpochBlock)
 		}
 	}
