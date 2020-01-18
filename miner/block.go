@@ -1346,9 +1346,10 @@ func validate(b *protocol.Block, initialSetup bool) error {
 
 			//Check if the validator that added the block has previously voted on different competing chains (find slashing proof).
 			//The proof will be stored in the global slashing dictionary.
-			if block.Height > 0 {
+			//not necessary in the IoT case
+			/*if block.Height > 0 {
 				seekSlashingProof(block)
-			}
+			}*/
 
 			if err != nil {
 				return err
