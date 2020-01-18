@@ -135,19 +135,23 @@ func processBlock(payload []byte) {
 	block = block.Decode(payload)
 	blockHash := block.HashBlock()
 
-	if(lastEpochBlock != nil){
-		logger.Printf("Received block (%x) from shard %d with height: %d\n", block.Hash[0:8],block.ShardId,block.Height)
-		if storage.ReceivedShardBlockStash.BlockIncluded(blockHash) == false {
-			logger.Printf("Writing block to stash Shard ID: %v  - Height: %d - Hash: %x\n",block.ShardId, block.Height,blockHash[0:8])
-			storage.ReceivedShardBlockStash.Set(blockHash, block)
-		}
+
+	if storage.IsCommittee {
+		if (lastEpochBlock != nil) {
+			logger.Printf("Received block (%x) from shard %d with height: %d\n", block.Hash[0:8], block.ShardId, block.Height)
+			if storage.ReceivedShardBlockStash.BlockIncluded(blockHash) == false {
+				logger.Printf("Writing block to stash Shard ID: %v  - Height: %d - Hash: %x\n", block.ShardId, block.Height, blockHash[0:8])
+				storage.ReceivedShardBlockStash.Set(blockHash, block)
+			}
 		} else {
-			logger.Printf("Received block (%x) already in block stash\n",block.Hash[0:8])
+			logger.Printf("Received block (%x) already in block stash\n", block.Hash[0:8])
 		}
+	}
 }
 
 
 func broadcastEpochBlock(epochBlock *protocol.EpochBlock) {
+	logger.Printf("broadcasting an epoch block")
 	p2p.EpochBlockOut <- epochBlock.Encode()
 }
 

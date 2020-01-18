@@ -392,7 +392,7 @@ func addFundsTx(b *protocol.Block, tx *protocol.FundsTx) error {
 	//Update state copy.
 	accSender := b.StateCopy[tx.From]
 	accSender.TxCnt += 1
-	accSender.Balance = accSender.Balance - (tx.Amount + tx.Fee)
+	//accSender.Balance = accSender.Balance - (tx.Amount + tx.Fee)
 
 	accReceiver := b.StateCopy[tx.To]
 	accReceiver.Balance += tx.Amount
@@ -1292,6 +1292,8 @@ func validate(b *protocol.Block, initialSetup bool) error {
 	blockValidation.Lock()
 	defer blockValidation.Unlock()
 
+	block := b
+
 	if storage.ReadClosedBlock(b.Hash) != nil {
 		logger.Printf("Received block (%x) has already been validated.\n", b.Hash[0:8])
 		return errors.New("Received Block has already been validated.")
@@ -1300,6 +1302,9 @@ func validate(b *protocol.Block, initialSetup bool) error {
 	//Prepare datastructure to fill tx payloads.
 	blockDataMap := make(map[[32]byte]blockData)
 
+
+
+	/*
 	//Get the right branch, and a list of blocks to rollback (if necessary).
 	blocksToRollback, blocksToValidate, err := getBlockSequences(b)
 	if err != nil {
@@ -1331,9 +1336,11 @@ func validate(b *protocol.Block, initialSetup bool) error {
 		uptodate = true
 	}
 
+	 */
 	//No rollback needed, just a new block to validate.
-	if len(blocksToRollback) == 0 {
-		for i, block := range blocksToValidate {
+	//if len(blocksToRollback) == 0 {
+	if true {
+		//for i, block := range blocksToValidate {
 			//Fetching payload data from the txs (if necessary, ask other miners).
 			accTxs, fundsTxs, configTxs, stakeTxs, aggTxs, aggregatedFundsTxSlice, err := preValidate(block, initialSetup)
 
@@ -1359,11 +1366,11 @@ func validate(b *protocol.Block, initialSetup bool) error {
 			logger.Printf("before postvalidation")
 			postValidate(blockDataMap[block.Hash], initialSetup)
 			logger.Printf("after postvalidation")
-			if i != len(blocksToValidate)-1 {
-				logger.Printf("Validated block (During Validation of other block %v): %vState:\n%v", b.Hash[0:8] , block, getState())
-			}
-		}
-	} else {
+			//if i != len(blocksToValidate)-1 {
+			//	logger.Printf("Validated block (During Validation of other block %v): %vState:\n%v", b.Hash[0:8] , block, getState())
+			//}
+		//}
+	} /*else {
 		//Rollback
 		for _, block := range blocksToRollback {
 			if err := rollback(block); err != nil {
@@ -1399,7 +1406,7 @@ func validate(b *protocol.Block, initialSetup bool) error {
 			//logger.Printf("Validated block (after rollback): %x", block.Hash[0:8])
 			logger.Printf("Validated block (after rollback for block %v): %vState:\n%v", b.Hash[0:8], block, getState())
 		}
-	}
+	}*/
 
 	return nil
 }
@@ -1565,7 +1572,6 @@ func preValidate(block *protocol.Block, initialSetup bool) (accTxSlice []*protoc
 }
 
 //Dynamic state check.
-//TODO UNCOMMENT
 func validateState(data blockData, initialSetup bool) error {
 	//The sequence of validation matters. If we start with accs, then fund/stake transactions can be done in the same block
 	//even though the accounts did not exist before the block validation.

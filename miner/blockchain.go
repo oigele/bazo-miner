@@ -332,8 +332,8 @@ func CommitteeMining(height int) {
 		if newEpochBlock.Height == uint32(storage.AssignmentHeight)+1+EPOCH_LENGTH {
 			//broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 			epochBlockReceived = true
-			storage.State = lastEpochBlock.State
-			NumberOfShards = lastEpochBlock.NofShards
+			storage.State = newEpochBlock.State
+			NumberOfShards = newEpochBlock.NofShards
 		}
 	}
 	FirstStartCommittee = false
@@ -601,6 +601,8 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					newEpochBlock := <- p2p.EpochBlockReceivedChan
 					if newEpochBlock.Height == lastBlock.Height + 1 {
 						epochBlockReceived = true
+						// take over state
+						storage.State = newEpochBlock.State
 					}
 				}
 			}
@@ -631,6 +633,10 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				case <-time.After(5 * time.Second):
 					logger.Printf("Requesting transaction assignment for shard ID: %d with height: %d", storage.ThisShardID, lastEpochBlock.Height)
 					p2p.TransactionAssignmentReq(int(lastEpochBlock.Height), storage.ThisShardID)
+					//this is used to bootstrap the committee.
+					if storage.ThisShardID == 1 {
+						broadcastEpochBlock(lastEpochBlock)
+					}
 				}
 				if received {
 					break
@@ -685,23 +691,6 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 	if err == nil {
 		err := validate(currentBlock, false)
 		if err == nil {
-
-			//Generate state transition for this block. This data is needed by the other shards to update their local states.
-			//use the freshly updated shardId, because the block always has to be in the new epoch already. If it was in the old epoch,
-			//the epoch block would not have been generated either
-			stateTransition := protocol.NewStateTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, currentBlock.Hash,
-				currentBlock.AccTxData, currentBlock.ContractTxData, currentBlock.FundsTxData, currentBlock.ConfigTxData, currentBlock.StakeTxData, currentBlock.AggTxData)
-
-
-			logger.Printf("Transactions to delete in other miners count: %d - New Mempool Size: %d\n",len(stateTransition.ContractTxData)+len(stateTransition.FundsTxData)+len(stateTransition.ConfigTxData)+ len(stateTransition.StakeTxData) + len(stateTransition.AggTxData),storage.GetMemPoolSize())
-
-			logger.Printf("Broadcast state transition for height %d\n", currentBlock.Height)
-			//Broadcast state transition to other shards
-			broadcastStateTransition(stateTransition)
-			//Write state transition to own stash. Needed in case the network requests it at a later stage.
-			storage.WriteToOwnStateTransitionkStash(stateTransition)
-			storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
-			logger.Printf("Broadcast block for height %d\n", currentBlock.Height)
 
 			broadcastBlock(currentBlock)
 			logger.Printf("Validated block (mined): %vState:\n%v", currentBlock, getState())
@@ -809,7 +798,7 @@ func AssignValidatorsToShards() map[[64]byte]int {
 
 	//The following code makes sure that the newly staking node gets to mine the next epoch block
 	if newStakingNode != [64]byte{} {
-		logger.Printf("There is a new staking node")
+		logger.Printf("There is a new staking node: %x", newStakingNode[0:8])
 		shardID := validatorShardAssignment[newStakingNode]
 		logger.Printf("Designated ShardID of the new staking node: %d", shardID)
 		//ned to fix the shard assignment
@@ -822,6 +811,8 @@ func AssignValidatorsToShards() map[[64]byte]int {
 					break
 				}
 			}
+		} else {
+			logger.Printf("Assignment should be correct without change")
 		}
 	} else {
 		logger.Printf("Content of new staking node: %x", newStakingNode)

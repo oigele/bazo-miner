@@ -318,7 +318,7 @@ func forwardBlockReqToMiner(p *peer, payload []byte) {
 }
 
 func forwardEpochBlockToMinerIn(p *peer, payload []byte) {
-	logger.Printf("Writing Epoch block to channel EpochBlockIn.\n")
+	logger.Printf("Writing Epoch block to channel EpochBlockIn from %s.\n", p.getIPPort())
 	EpochBlockIn <- payload
 }
 

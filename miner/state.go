@@ -443,6 +443,7 @@ func fundsStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 			continue
 		}
 
+		/*
 		var rootAcc *protocol.Account
 		//Check if we have to issue new coins (in case a root account signed the tx)
 		if rootAcc, err = storage.GetRootAccount(tx.From); err != nil {
@@ -458,6 +459,7 @@ func fundsStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 			rootAcc.Balance += tx.Amount
 			rootAcc.Balance += tx.Fee
 		}
+		*/
 
 		var accSender, accReceiver *protocol.Account
 		accSender, err = storage.GetAccount(tx.From)
@@ -476,9 +478,10 @@ func fundsStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 
 		//Check sender balance
 		// "!initialSetup" does allow a "Credit" like behaviour where there is no error, regarding the balance. In the end it should match the wanted state.
-		if !initialSetup && (tx.Amount + tx.Fee) > accSender.Balance {
+		//removed for IoT case
+		/*if !initialSetup && (tx.Amount + tx.Fee) > accSender.Balance {
 			err = errors.New(fmt.Sprintf("Sender does not have enough funds for the Funds transaction: Balance = %v, Amount = %v, Fee = %v.", accSender.Balance, tx.Amount, tx.Fee))
-		}
+		}*/
 
 		//After Tx fees, account must still have more than the minimum staking amount
 		if accSender.IsStaking && ((tx.Fee + protocol.MIN_STAKING_MINIMUM + tx.Amount) > accSender.Balance) {
@@ -490,7 +493,7 @@ func fundsStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 			err = errors.New("Transaction amount would lead to balance overflow at the receiver account.")
 		}
 
-		if err != nil {
+		/*if err != nil {
 			if rootAcc != nil {
 				//Rollback root's credits if error occurs
 				rootAcc.Balance -= tx.Amount
@@ -498,11 +501,12 @@ func fundsStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 			}
 
 			return err
-		}
+		}*/
 
 		//We're manipulating pointer, no need to write back
 		accSender.TxCnt += 1
-		accSender.Balance -= tx.Amount
+		//removed from IoT case
+		//accSender.Balance -= tx.Amount
 		accReceiver.Balance += tx.Amount
 	}
 	return nil
