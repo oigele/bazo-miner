@@ -35,7 +35,7 @@ func TestCommittee(t *testing.T) {
 
 	var nodeMap = make(map[[32]byte]*ecdsa.PrivateKey)
 
-	for i := 1; i <= 4; i++ {
+	for i := 1; i <= 30; i++ {
 
 		accTx, newAccAddress, err := protocol.ConstrAccTx(
 			byte(0),
@@ -106,7 +106,7 @@ func TestCommittee(t *testing.T) {
 
 	z := 1
 	numberOfRounds := 20
-	j := 10
+	j := 150
 
 	for z = 1; z <= numberOfRounds; z++ {
 		for hasher,_  := range nodeMap {
@@ -129,9 +129,6 @@ func TestCommittee(t *testing.T) {
 			}
 		}
 	}
-
-
-
 }
 
 func TestShardInitiator(t *testing.T) {
