@@ -346,6 +346,10 @@ func CommitteeMining(height int) {
 			epochBlockReceived = true
 			//think about when the new state should be updated. Important information: acc/staking
 			//but for proof of stake, balance would also be important...
+
+			//since it's safely not the first step of mining anymore, it's safe to perform proof of stake at this step
+			validateEpochBlock(&newEpochBlock)
+
 			storage.State = newEpochBlock.State
 			NumberOfShards = newEpochBlock.NofShards
 		}
