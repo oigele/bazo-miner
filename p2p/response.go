@@ -428,14 +428,14 @@ func TransactionAssignmentRes(p *peer, payload []byte) {
 
 	height,_ := strconv.ParseInt(strings.Split(strPayload,":")[1],10,64)
 
-	logger.Printf("responding transaction assignment request for shard %d for height: %d\n", shardID, height)
 
 	if !storage.IsCommittee {
-		logger.Printf("Not a committee member. Cannot send an answer to the request")
 		packet = BuildPacket(NOT_FOUND,nil)
 		sendData(p, packet)
 		return
 	}
+
+	logger.Printf("responding transaction assignment request for shard %d for height: %d\n", shardID, height)
 
 	//security check becuase the listener to incoming blocks is a concurrent goroutine
 	if storage.ReadLastClosedEpochBlock() == nil {

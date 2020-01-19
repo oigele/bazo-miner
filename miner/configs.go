@@ -21,7 +21,8 @@ const (
 	DIFF_INTERVAL        	= 10      //Blocks
 	BLOCK_INTERVAL       	= 15      //Sec
 	BLOCK_REWARD         	= 0       //Coins
-	STAKING_MINIMUM      	= 1000    //Coins
+	STAKING_MINIMUM      	= 100    //Coins
+	STAKING_FIX				= 100000
 	WAITING_MINIMUM      	= 0       //Blocks
 	ACCEPTED_TIME_DIFF   	= 60      //Sec
 	SLASHING_WINDOW_SIZE 	= 100     //Blocks

@@ -213,13 +213,19 @@ func CommitteeMining(height int) {
 
 						//Invalid if PoS calculation is not correct.
 						prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, b)
-						validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp)
+						if (validateProofOfStake(getDifficulty(), prevProofs, b.Height, STAKING_FIX, b.CommitmentProof, b.Timestamp)) {
+							logger.Printf("proof of stake is valid")
+						} else {
+							logger.Printf("proof of stake is invalid")
+						}
 
-						logger.Printf("proof of stake is valid")
 
 						accTxs, fundsTxs, _, stakeTxs, _, aggregatedFundsTxSlice, err := preValidate(b, false)
 
+						//append the aggTxs to the normal fundsTxs to delete
 						fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
+
+						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, fundsTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(fundsTxs))
 
 						storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs)
 						storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs)
@@ -293,13 +299,18 @@ func CommitteeMining(height int) {
 
 						//Invalid if PoS calculation is not correct.
 						prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, b)
-						validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp)
+						if (validateProofOfStake(getDifficulty(), prevProofs, b.Height, STAKING_FIX, b.CommitmentProof, b.Timestamp)) {
+							logger.Printf("proof of stake is valid")
+						} else {
+							logger.Printf("proof of stake is invalid")
+						}
 
-						logger.Printf("proof of stake is valid")
 
 						accTxs, fundsTxs, _, stakeTxs, _, aggregatedFundsTxSlice, err := preValidate(b, false)
 
 						fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
+
+						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, fundsTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(fundsTxs))
 
 						storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs)
 						storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs)
@@ -323,6 +334,7 @@ func CommitteeMining(height int) {
 		}
 		logger.Printf("end of block validation for height: %d", storage.AssignmentHeight)
 	}
+	logger.Printf("Wait for next epoch block")
 	//wait for next epoch block
 	epochBlockReceived := false
 	for !epochBlockReceived {
@@ -332,6 +344,8 @@ func CommitteeMining(height int) {
 		if newEpochBlock.Height == uint32(storage.AssignmentHeight)+1+EPOCH_LENGTH {
 			//broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 			epochBlockReceived = true
+			//think about when the new state should be updated. Important information: acc/staking
+			//but for proof of stake, balance would also be important...
 			storage.State = newEpochBlock.State
 			NumberOfShards = newEpochBlock.NofShards
 		}
@@ -524,7 +538,6 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			mining(hashPrevBlock, heightPrevBlock)
 		}
 
-
 		if (lastBlock.Height == uint32(lastEpochBlock.Height)+uint32(ActiveParameters.Epoch_length)) {
 			if (storage.ThisShardID == 1) {
 				epochBlock = protocol.NewEpochBlock([][32]byte{lastBlock.Hash}, lastBlock.Height+1)
@@ -703,7 +716,6 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 	if err == nil {
 		err := validate(currentBlock, false)
 		if err == nil {
-
 			broadcastBlock(currentBlock)
 			logger.Printf("Validated block (mined): %vState:\n%v", currentBlock, getState())
 		} else {
@@ -826,8 +838,6 @@ func AssignValidatorsToShards() map[[64]byte]int {
 		} else {
 			logger.Printf("Assignment should be correct without change")
 		}
-	} else {
-		logger.Printf("Content of new staking node: %x", newStakingNode)
 	}
 	return validatorShardAssignment
 }

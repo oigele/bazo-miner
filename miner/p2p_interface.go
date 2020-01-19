@@ -54,16 +54,6 @@ func processEpochBlock(eb []byte) {
 		p2p.EpochBlockReceivedChan <- *epochBlock
 		return
 	} else {
-		if _,err := storage.GetAccount(epochBlock.Beneficiary); err == nil {
-			//validate epoch block
-			logger.Printf("can try to validate the epoch block because I have the beneficiary in my local state")
-			validateEpochBlock(epochBlock)
-		} else {
-			logger.Printf("could not validate epoch block yet because I dont have the beneficiary stored in my syetem yet")
-			logger.Printf("beneficiary: %x", epochBlock.Beneficiary)
-		}
-
-
 		if !storage.IsCommittee {
 			//only take the epoch block if it's actually the following epoch block. If not, dont take it yet. It will be rebroadcasted later anyways
 			if lastEpochBlock == nil || epochBlock.Height == lastBlock.Height + 1 {
@@ -84,7 +74,6 @@ func processEpochBlock(eb []byte) {
 			logger.Printf("Received Epoch Block: %v\n", epochBlock.String())
 			lastEpochBlock = epochBlock
 			storage.WriteClosedEpochBlock(epochBlock)
-			storage.State = epochBlock.State
 			storage.DeleteAllLastClosedEpochBlock()
 			storage.WriteLastClosedEpochBlock(epochBlock)
 			broadcastEpochBlock(lastEpochBlock)

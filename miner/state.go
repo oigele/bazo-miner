@@ -386,7 +386,7 @@ func initGenesis() (genesis *protocol.Genesis, err error) {
 func accStateChange(txSlice []*protocol.AccTx) error {
 	for _, tx := range txSlice {
 		if tx.Header != 2 {
-			newAcc := protocol.NewAccount(tx.PubKey, tx.Issuer, 0, false, [crypto.COMM_KEY_LENGTH]byte{}, tx.Contract, tx.ContractVariables)
+			newAcc := protocol.NewAccount(tx.PubKey, tx.Issuer, 1000, false, [crypto.COMM_KEY_LENGTH]byte{}, tx.Contract, tx.ContractVariables)
 			newAccHash := newAcc.Hash()
 
 			acc, _ := storage.GetAccount(newAccHash)
@@ -544,6 +544,7 @@ func stakeStateChange(txSlice []*protocol.StakeTx, height uint32, initialSetup b
 		}
 
 
+		/*
 		//Check minimum amount
 		if !initialSetup && tx.IsStaking && accSender.Balance < tx.Fee+ActiveParameters.Staking_minimum {
 			err = errors.New(fmt.Sprintf("Sender wants to stake but does not have enough funds (%v) in order to fulfill the required staking minimum (%v).", accSender.Balance, STAKING_MINIMUM))
@@ -557,6 +558,7 @@ func stakeStateChange(txSlice []*protocol.StakeTx, height uint32, initialSetup b
 		if err != nil {
 			return err
 		}
+		 */
 
 		//We're manipulating pointer, no need to write back
 		accSender.IsStaking = tx.IsStaking

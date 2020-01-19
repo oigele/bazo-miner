@@ -359,44 +359,6 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 		}
 	}
 
-	//TODO realfix hotfix! Remove duplicates:
-	var newOpenTxs []protocol.Transaction
-	duplicateCheckerAccount := make(map[[64]byte]protocol.Transaction)
-	duplicateCheckerStake := make(map[[32]byte]protocol.Transaction)
-	for _,tx1 := range TxToAppend {
-		switch tx1.(type) {
-		case *protocol.AccTx:
-			//we dont have it yet
-			_,exists := duplicateCheckerAccount[tx1.(*protocol.AccTx).PubKey]
-			if !exists {
-				logger.Printf("Pubkey not existent yet: (%x). Good", tx1.(*protocol.AccTx).PubKey)
-				duplicateCheckerAccount[tx1.(*protocol.AccTx).PubKey] = tx1
-				newOpenTxs = append(newOpenTxs, tx1)
-			} else {
-				logger.Printf("the previous routine failed. Found a duplicate")
-				//continue
-			}
-		case *protocol.StakeTx:
-			//we dont have it yet
-			_,exists := duplicateCheckerStake[tx1.(*protocol.StakeTx).Account]
-			if !exists {
-				logger.Printf("Pubkey not existent yet: (%x). Good", tx1.(*protocol.StakeTx).Account)
-				duplicateCheckerStake[tx1.(*protocol.StakeTx).Account] = tx1
-				newOpenTxs = append(newOpenTxs, tx1)
-			} else {
-				logger.Printf("the previous routine failed. Found a duplicate")
-				//continue
-			}
-		default:
-			newOpenTxs = append(newOpenTxs, tx1)
-			//continue
-		}
-	}
-
-	TxToAppend = newOpenTxs
-
-	//End of hotfix
-
 
 	return TxToAppend
 }
