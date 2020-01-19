@@ -104,7 +104,7 @@ func finalizeBlock(block *protocol.Block) error {
 //	partialHashWithoutMerkleRoot := block.HashBlockWithoutMerkleRoot()
 
 	prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, block)
-	nonce, err := proofOfStake(getDifficulty(), block.PrevHash, prevProofs, block.Height, STAKING_FIX, commitmentProof)
+	nonce, err := proofOfStake(getDifficulty(), block.PrevHash, prevProofs, block.Height, validatorAcc.Balance, commitmentProof)
 	if err != nil {
 		//Delete all partially added transactions.
 		if nonce == -2 {
@@ -1539,7 +1539,7 @@ func preValidate(block *protocol.Block, initialSetup bool) (accTxSlice []*protoc
 	prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, block)
 
 	//PoS validation
-	if !initialSetup && !validateProofOfStake(getDifficulty(), prevProofs, block.Height, STAKING_FIX, block.CommitmentProof, block.Timestamp) {
+	if !initialSetup && !validateProofOfStake(getDifficulty(), prevProofs, block.Height, acc.Balance, block.CommitmentProof, block.Timestamp) {
 		logger.Printf("____________________NONCE (%x) in block %x is problematic", block.Nonce, block.Hash[0:8])
 		logger.Printf("|  block.Height: %d, acc.Address %x, acc.txCount %v, acc.Balance %v, block.CommitmentProf: %x, block.Timestamp %v ", block.Height, acc.Address[0:8], acc.TxCnt,  acc.Balance, block.CommitmentProof[0:8], block.Timestamp)
 		logger.Printf("|_____________________________________________________")

@@ -213,7 +213,7 @@ func CommitteeMining(height int) {
 
 						//Invalid if PoS calculation is not correct.
 						prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, b)
-						if (validateProofOfStake(getDifficulty(), prevProofs, b.Height, STAKING_FIX, b.CommitmentProof, b.Timestamp)) {
+						if (validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp)) {
 							logger.Printf("proof of stake is valid")
 						} else {
 							logger.Printf("proof of stake is invalid")
@@ -299,7 +299,7 @@ func CommitteeMining(height int) {
 
 						//Invalid if PoS calculation is not correct.
 						prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, b)
-						if (validateProofOfStake(getDifficulty(), prevProofs, b.Height, STAKING_FIX, b.CommitmentProof, b.Timestamp)) {
+						if (validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp)) {
 							logger.Printf("proof of stake is valid")
 						} else {
 							logger.Printf("proof of stake is invalid")
