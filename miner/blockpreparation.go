@@ -260,8 +260,8 @@ func prepareBlock(block *protocol.Block) {
 	logger.Printf("Stuff added. Transactions validated")
 
 		// In miner\block.go --> AddFundsTx the transactions get added into storage.TxBeforeAggregation.
-		if len(storage.ReadFundsTxBeforeAggregation()) > 0 {
-			logger.Printf("Adding funds tx before aggregation")
+		if (len(storage.ReadFundsTxBeforeAggregation()) > 0) || (len(storage.ReadDataTxBeforeAggregation()) > 0) {
+			logger.Printf("Adding funds tx or data tx before aggregation")
 			splitSortedAggregatableTransactions(block)
 		}
 
@@ -319,7 +319,6 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 
 		maxDataSender, addressDataSender := getMaxKeyAndValueFormMap(storage.DifferentSendersData)
 
-		logger.Printf("Max data sender : %d, address max data sender: %x", maxDataSender, addressDataSender)
 
 		i := 0
 		//see where I can aggregate more.
@@ -359,12 +358,9 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 		//nr when combined best is +1 for each agg tx as well
 		if (nrWhenCombinedBest+nonAggregatableTxCounter)*transactionHashSize >= blockSize {
 			moreOpenTx = false
-			logger.Printf("Block full, add no more transactions. NrWhenCombinedBest: %d, nonAggregatableTxCounter: %d, transactionHashSize: %d, blockSize: %d", nrWhenCombinedBest, nonAggregatableTxCounter, transactionHashSize, blockSize)
 			break
 		} else {
-			logger.Printf("Appending openTxs. Appending length: %d", len(intermediateTxToAppend))
 			TxToAppend = append(TxToAppend, intermediateTxToAppend...)
-			logger.Printf("total current opentxs of shard: %d", len(TxToAppend))
 		}
 
 		//Stop when list is empty

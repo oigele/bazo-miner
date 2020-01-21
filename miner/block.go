@@ -492,7 +492,6 @@ func addDataTx(b *protocol.Block, tx *protocol.DataTx) error {
 	accSender.TxCnt += 1
 
 
-	logger.Printf("Added tx (%x) to the DataTxData slice: %v", tx.Hash(), *tx)
 
 	//Add teh transaction to the storage where all Funds-transactions are stored before they where aggregated.
 	storage.WriteDataTxBeforeAggregation(tx)
@@ -509,6 +508,17 @@ func splitSortedAggregatableTransactions(b *protocol.Block){
 	PossibleTransactionsToAggregate := storage.ReadFundsTxBeforeAggregation()
 	PossibleDataTransactionsToAggregate := storage.ReadDataTxBeforeAggregation()
 
+	logger.Printf("#PossibleTransactionsToAggregate: %d", len(PossibleTransactionsToAggregate))
+	logger.Printf("#PossibleDataTransactionsToAggregate: %d", len(PossibleDataTransactionsToAggregate))
+
+	for _, tx := range PossibleTransactionsToAggregate {
+		storage.DifferentSenders[tx.From] = storage.DifferentSenders[tx.From] + 1
+	}
+
+	for _, tx := range PossibleDataTransactionsToAggregate {
+		storage.DifferentSendersData[tx.From] = storage.DifferentSendersData[tx.From] + 1
+	}
+
 	sortTxBeforeAggregation(PossibleTransactionsToAggregate)
 	sortDataTxBeforeAggregation(PossibleDataTransactionsToAggregate)
 	cnt := 0
@@ -520,6 +530,7 @@ func splitSortedAggregatableTransactions(b *protocol.Block){
 		maxSender, addressSender := getMaxKeyAndValueFormMap(storage.DifferentSenders)
 
 		maxSenderData, addressSenderData := getMaxKeyAndValueFormMap(storage.DifferentSendersData)
+
 
 		if maxSender >= maxSenderData {
 			// The sender which is most common is selected and all transactions are added to the txToAggregate
@@ -589,7 +600,7 @@ func splitSortedAggregatableTransactions(b *protocol.Block){
 			//Empty Slice
 			txToAggregate = txToAggregate[:0]
 
-			if len(PossibleTransactionsToAggregate) > 0 && len(storage.DifferentSenders) > 0 {
+			if len(PossibleDataTransactionsToAggregate) > 0 && len(storage.DifferentSendersData) > 0 {
 				//effectively disallowing more than 20
 				if cnt > 20 {
 					moreTransactionsToAggregate = false
