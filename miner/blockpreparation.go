@@ -319,6 +319,8 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 
 		maxDataSender, addressDataSender := getMaxKeyAndValueFormMap(storage.DifferentSendersData)
 
+		logger.Printf("Max data sender : %d, address max data sender: %x", maxDataSender, addressDataSender)
+
 		i := 0
 		//see where I can aggregate more.
 		if maxSender >= maxDataSender {
@@ -357,9 +359,12 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 		//nr when combined best is +1 for each agg tx as well
 		if (nrWhenCombinedBest+nonAggregatableTxCounter)*transactionHashSize >= blockSize {
 			moreOpenTx = false
+			logger.Printf("Block full, add no more transactions. NrWhenCombinedBest: %d, nonAggregatableTxCounter: %d, transactionHashSize: %d, blockSize: %d", nrWhenCombinedBest, nonAggregatableTxCounter, transactionHashSize, blockSize)
 			break
 		} else {
+			logger.Printf("Appending openTxs. Appending length: %d", len(intermediateTxToAppend))
 			TxToAppend = append(TxToAppend, intermediateTxToAppend...)
+			logger.Printf("total current opentxs of shard: %d", len(TxToAppend))
 		}
 
 		//Stop when list is empty
@@ -420,6 +425,12 @@ func assignTransactionToShard(transaction protocol.Transaction) (shardNr int) {
 	case *protocol.StakeTx:
 		var byteToConvert [32]byte
 		byteToConvert = transaction.(*protocol.StakeTx).Account
+		var calculatedInt int
+		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
+		return int((Abs(int32(calculatedInt)) % int32(NumberOfShards)) + 1)
+	case *protocol.DataTx:
+		var byteToConvert [32]byte
+		byteToConvert = transaction.(*protocol.DataTx).From
 		var calculatedInt int
 		calculatedInt = int(binary.BigEndian.Uint64(byteToConvert[:8]))
 		return int((Abs(int32(calculatedInt)) % int32(NumberOfShards)) + 1)
