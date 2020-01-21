@@ -340,7 +340,7 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 			for _, tx := range openTxs {
 				switch tx.(type) {
 				case *protocol.DataTx:
-					if tx.(*protocol.DataTx).To == addressDataSender {
+					if tx.(*protocol.DataTx).From == addressDataSender {
 						intermediateTxToAppend = append(intermediateTxToAppend, tx)
 					} else {
 						openTxs[i] = tx
