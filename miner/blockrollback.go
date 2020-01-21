@@ -1,13 +1,11 @@
 package miner
 
-import (
-	"errors"
-	"github.com/oigele/bazo-miner/protocol"
-	"github.com/oigele/bazo-miner/storage"
-)
+import "github.com/oigele/bazo-miner/storage"
 
+/*
 //Already validated block but not part of the current longest chain.
 //No need for an additional state mutex, because this function is called while the blockValidation mutex is actively held.
+//This function is not needed in IoT case and the content is deprecated
 func rollback(b *protocol.Block) error {
 	accTxSlice, fundsTxSlice, configTxSlice, stakeTxSlice, aggTxSlice, err := preValidateRollback(b)
 	if err != nil {
@@ -89,7 +87,7 @@ func preValidateRollback(b *protocol.Block) (accTxSlice []*protocol.AccTx, funds
 
 	return accTxSlice, fundsTxSlice, configTxSlice, stakeTxSlice, aggTxSlice, nil
 }
-
+*/
 func validateStateRollback(data blockData) {
 	collectSlashRewardRollback(ActiveParameters.Slash_reward, data.block)
 	collectBlockRewardRollback(ActiveParameters.Block_reward, data.block.Beneficiary)

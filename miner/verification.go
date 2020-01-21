@@ -27,6 +27,10 @@ func verify(tx protocol.Transaction) bool {
 		verified = verifyStakeTx(tx.(*protocol.StakeTx))
 	case *protocol.AggTx:
 		verified = verifyAggTx(tx.(*protocol.AggTx))
+	case *protocol.DataTx:
+		verified = verifyDataTx(tx.(*protocol.DataTx))
+	case *protocol.AggDataTx:
+		verified = verifyAggDataTx(tx.(*protocol.AggDataTx))
 	}
 
 	return verified
@@ -197,14 +201,73 @@ func verifyAggTx(tx *protocol.AggTx) bool {
 		return false
 	}
 
-	//Check if accounts are existent
-	/*accSender, err := storage.GetAccount(tx.From)
-	if tx.From //!= protocol.SerializeHashContent(accSender.Address) || tx.To == nil || err != nil {
-		logger.Printf("Account non existent. From: %v\nTo: %v\n%v", tx.From, tx.To, err)
-		return false
-	}*/
-
 	return true
+}
+
+func verifyAggDataTx(tx *protocol.AggDataTx) bool {
+	if tx == nil {
+		logger.Printf("Transaction does not exist")
+	}
+	return true
+}
+
+func verifyDataTx(tx *protocol.DataTx) bool {
+	if tx == nil {
+		logger.Printf("Transaction does not exist")
+		return false
+	}
+
+	pubKey1Sig1, pubKey2Sig1 := new(big.Int), new(big.Int)
+	r, s := new(big.Int), new(big.Int)
+
+
+	//Check if accounts are present in the actual state
+	accFrom := storage.State[tx.From]
+	accTo := storage.State[tx.To]
+
+	//Accounts non existent
+	if accFrom == nil || accTo == nil {
+		logger.Printf("Account non existent. From: %v\nTo: %v\n", accFrom, accTo)
+		return false
+	}
+
+	accFromHash := protocol.SerializeHashContent(accFrom.Address)
+	accToHash := protocol.SerializeHashContent(accTo.Address)
+
+	pubKey1Sig1.SetBytes(accFrom.Address[:32])
+	pubKey2Sig1.SetBytes(accFrom.Address[32:])
+
+	r.SetBytes(tx.Sig1[:32])
+	s.SetBytes(tx.Sig1[32:])
+
+	tx.From = accFromHash
+	tx.To = accToHash
+
+	txHash := tx.Hash()
+
+	var validSig1, validSig2 bool
+
+	pubKey := ecdsa.PublicKey{elliptic.P256(), pubKey1Sig1, pubKey2Sig1}
+	if ecdsa.Verify(&pubKey, txHash[:], r, s) && !reflect.DeepEqual(accFrom, accTo) {
+		tx.From = accFromHash
+		tx.To = accToHash
+		validSig1 = true
+	} else {
+		logger.Printf("Sig1 invalid. FromHash: %x\nToHash: %x\n", accFromHash[0:8], accToHash[0:8])
+		return false
+	}
+
+	r.SetBytes(tx.Sig2[:32])
+	s.SetBytes(tx.Sig2[32:])
+
+	if ecdsa.Verify(multisigPubKey, txHash[:], r, s) {
+		validSig2 = true
+	} else {
+		logger.Printf("Sig2 invalid. FromHash: %x\nToHash: %x\n", accFromHash[0:8], accToHash[0:8])
+		return false
+	}
+
+	return validSig1 && validSig2
 }
 
 //Returns true if id is in the list of possible ids and rational value for payload parameter.

@@ -125,6 +125,7 @@ func CommitteeMining(height int) {
 		var accTxs []*protocol.AccTx
 		var stakeTxs []*protocol.StakeTx
 		var fundsTxs []*protocol.FundsTx
+		var dataTxs []*protocol.DataTx
 
 		openTransactions := storage.ReadAllOpenTxs()
 
@@ -133,7 +134,7 @@ func CommitteeMining(height int) {
 		accTxs = nil
 		stakeTxs = nil
 		fundsTxs = nil
-
+		dataTxs = nil
 
 		//since shard number 1 writes the epoch block, it is required to process all acctx and stake tx
 		//the other transactions are distributed to the shards based on the public address of the sender
@@ -151,14 +152,18 @@ func CommitteeMining(height int) {
 				if shardId == assignTransactionToShard(openTransaction) {
 					fundsTxs = append(fundsTxs, openTransaction.(*protocol.FundsTx))
 				}
+			case *protocol.DataTx:
+				if shardId == assignTransactionToShard(openTransaction) {
+					dataTxs = append(dataTxs, openTransaction.(*protocol.DataTx))
+				}
 			}
 		}
-		ta = protocol.NewTransactionAssignment(height, shardId, accTxs, stakeTxs, fundsTxs)
+		ta = protocol.NewTransactionAssignment(height, shardId, accTxs, stakeTxs, fundsTxs, dataTxs)
 
 		logger.Printf("length of open transactions: %d", len(storage.ReadAllOpenTxs()))
 		storage.AssignedTxMap[shardId] = ta
 		logger.Printf("broadcasting assignment data for ShardId: %d", shardId)
-		logger.Printf("Length of AccTx: %d, StakeTx: %d, FundsTx: %d", len(accTxs), len(stakeTxs), len(fundsTxs))
+		logger.Printf("Length of AccTx: %d, StakeTx: %d, FundsTx: %d, DataTx: %d", len(accTxs), len(stakeTxs), len(fundsTxs), len(dataTxs))
 		broadcastAssignmentData(ta)
 	}
 	storage.AssignmentHeight = height
@@ -220,15 +225,16 @@ func CommitteeMining(height int) {
 						}
 
 
-						accTxs, fundsTxs, _, stakeTxs, _, aggregatedFundsTxSlice, err := preValidate(b, false)
+						accTxs, fundsTxs, _, stakeTxs, aggTxs, aggregatedFundsTxSlice, dataTxs, aggregatedDataTxSlice, aggDataTxs, err := preValidate(b, false)
 
 						//append the aggTxs to the normal fundsTxs to delete
 						fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
+						dataTxs = append(dataTxs, aggregatedDataTxSlice...)
 
-						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, fundsTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(fundsTxs))
+						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs))
 
-						storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs)
-						storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs)
+						storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
 
 						logger.Printf("Processed block of shard: %d\n", b.ShardId)
 
@@ -306,14 +312,19 @@ func CommitteeMining(height int) {
 						}
 
 
-						accTxs, fundsTxs, _, stakeTxs, _, aggregatedFundsTxSlice, err := preValidate(b, false)
+						accTxs, fundsTxs, _, stakeTxs, aggTxs, aggregatedFundsTxSlice, dataTxs, aggregatedDataTxSlice, aggDataTxs, err := preValidate(b, false)
 
+						//append the aggTxs to the normal fundsTxs to delete
 						fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
+						dataTxs = append(dataTxs, aggregatedDataTxSlice...)
 
-						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, fundsTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(fundsTxs))
+						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs))
 
-						storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs)
-						storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs)
+						storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+
+						logger.Printf("Processed block of shard: %d\n", b.ShardId)
+
 
 						//store the block in the received block stash as well
 						blockHash := b.HashBlock()
@@ -347,10 +358,12 @@ func CommitteeMining(height int) {
 			//think about when the new state should be updated. Important information: acc/staking
 			//but for proof of stake, balance would also be important...
 
+			//before being able to validate the proof of stake, the state needs to updated
+			storage.State = newEpochBlock.State
+
 			//since it's safely not the first step of mining anymore, it's safe to perform proof of stake at this step
 			validateEpochBlock(&newEpochBlock)
 
-			storage.State = newEpochBlock.State
 			NumberOfShards = newEpochBlock.NofShards
 		}
 	}
@@ -442,17 +455,9 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	currentTargetTime = new(timerange)
 	target = append(target, 13)
 
-	/* TODO not sure if it's ok to remove this. This is removed because we have init state later down
-	initialBlock, err := initState()
-	if err != nil {
-		logger.Printf("Could not set up initial state: %v.\n", err)
-		return
-	}
-	*/
 	logger.Printf("ActiveConfigParams: \n%v\n------------------------------------------------------------------------\n\nBAZO is Running\n\n", ActiveParameters)
 
 	//this is used to generate the state with aggregated transactions.
-	//TODO is this still necessary after the local state of the sharding is introduced?
 	for _, tx := range storage.ReadAllBootstrapReceivedTransactions() {
 		if tx != nil {
 			storage.DeleteOpenTx(tx)
@@ -468,6 +473,8 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	go incomingEpochData()
 	//Listen for incoming assignments from the network
 	go incomingTransactionAssignment()
+	//Listen for incoming state transitions from the network
+	go incomingStateData()
 
 
 	//Since new validators only join after the currently running epoch ends, they do no need to download the whole shardchain history,
@@ -544,15 +551,88 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 		if (lastBlock.Height == uint32(lastEpochBlock.Height)+uint32(ActiveParameters.Epoch_length)) {
 			if (storage.ThisShardID == 1) {
+
+				shardIDs := makeRange(1,NumberOfShards)
+
+				shardIDStateBoolMap := make(map[int]bool)
+				for k, _ := range shardIDStateBoolMap {
+					shardIDStateBoolMap[k] = false
+				}
+
+				for {
+					//If there is only one shard, then skip synchronisation mechanism
+					if (NumberOfShards == 1) {
+						break
+					}
+
+					//Retrieve all state transitions from the local state with the height of my last block
+					stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, lastBlock.Height)
+
+					if (len(stateStashForHeight) != 0) {
+						//Iterate through state transitions and apply them to local state, keep track of processed shards
+						for _, st := range stateStashForHeight {
+							if shardIDStateBoolMap[st.ShardID] == false && st.ShardID != storage.ThisShardID {
+								//Apply all relative account changes to my local state
+								storage.State = storage.ApplyRelativeState(storage.State, st.RelativeStateChange)
+								shardIDStateBoolMap[st.ShardID] = true
+								logger.Printf("Processed state transition of shard: %d\n", st.ShardID)
+							}
+						}
+						//If all state transitions have been received, stop synchronisation
+						if (len(stateStashForHeight) == NumberOfShards-1) {
+							logger.Printf("Received all transitions. Continue.")
+							break
+						} else {
+							logger.Printf("Length of state stash: %d", len(stateStashForHeight))
+						}
+					}
+					//Iterate over shard IDs to check which ones are still missing, and request them from the network
+					for _,id := range shardIDs{
+						if(id != storage.ThisShardID && shardIDStateBoolMap[id] == false){
+
+							//Maybe the transition was received in the meantime
+							foundSt := searchStateTransition(id, int(lastBlock.Height))
+							if foundSt != nil {
+								logger.Printf("skip planned request for shardID %d", id)
+								continue
+							}
+
+							var stateTransition *protocol.StateTransition
+
+							logger.Printf("requesting state transition for lastblock height: %d\n",lastBlock.Height)
+
+							p2p.StateTransitionReqShard(id,int(lastBlock.Height))
+							//Blocking wait
+							select {
+							case encodedStateTransition := <-p2p.StateTransitionShardReqChan:
+								stateTransition = stateTransition.DecodeTransition(encodedStateTransition)
+								//Apply state transition to my local state
+								storage.State = storage.ApplyRelativeState(storage.State,stateTransition.RelativeStateChange)
+
+								logger.Printf("Writing state back to stash Shard ID: %v  VS my shard ID: %v - Height: %d\n",stateTransition.ShardID,storage.ThisShardID,stateTransition.Height)
+								storage.ReceivedStateStash.Set(stateTransition.HashTransition(),stateTransition)
+
+								//Delete transactions from mempool, which were validated by the other shards
+
+								shardIDStateBoolMap[stateTransition.ShardID] = true
+
+								logger.Printf("Processed state transition of shard: %d\n",stateTransition.ShardID)
+
+								//Limit waiting time to 5 seconds seconds before aborting.
+							case <-time.After(2 * time.Second):
+								logger.Printf("have been waiting for 5 seconds for lastblock height: %d\n",lastBlock.Height)
+								//It the requested state transition has not been received, then continue with requesting the other missing ones
+								continue
+							}
+						}
+					}
+				}
+
+				//After the state transition mechanism is finished, perform the epoch block creation
+
 				epochBlock = protocol.NewEpochBlock([][32]byte{lastBlock.Hash}, lastBlock.Height+1)
 				logger.Printf("epochblock beingprocessed height: %d\n", epochBlock.Height)
 
-				if (NumberOfShards != 1) {
-					//Extract the hashes of the last blocks of the other shards, needed to create the epoch block
-					//The hashes of the blocks are stored in the state transitions of the other shards
-					LastShardHashes = protocol.ReturnShardHashesForHeight(storage.ReceivedStateStash, lastBlock.Height)
-					epochBlock.PrevShardHashes = append(epochBlock.PrevShardHashes, LastShardHashes...)
-				}
 
 				logger.Printf("Before finalizeEpochBlock() ---- Height: %d\n", epochBlock.Height)
 				//Finalize creation of the epoch block. In case another epoch block was mined in the meantime, abort PoS here
@@ -595,7 +675,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					logger.Printf("Inserting EPOCH BLOCK: %v\n", epochBlock.String())
 					logger.Printf("Created Validator Shard Mapping :\n")
 					logger.Printf(ValidatorShardMap.String() + "\n")
-					logger.Printf("Inserting EPOCH BLOCK: %v\n", epochBlock.String())
+
 
 					for _, prevHash := range epochBlock.PrevShardHashes {
 						//FileConnections.WriteString(fmt.Sprintf("'%x' -> 'EPOCH BLOCK: %x'\n", prevHash[0:15], epochBlock.Hash[0:15]))
@@ -659,6 +739,9 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					for _, transaction := range transactionAssignment.FundsTxs {
 						storage.AssignedTxMempool = append(storage.AssignedTxMempool, transaction)
 					}
+					for _, transaction := range transactionAssignment.DataTxs {
+						storage.AssignedTxMempool = append(storage.AssignedTxMempool, transaction)
+					}
 					logger.Printf("Success. Received assignment for height: %d", transactionAssignment.Height)
 					received = true
 				case <-time.After(5 * time.Second):
@@ -720,6 +803,12 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 	if err == nil {
 		err := validate(currentBlock, false)
 		if err == nil {
+			//only the shards which do not create the epoch block need to send out a state transition
+			if storage.ThisShardID != 1 {
+				stateTransition := protocol.NewStateTransition(storage.RelativeState,int(currentBlock.Height), storage.ThisShardID)
+				storage.WriteToOwnStateTransitionkStash(stateTransition)
+				broadcastStateTransition(stateTransition)
+			}
 			broadcastBlock(currentBlock)
 			logger.Printf("Validated block (mined): %vState:\n%v", currentBlock, getState())
 		} else {

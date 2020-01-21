@@ -15,6 +15,8 @@ const (
 	BLOCK_HEADER_BRDCST		= 7
 	TX_BRDCST_ACK      		= 8
 	AGGTX_BRDCST      		= 9
+	DATATX_BRDCST			= 10
+	AGGDATATX_BRDCST		= 11
 
 	GENESIS_REQ			    = 19
 	FUNDSTX_REQ            	= 20
@@ -30,6 +32,7 @@ const (
 	UNKNOWNTX_REQ			= 30
 	SPECIALTX_REQ			= 31
 	NOT_FOUND_TX_REQ		= 32
+	AGGDATATX_REQ			= 33
 
 
 	FUNDSTX_RES            	= 40
@@ -42,6 +45,7 @@ const (
 	ROOTACC_RES            	= 47
 	INTERMEDIATE_NODES_RES 	= 48
 	AGGTX_RES				= 49
+	AGGDATATX_RES			= 50
 
 	NEIGHBOR_REQ = 130
 	NEIGHBOR_RES = 140

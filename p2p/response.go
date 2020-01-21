@@ -65,6 +65,8 @@ func txRes(p *peer, payload []byte, txKind uint8) {
 		packet = BuildPacket(STAKETX_RES, tx.Encode())
 	case AGGTX_REQ:
 		packet = BuildPacket(AGGTX_RES, tx.Encode())
+	case AGGDATATX_REQ:
+		packet = BuildPacket(AGGDATATX_RES, tx.Encode())
 	case UNKNOWNTX_REQ:
 		switch tx.(type) {
 		case *protocol.FundsTx:

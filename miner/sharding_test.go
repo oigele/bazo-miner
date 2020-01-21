@@ -23,8 +23,7 @@ var (
 	TotalNodes			int
 )
 
-
-func TestCommittee(t *testing.T) {
+func TestDataTx(t *testing.T) {
 	rootNode := fmt.Sprintf("WalletA.txt")
 	rootNodePubKey, _ := crypto.ExtractECDSAPublicKeyFromFile(rootNode)
 	rootNodePrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
@@ -73,7 +72,94 @@ func TestCommittee(t *testing.T) {
 
 	z := 1
 	numberOfRounds := 20
+	j := 1
+
+	start := time.Now()
+
+	for z = 1; z <= numberOfRounds; z++ {
+		for hasher,_  := range nodeMap {
+			for txCount := 1; txCount <= j; txCount++ {
+				tx, _ := protocol.ConstrDataTx(
+					byte(0),
+					uint64(1),
+					//can do it like this because no txcount check. the important part is that the txcount is unique
+					uint32(z*j-txCount),
+					hasher,
+					hasherRootNode,
+					nodeMap[hasher],
+					fromPrivKey,
+					[]byte{1,2,3})
+
+				if err := SendTx("127.0.0.1:8002", tx, p2p.DATATX_BRDCST); err != nil {
+					t.Log(fmt.Sprintf("Error"))
+				}
+			}
+		}
+	}
+
+	elapsed := time.Now().Sub(start)
+
+
+	t.Log(elapsed.Seconds())
+	t.Log(elapsed.Nanoseconds())
+
+}
+
+func TestCommittee(t *testing.T) {
+	rootNode := fmt.Sprintf("WalletA.txt")
+	rootNodePubKey, _ := crypto.ExtractECDSAPublicKeyFromFile(rootNode)
+	rootNodePrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
+	rootNodeAddress := crypto.GetAddressFromPubKey(rootNodePubKey)
+	hasherRootNode := protocol.SerializeHashContent(rootNodeAddress)
+
+	fromPrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
+
+	var nodeMap = make(map[[32]byte]*ecdsa.PrivateKey)
+
+	for i := 1; i <= 30; i++ {
+
+		accTx, newAccAddress, err := protocol.ConstrAccTx(
+			byte(0),
+			uint64(1),
+			[64]byte{},
+			rootNodePrivKey,
+			nil,
+			nil)
+
+		if err != nil {
+			t.Log("got an issue")
+		}
+
+		//send to the address of the committee
+		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
+		/*if err := SendTx("127.0.0.1:8001", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
+		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
+		if err := SendTx("127.0.0.1:8003", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}*/
+
+		newNodeAddress := crypto.GetAddressFromPubKey(&newAccAddress.PublicKey)
+		hasherNewNode := protocol.SerializeHashContent(newNodeAddress)
+
+		//append all 30 hashers to a new map
+		nodeMap[hasherNewNode] = newAccAddress
+	}
+
+
+
+
+	z := 1
+	numberOfRounds := 20
 	j := 150
+
+
+
 
 	start := time.Now()
 
@@ -104,93 +190,6 @@ func TestCommittee(t *testing.T) {
 
 	t.Log(elapsed.Seconds())
 	t.Log(elapsed.Nanoseconds())
-
-}
-
-func TestCommitteeGoroutines(t *testing.T) {
-	rootNode := fmt.Sprintf("WalletA.txt")
-	rootNodePubKey, _ := crypto.ExtractECDSAPublicKeyFromFile(rootNode)
-	rootNodePrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
-	rootNodeAddress := crypto.GetAddressFromPubKey(rootNodePubKey)
-	hasherRootNode := protocol.SerializeHashContent(rootNodeAddress)
-
-	fromPrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
-
-	var nodeMap = make(map[[32]byte]*ecdsa.PrivateKey)
-
-	for i := 1; i <= 30; i++ {
-
-		accTx, newAccAddress, err := protocol.ConstrAccTx(
-			byte(0),
-			uint64(1),
-			[64]byte{},
-			rootNodePrivKey,
-			nil,
-			nil)
-
-		if err != nil {
-			t.Log("got an issue")
-		}
-
-		//send to the address of the committee
-		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
-			fmt.Sprintf("Error")
-		}
-		newNodeAddress := crypto.GetAddressFromPubKey(&newAccAddress.PublicKey)
-		hasherNewNode := protocol.SerializeHashContent(newNodeAddress)
-
-		//append all 30 hashers to a new map
-		nodeMap[hasherNewNode] = newAccAddress
-	}
-
-
-
-	var wg sync.WaitGroup
-	var sendLock sync.Locker
-	wg.Add(30)
-
-	start := time.Now()
-	txSent := 0
-
-
-	for hasher, _ := range nodeMap {
-		go func([32]byte, *sync.WaitGroup) {
-			//now send tx back to the root account. Note that I never did anything manually with the new account
-			for txCount := 0; txCount < 3000; txCount++ {
-				tx, _ := protocol.ConstrFundsTx(
-					byte(0),
-					uint64(10),
-					uint64(1),
-					uint32(txCount),
-					hasher,
-					hasherRootNode,
-					nodeMap[hasher],
-					fromPrivKey,
-					nil)
-
-				sendLock.Lock()
-				if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
-					t.Log(fmt.Sprintf("Error"))
-				}
-				sendLock.Unlock()
-			}
-			//concurrency safety
-			time.Sleep(2 * time.Millisecond)
-			wg.Done()
-		}(hasher, &wg)
-		//concurrency safety
-		time.Sleep(2 * time.Millisecond)
-	}
-
-	//wait for all goroutines to finish
-	wg.Wait()
-
-	time.Sleep(100 * time.Second)
-
-	elapsed := time.Now().Sub(start)
-	t.Log(elapsed.Seconds())
-	t.Log(elapsed.Nanoseconds())
-	t.Log(txSent)
 
 }
 

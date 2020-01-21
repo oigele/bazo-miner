@@ -44,7 +44,6 @@ func incomingTransactionAssignment() {
 	}
 }
 
-//Code from Kürsat
 func processEpochBlock(eb []byte) {
 	var epochBlock *protocol.EpochBlock
 	epochBlock = epochBlock.Decode(eb)
@@ -95,9 +94,6 @@ func processStateData(payload []byte) {
 				logger.Printf("Redistributing state transition\n")
 				broadcastStateTransition(stateTransition)
 			//There are a lot of connectivity problems. Oftentimes, only the root node is connected to all other nodes. Therefore, the root node will in all cases broadcast any incoming state transitions.
-			} else if p2p.IsBootstrap() {
-				//logger.Printf("Sharing state transition of shard: %d height: %d, in case it hasnt reached its destination yet", stateTransition.ShardID, stateTransition.Height)
-				//broadcastStateTransition(stateTransition)
 			} else {
 				logger.Printf("Received state transition already included: Shard ID: %v  VS my shard ID: %v - Height: %d - Hash: %x\n",stateTransition.ShardID,storage.ThisShardID,stateTransition.Height,stateHash[0:8])
 				return
@@ -151,9 +147,6 @@ func broadcastStateTransition(st *protocol.StateTransition) {
 //here Kürsat's code ends
 
 func broadcastAssignmentData(data *protocol.TransactionAssignment) {
-	var ta *protocol.TransactionAssignment
-	ta = ta.DecodeTransactionAssignment(data.EncodeTransactionAssignment())
-	logger.Printf("broadcasting transaction assignment with height: %d and shard ID: %d", ta.Height, ta.ShardID)
 	p2p.TransactionAssignmentOut <- data.EncodeTransactionAssignment()
 }
 
@@ -181,6 +174,13 @@ func broadcastVerifiedFundsTxs(txs []*protocol.FundsTx) {
 func broadcastVerifiedAggTxsToOtherMiners(txs []*protocol.AggTx) {
 	for _, tx := range txs {
 		toBrdcst := p2p.BuildPacket(p2p.AGGTX_BRDCST, tx.Encode())
+		p2p.VerifiedTxsBrdcstOut <- toBrdcst
+	}
+}
+
+func broadcastVerifiedAggDataTxsToOtherMiners(txs []*protocol.AggDataTx) {
+	for _, tx := range txs {
+		toBrdcst := p2p.BuildPacket(p2p.AGGDATATX_BRDCST, tx.Encode())
 		p2p.VerifiedTxsBrdcstOut <- toBrdcst
 	}
 }

@@ -13,18 +13,20 @@ type TransactionAssignment struct {
 	AccTxs 						[]*AccTx
 	StakeTxs					[]*StakeTx
 	FundsTxs					[]*FundsTx
+	DataTxs						[]*DataTx
 }
 
 
 
 
-func NewTransactionAssignment(height int, shardid int, accTxs []*AccTx, stakeTxs []*StakeTx, fundsTxs []*FundsTx) *TransactionAssignment {
+func NewTransactionAssignment(height int, shardid int, accTxs []*AccTx, stakeTxs []*StakeTx, fundsTxs []*FundsTx, dataTxs []*DataTx) *TransactionAssignment {
 	newTransition := TransactionAssignment{
 		height,
 		shardid,
 		accTxs,
 		stakeTxs,
 		fundsTxs,
+		dataTxs,
 	}
 
 	return &newTransition
@@ -60,6 +62,7 @@ func (ta *TransactionAssignment) EncodeTransactionAssignment() []byte {
 		AccTxs:						ta.AccTxs,
 		StakeTxs:					ta.StakeTxs,
 		FundsTxs:					ta.FundsTxs,
+		DataTxs:					ta.DataTxs,
 	}
 
 	buffer := new(bytes.Buffer)

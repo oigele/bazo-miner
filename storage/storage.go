@@ -31,8 +31,10 @@ var (
 	txINVALIDMemPool   				= make(map[[32]byte]protocol.Transaction)
 	bootstrapReceivedMemPool		= make(map[[32]byte]protocol.Transaction)
 	DifferentSenders   				= make(map[[32]byte]uint32)
+	DifferentSendersData			= make(map[[32]byte]uint32)
 	DifferentReceivers				= make(map[[32]byte]uint32)
 	FundsTxBeforeAggregation		= make([]*protocol.FundsTx, 0)
+	DataTxBeforeAggregation			= make([]*protocol.DataTx, 0)
 	ReceivedBlockStash				= make([]*protocol.Block, 0)
 	TxcntToTxMap					= make(map[uint32][][32]byte)
 	AllClosedBlocksAsc []*protocol.Block
@@ -44,6 +46,7 @@ var (
 	openTxToDeleteMutex					= &sync.Mutex{}
 	openINVALIDTxMutex 					= &sync.Mutex{}
 	openFundsTxBeforeAggregationMutex	= &sync.Mutex{}
+	openDataTxBeforeAggregationMutex	= &sync.Mutex{}
 	txcntToTxMapMutex					= &sync.Mutex{}
 	ReceivedBlockStashMutex				= &sync.Mutex{}
 	//Added by Kürsat
@@ -149,6 +152,20 @@ func Init(dbname string, bootstrapIpport string) {
 	})
 	db.Update(func(tx *bolt.Tx) error {
 		_, err = tx.CreateBucket([]byte("closedconfigs"))
+		if err != nil {
+			return fmt.Errorf(ERROR_MSG+"Create bucket: %s", err)
+		}
+		return nil
+	})
+	db.Update(func(tx *bolt.Tx) error {
+		_, err = tx.CreateBucket([]byte("closeddata"))
+		if err != nil {
+			return fmt.Errorf(ERROR_MSG+"Create bucket: %s", err)
+		}
+		return nil
+	})
+	db.Update(func(tx *bolt.Tx) error {
+		_, err = tx.CreateBucket([]byte("closedaggdata"))
 		if err != nil {
 			return fmt.Errorf(ERROR_MSG+"Create bucket: %s", err)
 		}

@@ -78,8 +78,9 @@ func DeleteOpenTx(transaction protocol.Transaction) {
 	openTxMutex.Unlock()
 }
 
-func DeleteAllOpenTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fundsTxs []*protocol.FundsTx) {
+func DeleteAllOpenTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) {
 	openTxMutex.Lock()
+	defer openTxMutex.Unlock()
 	for _, transaction := range accTxs {
 		delete(txMemPool, transaction.Hash())
 	}
@@ -89,7 +90,15 @@ func DeleteAllOpenTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fun
 	for _, transaction := range fundsTxs {
 		delete(txMemPool, transaction.Hash())
 	}
-	openTxMutex.Unlock()
+	for _, transaction := range dataTxs {
+		delete(txMemPool, transaction.Hash())
+	}
+	for _, transaction := range aggTxs {
+		delete(txMemPool, transaction.Hash())
+	}
+	for _, transaction := range aggDataTxs {
+		delete(txMemPool, transaction.Hash())
+	}
 }
 
 
@@ -102,6 +111,10 @@ func DeleteINVALIDOpenTx(transaction protocol.Transaction) {
 
 func DeleteAllFundsTxBeforeAggregation(){
 	FundsTxBeforeAggregation = nil
+}
+
+func DeleteAllDataTxBeforeAggregation() {
+	DataTxBeforeAggregation = nil
 }
 
 func DeleteClosedTx(transaction protocol.Transaction) {

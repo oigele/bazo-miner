@@ -89,6 +89,7 @@ func ReturnStateTransitionForHeight(statestash *StateStash, height uint32) [] *S
 	return stateTransitionSlice
 }
 
+/*
 func ReturnShardHashesForHeight(statestash *StateStash, height uint32) [][32]byte {
 	stateMutex.Lock()
 	defer stateMutex.Unlock()
@@ -103,6 +104,7 @@ func ReturnShardHashesForHeight(statestash *StateStash, height uint32) [][32]byt
 
 	return hashSlice
 }
+ */
 
 func ReturnStateTransitionForPosition(stateStash *StateStash, position int) (stateHash [32]byte, stateTransition *StateTransition) {
 	stateMutex.Lock()

@@ -63,6 +63,13 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 			return
 		}
 		tx = aTx
+	case DATATX_BRDCST:
+		var dTx *protocol.DataTx
+		dTx = dTx.Decode(payload)
+		if dTx == nil {
+			return
+		}
+		tx = dTx
 	}
 
 	//Response tx acknowledgment if the peer is a client

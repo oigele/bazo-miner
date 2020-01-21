@@ -38,6 +38,8 @@ func prepareBlock(block *protocol.Block) {
 	//Shouldn't be too bad because no deep copy.
 	var tmpCopy openTxs
 	tmpCopy = opentxs
+	//sorting is done in order to simplify requests for missing funds transactions
+	//I keep this here as legacy code, but if dataTx also have to be sorted, then the sort interface has to be adjusted.
 	sort.Sort(tmpCopy)
 
 	nonAggregatableTxCounter = 0                                     //Counter for all transactions which will not be aggregated. (Stake-, config-, acctx)
@@ -45,16 +47,19 @@ func prepareBlock(block *protocol.Block) {
 	logger.Printf("block.GetBloomFilterSize() %v", block.GetBloomFilterSize())
 	transactionHashSize = 32 //It is 32 bytes
 
-	//map where all senders from FundsTx and AggTx are added to. --> this ensures that tx with same sender are only counted once.
+	//map where all senders from FundsTx are added to. --> this ensures that tx with same sender are only counted once.
 	storage.DifferentSenders = map[[32]byte]uint32{}
-	//storage.DifferentReceivers = map[[32]byte]uint32{}
 	storage.FundsTxBeforeAggregation = nil
 
-	type senderTxCounterForMissingTransactions struct {
+	//map where all senders from DataTx are added to. --> this ensures that tx with same sender are only counted once.
+	storage.DifferentSendersData = map[[32]byte]uint32{}
+	storage.DataTxBeforeAggregation = nil
+
+	/*type senderTxCounterForMissingTransactions struct {
 		senderAddress       [32]byte
 		txcnt               uint32
 		missingTransactions []uint32
-	}
+	}*/
 
 	//var missingTxCntSender = map[[32]byte]*senderTxCounterForMissingTransactions{}
 
@@ -262,7 +267,7 @@ func prepareBlock(block *protocol.Block) {
 
 		//Set measurement values back to zero / nil.
 		storage.DifferentSenders = nil
-		//storage.DifferentReceivers = nil
+		storage.DifferentSendersData = nil
 		nonAggregatableTxCounter = 0
 		return
 }
@@ -277,12 +282,17 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 	for moreOpenTx {
 		var intermediateTxToAppend []protocol.Transaction
 		for _, tx := range openTxs {
-			// not really appending anything here. This is just legacy code, counting how many different senders we have (in case it needs to be compared to different receivers)
 			switch tx.(type) {
 			case *protocol.FundsTx:
+				//counting how many transactions the senders have (to see which sender is the best to aggregate)
 				storage.DifferentSenders[tx.(*protocol.FundsTx).From] = storage.DifferentSenders[tx.(*protocol.FundsTx).From] + 1
 				//storage.DifferentReceivers[tx.(*protocol.FundsTx).To] = storage.DifferentReceivers[tx.(*protocol.FundsTx).To] + 1
 			case *protocol.AggTx:
+				continue
+			case *protocol.DataTx:
+				//counting how many transactions the senders have (to see which sender is the best to aggregate)
+				storage.DifferentSendersData[tx.(*protocol.DataTx).From] = storage.DifferentSendersData[tx.(*protocol.DataTx).From] + 1
+			case *protocol.AggDataTx:
 				continue
 			default:
 				//If another non-FundsTx can fit into the block, add it, else block is already full, so return the tx
@@ -305,28 +315,30 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 
 		//first return value maxSender not needed anymore. We dont need to compare max sender and max receiver anymore.
 		//this is still useful because we aggregate the senders with the most transactions first
-		_, addressSender := getMaxKeyAndValueFormMap(storage.DifferentSenders)
-		//maxReceiver, addressReceiver := getMaxKeyAndValueFormMap(storage.DifferentReceivers)
+		maxSender, addressSender := getMaxKeyAndValueFormMap(storage.DifferentSenders)
+
+		maxDataSender, addressDataSender := getMaxKeyAndValueFormMap(storage.DifferentSendersData)
 
 		i := 0
-		//if maxSender >= maxReceiver {
+		//see where I can aggregate more.
+		if maxSender >= maxDataSender {
 			for _, tx := range openTxs {
 				switch tx.(type) {
 				case *protocol.FundsTx:
-					//Append Tx To the ones which get added, else remove added tx such that no space exists.
 					if tx.(*protocol.FundsTx).From == addressSender {
 						intermediateTxToAppend = append(intermediateTxToAppend, tx)
 					} else {
+						//keep the transaction in the list for later
 						openTxs[i] = tx
 						i++
 					}
 				}
 			}
-		/*} else {
+		} else {
 			for _, tx := range openTxs {
 				switch tx.(type) {
-				case *protocol.FundsTx:
-					if tx.(*protocol.FundsTx).To == addressReceiver {
+				case *protocol.DataTx:
+					if tx.(*protocol.DataTx).To == addressDataSender {
 						intermediateTxToAppend = append(intermediateTxToAppend, tx)
 					} else {
 						openTxs[i] = tx
@@ -334,10 +346,10 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 					}
 				}
 			}
-		}*/
+		}
 		openTxs = openTxs[:i]
 		storage.DifferentSenders = make(map[[32]byte]uint32)
-		//storage.DifferentReceivers = make(map[[32]byte]uint32)
+		storage.DifferentSendersData = make(map[[32]byte]uint32)
 
 		nrWhenCombinedBest = nrWhenCombinedBest + 1
 
@@ -574,15 +586,17 @@ func (f openTxs) Less(i, j int) bool {
 	//Why can we only do that with switch, and not e.g., if tx.(type) == ..?
 	switch f[i].(type) {
 	case *protocol.AccTx:
-		//We only want to sort a subset of all transactions, namely all fundsTxs.
-		//However, to successfully do that we have to place all other txs at the beginning.
-		//The order between accTxs and configTxs doesn't matter.
+		//We only want to sort a subset of all transactions, namely all fundsTxs and all dataTxs
 		return true
 	case *protocol.ConfigTx:
 		return true
 	case *protocol.StakeTx:
 		return true
 	case *protocol.AggTx:
+		return true
+	case *protocol.AggDataTx:
+		return true
+	case *protocol.DataTx:
 		return true
 	}
 
@@ -594,6 +608,10 @@ func (f openTxs) Less(i, j int) bool {
 	case *protocol.StakeTx:
 		return false
 	case *protocol.AggTx:
+		return false
+	case *protocol.AggDataTx:
+		return false
+	case *protocol.DataTx:
 		return false
 	}
 

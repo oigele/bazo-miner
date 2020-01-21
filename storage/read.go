@@ -239,6 +239,12 @@ func ReadFundsTxBeforeAggregation() ([]*protocol.FundsTx) {
 	return FundsTxBeforeAggregation
 }
 
+func ReadDataTxBeforeAggregation() []*protocol.DataTx {
+	openDataTxBeforeAggregationMutex.Lock()
+	defer openDataTxBeforeAggregationMutex.Unlock()
+	return DataTxBeforeAggregation
+}
+
 func ReadAllBootstrapReceivedTransactions() (allOpenTxs []protocol.Transaction) {
 	openTxMutex.Lock()
 	defer openTxMutex.Unlock()
@@ -378,6 +384,26 @@ func ReadClosedTx(hash [32]byte) (transaction protocol.Transaction) {
 	})
 	if encodedTx != nil {
 		return aggTx.Decode(encodedTx)
+	}
+
+	var dataTx *protocol.DataTx
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("closeddata"))
+		encodedTx = b.Get(hash[:])
+		return nil
+	})
+	if encodedTx != nil {
+		return dataTx.Decode(encodedTx)
+	}
+
+	var aggDataTx *protocol.AggDataTx
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("closedaggdata"))
+		encodedTx = b.Get(hash[:])
+		return nil
+	})
+	if encodedTx != nil {
+		return aggDataTx.Decode(encodedTx)
 	}
 
 	return nil

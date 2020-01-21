@@ -133,7 +133,6 @@ func ApplyRelativeState(statePrev map[[32]byte]*protocol.Account, stateRel map[[
 	for krel, _ := range stateRel {
 		if _, ok := statePrev[krel]; !ok {
 			accNewRel := stateRel[krel]
-			//Important: The first argument used to be just krel, but that's not 64 bti!
 			accNew := protocol.NewAccount(stateRel[krel].Address, [32]byte{}, uint64(accNewRel.Balance), accNewRel.IsStaking, accNewRel.CommitmentKey, accNewRel.Contract, accNewRel.ContractVariables)
 			accNew.TxCnt = uint32(accNewRel.TxCnt)
 			accNew.StakingBlockHeight = uint32(accNewRel.StakingBlockHeight)

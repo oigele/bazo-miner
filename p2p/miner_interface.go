@@ -33,45 +33,48 @@ var (
 
 	EpochBlockReceivedChan = make(chan protocol.EpochBlock)
 
-
-	VerifiedTxsOut = make(chan []byte)
+	VerifiedTxsOut       = make(chan []byte)
 	VerifiedTxsBrdcstOut = make(chan []byte, 1000)
 
 	//Data requested by miner, to allow parallelism, we have a chan for every tx type.
-	FundsTxChan  		= make(chan *protocol.FundsTx)
-	AccTxChan    		= make(chan *protocol.AccTx)
-	ConfigTxChan 		= make(chan *protocol.ConfigTx)
-	StakeTxChan  		= make(chan *protocol.StakeTx)
-	AggTxChan    		= make(chan *protocol.AggTx)
+	FundsTxChan   = make(chan *protocol.FundsTx)
+	AccTxChan     = make(chan *protocol.AccTx)
+	ConfigTxChan  = make(chan *protocol.ConfigTx)
+	StakeTxChan   = make(chan *protocol.StakeTx)
+	AggTxChan     = make(chan *protocol.AggTx)
+	DataTxChan    = make(chan *protocol.DataTx)
+	AggDataTxChan = make(chan *protocol.AggDataTx)
 
-	BlockReqChan = make(chan []byte)
-	StateTransitionShardReqChan 	= make(chan []byte)
-	StateTransitionShardOut 		= make(chan []byte)
-	ShardBlockShardOut				= make(chan []byte)
+	BlockReqChan                = make(chan []byte)
+	StateTransitionShardReqChan = make(chan []byte)
+	StateTransitionShardOut     = make(chan []byte)
+	ShardBlockShardOut          = make(chan []byte)
 
-	TransactionAssignmentReqOut		= make(chan []byte)
+	TransactionAssignmentReqOut = make(chan []byte)
 
-	ShardBlockReqChan				= make(chan []byte)
-	TransactionAssignmentReqChan    = make(chan []byte)
+	ShardBlockReqChan            = make(chan []byte)
+	TransactionAssignmentReqChan = make(chan []byte)
 
-	FirstEpochBlockReqChan 	= make(chan []byte)
-	EpochBlockReqChan 	= make(chan []byte)
-	LastEpochBlockReqChan 	= make(chan []byte)
-	GenesisReqChan 	= make(chan []byte)
+	FirstEpochBlockReqChan = make(chan []byte)
+	EpochBlockReqChan      = make(chan []byte)
+	LastEpochBlockReqChan  = make(chan []byte)
+	GenesisReqChan         = make(chan []byte)
 
-
-	ValidatorShardMapReq 	= make(chan []byte)
+	ValidatorShardMapReq = make(chan []byte)
 
 	ReceivedFundsTXStash = make([]*protocol.FundsTx, 0)
-	ReceivedAggTxStash = make([]*protocol.AggTx, 0)
+	ReceivedAggTxStash   = make([]*protocol.AggTx, 0)
 	ReceivedStakeTxStash = make([]*protocol.StakeTx, 0)
-	ReceivedAccTxStash = make([]*protocol.AccTx, 0)
+	ReceivedAccTxStash   = make([]*protocol.AccTx, 0)
+	ReceivedDataTxStash  = make([]*protocol.DataTx, 0)
+	ReceivedAggDataTxStash = make([]*protocol.AggDataTx, 0)
 
-	fundsTxSashMutex = &sync.Mutex{}
-	aggTxStashMutex = &sync.Mutex{}
-	blockStashMutex = &sync.Mutex{}
+	fundsTxSashMutex  = &sync.Mutex{}
+	aggTxStashMutex   = &sync.Mutex{}
+	aggDataTxStashMutex = &sync.Mutex{}
+	blockStashMutex   = &sync.Mutex{}
 	stakeTxStashMutex = &sync.Mutex{}
-	accTxStashMutex = &sync.Mutex{}
+	accTxStashMutex   = &sync.Mutex{}
 )
 
 //This is for blocks and txs that the miner successfully validated.
@@ -85,14 +88,14 @@ func forwardBlockBrdcstToMiner() {
 
 func forwardBlockHeaderBrdcstToMiner() {
 	for {
-		blockHeader := <- BlockHeaderOut
+		blockHeader := <-BlockHeaderOut
 		clientBrdcstMsg <- BuildPacket(BLOCK_HEADER_BRDCST, blockHeader)
 	}
 }
 
-func forwardStateTransitionShardToMiner(){
+func forwardStateTransitionShardToMiner() {
 	for {
-		st := <- StateTransitionShardOut
+		st := <-StateTransitionShardOut
 		logger.Printf("Building state transition request packet\n")
 		toBrdcst := BuildPacket(STATE_TRANSITION_REQ, st)
 		minerBrdcstMsg <- toBrdcst
@@ -101,7 +104,7 @@ func forwardStateTransitionShardToMiner(){
 
 func forwardShardBlockRequestToMiner() {
 	for {
-		block := <- ShardBlockShardOut
+		block := <-ShardBlockShardOut
 		logger.Printf("Building shard block request packet\n")
 		toBrdcst := BuildPacket(SHARD_BLOCK_REQ, block)
 		minerBrdcstMsg <- toBrdcst
@@ -110,14 +113,14 @@ func forwardShardBlockRequestToMiner() {
 
 func forwardTransactionAssignmentRequestToMiner() {
 	for {
-		transactionAssignment := <- TransactionAssignmentReqOut
+		transactionAssignment := <-TransactionAssignmentReqOut
 		logger.Printf("Building transaction assignment request packet \n")
 		toBrdcst := BuildPacket(TRANSACTION_ASSIGNMENT_REQ, transactionAssignment)
 		minerBrdcstMsg <- toBrdcst
 	}
 }
 
-func forwardStateTransitionBrdcstToMiner()  {
+func forwardStateTransitionBrdcstToMiner() {
 	for {
 		st := <-StateTransitionOut
 		toBrdcst := BuildPacket(STATE_TRANSITION_BRDCST, st)
@@ -127,7 +130,7 @@ func forwardStateTransitionBrdcstToMiner()  {
 
 func forwardTransactionAssignmentBrdcstToMiner() {
 	for {
-		transactionAssignment := <- TransactionAssignmentOut
+		transactionAssignment := <-TransactionAssignmentOut
 		toBrdcst := BuildPacket(TRANSACTION_ASSIGNMENT_BRDCST, transactionAssignment)
 		minerBrdcstMsg <- toBrdcst
 	}
@@ -144,32 +147,32 @@ func forwardEpochBlockBrdcstToMiner() {
 
 func forwardVerifiedTxsToMiner() {
 	for {
-		verifiedTxs := <- VerifiedTxsOut
+		verifiedTxs := <-VerifiedTxsOut
 		clientBrdcstMsg <- BuildPacket(VERIFIEDTX_BRDCST, verifiedTxs)
 	}
 }
 
 func forwardVerifiedTxsBrdcstToMiner() {
 	for {
-		verifiedTx := <- VerifiedTxsBrdcstOut
+		verifiedTx := <-VerifiedTxsBrdcstOut
 		minerBrdcstMsg <- verifiedTx
 	}
 }
 
 func forwardBlockToMiner(p *peer, payload []byte) {
-//	blockStashMutex.Lock()
-//	var block *protocol.Block
-//	block = block.Decode(payload)
-//	storage.WriteToReceivedStash(block)
-//	if !BlockAlreadyReceived(storage.ReadReceivedBlockStash(),block.Hash){
-		if len(BlockIn) > 0 {
-			var block *protocol.Block
-			block = block.Decode(payload)
-			logger.Printf("Inside ForwardBlockToMiner --> len(BlockIn) = %v for block %x", len(BlockIn), block.Hash[0:8])
-		}
-		BlockIn <- payload
-//	}
-//	blockStashMutex.Unlock()
+	//	blockStashMutex.Lock()
+	//	var block *protocol.Block
+	//	block = block.Decode(payload)
+	//	storage.WriteToReceivedStash(block)
+	//	if !BlockAlreadyReceived(storage.ReadReceivedBlockStash(),block.Hash){
+	if len(BlockIn) > 0 {
+		var block *protocol.Block
+		block = block.Decode(payload)
+		logger.Printf("Inside ForwardBlockToMiner --> len(BlockIn) = %v for block %x", len(BlockIn), block.Hash[0:8])
+	}
+	BlockIn <- payload
+	//	}
+	//	blockStashMutex.Unlock()
 }
 
 //Checks if Tx Is in the received stash. If true, we received the transaction with a request already.
@@ -183,6 +186,24 @@ func FundsTxAlreadyInStash(slice []*protocol.FundsTx, newTXHash [32]byte) bool {
 }
 
 func AggTxAlreadyInStash(slice []*protocol.AggTx, newTXHash [32]byte) bool {
+	for _, txInStash := range slice {
+		if txInStash.Hash() == newTXHash {
+			return true
+		}
+	}
+	return false
+}
+
+func DataTxAlreadyInStash(slice []*protocol.DataTx, newTXHash [32]byte) bool {
+	for _, txInStash := range slice {
+		if txInStash.Hash() == newTXHash {
+			return true
+		}
+	}
+	return false
+}
+
+func AggDataTxAlreadyInStash(slice []*protocol.AggDataTx, newTXHash [32]byte) bool {
 	for _, txInStash := range slice {
 		if txInStash.Hash() == newTXHash {
 			return true
@@ -218,7 +239,6 @@ func BlockAlreadyReceived(slice []*protocol.Block, newBlockHash [32]byte) bool {
 	return false
 }
 
-
 //These are transactions the miner specifically requested.
 func forwardTxReqToMiner(p *peer, payload []byte, txType uint8) {
 	if payload == nil {
@@ -228,16 +248,16 @@ func forwardTxReqToMiner(p *peer, payload []byte, txType uint8) {
 	switch txType {
 	case FUNDSTX_RES:
 		var fundsTx *protocol.FundsTx
-	fundsTx = fundsTx.Decode(payload)
-	if fundsTx == nil {
-		return
+		fundsTx = fundsTx.Decode(payload)
+		if fundsTx == nil {
+			return
 		}
-	// If TX is not received with the last 1000 Transaction, send it through the channel to the TX_FETCH.
-	// Otherwise send nothing. This means, that the TX was sent before and we ensure, that only one TX per Broadcast
-	// request is going through to the FETCH Request. This should prevent the "Received txHash did not correspond to
-	// our request." error
-	// The Mutex Lock is needed, because sometimes the execution is too fast. And even with the stash transactions
-	// are sent multiple times through the channel.
+		// If TX is not received with the last 1000 Transaction, send it through the channel to the TX_FETCH.
+		// Otherwise send nothing. This means, that the TX was sent before and we ensure, that only one TX per Broadcast
+		// request is going through to the FETCH Request. This should prevent the "Received txHash did not correspond to
+		// our request." error
+		// The Mutex Lock is needed, because sometimes the execution is too fast. And even with the stash transactions
+		// are sent multiple times through the channel.
 		// The same concept is used for the AggTx below.
 		fundsTxSashMutex.Lock()
 		if !FundsTxAlreadyInStash(ReceivedFundsTXStash, fundsTx.Hash()) {
@@ -302,6 +322,21 @@ func forwardTxReqToMiner(p *peer, payload []byte, txType uint8) {
 			}
 		}
 		aggTxStashMutex.Unlock()
+	case AGGDATATX_RES:
+		var aggDataTx *protocol.AggDataTx
+		aggDataTx = aggDataTx.Decode(payload)
+		if aggDataTx == nil {
+			return
+		}
+		aggDataTxStashMutex.Lock()
+		if !AggDataTxAlreadyInStash(ReceivedAggDataTxStash, aggDataTx.Hash()) {
+			ReceivedAggDataTxStash = append(ReceivedAggDataTxStash, aggDataTx)
+			AggDataTxChan <- aggDataTx
+			if len(ReceivedAggDataTxStash) > 100 {
+				ReceivedAggDataTxStash = append(ReceivedAggDataTxStash[:0], ReceivedAggDataTxStash[1:]...)
+			}
+		}
+		aggDataTxStashMutex.Unlock()
 	}
 }
 
@@ -330,7 +365,7 @@ func forwardTransactionAssignmentToMinerIn(p *peer, payload []byte) {
 	TransactionAssignmentIn <- payload
 }
 
-func forwardLastEpochBlockToMiner(p *peer, payload []byte)  {
+func forwardLastEpochBlockToMiner(p *peer, payload []byte) {
 	LastEpochBlockReqChan <- payload
 }
 

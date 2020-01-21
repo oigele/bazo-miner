@@ -1,8 +1,8 @@
 package storage
 
 import (
-	"github.com/oigele/bazo-miner/protocol"
 	"github.com/boltdb/bolt"
+	"github.com/oigele/bazo-miner/protocol"
 )
 
 func WriteOpenBlock(block *protocol.Block) (err error) {
@@ -40,7 +40,6 @@ func WriteFirstEpochBlock(epochBlock *protocol.EpochBlock) error {
 		return b.Put([]byte("firstepochblock"), epochBlock.Encode())
 	})
 }
-
 
 func WriteLastClosedEpochBlock(epochBlock *protocol.EpochBlock) (err error) {
 	return db.Update(func(tx *bolt.Tx) error {
@@ -87,6 +86,7 @@ func WriteOpenTx(transaction protocol.Transaction) {
 
 	switch transaction.(type) {
 	case *protocol.FundsTx:
+		//This is interesting if missing transactions have to be queried based on their transaction count
 		WriteTxcntToTx(transaction.(*protocol.FundsTx))
 	}
 
@@ -106,7 +106,6 @@ func ResetOpenTxHashToDeleteMempool() {
 	openTxToDeleteMempool = make(map[[32]byte]bool)
 }
 
-
 func WriteTxcntToTx(transaction *protocol.FundsTx) {
 	txcntToTxMapMutex.Lock()
 	TxcntToTxMap[transaction.TxCnt] = append(TxcntToTxMap[transaction.TxCnt], transaction.Hash())
@@ -117,6 +116,12 @@ func WriteFundsTxBeforeAggregation(transaction *protocol.FundsTx) {
 	openFundsTxBeforeAggregationMutex.Lock()
 	FundsTxBeforeAggregation = append(FundsTxBeforeAggregation, transaction)
 	openFundsTxBeforeAggregationMutex.Unlock()
+}
+
+func WriteDataTxBeforeAggregation(transaction *protocol.DataTx){
+	openDataTxBeforeAggregationMutex.Lock()
+	defer openDataTxBeforeAggregationMutex.Unlock()
+	DataTxBeforeAggregation = append(DataTxBeforeAggregation, transaction)
 }
 
 func WriteBootstrapTxReceived(transaction protocol.Transaction) {
@@ -165,14 +170,14 @@ func WriteClosedFundsTxFromAggTxSlice(transactions []protocol.FundsTx) (err erro
 			}
 			nrClosedTransactions = nrClosedTransactions + 1
 			totalTransactionSize = totalTransactionSize + float32(transaction.Size())
-			averageTxSize = totalTransactionSize/nrClosedTransactions
+			averageTxSize = totalTransactionSize / nrClosedTransactions
 		}
 		return err
 	})
 	return err
 }
 
-func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fundsTxs []*protocol.FundsTx) (err error) {
+func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) (err error) {
 	bucket := "closedaccs"
 	err = db.Update(func(tx *bolt.Tx) error {
 		var err error
@@ -185,7 +190,7 @@ func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fu
 			}
 			nrClosedTransactions = nrClosedTransactions + 1
 			totalTransactionSize = totalTransactionSize + float32(transaction.Size())
-			averageTxSize = totalTransactionSize/nrClosedTransactions
+			averageTxSize = totalTransactionSize / nrClosedTransactions
 		}
 		return err
 	})
@@ -202,7 +207,7 @@ func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fu
 			}
 			nrClosedTransactions = nrClosedTransactions + 1
 			totalTransactionSize = totalTransactionSize + float32(transaction.Size())
-			averageTxSize = totalTransactionSize/nrClosedTransactions
+			averageTxSize = totalTransactionSize / nrClosedTransactions
 		}
 		return err
 	})
@@ -219,7 +224,58 @@ func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fu
 			}
 			nrClosedTransactions = nrClosedTransactions + 1
 			totalTransactionSize = totalTransactionSize + float32(transaction.Size())
-			averageTxSize = totalTransactionSize/nrClosedTransactions
+			averageTxSize = totalTransactionSize / nrClosedTransactions
+		}
+		return err
+	})
+
+	bucket = "closedaggregations"
+	err = db.Update(func(tx *bolt.Tx) error {
+		var err error
+		b := tx.Bucket([]byte(bucket))
+		for _, transaction := range aggTxs {
+			hash := transaction.Hash()
+			err = b.Put(hash[:], transaction.Encode())
+			if err != nil {
+				logger.Printf("We GOT AN ERROR")
+			}
+			nrClosedTransactions = nrClosedTransactions + 1
+			totalTransactionSize = totalTransactionSize + float32(transaction.Size())
+			averageTxSize = totalTransactionSize / nrClosedTransactions
+		}
+		return err
+	})
+
+	bucket = "closeddata"
+	err = db.Update(func(tx *bolt.Tx) error {
+		var err error
+		b := tx.Bucket([]byte(bucket))
+		for _, transaction := range dataTxs {
+			hash := transaction.Hash()
+			err = b.Put(hash[:], transaction.Encode())
+			if err != nil {
+				logger.Printf("We GOT AN ERROR")
+			}
+			nrClosedTransactions = nrClosedTransactions + 1
+			totalTransactionSize = totalTransactionSize + float32(transaction.Size())
+			averageTxSize = totalTransactionSize / nrClosedTransactions
+		}
+		return err
+	})
+
+	bucket = "closedaggdata"
+	err = db.Update(func(tx *bolt.Tx) error {
+		var err error
+		b := tx.Bucket([]byte(bucket))
+		for _, transaction := range aggDataTxs {
+			hash := transaction.Hash()
+			err = b.Put(hash[:], transaction.Encode())
+			if err != nil {
+				logger.Printf("We GOT AN ERROR")
+			}
+			nrClosedTransactions = nrClosedTransactions + 1
+			totalTransactionSize = totalTransactionSize + float32(transaction.Size())
+			averageTxSize = totalTransactionSize / nrClosedTransactions
 		}
 		return err
 	})
@@ -242,6 +298,10 @@ func WriteClosedTx(transaction protocol.Transaction) (err error) {
 		bucket = "closedstakes"
 	case *protocol.AggTx:
 		bucket = "closedaggregations"
+	case *protocol.DataTx:
+		bucket = "closeddata"
+	case *protocol.AggDataTx:
+		bucket = "closedaggdata"
 	}
 
 	hash := transaction.Hash()
@@ -253,14 +313,14 @@ func WriteClosedTx(transaction protocol.Transaction) (err error) {
 
 	nrClosedTransactions = nrClosedTransactions + 1
 	totalTransactionSize = totalTransactionSize + float32(transaction.Size())
-	averageTxSize = totalTransactionSize/nrClosedTransactions
+	averageTxSize = totalTransactionSize / nrClosedTransactions
 	return err
 }
 
 func WriteToOwnStateTransitionkStash(st *protocol.StateTransition) {
-	OwnStateTransitionStash = append(OwnStateTransitionStash,st)
+	OwnStateTransitionStash = append(OwnStateTransitionStash, st)
 
-	if(len(OwnStateTransitionStash) > 20){
+	if len(OwnStateTransitionStash) > 20 {
 		OwnStateTransitionStash = append(OwnStateTransitionStash[:0], OwnStateTransitionStash[1:]...)
 	}
 }

@@ -386,7 +386,7 @@ func initGenesis() (genesis *protocol.Genesis, err error) {
 func accStateChange(txSlice []*protocol.AccTx) error {
 	for _, tx := range txSlice {
 		if tx.Header != 2 {
-			newAcc := protocol.NewAccount(tx.PubKey, tx.Issuer, 1000, false, [crypto.COMM_KEY_LENGTH]byte{}, tx.Contract, tx.ContractVariables)
+			newAcc := protocol.NewAccount(tx.PubKey, tx.Issuer, 100000, false, [crypto.COMM_KEY_LENGTH]byte{}, tx.Contract, tx.ContractVariables)
 			newAccHash := newAcc.Hash()
 
 			acc, _ := storage.GetAccount(newAccHash)
@@ -424,6 +424,17 @@ func aggTxStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 	sort.Sort(ByTxCount(txSlice))
 
 	if err := fundsStateChange(txSlice, initialSetup); err != nil {
+		logger.Printf("Error in aggregated funds tx state change")
+		return err
+	} else {
+		return nil
+	}
+}
+
+func aggDataTxStateChange(txSlice []*protocol.DataTx, initialSetup bool) (err error) {
+	sort.Sort(ByTxCountData(txSlice))
+
+	if err := dataStateChange(txSlice, initialSetup); err != nil {
 		return err
 	} else {
 		return nil
@@ -431,9 +442,15 @@ func aggTxStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 }
 
 type ByTxCount []*protocol.FundsTx
+
 func (a ByTxCount) Len() int           { return len(a) }
 func (a ByTxCount) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByTxCount) Less(i, j int) bool { return a[i].TxCnt <= a[j].TxCnt }
+
+type ByTxCountData []*protocol.DataTx
+func (a ByTxCountData) Len() int           { return len(a) }
+func (a ByTxCountData) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ByTxCountData) Less(i, j int) bool { return a[i].TxCnt <= a[j].TxCnt }
 
 func fundsStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error) {
 	for _, tx := range txSlice {
@@ -443,7 +460,7 @@ func fundsStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 			continue
 		}
 
-		/*
+
 		var rootAcc *protocol.Account
 		//Check if we have to issue new coins (in case a root account signed the tx)
 		if rootAcc, err = storage.GetRootAccount(tx.From); err != nil {
@@ -459,7 +476,7 @@ func fundsStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 			rootAcc.Balance += tx.Amount
 			rootAcc.Balance += tx.Fee
 		}
-		*/
+
 
 		var accSender, accReceiver *protocol.Account
 		accSender, err = storage.GetAccount(tx.From)
@@ -505,11 +522,69 @@ func fundsStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 
 		//We're manipulating pointer, no need to write back
 		accSender.TxCnt += 1
-		//removed from IoT case
-		//accSender.Balance -= tx.Amount
+		accSender.Balance -= tx.Amount
 		accReceiver.Balance += tx.Amount
 	}
 	return nil
+}
+
+func dataStateChange(dataTxSlice []*protocol.DataTx, initialSetup bool) (err error) {
+	for _, tx := range dataTxSlice {
+
+		//If transaction is in closed tx, the state was adjusted already.
+		if storage.ReadClosedTx(tx.Hash()) != nil && !initialSetup {
+			continue
+		}
+
+
+		var rootAcc *protocol.Account
+		//Check if we have to issue new coins (in case a root account signed the tx)
+		if rootAcc, err = storage.GetRootAccount(tx.From); err != nil {
+			return err
+		}
+
+		if rootAcc != nil && rootAcc.Balance+tx.Fee > MAX_MONEY {
+			return errors.New("Transaction amount would lead to balance overflow at the receiver (root) account.")
+		}
+
+		//Will not be reached if errors occured
+		if rootAcc != nil {
+			rootAcc.Balance += tx.Fee
+		}
+
+
+		var accSender *protocol.Account
+		accSender, err = storage.GetAccount(tx.From)
+
+		/* TODO RB: PUT BACK IN (in case we want to work with transaction counters again
+		//Check transaction counter
+		if !initialSetup && tx.Aggregated == false && tx.TxCnt != accSender.TxCnt {
+			if tx.TxCnt < accSender.TxCnt {
+				logger.Printf("Tx %x, already in the state.", tx.Hash())
+			} else {
+				err = errors.New(fmt.Sprintf("Sender (%x) txCnt in %x does not match: %v (tx.txCnt) vs. %v (state txCnt).", accSender.Address[0:8], tx.Hash(), tx.TxCnt, accSender.TxCnt))
+			}
+		}
+		*/
+
+		//Check sender balance
+		// "!initialSetup" does allow a "Credit" like behaviour where there is no error, regarding the balance. In the end it should match the wanted state.
+		if !initialSetup && tx.Fee > accSender.Balance {
+			err = errors.New(fmt.Sprintf("Sender does not have enough funds for the Data transaction: Balance = %v, Fee = %v.", accSender.Balance, tx.Fee))
+		}
+
+		//After Tx fees, account must still have more than the minimum staking amount
+		if accSender.IsStaking && ((tx.Fee + protocol.MIN_STAKING_MINIMUM) > accSender.Balance) {
+			err = errors.New("Sender is staking and does not have enough funds in order to fulfill the required staking minimum.")
+		}
+
+
+		//We're manipulating pointer, no need to write back
+		accSender.TxCnt += 1
+
+	}
+	return nil
+
 }
 
 //We accept config slices with unknown id, but don't act on the payload. This is in case we have not updated to a new
@@ -587,11 +662,24 @@ func getFundsTxFromAggTx(AggregatedTxSlice [][32]byte)(fundsTxSlice []*protocol.
 	return fundsTxSlice
 }
 
-func collectTxFees(accTxSlice []*protocol.AccTx, fundsTxSlice []*protocol.FundsTx, configTxSlice []*protocol.ConfigTx, stakeTxSlice []*protocol.StakeTx, aggTxSlice []*protocol.AggTx, minerHash [32]byte, initialSetup bool) (err error) {
+func getDataTxFromAggDataTx(AggregatedDataTxSlice [][32]byte) (dataTxSlice []*protocol.DataTx) {
+	for _, txHash := range AggregatedDataTxSlice {
+		trx := storage.ReadOpenTx(txHash)
+
+		if trx != nil {
+			dataTxSlice = append(dataTxSlice, trx.(*protocol.DataTx))
+		}
+	}
+
+	return dataTxSlice
+}
+
+func collectTxFees(accTxSlice []*protocol.AccTx, fundsTxSlice []*protocol.FundsTx, configTxSlice []*protocol.ConfigTx, stakeTxSlice []*protocol.StakeTx, aggTxSlice []*protocol.AggTx, dataTxSlice []*protocol.DataTx, aggDataTxSlice []*protocol.AggDataTx, minerHash [32]byte, initialSetup bool) (err error) {
 	var tmpAccTx []*protocol.AccTx
 	var tmpFundsTx []*protocol.FundsTx
 	var tmpConfigTx []*protocol.ConfigTx
 	var tmpStakeTx []*protocol.StakeTx
+	var tmpDataTx []*protocol.DataTx
 
 	//if initialSetup { //TODO DELETE THIS
 		minerAcc, err := storage.GetAccount(minerHash)
@@ -602,6 +690,11 @@ func collectTxFees(accTxSlice []*protocol.AccTx, fundsTxSlice []*protocol.FundsT
 		//Get all new Funds Transactions and append them to the fundsTxSlice
 		for _, tx := range aggTxSlice {
 			fundsTxSlice = append(fundsTxSlice, getFundsTxFromAggTx(tx.AggregatedTxSlice)...)
+		}
+
+		//Get all new Data Transactions and append them to the aggTxSlice
+		for _, tx := range aggDataTxSlice {
+			dataTxSlice = append(dataTxSlice, getDataTxFromAggDataTx(tx.AggregatedDataTx)...)
 		}
 
 		var senderAcc *protocol.Account
@@ -674,6 +767,21 @@ func collectTxFees(accTxSlice []*protocol.AccTx, fundsTxSlice []*protocol.FundsT
 			senderAcc.Balance -= tx.Fee
 			minerAcc.Balance += tx.Fee
 			tmpStakeTx = append(tmpStakeTx, tx)
+		}
+
+		for _, tx := range dataTxSlice {
+			if minerAcc.Balance + tx.Fee > MAX_MONEY {
+				err = errors.New("Fee amount would lead to balance overflow at the miner account.")
+			}
+
+			senderAcc, err = storage.GetAccount(tx.From)
+
+			//TODO if there is an error, consider building in a rollback mechanism
+
+			senderAcc.Balance -= tx.Fee
+			minerAcc.Balance += tx.Fee
+			//This list is used for rollbacks. For "legacy support", also create this list
+			tmpDataTx = append(tmpDataTx, tx)
 		}
 	return nil
 }
