@@ -8,6 +8,7 @@ import (
 	"github.com/oigele/bazo-miner/p2p"
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
+	"math/rand"
 	"os"
 	"sync"
 	"testing"
@@ -24,6 +25,7 @@ var (
 )
 
 func TestDataTx(t *testing.T) {
+	rand.Seed(time.Now().UnixNano())
 	rootNode := fmt.Sprintf("WalletA.txt")
 	rootNodePubKey, _ := crypto.ExtractECDSAPublicKeyFromFile(rootNode)
 	rootNodePrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
@@ -65,6 +67,7 @@ func TestDataTx(t *testing.T) {
 	numberOfRounds := 20
 	j := 1
 
+
 	start := time.Now()
 
 	for z = 1; z <= numberOfRounds; z++ {
@@ -79,7 +82,7 @@ func TestDataTx(t *testing.T) {
 					hasherRootNode,
 					nodeMap[hasher],
 					fromPrivKey,
-					[]byte{1,2,3})
+					[]byte(String(random(1, 10))))
 
 				if err := SendTx("127.0.0.1:8002", tx, p2p.DATATX_BRDCST); err != nil {
 					t.Log(fmt.Sprintf("Error"))
@@ -1239,3 +1242,29 @@ func stringAlreadyInSlice(inputSlice []string, str string) bool {
 	}
 	return false
 }
+
+//code for string randomization taken from https://www.calhoun.io/creating-random-strings-in-go/
+const charset = "abcdefghijklmnopqrstuvwxyz" +
+	"ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+
+var seededRand *rand.Rand = rand.New(
+	rand.NewSource(time.Now().UnixNano()))
+
+func StringWithCharset(length int, charset string) string {
+	b := make([]byte, length)
+	for i := range b {
+		b[i] = charset[seededRand.Intn(len(charset))]
+	}
+	return string(b)
+}
+
+func String(length int) string {
+	return StringWithCharset(length, charset)
+}
+//end code taken from https://www.calhoun.io/creating-random-strings-in-go/
+
+//function taken from https://golangcode.com/generate-random-numbers/
+func random(min int, max int) int {
+	return rand.Intn(max-min) + min
+}
+//end function taken from https://golangcode.com/generate-random-numbers/
