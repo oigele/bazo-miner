@@ -97,6 +97,28 @@ func TestDataTx(t *testing.T) {
 		}
 	}
 
+	for z = 1; z <= numberOfRounds; z++ {
+		for hasher,_  := range nodeMap {
+			for txCount := 1; txCount <= j; txCount++ {
+				tx, _ := protocol.ConstrFundsTx(
+					byte(0),
+					uint64(10),
+					uint64(1),
+					//can do it like this because no txcount check. the important part is that the txcount is unique
+					uint32(z*j-txCount),
+					hasher,
+					hasherRootNode,
+					nodeMap[hasher],
+					fromPrivKey,
+					nil)
+
+				if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					t.Log(fmt.Sprintf("Error"))
+				}
+			}
+		}
+	}
+
 	elapsed := time.Now().Sub(start)
 
 
