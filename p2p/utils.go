@@ -89,13 +89,14 @@ func RcvData_(c net.Conn) (header *Header, payload []byte, err error) {
 }
 
 func sendData(p *peer, payload []byte) {
-	//logger.Printf("Send message:\nReceiver: %v\nType: %v\nPayload length: %v\n", p.getIPPort(), LogMapping[payload[4]], len(payload)-HEADER_LEN)
+	logger.Printf("Send message:\nReceiver: %v\nType: %v\nPayload length: %v\n", p.getIPPort(), LogMapping[payload[4]], len(payload)-HEADER_LEN)
 
 	p.l.Lock()
 	if LogMapping[payload[4]] == "" {
 		logger.Printf("Strange Header.TypeID (%v) to send to %v", payload[4], p.getIPPort())
 	}
 	p.conn.Write(payload)
+	logger.Printf("Tx with payload: %s successfully sent", LogMapping[payload[4]])
 	p.l.Unlock()
 }
 
