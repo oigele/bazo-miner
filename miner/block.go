@@ -1573,7 +1573,7 @@ func fetchAggDataTxData(block *protocol.Block, aggTxSlice []*protocol.AggDataTx,
 			//Transaction need to be fetched from the network. This can still happen for aggregated transactiosn
 			cnt := 0
 		HERE:
-			logger.Printf("Request AGGDATATX: %x for block %x. PROBLEM: REQUEST STRUCTURE NOT IMPLEMEMENTED YET", aggDataTxHash, block.Hash[0:8])
+			logger.Printf("Request AGGDATATX: %x for block %x.", aggDataTxHash, block.Hash[0:8])
 			//TODO request structure still needs to be implemented for the IoT project
 			err := p2p.TxReq(aggDataTxHash, p2p.AGGDATATX_REQ)
 			if err != nil {
@@ -1582,7 +1582,7 @@ func fetchAggDataTxData(block *protocol.Block, aggTxSlice []*protocol.AggDataTx,
 			}
 
 			select {
-			case aggDataTx = <-p2p.AggTxChan:
+			case aggDataTx = <-p2p.AggDataTxChan:
 				storage.WriteOpenTx(aggDataTx)
 				logger.Printf("  Received AGGDATATX: %x for block %x", aggDataTxHash, block.Hash[0:8])
 			case <-time.After(TXFETCH_TIMEOUT * time.Second):
@@ -2225,6 +2225,7 @@ func postValidate(data blockData, initialSetup bool) {
 
 		//Broadcast AggTx to the neighbors, such that they do not have to request them later.
 		if len(data.aggTxSlice) > 0 {
+			logger.Printf("broadcasting agg tx")
 			broadcastVerifiedAggTxsToOtherMiners(data.aggTxSlice)
 		}
 
