@@ -37,6 +37,8 @@ var (
 	DataTxBeforeAggregation			= make([]*protocol.DataTx, 0)
 	ReceivedBlockStash				= make([]*protocol.Block, 0)
 	TxcntToTxMap					= make(map[uint32][][32]byte)
+
+
 	AllClosedBlocksAsc []*protocol.Block
 	Bootstrap_Server string
 	averageTxSize float32 				= 0
@@ -203,6 +205,13 @@ func Init(dbname string, bootstrapIpport string) {
 		_, err = tx.CreateBucket([]byte(LASTCLOSEDEPOCHBLOCK_BUCKET))
 		if err != nil {
 			return fmt.Errorf(ERROR_MSG+"Create bucket: %s", err)
+		}
+		return nil
+	})
+	db.Update(func(tx *bolt.Tx) error {
+		_, err = tx.CreateBucket([]byte("datasummary"))
+		if err != nil {
+			return fmt.Errorf(ERROR_MSG + "Create bucket: %s", err)
 		}
 		return nil
 	})

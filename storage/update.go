@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"github.com/boltdb/bolt"
 	"github.com/oigele/bazo-miner/protocol"
 )
 
@@ -61,4 +62,78 @@ func BlockReadyToAggregate(block *protocol.Block) bool {
 	block.NrAggTx = 0
 
 	return true
+}
+
+func UpdateDataSummary(dataTxs []*protocol.DataTx) (err error){
+	var encodedOldDataSummary []byte
+	var oldDataSummary *protocol.DataSummary
+	var newDataSummary *protocol.DataSummary
+	var sender [32]byte
+	var dataTxSliceOfSender []*protocol.DataTx
+	var updateMap = make(map[[32]byte][]*protocol.DataTx)
+
+	//no dataTxs to update, return
+	if !(len(dataTxs) > 0) {
+		return nil
+	}
+
+	for _,dataTx := range dataTxs {
+		updateMap[dataTx.From] = append(updateMap[dataTx.From], dataTx)
+	}
+
+	//iterate through each sender in the map. For each, update the database.
+	for sender, dataTxSliceOfSender = range updateMap {
+		//check if there already exists an entry for our sender
+		db.View(func(tx *bolt.Tx) error {
+			b := tx.Bucket([]byte("datasummary"))
+			encodedOldDataSummary = b.Get(sender[:])
+			return nil
+		})
+		//write a new summary for the sender and abort
+		if encodedOldDataSummary == nil {
+			logger.Printf("The sender has no data summary in the database yet. Creating one")
+			newDataSummary = protocol.NewDataSummary(sender)
+			//aggregate the new summary
+			for _, dataTx := range dataTxSliceOfSender {
+				if dataTx.Data != nil {
+					newDataSummary.Data = append(newDataSummary.Data, dataTx.Data)
+				} else {
+					continue
+				}
+			}
+			//if there is nothing to write, then dont write it
+			if newDataSummary.Data == nil {
+				logger.Printf("None of the transactions had data. Not writing a new data summary to database")
+				return nil
+			}
+			err = WriteDataSummary(newDataSummary); if err != nil {
+				return err
+			}
+			return nil
+			//there is already a summary for the sender in the database. Need to update it
+		} else {
+			oldDataSummary = oldDataSummary.Decode(encodedOldDataSummary)
+			for _, dataTx := range dataTxSliceOfSender {
+				if dataTx.Data != nil {
+					oldDataSummary.Data = append(oldDataSummary.Data, dataTx.Data)
+				} else {
+					continue
+				}
+			}
+			//newDataSummary now contains all the updates, so activate it
+			newDataSummary = oldDataSummary
+			//delete the old entry and write the new entry to database
+			err = db.Update(func(tx *bolt.Tx) error {
+				var err error
+				b := tx.Bucket([]byte("datasummary"))
+				err = b.Delete(sender[:])
+				err = b.Put(sender[:], newDataSummary.Encode())
+				return err
+			})
+		}
+		encodedOldDataSummary = nil
+		oldDataSummary = nil
+		newDataSummary = nil
+	}
+	return err
 }

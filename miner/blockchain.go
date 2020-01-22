@@ -231,6 +231,24 @@ func CommitteeMining(height int) {
 						fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
 						dataTxs = append(dataTxs, aggregatedDataTxSlice...)
 
+						if len(dataTxs) > 0 {
+							err := storage.UpdateDataSummary(dataTxs); if err != nil {
+								logger.Printf("Error when updating the data summary")
+								return
+							} else {
+								logger.Printf("Data Summary Updated")
+								newDataSummarySlice := storage.ReadAllDataSummary()
+								if len(newDataSummarySlice) == 0 {
+									logger.Printf("got a problem!!")
+									return
+								}
+								logger.Printf("Start Print data summary")
+								for _, dataSummary := range newDataSummarySlice {
+									logger.Printf(dataSummary.String())
+								}
+							}
+						}
+
 						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs))
 
 						storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
@@ -317,6 +335,24 @@ func CommitteeMining(height int) {
 						//append the aggTxs to the normal fundsTxs to delete
 						fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
 						dataTxs = append(dataTxs, aggregatedDataTxSlice...)
+
+						if len(dataTxs) > 0 {
+							err := storage.UpdateDataSummary(dataTxs); if err != nil {
+								logger.Printf("Error when updating the data summary")
+								return
+							} else {
+								logger.Printf("Data Summary Updated")
+								newDataSummarySlice := storage.ReadAllDataSummary()
+								if len(newDataSummarySlice) == 0 {
+									logger.Printf("got a problem!!")
+									return
+								}
+								logger.Printf("Start Print data summary")
+								for _, dataSummary := range newDataSummarySlice {
+									logger.Printf(dataSummary.String())
+								}
+							}
+						}
 
 						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs))
 

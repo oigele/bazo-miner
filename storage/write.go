@@ -324,3 +324,13 @@ func WriteToOwnStateTransitionkStash(st *protocol.StateTransition) {
 		OwnStateTransitionStash = append(OwnStateTransitionStash[:0], OwnStateTransitionStash[1:]...)
 	}
 }
+
+func WriteDataSummary(ds *protocol.DataSummary) (err error) {
+	err = db.Update(func(tx *bolt.Tx) error {
+		var err error
+		b := tx.Bucket([]byte("datasummary"))
+		b.Put(ds.Address[:], ds.Encode())
+		return err
+	})
+	return err
+}

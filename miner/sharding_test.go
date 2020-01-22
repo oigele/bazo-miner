@@ -52,15 +52,6 @@ func TestDataTx(t *testing.T) {
 		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
-		/*if err := SendTx("127.0.0.1:8001", accTx, p2p.ACCTX_BRDCST); err != nil {
-			fmt.Sprintf("Error")
-		}
-		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
-			fmt.Sprintf("Error")
-		}
-		if err := SendTx("127.0.0.1:8003", accTx, p2p.ACCTX_BRDCST); err != nil {
-			fmt.Sprintf("Error")
-		}*/
 
 		newNodeAddress := crypto.GetAddressFromPubKey(&newAccAddress.PublicKey)
 		hasherNewNode := protocol.SerializeHashContent(newNodeAddress)

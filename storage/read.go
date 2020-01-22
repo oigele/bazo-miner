@@ -418,3 +418,22 @@ func ReadStateTransitionFromOwnStash(height int) *protocol.StateTransition {
 
 	return nil
 }
+
+func ReadAllDataSummary() []*protocol.DataSummary {
+	var dataSummarySlice []*protocol.DataSummary
+	var dataSummary *protocol.DataSummary
+
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("datasummary"))
+		b.ForEach(func(k, v []byte) error {
+			if v != nil {
+				encodedDataSummary := v
+				dataSummary = dataSummary.Decode(encodedDataSummary)
+				dataSummarySlice = append(dataSummarySlice, dataSummary)
+			}
+			return nil
+		})
+		return nil
+	})
+	return dataSummarySlice
+}
