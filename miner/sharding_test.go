@@ -65,7 +65,7 @@ func TestDataTx(t *testing.T) {
 
 	z := 1
 	numberOfRounds := 20
-	j := 1
+	j := 50
 
 
 	start := time.Now()
@@ -91,7 +91,7 @@ func TestDataTx(t *testing.T) {
 		}
 	}
 
-	for z = 1; z <= numberOfRounds; z++ {
+	/*for z = 1; z <= numberOfRounds; z++ {
 		for hasher,_  := range nodeMap {
 			for txCount := 1; txCount <= j; txCount++ {
 				tx, _ := protocol.ConstrFundsTx(
@@ -111,7 +111,7 @@ func TestDataTx(t *testing.T) {
 				}
 			}
 		}
-	}
+	}*/
 
 	elapsed := time.Now().Sub(start)
 

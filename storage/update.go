@@ -91,14 +91,11 @@ func UpdateDataSummary(dataTxs []*protocol.DataTx) (err error){
 		})
 		//write a new summary for the sender and abort
 		if encodedOldDataSummary == nil {
-			logger.Printf("The sender has no data summary in the database yet. Creating one")
 			newDataSummary = protocol.NewDataSummary(sender)
 			//aggregate the new summary
 			for _, dataTx := range dataTxSliceOfSender {
 				if dataTx.Data != nil {
 					newDataSummary.Data = append(newDataSummary.Data, dataTx.Data)
-				} else {
-					continue
 				}
 			}
 			//if there is nothing to write, then dont write it
@@ -107,17 +104,15 @@ func UpdateDataSummary(dataTxs []*protocol.DataTx) (err error){
 				return nil
 			}
 			err = WriteDataSummary(newDataSummary); if err != nil {
+				logger.Printf("Got an error when writing data Summary")
 				return err
 			}
-			return nil
 			//there is already a summary for the sender in the database. Need to update it
 		} else {
 			oldDataSummary = oldDataSummary.Decode(encodedOldDataSummary)
 			for _, dataTx := range dataTxSliceOfSender {
 				if dataTx.Data != nil {
 					oldDataSummary.Data = append(oldDataSummary.Data, dataTx.Data)
-				} else {
-					continue
 				}
 			}
 			//newDataSummary now contains all the updates, so activate it
@@ -130,6 +125,8 @@ func UpdateDataSummary(dataTxs []*protocol.DataTx) (err error){
 				err = b.Put(sender[:], newDataSummary.Encode())
 				return err
 			})
+			oldDataSummary = nil
+			newDataSummary = nil
 		}
 		encodedOldDataSummary = nil
 		oldDataSummary = nil
