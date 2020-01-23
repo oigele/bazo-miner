@@ -68,14 +68,25 @@ Commands
 ./bazo-miner start --database StoreA.db --address 127.0.0.1:8000 --bootstrap 127.0.0.1:8000 --wallet WalletA.txt --commitment CommitmentA.txt --multisig WalletA.txt --rootwallet WalletA.txt --rootcommitment CommitmentA.txt
 ```
 
-Starting a Committee Member:
-```bash
-./bazo-miner committee --database StoreC.db --address 127.0.0.1:8002 --bootstrap 127.0.0.1:8000
-```
-
 We start miner A at address and port `localhost:8000` and connect to itself by setting the bootstrap address to the same address.
 Note that we could have omitted these two options since they are passed by default with these values.
 Wallet and commitment keys are automatically created. Using this command, we define miner A as the root.
+
+Now, due to the architecture of this branch of BAZO, a committee member has to be started which distributes transactions to the blockchain shards.
+
+### Starting a Committee Member:
+
+```bash
+./bazo-miner committee --database StoreC.db --address 127.0.0.1:8002 --bootstrap 127.0.0.1:8000
+```
+Options
+* `--database`: (default store.db) Specify where to load database of the disk-based key/value store from. The database is created if it does not exist yet.
+* `--address`: (default: localhost:8000) Specify starting address and port, in format `IP:PORT`
+* `--bootstrap`: (default: localhost:8000) Specify the address and port of the boostrapping node. Note that when this option is not specified, the miner connects to itself.
+* `--confirm`: In order to review the miner startup options, the user must press Enter before the miner starts.
+
+The committee member effectively bootstraps to the bootstrap node. All it needs additionally is a database to store transactions and the global state, an own address and an address to bootstrap to. It doesn't need a wallet or a commitmentkey because it doesnt issue any transactions itself and it doesn't mine any blocks.
+
 
 Starting miner B requires more work since new accounts have to be registered by a root account.
 In our case, we can use miner's A `WalletA.txt` (e.g. copy the file to the Bazo client directory) to create and add a new account to the network.
