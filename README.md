@@ -88,6 +88,8 @@ Options
 The committee member effectively bootstraps to the bootstrap node. All it needs additionally is a database to store transactions and the global state, an own address and an address to bootstrap to. It doesn't need a wallet or a commitmentkey because it doesnt issue any transactions itself and it doesn't mine any blocks.
 
 
+### Start additional shards
+
 Starting miner B requires more work since new accounts have to be registered by a root account.
 In our case, we can use miner's A `WalletA.txt` (e.g. copy the file to the Bazo client directory) to create and add a new account to the network.
 Using the [Bazo client](https://github.com/oigele/bazo-client), we create a new account:
