@@ -74,7 +74,7 @@ Wallet and commitment keys are automatically created. Using this command, we def
 
 Now, due to the architecture of this branch of BAZO, a committee member has to be started which distributes transactions to the blockchain shards.
 
-### Starting a Committee Member:
+### Start a Committee Member
 
 ```bash
 ./bazo-miner committee --database StoreC.db --address 127.0.0.1:8002 --bootstrap 127.0.0.1:8000
