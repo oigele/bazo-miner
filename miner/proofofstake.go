@@ -119,14 +119,6 @@ func proofOfStake(diff uint8,
 	timestampBufIndexStart := index
 	timestampBufIndexEnd := index + 8
 
-	//here the custom implementation of block mining starts
-	logger.Printf("Start PoS Simulation")
-	time.Sleep(5 * time.Second)
-	timestamp = time.Now().Unix()
-	logger.Printf("End PoS Simulation")
-	return timestamp, nil
-
-
 
 	//after this, the normal PoS continues
 

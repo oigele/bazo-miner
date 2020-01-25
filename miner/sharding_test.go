@@ -160,13 +160,13 @@ func TestShardSemiIterative(t *testing.T) {
 		if err := SendTx("127.0.0.1:8000", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
-		if err := SendTx("127.0.0.1:8001", accTx, p2p.ACCTX_BRDCST); err != nil {
+		/*if err := SendTx("127.0.0.1:8001", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
 		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
-		/*if err := SendTx("127.0.0.1:8003", accTx, p2p.ACCTX_BRDCST); err != nil {
+		if err := SendTx("127.0.0.1:8003", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}*/
 
@@ -181,9 +181,9 @@ func TestShardSemiIterative(t *testing.T) {
 
 
 	i := 1
-	z := 1
+	/*z := 1
 	y := 1
-	/*x := 1*/
+	x := 1*/
 
 	for hasherNewNode, _ := range nodeMap {
 		//send funds to new account
@@ -202,13 +202,13 @@ func TestShardSemiIterative(t *testing.T) {
 		if err := SendTx("127.0.0.1:8000", tx, p2p.FUNDSTX_BRDCST); err != nil {
 			t.Log(fmt.Sprintf("Error"))
 		}
-		if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
+		/*if err := SendTx("127.0.0.1:8001", tx, p2p.FUNDSTX_BRDCST); err != nil {
 			t.Log(fmt.Sprintf("Error"))
 		}
 		if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 			t.Log(fmt.Sprintf("Error"))
 		}
-		/*if err := SendTx("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+		if err := SendTx("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
 			t.Log(fmt.Sprintf("Error"))
 		}*/
 
@@ -234,7 +234,7 @@ func TestShardSemiIterative(t *testing.T) {
 
 	go func() {
 		defer wg.Done()
-		for i = 1; i <= numberOfRounds; i++ {m
+		for i = 1; i <= numberOfRounds; i++ {
 			for hasher,_  := range nodeMap {
 				for txCount := 1; txCount <= j; txCount++ {
 					tx, _ := protocol.ConstrFundsTx(
@@ -257,9 +257,9 @@ func TestShardSemiIterative(t *testing.T) {
 		}
 	}()
 
-	time.Sleep(5 * time.Millisecond)
+	time.Sleep(1 * time.Millisecond)
 
-	go func() {
+	/*go func() {
 		defer wg.Done()
 		for z = 1; z <= numberOfRounds; z++ {
 			for hasher,_  := range nodeMap {
@@ -284,7 +284,7 @@ func TestShardSemiIterative(t *testing.T) {
 		}
 	}()
 
-	time.Sleep(5 * time.Millisecond)
+	time.Sleep(1 * time.Millisecond)
 
 	go func() {
 		defer wg.Done()
@@ -311,7 +311,7 @@ func TestShardSemiIterative(t *testing.T) {
 		}
 	}()
 
-	/*go func() {
+	go func() {
 		defer wg.Done()
 		for x = 1; x <= numberOfRounds; x++ {
 			for hasher,_  := range nodeMap {
