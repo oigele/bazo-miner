@@ -242,10 +242,10 @@ func CommitteeMining(height int) {
 									logger.Printf("got a problem!!")
 									return
 								}
-								logger.Printf("Start Print data summary")
+								/*logger.Printf("Start Print data summary")
 								for _, dataSummary := range newDataSummarySlice {
 									logger.Printf(dataSummary.String())
-								}
+								}*/
 							}
 						}
 
@@ -347,10 +347,10 @@ func CommitteeMining(height int) {
 									logger.Printf("got a problem!!")
 									return
 								}
-								logger.Printf("Start Print data summary")
+								/*logger.Printf("Start Print data summary")
 								for _, dataSummary := range newDataSummarySlice {
 									logger.Printf(dataSummary.String())
-								}
+								}*/
 							}
 						}
 
@@ -626,7 +626,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					for _,id := range shardIDs{
 						if(id != storage.ThisShardID && shardIDStateBoolMap[id] == false){
 
-							//Maybe the transition was received in the meantime
+							//Maybe the transition was received in the meantime. Then dont request it again.
 							foundSt := searchStateTransition(id, int(lastBlock.Height))
 							if foundSt != nil {
 								logger.Printf("skip planned request for shardID %d", id)
@@ -759,6 +759,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				case encodedTransactionAssignment := <-p2p.TransactionAssignmentReqChan:
 					var transactionAssignment *protocol.TransactionAssignment
 					transactionAssignment = transactionAssignment.DecodeTransactionAssignment(encodedTransactionAssignment)
+					//got the transaction assignment for the wrong height. Request again.
 					if transactionAssignment.Height != int(lastEpochBlock.Height) {
 						time.Sleep(2 * time.Second)
 						p2p.TransactionAssignmentReq(int(lastEpochBlock.Height), storage.ThisShardID)

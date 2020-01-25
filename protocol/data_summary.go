@@ -8,6 +8,7 @@ import (
 
 
 //Seperate data type to keep it more expandable
+//Data summary data type stores information about all data that has been sent from a particular address
 type DataSummary struct {
 	Address						[32]byte
 	Data						[][]byte

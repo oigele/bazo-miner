@@ -65,7 +65,7 @@ func TestDataTx(t *testing.T) {
 
 	z := 1
 	numberOfRounds := 20
-	j := 50
+	j := 150
 
 
 	start := time.Now()

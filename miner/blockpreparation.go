@@ -300,12 +300,6 @@ func checkBestCombination(openTxs []protocol.Transaction) (TxToAppend []protocol
 				if (nonAggregatableTxCounter+1)*transactionHashSize < blockSize {
 					nonAggregatableTxCounter += 1
 					TxToAppend = append(TxToAppend, tx)
-					//openTxs is shrinking because element i might be excluded. as soon as i is larger than the length of remaining slice, stop.
-					//They are cut out because they
-					/*if i < len(openTxs){
-						//this excludes element i from the slice. Selects access a half-open range which includes the first element but not the last one
-						openTxs = append(openTxs[:i], openTxs[i+1:]...)
-					}*/
 				} else {
 					return TxToAppend
 				}

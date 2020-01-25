@@ -91,7 +91,7 @@ func (tx AggDataTx) String() string {
 	return fmt.Sprintf(
 		"\n ________\n| AGGDATATX: |____________________________________________________________________\n" +
 			"|  Hash: %x\n" +
-			"|  Data: %v\n"+
+			//"|  Data: %v\n"+
 			"|  Fee: %v\n"+
 			"|  From: %x\n"+
 			"|  To: %x\n"+
@@ -99,7 +99,7 @@ func (tx AggDataTx) String() string {
 			"|  #Tx: %v\n"+
 			"|_________________________________________________________________________________",
 		tx.Hash(),
-		tx.Data,
+	//	tx.Data,
 		tx.Fee,
 		tx.From,
 		tx.To,
