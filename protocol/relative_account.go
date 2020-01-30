@@ -15,6 +15,7 @@ type StateTransition struct {
 	RelativeStateChange			map[[32]byte]*RelativeAccount //changed to 32 Byte for streamlining
 	Height						int
 	ShardID						int
+	CommitmentProof				[crypto.COMM_KEY_LENGTH]byte
 }
 
 /**
@@ -32,11 +33,12 @@ type RelativeAccount struct {
 	ContractVariables  []ByteArray           // Arbitrary length
 }
 
-func NewStateTransition(stateChange map[[32]byte]*RelativeAccount, height int, shardid int) *StateTransition {
+func NewStateTransition(stateChange map[[32]byte]*RelativeAccount, height int, shardid int, commProof [crypto.COMM_KEY_LENGTH]byte) *StateTransition {
 	newTransition := StateTransition{
 		stateChange,
 		height,
 		shardid,
+		commProof,
 	}
 
 	return &newTransition
@@ -73,9 +75,11 @@ func (st *StateTransition) HashTransition() [32]byte {
 	stHash := struct {
 		Height				  			  int
 		ShardID							  int
+		CommitmentProof					  [crypto.COMM_PROOF_LENGTH]byte
 	}{
 		st.Height,
 		st.ShardID,
+		st.CommitmentProof,
 	}
 	return SerializeHashContent(stHash)
 }
@@ -98,6 +102,7 @@ func (st *StateTransition) EncodeTransition() []byte {
 		RelativeStateChange:		st.RelativeStateChange,
 		Height:						st.Height,
 		ShardID:					st.ShardID,
+		CommitmentProof:			st.CommitmentProof,
 	}
 
 	buffer := new(bytes.Buffer)

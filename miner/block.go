@@ -1665,6 +1665,40 @@ func fetchAggDataTxData(block *protocol.Block, aggTxSlice []*protocol.AggDataTx,
 
 }
 
+func validateStateTransition(st *protocol.StateTransition) (err error) 	 {
+	stateTransitionValidation.Lock()
+	defer stateTransitionValidation.Unlock()
+
+	var senderAccAddress [64]byte
+
+	//find the senderAccount Address
+	for address, shardID := range ValidatorShardMap.ValMapping {
+		if shardID == st.ShardID {
+			senderAccAddress = address
+			break
+		}
+	}
+
+	acc, err := storage.GetAccount(protocol.SerializeHashContent(senderAccAddress))
+	if err != nil {
+		return errors.New("Cannot fetch the sender account")
+	}
+
+	commitmentPubKey, err := crypto.CreateRSAPubKeyFromBytes(acc.CommitmentKey)
+	if err != nil {
+		return  errors.New("Invalid commitment key in account.")
+	}
+
+
+	err = crypto.VerifyMessageWithRSAKey(commitmentPubKey, fmt.Sprint(st.Height), st.CommitmentProof)
+	if err != nil {
+		return errors.New("The submitted commitment proof can not be verified.")
+	}
+
+	return nil
+
+}
+
 
 //This function serves to validate an epoch block
 

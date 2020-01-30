@@ -91,12 +91,8 @@ func processStateData(payload []byte) {
 				storage.ReceivedStateStash.Set(stateHash,stateTransition)
 				logger.Printf("Length state stash map: %d\n",len(storage.ReceivedStateStash.M))
 				logger.Printf("Length state stash keys: %d\n",len(storage.ReceivedStateStash.Keys))
-				logger.Printf("Redistributing state transition\n")
-				broadcastStateTransition(stateTransition)
-			//There are a lot of connectivity problems. Oftentimes, only the root node is connected to all other nodes. Therefore, the root node will in all cases broadcast any incoming state transitions.
 			} else {
 				logger.Printf("Received state transition already included: Shard ID: %v  VS my shard ID: %v - Height: %d - Hash: %x\n",stateTransition.ShardID,storage.ThisShardID,stateTransition.Height,stateHash[0:8])
-				return
 			}
 	}
 }
