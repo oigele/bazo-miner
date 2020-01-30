@@ -459,6 +459,8 @@ func stateTransitionRes(p *peer, payload []byte) {
 	var packet []byte
 	var st *protocol.StateTransition
 
+	//prepare packet
+	packet = BuildPacket(NOT_FOUND, nil)
 	strPayload := string(payload)
 	shardID,_ := strconv.ParseInt(strings.Split(strPayload,":")[0],10,64)
 

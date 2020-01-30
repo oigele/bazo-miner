@@ -40,8 +40,8 @@ func minerBroadcastService() {
 	for {
 		select {
 		case msg := <-minerBrdcstMsg:
+			time.Sleep(5 * time.Millisecond)
 			go sendAndSearchMessages(msg)
-			time.Sleep(2 * time.Millisecond)
 		}
 	}
 }
@@ -70,6 +70,11 @@ func clientBroadcastService() {
 		select {
 		case msg := <-clientBrdcstMsg:
 			for p := range peers.clientConns {
+				if LogMapping[msg[4]] == "" {
+					logger.Printf("Stop sending message with strange type ID: %v", msg[4])
+					time.Sleep(2 * time.Millisecond)
+					continue
+				}
 				if peers.contains(p.getIPPort(),PEERTYPE_CLIENT) {
 					p.ch <- msg
 				} else {
@@ -83,6 +88,11 @@ func clientBroadcastService() {
 //This function does send the current and possible previous not send messages
 func sendAndSearchMessages(msg []byte) {
 	sMap := sendingMap
+	//check logmapping first
+	if LogMapping[msg[4]] == "" {
+		logger.Printf("Stop sending message with strange type ID: %v", msg[4])
+		return
+	}
 	for _, p := range sMap {
 		//Check if there is a valid connection to peer p, if not, store message
 		//if peers.minerConns[p.peer] {
@@ -94,11 +104,15 @@ func sendAndSearchMessages(msg []byte) {
 			_, _ = isConnectionAlreadyInSendingMap(p.peer, sendingMap)
 
 			receiver := sendingMap[p.peer.getIPPort()].peer
-			//receiver.conn.Write(msg)
-			receiver.ch <- msg
+			receiver.l.Lock()
+			time.Sleep(5 * time.Millisecond)
+			receiver.conn.Write(msg)
+			time.Sleep(5 * time.Millisecond)
+			receiver.l.Unlock()
+			//receiver.ch <- msg
 
 			//Send previously stored messages for this miner as well.
-			for _, hMsg := range p.delayedMessages {
+			/*for _, hMsg := range p.delayedMessages {
 				//Send historic not yet sent transaction and remove it.
 				//If the receiver channel is full, continue such that the program is not blocked...
 				if len(receiver.ch) >= 100 {
@@ -106,9 +120,9 @@ func sendAndSearchMessages(msg []byte) {
 				}
 				receiver.ch <- hMsg
 				p.delayedMessages = p.delayedMessages[1:]
-			}
+			}*/
 			peers.closeChannelMutex.Unlock()
-		} else {
+		} /*else {
 			//Store messages which are not sent du to connectivity issues.
 			messages := p.delayedMessages
 			////Check that not too many delayed messages are stored.
@@ -117,8 +131,8 @@ func sendAndSearchMessages(msg []byte) {
 			}
 
 			//Store message for this specific miner connection.
-			//p.delayedMessages = append(messages, msg)
-		}
+			p.delayedMessages = append(messages, msg)
+		}*/
 	}
 }
 

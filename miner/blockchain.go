@@ -231,6 +231,7 @@ func CommitteeMining(height int) {
 						fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
 						dataTxs = append(dataTxs, aggregatedDataTxSlice...)
 
+
 						if len(dataTxs) > 0 {
 							err := storage.UpdateDataSummary(dataTxs); if err != nil {
 								logger.Printf("Error when updating the data summary")
@@ -242,10 +243,10 @@ func CommitteeMining(height int) {
 									logger.Printf("got a problem!!")
 									return
 								}
-								/*logger.Printf("Start Print data summary")
-								for _, dataSummary := range newDataSummarySlice {
-									logger.Printf(dataSummary.String())
-								}*/
+								//logger.Printf("Start Print data summary")
+								//for _, dataSummary := range newDataSummarySlice {
+									//logger.Printf(dataSummary.String())
+								//}
 							}
 						}
 
@@ -347,10 +348,10 @@ func CommitteeMining(height int) {
 									logger.Printf("got a problem!!")
 									return
 								}
-								/*logger.Printf("Start Print data summary")
-								for _, dataSummary := range newDataSummarySlice {
-									logger.Printf(dataSummary.String())
-								}*/
+								//logger.Printf("Start Print data summary")
+								//for _, dataSummary := range newDataSummarySlice {
+									//logger.Printf(dataSummary.String())
+								//}
 							}
 						}
 
