@@ -1702,7 +1702,7 @@ func validateStateTransition(st *protocol.StateTransition) (err error) 	 {
 
 //This function serves to validate an epoch block
 
-func validateEpochBlock(b *protocol.EpochBlock) error {
+func validateEpochBlock(b *protocol.EpochBlock, relativeStates map[int]*protocol.RelativeState) error {
 
 	epochBlockValidation.Lock()
 	defer epochBlockValidation.Unlock()
@@ -1731,6 +1731,33 @@ func validateEpochBlock(b *protocol.EpochBlock) error {
 	} else {
 		logger.Printf("the epoch block could be successfully validated (PoS validation)")
 	}
+
+	//now validate the state of the epoch block
+	relativeStateCalculated := make(map[[32]byte]*protocol.RelativeAccount)
+
+	//aggregate relative state to the one which should theoretically be in the epoch block
+	for shardId, relativeState := range relativeStates {
+		logger.Printf("aggregation from shardID: %d", shardId)
+		relativeStateCalculated = AggregateRelativeState(relativeStateCalculated, relativeState.RelativeState)
+	}
+
+	//here create the state copy and calculate the relative state
+	//for this purpose, only the flow of funds has to be analyzed
+	var StateOld = CopyState(storage.State)
+
+
+	relativeStateFromEpochBlock := storage.GetRelativeState(StateOld, b.State)
+
+	var state string
+	for _, acc := range storage.State {
+		state += fmt.Sprintf("Is root: %v\n", acc)
+	}
+	logger.Printf(state)
+	if !sameRelativeState(relativeStateCalculated, relativeStateFromEpochBlock) {
+		logger.Printf("FOUND A CHEATER: Shard 1 inside the Epoch Block")
+		return errors.New("Shard 1 cheated with the epoch block")
+	}
+
 
 	return nil
 
@@ -1876,6 +1903,29 @@ func CopyState(state map[[32]byte]*protocol.Account) map[[32]byte]protocol.Accou
 
 	return copyState
 }
+
+func CopyStateDecoupled(state map[[32]byte]*protocol.Account) map[[32]byte]*protocol.Account {
+
+	var copyState = make(map[[32]byte]protocol.Account)
+	var decoupler = make(map[[32]byte]protocol.Account)
+	var copyStateReturn = make(map[[32]byte]*protocol.Account)
+
+	for k, v := range state {
+		copyState[k] = *v
+	}
+
+	for k, v := range copyState {
+		decoupler[k] = v
+	}
+
+	for k, v := range decoupler {
+		copyStateReturn[k] = &v
+	}
+
+	return copyStateReturn
+}
+
+
 
 //Doesn't involve any state changes.
 func preValidate(block *protocol.Block, initialSetup bool) (accTxSlice []*protocol.AccTx, fundsTxSlice []*protocol.FundsTx, configTxSlice []*protocol.ConfigTx, stakeTxSlice []*protocol.StakeTx, aggTxSlice []*protocol.AggTx, aggregatedFundsTxSlice []*protocol.FundsTx, dataTxSlice []*protocol.DataTx, aggregatedDataTxSlice []*protocol.DataTx, aggDataTxSlice []*protocol.AggDataTx, err error) {
@@ -2411,4 +2461,33 @@ func slashingCheck(slashedAddress, conflictingBlockHash1, conflictingBlockHash2 
 	delete(slashingDict, slashedAddress)
 
 	return true, nil
+}
+
+func AggregateRelativeState(stateRelPrev map[[32]byte]*protocol.RelativeAccount, stateRel map[[32]byte]*protocol.RelativeAccount) map[[32]byte]*protocol.RelativeAccount {
+
+	//iterate through all accounts in the new relative account. check if the current relative state is missing this account
+	for krel,_ := range stateRel {
+		if _, ok := stateRelPrev[krel]; !ok {
+			accNewRel := stateRel[krel]
+			accNew := protocol.NewRelativeAccount(stateRel[krel].Address, [32]byte{}, accNewRel.Balance, accNewRel.IsStaking, accNewRel.CommitmentKey, accNewRel.Contract, accNewRel.ContractVariables)
+			accNew.TxCnt = accNewRel.TxCnt
+			accNew.StakingBlockHeight = accNewRel.StakingBlockHeight
+			stateRelPrev[krel] = &accNew
+		} else {
+			accRelPrev := stateRelPrev[krel]
+			accRel := stateRel[krel]
+
+			//Adjust the account information
+			accRelPrev.Balance = accRelPrev.Balance + accRel.Balance
+			accRelPrev.TxCnt = accRelPrev.TxCnt + accRel.TxCnt
+			accRelPrev.StakingBlockHeight = accRelPrev.StakingBlockHeight + accRel.StakingBlockHeight
+			//Staking Tx can only be positive. So only take the info from the relative state if currently not staking (otherwhise we might accidentally change the state back)
+			//Also take over commitment key.
+			if accRelPrev.IsStaking == false {
+				accRelPrev.IsStaking = accRel.IsStaking
+				accRelPrev.CommitmentKey = accRel.CommitmentKey
+			}
+		}
+	}
+	return stateRelPrev
 }

@@ -18,6 +18,14 @@ type StateTransition struct {
 	CommitmentProof				[crypto.COMM_KEY_LENGTH]byte
 }
 
+//This structure is very similar to the state transition. However, it only serves as a validation element. Therefore, it does not require
+//a hash, serializer, deserializer or Commitment Proof.
+type RelativeState struct {
+	RelativeState 				map[[32]byte]*RelativeAccount
+	ShardID						int
+}
+
+
 /**
 	This datastructure keeps track of relative change in the account information during the creation of a block
  */
@@ -66,6 +74,15 @@ func NewRelativeAccount(address [64]byte,
 
 	return newAcc
 }
+
+func NewRelativeState(stateChange map[[32]byte]*RelativeAccount, shardid int) *RelativeState {
+	newRelativeState := RelativeState{
+		RelativeState: stateChange,
+		ShardID:       shardid,
+	}
+	return &newRelativeState
+}
+
 
 func (st *StateTransition) HashTransition() [32]byte {
 	if st == nil {

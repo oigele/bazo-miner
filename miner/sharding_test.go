@@ -219,7 +219,7 @@ func TestDataTx(t *testing.T) {
 
 	var nodeMap = make(map[[32]byte]*ecdsa.PrivateKey)
 
-	for i := 1; i <= 30; i++ {
+	for i := 1; i <= 10; i++ {
 
 		accTx, newAccAddress, err := protocol.ConstrAccTx(
 			byte(0),
@@ -252,6 +252,28 @@ func TestDataTx(t *testing.T) {
 
 
 	start := time.Now()
+
+	for z = 1; z <= 15; z++ {
+		for hasher,_  := range nodeMap {
+			for txCount := 1; txCount <= j; txCount++ {
+				tx, _ := protocol.ConstrFundsTx(
+					byte(0),
+					uint64(10),
+					uint64(1),
+					//can do it like this because no txcount check. the important part is that the txcount is unique
+					uint32(z*j-txCount),
+					hasher,
+					hasherRootNode,
+					nodeMap[hasher],
+					fromPrivKey,
+					[]byte(String(random(1, 10))))
+
+				if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					t.Log(fmt.Sprintf("Error"))
+				}
+			}
+		}
+	}
 
 	for z = 1; z <= numberOfRounds; z++ {
 		for hasher,_  := range nodeMap {

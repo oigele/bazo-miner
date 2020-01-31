@@ -105,6 +105,33 @@ func GetRelativeState(statePrev map[[32]byte]protocol.Account, stateNow map[[32]
 	return stateRelative
 }
 
+func GetRelativeStateForCommittee(statePrev map[[32]byte]protocol.Account, stateNow map[[32]byte]protocol.Account) (stateRel map[[32]byte]*protocol.RelativeAccount) {
+	var stateRelative = make(map[[32]byte]*protocol.RelativeAccount)
+
+	for know, _ := range stateNow {
+		//In case account was newly created during block validation
+		if _, ok := statePrev[know]; !ok {
+			accNow := stateNow[know]
+			accNewRel := protocol.NewRelativeAccount(stateNow[know].Address, [32]byte{}, int64(accNow.Balance), accNow.IsStaking, accNow.CommitmentKey, accNow.Contract, accNow.ContractVariables)
+			accNewRel.TxCnt = int32(accNow.TxCnt)
+			accNewRel.StakingBlockHeight = int32(accNow.StakingBlockHeight)
+			stateRelative[know] = &accNewRel
+		} else {
+			//Get account as in the version before block validation
+			accPrev := statePrev[know]
+			accNew := stateNow[know]
+
+			//account with relative adjustments of the fields, will be  applied by the other shards
+			accTransition := protocol.NewRelativeAccount(stateNow[know].Address, [32]byte{}, int64(accNew.Balance-accPrev.Balance), accNew.IsStaking, accNew.CommitmentKey, accNew.Contract, accNew.ContractVariables)
+			accTransition.TxCnt = int32(accNew.TxCnt - accPrev.TxCnt)
+			accTransition.StakingBlockHeight = int32(accNew.StakingBlockHeight - accPrev.StakingBlockHeight)
+			stateRelative[know] = &accTransition
+		}
+	}
+	return stateRelative
+}
+
+
 //Get all pubKey involved in FundsTx
 func GetFundsTxPubKeys(fundsTxData [][32]byte) (fundsTxPubKeys [][32]byte) {
 	for _, txHash := range fundsTxData {
