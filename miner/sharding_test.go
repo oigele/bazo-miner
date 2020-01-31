@@ -39,7 +39,7 @@ func TestCommitteeGoRoutines(t *testing.T) {
 	var nodeMap4 = make(map[[32]byte]*ecdsa.PrivateKey)
 
 
-	for i := 1; i <= 60; i++ {
+	for i := 1; i <= 30; i++ {
 
 		accTx, newAccAddress, err := protocol.ConstrAccTx(
 			byte(0),
@@ -266,7 +266,7 @@ func TestDataTx(t *testing.T) {
 					hasherRootNode,
 					nodeMap[hasher],
 					fromPrivKey,
-					[]byte(String(random(1, 10))))
+					nil)
 
 				if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 					t.Log(fmt.Sprintf("Error"))

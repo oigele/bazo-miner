@@ -1747,12 +1747,7 @@ func validateEpochBlock(b *protocol.EpochBlock, relativeStates map[int]*protocol
 
 
 	relativeStateFromEpochBlock := storage.GetRelativeState(StateOld, b.State)
-
-	var state string
-	for _, acc := range storage.State {
-		state += fmt.Sprintf("Is root: %v\n", acc)
-	}
-	logger.Printf(state)
+	
 	if !sameRelativeState(relativeStateCalculated, relativeStateFromEpochBlock) {
 		logger.Printf("FOUND A CHEATER: Shard 1 inside the Epoch Block")
 		return errors.New("Shard 1 cheated with the epoch block")

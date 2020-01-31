@@ -153,8 +153,8 @@ func CommitteeMining(height int) {
 					stakeTxs = append(stakeTxs, openTransaction.(*protocol.StakeTx))
 				}
 			case *protocol.FundsTx:
-				//if shardId == assignTransactionToShard(openTransaction) {
-				if shardId == 1 {
+				if shardId == assignTransactionToShard(openTransaction) {
+				//if shardId == 1 {
 					fundsTxs = append(fundsTxs, openTransaction.(*protocol.FundsTx))
 				}
 			case *protocol.DataTx:
@@ -256,7 +256,8 @@ func CommitteeMining(height int) {
 
 						//Shard 1 has more transactions to check
 						//order matters
-						if b.ShardId == 1 {
+						//if b.ShardId == 1 {
+						if true {
 							StateCopy, _ = applyAccTxFeesAndCreateAccTx(StateCopy, b.Beneficiary, accTxs)
 							StateCopy, _ = applyStakeTxFees(StateCopy, b.Beneficiary, stakeTxs)
 							StateCopy, _ = applyFundsTxFeesFundsMovement(StateCopy, b.Beneficiary, fundsTxs)
@@ -387,7 +388,8 @@ func CommitteeMining(height int) {
 
 						//Shard 1 has more transactions to check
 						//order matters
-						if b.ShardId == 1 {
+						//if b.ShardId == 1 {
+						if true {
 							StateCopy, _ = applyAccTxFeesAndCreateAccTx(StateCopy, b.Beneficiary, accTxs)
 							StateCopy, _ = applyStakeTxFees(StateCopy, b.Beneficiary, stakeTxs)
 							StateCopy, _ = applyFundsTxFeesFundsMovement(StateCopy, b.Beneficiary, fundsTxs)
@@ -1254,15 +1256,21 @@ func applyFundsTxFeesFundsMovement(state map[[32]byte]protocol.Account, benefici
 		if minerAcc.Balance+tx.Fee > MAX_MONEY {
 			err = errors.New("Fee amount would lead to balance overflow at the miner account.")
 		}
+		//Partition the process in case the sender/receiver are the same as the beneficiary
+		//first handle amount
 		senderAcc := state[tx.From]
 		receiverAcc := state[tx.To]
 		senderAcc.Balance -= tx.Amount
 		receiverAcc.Balance += tx.Amount
+		state[tx.To] = receiverAcc
+		state[tx.From] = senderAcc
+		//now handle the fee
+		minerAcc := state[beneficiary]
+		senderAcc = state[tx.From]
 		senderAcc.Balance -= tx.Fee
 		minerAcc.Balance += tx.Fee
 		state[tx.From] = senderAcc
 		state[beneficiary] = minerAcc
-		state[tx.To] = receiverAcc
 	}
 	return state, err
 }
