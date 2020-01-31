@@ -6,6 +6,7 @@ import (
 	"crypto/rand"
 	"encoding/gob"
 	"fmt"
+	"time"
 )
 
 const (
@@ -19,6 +20,7 @@ type FundsTx struct {
 	Amount 		uint64
 	Fee    		uint64
 	TxCnt  		uint32
+	TimeStamp	int64
 	From   		[32]byte
 	To     		[32]byte
 	Sig1   		[64]byte
@@ -41,6 +43,7 @@ func ConstrFundsTx(header byte, amount uint64, fee uint64, txCnt uint32, from, t
 	tx.Aggregated = false
 	tx.Data = data
 	tx.Block = [32]byte{}
+	tx.TimeStamp = time.Now().UnixNano()
 
 	txHash := tx.Hash()
 
@@ -93,6 +96,7 @@ func (tx *FundsTx) Hash() (hash [32]byte) {
 		Amount uint64
 		Fee    uint64
 		TxCnt  uint32
+		TimeStamp	int64
 		From   [32]byte
 		To     [32]byte
 		Data   []byte
@@ -101,6 +105,7 @@ func (tx *FundsTx) Hash() (hash [32]byte) {
 		tx.Amount,
 		tx.Fee,
 		tx.TxCnt,
+		tx.TimeStamp,
 		tx.From,
 		tx.To,
 		tx.Data,
@@ -118,6 +123,7 @@ func (tx *FundsTx) Encode() (encodedTx []byte) {
 		Amount: 	tx.Amount,
 		Fee:    	tx.Fee,
 		TxCnt:  	tx.TxCnt,
+		TimeStamp:	tx.TimeStamp,
 		From:   	tx.From,
 		To:     	tx.To,
 		Sig1:   	tx.Sig1,
@@ -151,6 +157,7 @@ func (tx FundsTx) String() string {
 			"Amount: %v\n"+
 			"Fee: %v\n"+
 			"TxCnt: %v\n"+
+			"Timestamp: %v\n" +
 			"From: %x\n"+
 			"To: %x\n"+
 			"Sig1: %x\n"+
@@ -162,6 +169,7 @@ func (tx FundsTx) String() string {
 		tx.Amount,
 		tx.Fee,
 		tx.TxCnt,
+		tx.TimeStamp,
 		tx.From[0:8],
 		tx.To[0:8],
 		tx.Sig1[0:8],

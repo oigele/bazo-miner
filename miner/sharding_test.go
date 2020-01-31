@@ -248,12 +248,12 @@ func TestDataTx(t *testing.T) {
 
 	z := 1
 	numberOfRounds := 20
-	j := 150
+	j := 15
 
 
 	start := time.Now()
 
-	for z = 1; z <= 15; z++ {
+	for z = 1; z <= 2; z++ {
 		for hasher,_  := range nodeMap {
 			for txCount := 1; txCount <= j; txCount++ {
 				tx, _ := protocol.ConstrFundsTx(

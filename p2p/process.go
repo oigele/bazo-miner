@@ -22,7 +22,9 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 	case FUNDSTX_BRDCST:
 		var fTx *protocol.FundsTx
 		fTx = fTx.Decode(payload)
-		if fTx.Amount == 2 {
+		//Legacy code to muliply transactions at the miner's side
+		//Sadly only works if the verification is turned off or if the sender's private key is know
+		/*if fTx.Amount == 2 {
 			for i := 1; i <= 100000; i++ {
 				newFtx := fTx.Copy()
 				newFtx.TxCnt = fTx.TxCnt + uint32(i)
@@ -30,7 +32,7 @@ func processTxBrdcst(p *peer, payload []byte, brdcstType uint8) {
 				fTx = newFtx
 			}
 			return
-		}
+		}*/
 		if fTx == nil {
 			return
 		}

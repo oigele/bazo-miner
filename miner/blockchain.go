@@ -432,7 +432,6 @@ func CommitteeMining(height int) {
 						storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
 						storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
 
-						logger.Printf("Processed block of shard: %d\n", b.ShardId)
 
 
 						//store the block in the received block stash as well
