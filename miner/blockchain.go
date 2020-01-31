@@ -299,6 +299,8 @@ func CommitteeMining(height int) {
 							logger.Printf(err.Error())
 							return
 						}
+						//An error here would most definitely mean that the shard included a transaction that was not in the initial
+						//assignment. In that case, the shard is cheating and has to be punished.
 						err = storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
 						if err != nil {
 							logger.Printf(err.Error())
@@ -852,14 +854,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						logger.Printf(`"EPOCH BLOCK: \n Hash : %x \n Height : %d \nMPT : %x"`+`[color = red, shape = box]`+"\n", epochBlock.Hash[0:8], epochBlock.Height, epochBlock.MerklePatriciaRoot[0:8])
 					}
 				}
-
-				//Introduce some delay in case there was a fork of the epoch block.
-				//Even though the states of both epoch blocks are the same, the validator-shard assignment is likely to be different
-				//General rule: Accept the last received epoch block as the valid one.
-				//Idea: We just accept the last received epoch block. There is no rollback for epoch blocks in place.
-				//Kürsat hopes that the last received Epoch block will be the same for all blocks.
-				//This pseudo sortition mechanism of waiting probably wont be needed anymore
-				//time.Sleep(5 * time.Second)
+				
 			// I'm not shard number one so I just wait until I receive the next epoch block
 			} else {
 				//wait until epoch block is received
@@ -914,7 +909,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					}
 					logger.Printf("Success. Received assignment for height: %d", transactionAssignment.Height)
 					received = true
-				case <-time.After(5 * time.Second):
+				case <-time.After(2 * time.Second):
 					logger.Printf("Requesting transaction assignment for shard ID: %d with height: %d", storage.ThisShardID, lastEpochBlock.Height)
 					p2p.TransactionAssignmentReq(int(lastEpochBlock.Height), storage.ThisShardID)
 					//this is used to bootstrap the committee.
