@@ -294,8 +294,16 @@ func CommitteeMining(height int) {
 
 						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs))
 
-						storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
-						storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						err = storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						if err != nil {
+							logger.Printf(err.Error())
+							return
+						}
+						err = storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						if err != nil {
+							logger.Printf(err.Error())
+							return
+						}
 
 						logger.Printf("Processed block of shard: %d\n", b.ShardId)
 
@@ -429,8 +437,16 @@ func CommitteeMining(height int) {
 
 						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs))
 
-						storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
-						storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						err = storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						if err != nil {
+							logger.Printf(err.Error())
+							return
+						}
+						err = storage.DeleteAllOpenTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						if err != nil {
+							logger.Printf(err.Error())
+							return
+						}
 
 
 

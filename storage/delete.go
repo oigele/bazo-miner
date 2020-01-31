@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"errors"
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/boltdb/bolt"
 )
@@ -78,27 +79,62 @@ func DeleteOpenTx(transaction protocol.Transaction) {
 	openTxMutex.Unlock()
 }
 
-func DeleteAllOpenTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) {
+func DeleteAllOpenTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) error {
 	openTxMutex.Lock()
 	defer openTxMutex.Unlock()
+
+	//Before deleting any element, look if it's in the local memory pool in the first place. If it's not, then throw an error.
+	//Because this would mean that the Shard intentionally included a bogus transaction. Since the committee does not verify these,
+	//A test here is the most effective that we can do.
 	for _, transaction := range accTxs {
-		delete(txMemPool, transaction.Hash())
+		txHash := transaction.Hash()
+		if _, exists := txMemPool[txHash]; !exists {
+			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		} else {
+			delete(txMemPool, txHash)
+		}
 	}
 	for _, transaction := range stakeTxs {
-		delete(txMemPool, transaction.Hash())
+		txHash := transaction.Hash()
+		if _, exists := txMemPool[txHash]; !exists {
+			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		} else {
+			delete(txMemPool, txHash)
+		}
 	}
 	for _, transaction := range fundsTxs {
-		delete(txMemPool, transaction.Hash())
+		txHash := transaction.Hash()
+		if _, exists := txMemPool[txHash]; !exists {
+			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		} else {
+			delete(txMemPool, txHash)
+		}
 	}
 	for _, transaction := range dataTxs {
-		delete(txMemPool, transaction.Hash())
+		txHash := transaction.Hash()
+		if _, exists := txMemPool[txHash]; !exists {
+			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		} else {
+			delete(txMemPool, txHash)
+		}
 	}
 	for _, transaction := range aggTxs {
-		delete(txMemPool, transaction.Hash())
+		txHash := transaction.Hash()
+		if _, exists := txMemPool[txHash]; !exists {
+			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		} else {
+			delete(txMemPool, txHash)
+		}
 	}
 	for _, transaction := range aggDataTxs {
-		delete(txMemPool, transaction.Hash())
+		txHash := transaction.Hash()
+		if _, exists := txMemPool[txHash]; !exists {
+			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		} else {
+			delete(txMemPool, txHash)
+		}
 	}
+	return nil
 }
 
 
