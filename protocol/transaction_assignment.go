@@ -3,6 +3,7 @@ package protocol
 import (
 	"bytes"
 	"encoding/gob"
+	"github.com/oigele/bazo-miner/crypto"
 	"os"
 )
 
@@ -10,6 +11,7 @@ import (
 type TransactionAssignment struct {
 	Height						int
 	ShardID						int
+	CommitteeProof				[crypto.COMM_PROOF_LENGTH]byte
 	AccTxs 						[]*AccTx
 	StakeTxs					[]*StakeTx
 	FundsTxs					[]*FundsTx
@@ -19,10 +21,11 @@ type TransactionAssignment struct {
 
 
 
-func NewTransactionAssignment(height int, shardid int, accTxs []*AccTx, stakeTxs []*StakeTx, fundsTxs []*FundsTx, dataTxs []*DataTx) *TransactionAssignment {
+func NewTransactionAssignment(height int, shardid int, committeeProof [crypto.COMM_PROOF_LENGTH]byte, accTxs []*AccTx, stakeTxs []*StakeTx, fundsTxs []*FundsTx, dataTxs []*DataTx) *TransactionAssignment {
 	newTransition := TransactionAssignment{
 		height,
 		shardid,
+		committeeProof,
 		accTxs,
 		stakeTxs,
 		fundsTxs,
@@ -42,9 +45,11 @@ func (ta *TransactionAssignment) HashTransactionAssignment() [32]byte {
 	stHash := struct {
 		Height				  			  int
 		ShardID							  int
+		CommitteeProof					  [crypto.COMM_PROOF_LENGTH]byte
 	}{
 		ta.Height,
 		ta.ShardID,
+		ta.CommitteeProof,
 	}
 	return SerializeHashContent(stHash)
 }
@@ -59,6 +64,7 @@ func (ta *TransactionAssignment) EncodeTransactionAssignment() []byte {
 	encoded := TransactionAssignment{
 		Height:						ta.Height,
 		ShardID:					ta.ShardID,
+		CommitteeProof: 			ta.CommitteeProof,
 		AccTxs:						ta.AccTxs,
 		StakeTxs:					ta.StakeTxs,
 		FundsTxs:					ta.FundsTxs,

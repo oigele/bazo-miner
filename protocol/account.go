@@ -13,7 +13,9 @@ type Account struct {
 	Balance            uint64                // 8 Byte
 	TxCnt              uint32                // 4 Byte
 	IsStaking          bool                  // 1 Byte
+	IsCommittee		   bool					 // 1 Byte
 	CommitmentKey      [crypto.COMM_KEY_LENGTH]byte // represents the modulus N of the RSA public key
+	CommitteeKey	   [crypto.COMM_KEY_LENGTH]byte // represents the modulus N of the RSA public key
 	StakingBlockHeight uint32                // 4 Byte
 	Contract           []byte                // Arbitrary length
 	ContractVariables  []ByteArray           // Arbitrary length
@@ -23,7 +25,9 @@ func NewAccount(address [64]byte,
 	issuer [32]byte,
 	balance uint64,
 	isStaking bool,
+	isCommittee bool,
 	commitmentKey [crypto.COMM_KEY_LENGTH]byte,
+	committeeKey [crypto.COMM_KEY_LENGTH]byte,
 	contract []byte,
 	contractVariables []ByteArray) Account {
 
@@ -33,7 +37,9 @@ func NewAccount(address [64]byte,
 		balance,
 		0,
 		isStaking,
+		isCommittee,
 		commitmentKey,
+		committeeKey,
 		0,
 		contract,
 		contractVariables,
@@ -61,7 +67,9 @@ func (acc *Account) Encode() []byte {
 		Balance:            acc.Balance,
 		TxCnt:              acc.TxCnt,
 		IsStaking:          acc.IsStaking,
+		IsCommittee:		acc.IsCommittee,
 		CommitmentKey:   	acc.CommitmentKey,
+		CommitteeKey:       acc.CommitteeKey,
 		StakingBlockHeight: acc.StakingBlockHeight,
 		Contract:           acc.Contract,
 		ContractVariables:  acc.ContractVariables,
@@ -89,8 +97,10 @@ func (acc Account) String() string {
 			"TxCnt: %v, " +
 			"Balance: %v, " +
 			"IsStaking: %v, " +
+			"IsCommittee: %v, " +
 			//+
-			"CommitmentKey: %x ",
+			"CommitmentKey: %x, "+
+			"CommitteeKey: %x",
 			//"StakingBlockHeight: %v, " +
 			//"Contract: %v, " +
 			//"ContractVariables: %v",
@@ -100,7 +110,10 @@ func (acc Account) String() string {
 		acc.TxCnt,
 		acc.Balance,
 		acc.IsStaking,
-		acc.CommitmentKey,
+		acc.IsCommittee,
+
+		acc.CommitmentKey[0:8],
+		acc.CommitteeKey[0:8],
 		//acc.CommitmentKey[0:8],
 		//acc.StakingBlockHeight,
 		//acc.Contract,

@@ -21,6 +21,7 @@ type startArgs struct {
 	commitmentFile			string
 	rootKeyFile				string
 	rootCommitmentFile		string
+	committeeFile			string
 }
 
 func GetStartCommand(logger *log.Logger) cli.Command {
@@ -113,6 +114,8 @@ func GetStartCommitteeCommand(logger *log.Logger) cli.Command {
 				dbname: 				c.String("database"),
 				myNodeAddress: 			c.String("address"),
 				bootstrapNodeAddress: 	c.String("bootstrap"),
+				walletFile: 			c.String("wallet"),
+				committeeFile:			c.String("committee"),
 			}
 
 			if !c.IsSet("bootstrap") {
@@ -148,6 +151,16 @@ func GetStartCommitteeCommand(logger *log.Logger) cli.Command {
 				Usage: 	"connect to bootstrap node at `IP:PORT`",
 				Value: 	"localhost:8000",
 			},
+			cli.StringFlag {
+				Name: 	"wallet, w",
+				Usage: 	"load validator's public key from `FILE`",
+				Value: 	"wallet.txt",
+			},
+			cli.StringFlag {
+				Name: 	"committee, c",
+				Usage: 	"load validator's RSA public-private key from `FILE`",
+				Value: 	"committee.txt",
+			},
 			cli.BoolFlag {
 				Name: 	"confirm",
 				Usage: 	"user must press enter before starting the miner",
@@ -162,8 +175,20 @@ func StartCommittee(args *startArgs, logger *log.Logger) error {
 
 	logger.Printf("Starting committee")
 
+	validatorPubKey, err := crypto.ExtractECDSAPublicKeyFromFile(args.walletFile)
+	if err != nil {
+		logger.Printf("%v\n", err)
+		return err
+	}
 
-	miner.InitCommittee()
+	committeePrivKey, err := crypto.ExtractRSAKeyFromFile(args.committeeFile)
+	if err != nil {
+		logger.Printf("%v\n", err)
+		return err
+	}
+
+
+	miner.InitCommittee(validatorPubKey, committeePrivKey)
 
 	return nil
 
@@ -260,6 +285,14 @@ func (args startArgs) ValidateCommitteeInput() error {
 
 	if len(args.bootstrapNodeAddress) == 0 {
 		return errors.New("argument missing: bootstrapNodeAddress")
+	}
+
+	if len(args.walletFile) == 0 {
+		return errors.New("argument missing: keyFile")
+	}
+
+	if len(args.committeeFile) == 0 {
+		return errors.New("argument missing: committeeFile")
 	}
 
 	return nil

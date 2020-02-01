@@ -115,6 +115,7 @@ func initState() (initialBlock *protocol.Block, err error) {
 	storage.State = lastEpochBlock.State
 
 	initRootAccounts(genesis)
+	initFirstCommittee(genesis)
 
 	initialBlock, err = getInitialBlock(lastEpochBlock)
 	if err != nil {
@@ -355,10 +356,18 @@ func getLastEpochBlock() (lastEpochBlock *protocol.EpochBlock, err error) {
 
 func initRootAccounts(genesis *protocol.Genesis) {
 	//rootAcc := protocol.NewAccount(genesis.RootAddress, [64]byte{}, activeParameters.Staking_minimum, true, genesis.RootCommitment, nil, nil)
-	rootAcc := protocol.NewAccount(genesis.RootAddress, [32]byte{}, 4000, true, genesis.RootCommitment, nil, nil)
+	rootAcc := protocol.NewAccount(genesis.RootAddress, [32]byte{}, 4000, true, false, genesis.RootCommitment ,[crypto.COMM_KEY_LENGTH]byte{}, nil, nil)
 	storage.State[protocol.SerializeHashContent(genesis.RootAddress)] = &rootAcc
 	storage.RootKeys[protocol.SerializeHashContent(genesis.RootAddress)] = &rootAcc
 }
+
+
+func initFirstCommittee(genesis *protocol.Genesis) {
+	//rootAcc := protocol.NewAccount(genesis.RootAddress, [64]byte{}, activeParameters.Staking_minimum, true, genesis.RootCommitment, nil, nil)
+	firstCommitteeAcc := protocol.NewAccount(genesis.FirstCommitteeAddress, [32]byte{}, 0, false, true, [crypto.COMM_KEY_LENGTH]byte{} ,genesis.FirstCommitteeKey, nil, nil)
+	storage.State[protocol.SerializeHashContent(genesis.FirstCommitteeAddress)] = &firstCommitteeAcc
+}
+
 
 func initGenesis() (genesis *protocol.Genesis, err error) {
 	if genesis, err = storage.ReadGenesis(); err != nil {
@@ -386,7 +395,7 @@ func initGenesis() (genesis *protocol.Genesis, err error) {
 func accStateChange(txSlice []*protocol.AccTx) error {
 	for _, tx := range txSlice {
 		if tx.Header != 2 {
-			newAcc := protocol.NewAccount(tx.PubKey, tx.Issuer, 100000, false, [crypto.COMM_KEY_LENGTH]byte{}, tx.Contract, tx.ContractVariables)
+			newAcc := protocol.NewAccount(tx.PubKey, tx.Issuer, 100000, false, false, [crypto.COMM_KEY_LENGTH]byte{}, [crypto.COMM_KEY_LENGTH]byte{}, tx.Contract, tx.ContractVariables)
 			newAccHash := newAcc.Hash()
 
 			acc, _ := storage.GetAccount(newAccHash)
@@ -855,4 +864,16 @@ func GetValidatorsCount() (validatorsCount int) {
 	}
 	return returnValCounts
 }
+
+func GetCommitteesCount() (validatorsCount int) {
+	var returnCommitteeCounts int
+	returnCommitteeCounts = 0
+	for _, acc := range storage.State {
+		if acc.IsCommittee {
+			returnCommitteeCounts += 1
+		}
+	}
+	return returnCommitteeCounts
+}
+
 

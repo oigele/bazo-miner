@@ -180,6 +180,8 @@ func finalizeEpochBlock(epochBlock *protocol.EpochBlock) error {
 	ValidatorShardMap = epochBlock.ValMapping
 	epochBlock.NofShards = DetNumberOfShards()
 
+	epochBlock.CommitteeLeader = ChooseCommitteeLeader()
+
 	storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
 	storage.ThisShardMap[int(epochBlock.Height)] = storage.ThisShardID
 
@@ -1665,6 +1667,33 @@ func fetchAggDataTxData(block *protocol.Block, aggTxSlice []*protocol.AggDataTx,
 
 }
 
+
+func validateTransactionAssignment(ta *protocol.TransactionAssignment) (err error){
+	transactionAssignmentValidation.Lock()
+	defer transactionAssignmentValidation.Unlock()
+
+
+	//Get the Committee Leader's account
+	acc, err := storage.GetAccount(CommitteeLeader)
+	if err != nil {
+		return errors.New("Cannot fetch the sender account")
+	}
+
+	committeePubKey, err := crypto.CreateRSAPubKeyFromBytes(acc.CommitteeKey)
+	if err != nil {
+		return errors.New("Cannot fetch the sender account")
+	}
+
+	err = crypto.VerifyMessageWithRSAKey(committeePubKey, fmt.Sprint(ta.Height), ta.CommitteeProof)
+	if err != nil {
+		return errors.New("The submitted committee proof can not be verified.")
+	}
+
+	return nil
+
+}
+
+
 func validateStateTransition(st *protocol.StateTransition) (err error) 	 {
 	stateTransitionValidation.Lock()
 	defer stateTransitionValidation.Unlock()
@@ -2464,7 +2493,7 @@ func AggregateRelativeState(stateRelPrev map[[32]byte]*protocol.RelativeAccount,
 	for krel,_ := range stateRel {
 		if _, ok := stateRelPrev[krel]; !ok {
 			accNewRel := stateRel[krel]
-			accNew := protocol.NewRelativeAccount(stateRel[krel].Address, [32]byte{}, accNewRel.Balance, accNewRel.IsStaking, accNewRel.CommitmentKey, accNewRel.Contract, accNewRel.ContractVariables)
+			accNew := protocol.NewRelativeAccount(stateRel[krel].Address, [32]byte{}, accNewRel.Balance, accNewRel.IsStaking, accNewRel.IsCommittee, accNewRel.CommitmentKey, accNewRel.CommitteeKey, accNewRel.Contract, accNewRel.ContractVariables)
 			accNew.TxCnt = accNewRel.TxCnt
 			accNew.StakingBlockHeight = accNewRel.StakingBlockHeight
 			stateRelPrev[krel] = &accNew
@@ -2481,6 +2510,10 @@ func AggregateRelativeState(stateRelPrev map[[32]byte]*protocol.RelativeAccount,
 			if accRelPrev.IsStaking == false {
 				accRelPrev.IsStaking = accRel.IsStaking
 				accRelPrev.CommitmentKey = accRel.CommitmentKey
+			}
+			if accRelPrev.IsCommittee == false {
+				accRelPrev.IsCommittee = accRel.IsCommittee
+				accRelPrev.CommitteeKey = accRel.CommitteeKey
 			}
 		}
 	}

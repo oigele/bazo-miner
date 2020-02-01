@@ -86,7 +86,7 @@ func GetRelativeState(statePrev map[[32]byte]protocol.Account, stateNow map[[32]
 		//In case account was newly created during block validation
 		if _, ok := statePrev[know]; !ok {
 			accNow := stateNow[know]
-			accNewRel := protocol.NewRelativeAccount(stateNow[know].Address, [32]byte{}, int64(accNow.Balance), accNow.IsStaking, accNow.CommitmentKey, accNow.Contract, accNow.ContractVariables)
+			accNewRel := protocol.NewRelativeAccount(stateNow[know].Address, [32]byte{}, int64(accNow.Balance), accNow.IsStaking, accNow.IsCommittee, accNow.CommitmentKey, accNow.CommitteeKey, accNow.Contract, accNow.ContractVariables)
 			accNewRel.TxCnt = int32(accNow.TxCnt)
 			accNewRel.StakingBlockHeight = int32(accNow.StakingBlockHeight)
 			stateRelative[know] = &accNewRel
@@ -96,7 +96,7 @@ func GetRelativeState(statePrev map[[32]byte]protocol.Account, stateNow map[[32]
 			accNew := stateNow[know]
 
 			//account with relative adjustments of the fields, will be  applied by the other shards
-			accTransition := protocol.NewRelativeAccount(stateNow[know].Address, [32]byte{}, int64(accNew.Balance-accPrev.Balance), accNew.IsStaking, accNew.CommitmentKey, accNew.Contract, accNew.ContractVariables)
+			accTransition := protocol.NewRelativeAccount(stateNow[know].Address, [32]byte{}, int64(accNew.Balance-accPrev.Balance), accNew.IsStaking, accNew.IsCommittee, accNew.CommitmentKey, accNew.CommitteeKey, accNew.Contract, accNew.ContractVariables)
 			accTransition.TxCnt = int32(accNew.TxCnt - accPrev.TxCnt)
 			accTransition.StakingBlockHeight = int32(accNew.StakingBlockHeight - accPrev.StakingBlockHeight)
 			stateRelative[know] = &accTransition
@@ -105,6 +105,7 @@ func GetRelativeState(statePrev map[[32]byte]protocol.Account, stateNow map[[32]
 	return stateRelative
 }
 
+//This function is needed because the state has a different role in the code now (it's not changed after block validation directly).
 func GetRelativeStateForCommittee(statePrev map[[32]byte]protocol.Account, stateNow map[[32]byte]protocol.Account) (stateRel map[[32]byte]*protocol.RelativeAccount) {
 	var stateRelative = make(map[[32]byte]*protocol.RelativeAccount)
 
@@ -112,7 +113,7 @@ func GetRelativeStateForCommittee(statePrev map[[32]byte]protocol.Account, state
 		//In case account was newly created during block validation
 		if _, ok := statePrev[know]; !ok {
 			accNow := stateNow[know]
-			accNewRel := protocol.NewRelativeAccount(stateNow[know].Address, [32]byte{}, int64(accNow.Balance), accNow.IsStaking, accNow.CommitmentKey, accNow.Contract, accNow.ContractVariables)
+			accNewRel := protocol.NewRelativeAccount(stateNow[know].Address, [32]byte{}, int64(accNow.Balance), accNow.IsStaking, accNow.IsCommittee, accNow.CommitmentKey, accNow.CommitteeKey, accNow.Contract, accNow.ContractVariables)
 			accNewRel.TxCnt = int32(accNow.TxCnt)
 			accNewRel.StakingBlockHeight = int32(accNow.StakingBlockHeight)
 			stateRelative[know] = &accNewRel
@@ -122,7 +123,7 @@ func GetRelativeStateForCommittee(statePrev map[[32]byte]protocol.Account, state
 			accNew := stateNow[know]
 
 			//account with relative adjustments of the fields, will be  applied by the other shards
-			accTransition := protocol.NewRelativeAccount(stateNow[know].Address, [32]byte{}, int64(accNew.Balance-accPrev.Balance), accNew.IsStaking, accNew.CommitmentKey, accNew.Contract, accNew.ContractVariables)
+			accTransition := protocol.NewRelativeAccount(stateNow[know].Address, [32]byte{}, int64(accNew.Balance-accPrev.Balance), accNew.IsStaking, accNew.IsCommittee, accNew.CommitmentKey, accNew.CommitteeKey, accNew.Contract, accNew.ContractVariables)
 			accTransition.TxCnt = int32(accNew.TxCnt - accPrev.TxCnt)
 			accTransition.StakingBlockHeight = int32(accNew.StakingBlockHeight - accPrev.StakingBlockHeight)
 			stateRelative[know] = &accTransition
@@ -160,7 +161,7 @@ func ApplyRelativeState(statePrev map[[32]byte]*protocol.Account, stateRel map[[
 	for krel, _ := range stateRel {
 		if _, ok := statePrev[krel]; !ok {
 			accNewRel := stateRel[krel]
-			accNew := protocol.NewAccount(stateRel[krel].Address, [32]byte{}, uint64(accNewRel.Balance), accNewRel.IsStaking, accNewRel.CommitmentKey, accNewRel.Contract, accNewRel.ContractVariables)
+			accNew := protocol.NewAccount(stateRel[krel].Address, [32]byte{}, uint64(accNewRel.Balance), accNewRel.IsStaking, accNewRel.IsCommittee, accNewRel.CommitmentKey, accNewRel.CommitteeKey, accNewRel.Contract, accNewRel.ContractVariables)
 			accNew.TxCnt = uint32(accNewRel.TxCnt)
 			accNew.StakingBlockHeight = uint32(accNewRel.StakingBlockHeight)
 			statePrev[krel] = &accNew
@@ -177,6 +178,10 @@ func ApplyRelativeState(statePrev map[[32]byte]*protocol.Account, stateRel map[[
 			if accPrev.IsStaking == false {
 				accPrev.IsStaking = accRel.IsStaking
 				accPrev.CommitmentKey = accRel.CommitmentKey
+			}
+			if accPrev.IsCommittee == false {
+				accPrev.IsCommittee = accRel.IsCommittee
+				accPrev.CommitteeKey = accRel.CommitteeKey
 			}
 		}
 	}

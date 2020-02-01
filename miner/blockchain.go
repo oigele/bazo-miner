@@ -21,6 +21,7 @@ var (
 	blockValidation              = &sync.Mutex{}
 	epochBlockValidation	     = &sync.Mutex{}
 	stateTransitionValidation    = &sync.Mutex{}
+	transactionAssignmentValidation = &sync.Mutex{}
 	parameterSlice               []Parameters
 	ActiveParameters 			*Parameters
 	uptodate                     bool
@@ -29,8 +30,10 @@ var (
 	hasher                       [32]byte
 	multisigPubKey               *ecdsa.PublicKey
 	commPrivKey, rootCommPrivKey *rsa.PrivateKey
+	committeePrivKey			 *rsa.PrivateKey
 	// This map keeps track of the validator assignment to the shards
 	ValidatorShardMap *protocol.ValShardMapping
+	CommitteeLeader   [32]byte
 	NumberOfShards    int
 	// This slice stores the hashes of the last blocks from the other shards, needed to create the next epoch block.
 	LastShardHashes [][32]byte
@@ -50,10 +53,16 @@ var (
 //p2p First start entry point
 
 
-func InitCommittee() {
+func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKey) {
 
 	FirstStartAfterEpoch = true
 	storage.IsCommittee = true
+
+	//This information has to be stored as it will be important later on, for sortition purposes and for
+	validatorAccAddress = crypto.GetAddressFromPubKey(committeeWallet)
+	committeePrivKey = committeeKey
+
+
 
 	//Set up logger.
 	logger = storage.InitLogger()
@@ -101,6 +110,7 @@ func InitCommittee() {
 				logger.Printf("accepting the state of epoch block height: %d", lastEpochBlock.Height)
 				storage.State = lastEpochBlock.State
 				NumberOfShards = lastEpochBlock.NofShards
+				CommitteeLeader = lastEpochBlock.CommitteeLeader
 				break
 			}
 		}
@@ -163,7 +173,15 @@ func CommitteeMining(height int) {
 				}
 			}
 		}
-		ta = protocol.NewTransactionAssignment(height, shardId, accTxs, stakeTxs, fundsTxs, dataTxs)
+
+		committeeProof, err := crypto.SignMessageWithRSAKey(committeePrivKey, fmt.Sprint(height))
+		if err != nil {
+			logger.Printf("Error with signing the Committee Proof Message")
+			return
+		}
+
+
+		ta = protocol.NewTransactionAssignment(height, shardId, committeeProof, accTxs, stakeTxs, fundsTxs, dataTxs)
 
 		logger.Printf("length of open transactions: %d", len(storage.ReadAllOpenTxs()))
 		storage.AssignedTxMap[shardId] = ta
@@ -174,10 +192,9 @@ func CommitteeMining(height int) {
 	storage.AssignmentHeight = height
 	logger.Printf("After assigning transactions")
 
-	waitGroup := sync.WaitGroup{}
 
 	//let the goroutine collect the state transitions in the background and contionue with the block collection
-	waitGroup.Add(1)
+	waitGroup := sync.WaitGroup{}
 	go fetchStateTransitionsForHeight(height+1, &waitGroup)
 
 
@@ -517,6 +534,7 @@ func CommitteeMining(height int) {
 
 			//before being able to validate the proof of stake, the state needs to updated
 			storage.State = newEpochBlock.State
+			CommitteeLeader = newEpochBlock.CommitteeLeader
 			ValidatorShardMap = newEpochBlock.ValMapping
 
 			NumberOfShards = newEpochBlock.NofShards
@@ -528,18 +546,36 @@ func CommitteeMining(height int) {
 }
 
 
+// Doesnt do much, just bootstraps the system with the things that are needed for the first start, i.e. a genesis block and a first epoch block.
 func InitFirstStart(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validatorCommitment, rootCommitment *rsa.PrivateKey) error {
 	var err error
 	if err != nil {
 		return err
 	}
+	firstCommitteePubKey, err := crypto.ExtractECDSAPublicKeyFromFile("WalletCommitteeA.txt")
+	if err != nil {
+		logger.Printf("%v\n", err)
+		return err
+	}
+
+	firstCommitteeComPrivKey, err := crypto.ExtractRSAKeyFromFile("CommitteeA.txt")
+	if err != nil {
+		logger.Printf("%v\n", err)
+		return err
+	}
+
 
 	rootAddress := crypto.GetAddressFromPubKey(rootWallet)
+	firstCommitteeAddress := crypto.GetAddressFromPubKey(firstCommitteePubKey)
+
 
 	var rootCommitmentKey [crypto.COMM_KEY_LENGTH]byte
 	copy(rootCommitmentKey[:], rootCommitment.N.Bytes())
 
-	genesis := protocol.NewGenesis(rootAddress, rootCommitmentKey)
+	var firstCommitteeKey [crypto.COMM_KEY_LENGTH]byte
+	copy(firstCommitteeKey[:], firstCommitteeComPrivKey.N.Bytes())
+
+	genesis := protocol.NewGenesis(rootAddress, rootCommitmentKey, firstCommitteeAddress, firstCommitteeKey)
 	storage.WriteGenesis(&genesis)
 
 	/*Write First Epoch block chained to the genesis block*/
@@ -657,6 +693,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 					storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress] //Save my ShardID
 					storage.ThisShardMap[int(lastEpochBlock.Height)] = storage.ThisShardID
 					FirstStartAfterEpoch = true
+					CommitteeLeader = lastEpochBlock.CommitteeLeader
 					lastBlock = dummyLastBlock
 					epochMining(lastEpochBlock.Hash, lastEpochBlock.Height) //start mining based on the received Epoch Block
 					//set the ID to 0 such that there wont be any answers to requests that shouldnt be answered
@@ -678,6 +715,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 		validatorShardMapping.ValMapping = AssignValidatorsToShards()
 		validatorShardMapping.EpochHeight = int(lastEpochBlock.Height)
 		ValidatorShardMap = validatorShardMapping
+		CommitteeLeader = ChooseCommitteeLeader()
 		logger.Printf("Validator Shard Mapping:\n")
 		logger.Printf(validatorShardMapping.String())
 	}
@@ -854,7 +892,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						logger.Printf(`"EPOCH BLOCK: \n Hash : %x \n Height : %d \nMPT : %x"`+`[color = red, shape = box]`+"\n", epochBlock.Hash[0:8], epochBlock.Height, epochBlock.MerklePatriciaRoot[0:8])
 					}
 				}
-				
+
 			// I'm not shard number one so I just wait until I receive the next epoch block
 			} else {
 				//wait until epoch block is received
@@ -868,6 +906,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						storage.State = newEpochBlock.State
 						ValidatorShardMap = newEpochBlock.ValMapping
 						NumberOfShards = newEpochBlock.NofShards
+						CommitteeLeader = newEpochBlock.CommitteeLeader
 						storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
 						storage.ThisShardMap[int(newEpochBlock.Height)] = storage.ThisShardID
 						lastEpochBlock = &newEpochBlock
@@ -887,6 +926,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				case encodedTransactionAssignment := <-p2p.TransactionAssignmentReqChan:
 					var transactionAssignment *protocol.TransactionAssignment
 					transactionAssignment = transactionAssignment.DecodeTransactionAssignment(encodedTransactionAssignment)
+
 					//got the transaction assignment for the wrong height. Request again.
 					if transactionAssignment.Height != int(lastEpochBlock.Height) {
 						time.Sleep(2 * time.Second)
@@ -894,6 +934,16 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						logger.Printf("Assignment height: %d vs epoch height %d", transactionAssignment.Height, epochBlock.Height)
 						continue
 					}
+
+					//Check the signature inside the assignment.
+					err := validateTransactionAssignment(transactionAssignment)
+					if err != nil {
+						logger.Printf(err.Error())
+						continue
+					} else {
+						logger.Printf("The received transaction assignment is valid")
+					}
+
 					//overwrite the previous mempool. Take the new transactions
 					for _, transaction := range transactionAssignment.AccTxs {
 						storage.AssignedTxMempool = append(storage.AssignedTxMempool, transaction)
@@ -1006,12 +1056,33 @@ func initRootKey(rootKey *ecdsa.PublicKey) error {
 	var commPubKey [crypto.COMM_KEY_LENGTH]byte
 	copy(commPubKey[:], rootCommPrivKey.N.Bytes())
 
-	rootAcc := protocol.NewAccount(address, [32]byte{}, ActiveParameters.Staking_minimum, true, commPubKey, nil, nil)
+	rootAcc := protocol.NewAccount(address, [32]byte{}, ActiveParameters.Staking_minimum, true, false, commPubKey, [crypto.COMM_KEY_LENGTH]byte{}, nil, nil)
 	storage.State[addressHash] = &rootAcc
 	storage.RootKeys[addressHash] = &rootAcc
 
 	return nil
 }
+
+
+func DetNumberOfCommittees() (numberOfCommittees int) {
+	return GetCommitteesCount()
+}
+
+
+func ChooseCommitteeLeader() (committeeLeader [32]byte) {
+	//randomize the process
+	rand.Seed(time.Now().Unix())
+	//rand.Intn gives me a random number [0,n). For example, if there is only 1 committee, then, it's [0,1) = [0,0] = 0, since the numbers are discrete
+	randomIndex := rand.Intn(DetNumberOfCommittees())
+	committeeSlice := make([][32]byte, 0)
+	for _, acc := range storage.State {
+		if acc.IsCommittee {
+			committeeSlice = append(committeeSlice, protocol.SerializeHashContent(acc.Address))
+		}
+	}
+	return committeeSlice[randomIndex]
+}
+
 
 /**
 Number of Shards is determined based on the total number of validators in the network. Currently, the system supports only
@@ -1118,10 +1189,12 @@ func searchStateTransition(shardID int, height int) *protocol.StateTransition {
 }
 
 func fetchStateTransitionsForHeight(height int, group *sync.WaitGroup) {
+	//block the wait group until the function stops execution
+	group.Add(1)
+	defer group.Done()
 	// if there is only one, shard, then no state transitions will be in the system to be fetched
 	logger.Printf("Start fetch staet transitions for height: %d. Number of Shards: %d", height, NumberOfShards)
 	if NumberOfShards == 1 {
-		group.Done()
 		return
 	} else {
 		shardIDs := makeRange(1,NumberOfShards)
@@ -1151,7 +1224,6 @@ func fetchStateTransitionsForHeight(height int, group *sync.WaitGroup) {
 				//If all state transitions have been received, stop synchronisation
 				if (len(stateStashForHeight) == NumberOfShards-1) {
 					logger.Printf("Received all transitions. Continue.")
-					group.Done()
 					return
 				} else {
 					logger.Printf("Length of state stash: %d", len(stateStashForHeight))
@@ -1234,7 +1306,7 @@ func applyAccTxFeesAndCreateAccTx(state map[[32]byte]protocol.Account, beneficia
 		minerAcc.Balance += tx.Fee
 		state[beneficiary] = minerAcc
 		//create the account and add it to the account
-		newAcc := protocol.NewAccount(tx.PubKey, tx.Issuer, 100000, false, [crypto.COMM_KEY_LENGTH]byte{}, tx.Contract, tx.ContractVariables)
+		newAcc := protocol.NewAccount(tx.PubKey, tx.Issuer, 100000, false, false, [crypto.COMM_KEY_LENGTH]byte{},  [crypto.COMM_KEY_LENGTH]byte{}, tx.Contract, tx.ContractVariables)
 		newAccHash := newAcc.Hash()
 		state[newAccHash] = newAcc
 	}

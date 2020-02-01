@@ -8,15 +8,22 @@ import (
 )
 
 type Genesis struct {
-	RootAddress		[64]byte
-	RootCommitment	[crypto.COMM_KEY_LENGTH]byte
+	RootAddress				[64]byte
+	RootCommitment			[crypto.COMM_KEY_LENGTH]byte
+	FirstCommitteeAddress	[64]byte
+	FirstCommitteeKey		[crypto.COMM_KEY_LENGTH]byte
 }
 
 func NewGenesis(rootAddress [64]byte,
-	rootCommitment [crypto.COMM_KEY_LENGTH]byte) Genesis {
+	rootCommitment [crypto.COMM_KEY_LENGTH]byte,
+	firstCommitteeAddress [64]byte,
+	firstCommitteeKey [crypto.COMM_KEY_LENGTH]byte) Genesis {
 	return Genesis {
 		rootAddress,
 		rootCommitment,
+		firstCommitteeAddress,
+		firstCommitteeKey,
+
 	}
 }
 
@@ -26,11 +33,15 @@ func (genesis *Genesis) Hash() [32]byte {
 	}
 
 	input := struct {
-		rootAddress		[64]byte
-		rootCommitment	[crypto.COMM_KEY_LENGTH]byte
+		rootAddress				[64]byte
+		rootCommitment			[crypto.COMM_KEY_LENGTH]byte
+		firstCommitteeAddress	[64]byte
+		firstCommitteeKey		[crypto.COMM_KEY_LENGTH]byte
 	} {
 		genesis.RootAddress,
 		genesis.RootCommitment,
+		genesis.FirstCommitteeAddress,
+		genesis.FirstCommitteeKey,
 	}
 
 	return SerializeHashContent(input)
@@ -42,8 +53,11 @@ func (genesis *Genesis) Encode() []byte {
 	}
 
 	encoded := Genesis{
-		RootAddress:    genesis.RootAddress,
-		RootCommitment:	genesis.RootCommitment,
+		RootAddress:    		genesis.RootAddress,
+		RootCommitment:			genesis.RootCommitment,
+		FirstCommitteeAddress:  genesis.FirstCommitteeAddress,
+		FirstCommitteeKey: 		genesis.FirstCommitteeKey,
+
 	}
 
 	buffer := new(bytes.Buffer)
@@ -67,8 +81,12 @@ func (genesis *Genesis) String() string {
 	return fmt.Sprintf(
 		"\n"+
 			"RootAddress: %x\n"+
-			"RootCommitment: %x\n",
+			"RootCommitment: %x\n" +
+			"FirstCommitteeAddress: %x\n" +
+			"FirstCommitteeKey: %x\n",
 		genesis.RootAddress[0:8],
 		genesis.RootCommitment[0:8],
+		genesis.FirstCommitteeAddress[0:8],
+		genesis.FirstCommitteeKey[0:8],
 	)
 }

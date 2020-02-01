@@ -21,6 +21,7 @@ type EpochBlock struct {
 	CommitmentProof       [crypto.COMM_PROOF_LENGTH]byte
 	State				  map[[32]byte]*Account
 	ValMapping			  *ValShardMapping
+	CommitteeLeader		  [32]byte //hash of the wallet of the chosen committee leader
 	NofShards			  int
 	Beneficiary 		  [32]byte
 }
@@ -48,6 +49,7 @@ func (epochBlock *EpochBlock) HashEpochBlock() [32]byte {
 		commitmentProof       		  [crypto.COMM_PROOF_LENGTH]byte
 		state					      map[[32]byte]*Account
 		valmapping					  *ValShardMapping
+		committeeleader				  [32]byte
 		noshards					  int
 	}{
 		epochBlock.PrevShardHashes,
@@ -58,6 +60,7 @@ func (epochBlock *EpochBlock) HashEpochBlock() [32]byte {
 		epochBlock.CommitmentProof,
 		epochBlock.State,
 		epochBlock.ValMapping,
+		epochBlock.CommitteeLeader,
 		epochBlock.NofShards,
 	}
 	return SerializeHashContent(blockHash)
@@ -79,6 +82,7 @@ func (epochBlock *EpochBlock) Encode() []byte {
 		CommitmentProof:	   epochBlock.CommitmentProof,
 		State:				   epochBlock.State,
 		ValMapping:			   epochBlock.ValMapping,
+		CommitteeLeader:	   epochBlock.CommitteeLeader,
 		NofShards:			   epochBlock.NofShards,
 		Beneficiary:		   epochBlock.Beneficiary,
 	}
@@ -128,7 +132,8 @@ func (epochBlock EpochBlock) String() string {
 		"Commitment Proof: %x\n" +
 		"State: \n%v\n" +
 		"Validator Shard Mapping: %s\n" +
-		"Number of Shards: %d\n",
+		"Number of Shards: %d\n" +
+		"Committee Leader: %x\n",
 		epochBlock.Hash[0:8],
 		len(epochBlock.PrevShardHashes),
 		epochBlock.StringPrevHashes(),
@@ -140,6 +145,7 @@ func (epochBlock EpochBlock) String() string {
 		epochBlock.StringState(),
 		epochBlock.ValMapping.String(),
 		epochBlock.NofShards,
+		epochBlock.CommitteeLeader,
 	)
 }
 
