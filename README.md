@@ -77,7 +77,7 @@ Now, due to the architecture of this branch of BAZO, a committee member has to b
 ### Start a Committee Member
 
 ```bash
-./bazo-miner committee --database StoreC.db --address 127.0.0.1:8002 --bootstrap 127.0.0.1:8000
+./bazo-miner committee --database StoreC.db --address 127.0.0.1:8002 --bootstrap 127.0.0.1:8000  --wallet WalletCommitteeA.txt --committee CommitteeA.txt
 ```
 Options
 * `--database`: (default store.db) Specify where to load database of the disk-based key/value store from. The database is created if it does not exist yet.
