@@ -435,24 +435,27 @@ func TransactionAssignmentRes(p *peer, payload []byte) {
 		packet = BuildPacket(NOT_FOUND,nil)
 		sendData(p, packet)
 		return
-	}
-
-	logger.Printf("responding transaction assignment request for shard %d for height: %d\n", shardID, height)
-
-	//security check becuase the listener to incoming blocks is a concurrent goroutine
-	if storage.ReadLastClosedEpochBlock() == nil {
-		logger.Printf("Haven't stored last epoch block yet.")
-		packet = BuildPacket(NOT_FOUND,nil)
-	} else if storage.AssignmentHeight == int(height){
-		ta = storage.AssignedTxMap[int(shardID)]
-		logger.Printf("responding assignment. Just read it from map. ShardID: %d Height: %d", shardID, height)
-		packet = BuildPacket(TRANSACTION_ASSIGNMENT_RES, ta.EncodeTransactionAssignment())
-
 	} else {
-		logger.Printf("Haven't reached latest assignment height yet. Can't send the transaction assignment yet. Assignment height: %d", storage.AssignmentHeight)
-		packet = BuildPacket(NOT_FOUND,nil)
+		logger.Printf("responding transaction assignment request for shard %d for height: %d\n", shardID, height)
+		//security check becuase the listener to incoming blocks is a concurrent goroutine
+		if storage.ReadLastClosedEpochBlock() == nil {
+			logger.Printf("Haven't stored last epoch block yet.")
+			packet = BuildPacket(NOT_FOUND,nil)
+		} else if storage.AssignmentHeight == int(height){
+			ta = storage.AssignedTxMap[int(shardID)]
+			if ta == nil {
+				logger.Printf("Not responsible for transaction Assignment at Height: %d", height)
+				packet = BuildPacket(NOT_FOUND, nil)
+			}
+			logger.Printf("responding assignment. Just read it from map. ShardID: %d Height: %d", shardID, height)
+			packet = BuildPacket(TRANSACTION_ASSIGNMENT_RES, ta.EncodeTransactionAssignment())
+		} else {
+			logger.Printf("Haven't reached latest assignment height yet. Can't send the transaction assignment yet. Assignment height: %d", storage.AssignmentHeight)
+			packet = BuildPacket(NOT_FOUND,nil)
+		}
+		sendData(p, packet)
+
 	}
-	sendData(p, packet)
 }
 
 func stateTransitionRes(p *peer, payload []byte) {

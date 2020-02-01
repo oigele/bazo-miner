@@ -115,7 +115,12 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKe
 			}
 		}
 	}
-	FirstStartCommittee = true
+
+	if lastEpochBlock.Height == 2 {
+		FirstStartCommittee = 0 == 0
+	} else {
+		FirstStartCommittee = 0 != 0
+	}
 	CommitteeMining(int(lastEpochBlock.Height))
 }
 
@@ -132,65 +137,68 @@ func CommitteeMining(height int) {
 	shardIDs := makeRange(1,NumberOfShards)
 	logger.Printf("Number of shards: %d\n",NumberOfShards)
 
-	//generating the assignment data
-	logger.Printf("before assigning transactions")
-	for _, shardId := range shardIDs {
-		var ta *protocol.TransactionAssignment
-		var accTxs []*protocol.AccTx
-		var stakeTxs []*protocol.StakeTx
-		var fundsTxs []*protocol.FundsTx
-		var dataTxs []*protocol.DataTx
+	//find out if I am the committee leader. If yes, construct the transaction assignment
+	if CommitteeLeader == protocol.SerializeHashContent(validatorAccAddress) {
+		//generating the assignment data
+		logger.Printf("before assigning transactions")
+		for _, shardId := range shardIDs {
+			var ta *protocol.TransactionAssignment
+			var accTxs []*protocol.AccTx
+			var stakeTxs []*protocol.StakeTx
+			var fundsTxs []*protocol.FundsTx
+			var dataTxs []*protocol.DataTx
 
-		openTransactions := storage.ReadAllOpenTxs()
+			openTransactions := storage.ReadAllOpenTxs()
 
-		//empty the assignment and all the slices
-		ta = nil
-		accTxs = nil
-		stakeTxs = nil
-		fundsTxs = nil
-		dataTxs = nil
+			//empty the assignment and all the slices
+			ta = nil
+			accTxs = nil
+			stakeTxs = nil
+			fundsTxs = nil
+			dataTxs = nil
 
-		//since shard number 1 writes the epoch block, it is required to process all acctx and stake tx
-		//the other transactions are distributed to the shards based on the public address of the sender
-		for _, openTransaction := range openTransactions {
-			switch openTransaction.(type) {
-			case *protocol.AccTx:
-				if shardId == 1 {
-					accTxs = append(accTxs, openTransaction.(*protocol.AccTx))
-				}
-			case *protocol.StakeTx:
-				if shardId == 1 {
-					stakeTxs = append(stakeTxs, openTransaction.(*protocol.StakeTx))
-				}
-			case *protocol.FundsTx:
-				if shardId == assignTransactionToShard(openTransaction) {
-				//if shardId == 1 {
-					fundsTxs = append(fundsTxs, openTransaction.(*protocol.FundsTx))
-				}
-			case *protocol.DataTx:
-				if shardId == assignTransactionToShard(openTransaction) {
-					dataTxs = append(dataTxs, openTransaction.(*protocol.DataTx))
+			//since shard number 1 writes the epoch block, it is required to process all acctx and stake tx
+			//the other transactions are distributed to the shards based on the public address of the sender
+			for _, openTransaction := range openTransactions {
+				switch openTransaction.(type) {
+				case *protocol.AccTx:
+					if shardId == 1 {
+						accTxs = append(accTxs, openTransaction.(*protocol.AccTx))
+					}
+				case *protocol.StakeTx:
+					if shardId == 1 {
+						stakeTxs = append(stakeTxs, openTransaction.(*protocol.StakeTx))
+					}
+				case *protocol.FundsTx:
+					if shardId == assignTransactionToShard(openTransaction) {
+						//if shardId == 1 {
+						fundsTxs = append(fundsTxs, openTransaction.(*protocol.FundsTx))
+					}
+				case *protocol.DataTx:
+					if shardId == assignTransactionToShard(openTransaction) {
+						dataTxs = append(dataTxs, openTransaction.(*protocol.DataTx))
+					}
 				}
 			}
+
+			committeeProof, err := crypto.SignMessageWithRSAKey(committeePrivKey, fmt.Sprint(height))
+			if err != nil {
+				logger.Printf("Error with signing the Committee Proof Message")
+				return
+			}
+
+
+			ta = protocol.NewTransactionAssignment(height, shardId, committeeProof, accTxs, stakeTxs, fundsTxs, dataTxs)
+
+			logger.Printf("length of open transactions: %d", len(storage.ReadAllOpenTxs()))
+			storage.AssignedTxMap[shardId] = ta
+			logger.Printf("broadcasting assignment data for ShardId: %d", shardId)
+			logger.Printf("Length of AccTx: %d, StakeTx: %d, FundsTx: %d, DataTx: %d", len(accTxs), len(stakeTxs), len(fundsTxs), len(dataTxs))
+			broadcastAssignmentData(ta)
 		}
-
-		committeeProof, err := crypto.SignMessageWithRSAKey(committeePrivKey, fmt.Sprint(height))
-		if err != nil {
-			logger.Printf("Error with signing the Committee Proof Message")
-			return
-		}
-
-
-		ta = protocol.NewTransactionAssignment(height, shardId, committeeProof, accTxs, stakeTxs, fundsTxs, dataTxs)
-
-		logger.Printf("length of open transactions: %d", len(storage.ReadAllOpenTxs()))
-		storage.AssignedTxMap[shardId] = ta
-		logger.Printf("broadcasting assignment data for ShardId: %d", shardId)
-		logger.Printf("Length of AccTx: %d, StakeTx: %d, FundsTx: %d, DataTx: %d", len(accTxs), len(stakeTxs), len(fundsTxs), len(dataTxs))
-		broadcastAssignmentData(ta)
+		storage.AssignmentHeight = height
+		logger.Printf("After assigning transactions")
 	}
-	storage.AssignmentHeight = height
-	logger.Printf("After assigning transactions")
 
 
 	//let the goroutine collect the state transitions in the background and contionue with the block collection
@@ -215,48 +223,12 @@ func CommitteeMining(height int) {
 				for _, b := range blockStashForHeight {
 					if blockIDBoolMap[b.ShardId] == false {
 
-						blockIDBoolMap[b.ShardId] = true
-
-						logger.Printf("Validation of block height: %d, ShardID: %d", b.Height, b.ShardId)
-
-						//Check state contains beneficiary.
-						acc, err := storage.GetAccount(b.Beneficiary)
+						err := CommitteeValidateBlock(b)
 						if err != nil {
-							logger.Printf("Don't have the beneficiary")
-							return
+							logger.Printf(err.Error())
 						}
 
-						//Check if node is part of the validator set.
-						if !acc.IsStaking {
-							logger.Printf("Account isn't staking")
-							return
-						}
-
-						//First, initialize an RSA Public Key instance with the modulus of the proposer of the block (acc)
-						//Second, check if the commitment proof of the proposed block can be verified with the public key
-						//Invalid if the commitment proof can not be verified with the public key of the proposer
-						commitmentPubKey, err := crypto.CreateRSAPubKeyFromBytes(acc.CommitmentKey)
-						if err != nil {
-							logger.Printf("commitment key cannot be retrieved")
-							return
-						}
-
-						err = crypto.VerifyMessageWithRSAKey(commitmentPubKey, fmt.Sprint(b.Height), b.CommitmentProof)
-						logger.Printf("CommitmentPubKey: %x, --------------- Block Height: %d", commitmentPubKey, b.Height)
-						if err != nil {
-							logger.Printf("The submitted commitment proof can not be verified.")
-							return
-						}
-
-						//Invalid if PoS calculation is not correct.
-						prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, b)
-						if (validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp)) {
-							logger.Printf("proof of stake is valid")
-						} else {
-							logger.Printf("proof of stake is invalid")
-						}
-
-
+						//fetch data from the block
 						accTxs, fundsTxs, _, stakeTxs, aggTxs, aggregatedFundsTxSlice, dataTxs, aggregatedDataTxSlice, aggDataTxs, err := preValidate(b, false)
 
 						//append the aggTxs to the normal fundsTxs to delete
@@ -264,50 +236,13 @@ func CommitteeMining(height int) {
 						dataTxs = append(dataTxs, aggregatedDataTxSlice...)
 
 
-
-						//here create the state copy and calculate the relative state
-						//for this purpose, only the flow of funds has to be analyzed
-						var StateCopy = CopyState(storage.State)
-						var StateOld = CopyState(storage.State)
-
-
-						//Shard 1 has more transactions to check
-						//order matters
-						//if b.ShardId == 1 {
-						if true {
-							StateCopy, _ = applyAccTxFeesAndCreateAccTx(StateCopy, b.Beneficiary, accTxs)
-							StateCopy, _ = applyStakeTxFees(StateCopy, b.Beneficiary, stakeTxs)
-							StateCopy, _ = applyFundsTxFeesFundsMovement(StateCopy, b.Beneficiary, fundsTxs)
+						//only the leader has to reconstruct the relative account to compare it to the state transition
+						if protocol.SerializeHashContent(validatorAccAddress) == CommitteeLeader {
+							relativeState := ReconstructRelativeState(b, accTxs, stakeTxs, fundsTxs, dataTxs)
+							relativeStatesToCheck[b.ShardId] = relativeState
 						}
 
-						//the fees are applied on the state copy
-						StateCopy, _ = applyDataTxFees(StateCopy, b.Beneficiary, dataTxs)
-
-						relativeStateProvisory := storage.GetRelativeStateForCommittee(StateOld, StateCopy)
-
-						relativeState := protocol.NewRelativeState(relativeStateProvisory, b.ShardId)
-
-						relativeStatesToCheck[b.ShardId] = relativeState
-
-
-						//only iterate through data Txs once, so write summary AND check fee just once.
-						if len(dataTxs) > 0 {
-							err := storage.UpdateDataSummary(dataTxs); if err != nil {
-								logger.Printf("Error when updating the data summary")
-								return
-							} else {
-								logger.Printf("Data Summary Updated")
-								newDataSummarySlice := storage.ReadAllDataSummary()
-								if len(newDataSummarySlice) == 0 {
-									logger.Printf("got a problem!!")
-									return
-								}
-								//logger.Printf("Start Print data summary")
-								//for _, dataSummary := range newDataSummarySlice {
-									//logger.Printf(dataSummary.String())
-								//}
-							}
-						}
+						UpdateSummary(dataTxs)
 
 						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs))
 
@@ -323,6 +258,8 @@ func CommitteeMining(height int) {
 							logger.Printf(err.Error())
 							return
 						}
+
+						blockIDBoolMap[b.ShardId] = true
 
 						logger.Printf("Processed block of shard: %d\n", b.ShardId)
 
@@ -352,54 +289,22 @@ func CommitteeMining(height int) {
 
 						if b == nil {
 							logger.Printf("block is nil")
+							return
 						}
 
 						if b.ShardId != shardIdReq {
 							logger.Printf("Shard ID of received block %d vs shard ID of request %d. Continue", b.ShardId, shardIdReq)
 							continue
 						}
-						blockIDBoolMap[shardIdReq] = true
 
 						logger.Printf("Validation of block height: %d, ShardID: %d", b.Height, b.ShardId)
 
-						//Check state contains beneficiary.
-						acc, err := storage.GetAccount(b.Beneficiary)
+						err := CommitteeValidateBlock(b)
 						if err != nil {
-							logger.Printf("Don't have the beneficiary")
-							return
+							logger.Printf(err.Error())
 						}
 
-						//Check if node is part of the validator set.
-						if !acc.IsStaking {
-							logger.Printf("Account isn't staking")
-							return
-						}
-
-						//First, initialize an RSA Public Key instance with the modulus of the proposer of the block (acc)
-						//Second, check if the commitment proof of the proposed block can be verified with the public key
-						//Invalid if the commitment proof can not be verified with the public key of the proposer
-						commitmentPubKey, err := crypto.CreateRSAPubKeyFromBytes(acc.CommitmentKey)
-						if err != nil {
-							logger.Printf("commitment key cannot be retrieved")
-							return
-						}
-
-						err = crypto.VerifyMessageWithRSAKey(commitmentPubKey, fmt.Sprint(b.Height), b.CommitmentProof)
-						logger.Printf("CommitmentPubKey: %x, --------------- Block Height: %d", commitmentPubKey, b.Height)
-						if err != nil {
-							logger.Printf("The submitted commitment proof can not be verified.")
-							return
-						}
-
-						//Invalid if PoS calculation is not correct.
-						prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, b)
-						if (validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp)) {
-							logger.Printf("proof of stake is valid")
-						} else {
-							logger.Printf("proof of stake is invalid")
-						}
-
-
+						//fetch data from the block
 						accTxs, fundsTxs, _, stakeTxs, aggTxs, aggregatedFundsTxSlice, dataTxs, aggregatedDataTxSlice, aggDataTxs, err := preValidate(b, false)
 
 						//append the aggTxs to the normal fundsTxs to delete
@@ -407,55 +312,18 @@ func CommitteeMining(height int) {
 						dataTxs = append(dataTxs, aggregatedDataTxSlice...)
 
 
+						UpdateSummary(dataTxs)
 
-						//here create the state copy and calculate the relative state
-						//for this purpose, only the flow of funds has to be analyzed
-						var StateCopy = CopyState(storage.State)
-						var StateOld = CopyState(storage.State)
-
-						//Shard 1 has more transactions to check
-						//order matters
-						//if b.ShardId == 1 {
-						if true {
-							StateCopy, _ = applyAccTxFeesAndCreateAccTx(StateCopy, b.Beneficiary, accTxs)
-							StateCopy, _ = applyStakeTxFees(StateCopy, b.Beneficiary, stakeTxs)
-							StateCopy, _ = applyFundsTxFeesFundsMovement(StateCopy, b.Beneficiary, fundsTxs)
+						//only the leader has to reconstruct the relative account to compare it to the state transition
+						if protocol.SerializeHashContent(validatorAccAddress) == CommitteeLeader {
+							relativeState := ReconstructRelativeState(b, accTxs, stakeTxs, fundsTxs, dataTxs)
+							relativeStatesToCheck[b.ShardId] = relativeState
 						}
 
-
-						//the fees are applied on the state copy
-						StateCopy, _ = applyDataTxFees(StateCopy, b.Beneficiary, dataTxs)
-
-
-
-
-						relativeStateProvisory := storage.GetRelativeStateForCommittee(StateOld, StateCopy)
-
-						relativeState := protocol.NewRelativeState(relativeStateProvisory, b.ShardId)
-
-						relativeStatesToCheck[b.ShardId] = relativeState
-
-						//only iterate through data Txs once, so write summary AND check fee just once.
-						if len(dataTxs) > 0 {
-							err := storage.UpdateDataSummary(dataTxs); if err != nil {
-								logger.Printf("Error when updating the data summary")
-								return
-							} else {
-								logger.Printf("Data Summary Updated")
-								newDataSummarySlice := storage.ReadAllDataSummary()
-								if len(newDataSummarySlice) == 0 {
-									logger.Printf("got a problem!!")
-									return
-								}
-								//logger.Printf("Start Print data summary")
-								//for _, dataSummary := range newDataSummarySlice {
-									//logger.Printf(dataSummary.String())
-								//}
-							}
-						}
 
 						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs))
 
+						//database and RAM operations
 						err = storage.WriteAllClosedTx(accTxs, stakeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
 						if err != nil {
 							logger.Printf(err.Error())
@@ -467,7 +335,7 @@ func CommitteeMining(height int) {
 							return
 						}
 
-
+						blockIDBoolMap[shardIdReq] = true
 
 						//store the block in the received block stash as well
 						blockHash := b.HashBlock()
@@ -494,19 +362,21 @@ func CommitteeMining(height int) {
 	waitGroup.Wait()
 	logger.Printf("All state transitions already received")
 
-	//go through all state transitions and check them
-	stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, uint32(height+1))
-	for _,st := range stateStashForHeight {
-		ownRelativeState := relativeStatesToCheck[st.ShardID]
-		if !sameRelativeState(st.RelativeStateChange, ownRelativeState.RelativeState) {
-			logger.Printf("FOUND A CHEATER: Shard %d", st.ShardID)
-			//TODO include punishment
-			return
-		} else {
-			logger.Printf("For Shard ID: %d the relative states match", st.ShardID)
+	//only the leader has to perform this check
+	if protocol.SerializeHashContent(validatorAccAddress) == CommitteeLeader {
+		//go through all state transitions and compare them with the actual transactions inside the block
+		stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, uint32(height+1))
+		for _, st := range stateStashForHeight {
+			ownRelativeState := relativeStatesToCheck[st.ShardID]
+			if !sameRelativeState(st.RelativeStateChange, ownRelativeState.RelativeState) {
+				logger.Printf("FOUND A CHEATER: Shard %d", st.ShardID)
+				//TODO include punishment
+				return
+			} else {
+				logger.Printf("For Shard ID: %d the relative states match", st.ShardID)
+			}
 		}
 	}
-
 
 	logger.Printf("Wait for next epoch block")
 	//wait for next epoch block
@@ -518,19 +388,17 @@ func CommitteeMining(height int) {
 		if newEpochBlock.Height == uint32(storage.AssignmentHeight)+1+EPOCH_LENGTH {
 			//broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 			epochBlockReceived = true
-			//think about when the new state should be updated. Important information: acc/staking
-			//but for proof of stake, balance would also be important...
-
 
 			//since it's safely not the first step of mining anymore, it's safe to perform proof of stake at this step
-			err := validateEpochBlock(&newEpochBlock, relativeStatesToCheck)
-			if err != nil {
-				logger.Printf(err.Error())
-				return
-			} else {
-				logger.Printf("The Epoch Block and its state are valid")
+			if protocol.SerializeHashContent(validatorAccAddress) == CommitteeLeader {
+				err := validateEpochBlock(&newEpochBlock, relativeStatesToCheck)
+				if err != nil {
+					logger.Printf(err.Error())
+					return
+				} else {
+					logger.Printf("The Epoch Block and its state are valid")
+				}
 			}
-
 
 			//before being able to validate the proof of stake, the state needs to updated
 			storage.State = newEpochBlock.State
@@ -541,6 +409,8 @@ func CommitteeMining(height int) {
 		}
 	}
 	FirstStartCommittee = false
+	//Empty the map
+	storage.AssignedTxMap = make(map[int]*protocol.TransactionAssignment)
 	logger.Printf("Received epoch block. Start next round")
 	CommitteeMining(int(lastEpochBlock.Height))
 }
@@ -1369,6 +1239,89 @@ func sameRelativeState(calculatedMap map[[32]byte]*protocol.RelativeAccount, rec
 	return true
 }
 
+func UpdateSummary(dataTxs []*protocol.DataTx) {
+	//only iterate through data Txs once, so write summary AND check fee just once.
+	if len(dataTxs) > 0 {
+		err := storage.UpdateDataSummary(dataTxs); if err != nil {
+			logger.Printf("Error when updating the data summary")
+			return
+		} else {
+			logger.Printf("Data Summary Updated")
+			newDataSummarySlice := storage.ReadAllDataSummary()
+			if len(newDataSummarySlice) == 0 {
+				logger.Printf("got a problem!!")
+				return
+			}
+			//logger.Printf("Start Print data summary")
+			//for _, dataSummary := range newDataSummarySlice {
+			//logger.Printf(dataSummary.String())
+			//}
+		}
+	}
+}
+
+func ReconstructRelativeState(b *protocol.Block, accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fundsTxs []*protocol.FundsTx, dataTxs []*protocol.DataTx) *protocol.RelativeState {
+	//here create the state copy and calculate the relative state
+	//for this purpose, only the flow of funds has to be analyzed
+	var StateCopy = CopyState(storage.State)
+	var StateOld = CopyState(storage.State)
+
+	//Shard 1 has more transactions to check
+	//order matters
+	//if b.ShardId == 1 {
+	if true {
+		StateCopy, _ = applyAccTxFeesAndCreateAccTx(StateCopy, b.Beneficiary, accTxs)
+		StateCopy, _ = applyStakeTxFees(StateCopy, b.Beneficiary, stakeTxs)
+		StateCopy, _ = applyFundsTxFeesFundsMovement(StateCopy, b.Beneficiary, fundsTxs)
+	}
+
+
+	//the fees are applied on the state copy
+	StateCopy, _ = applyDataTxFees(StateCopy, b.Beneficiary, dataTxs)
+
+	relativeStateProvisory := storage.GetRelativeStateForCommittee(StateOld, StateCopy)
+
+	return protocol.NewRelativeState(relativeStateProvisory, b.ShardId)
+}
+
+
+func CommitteeValidateBlock(b *protocol.Block) (err error) {
+	logger.Printf("Validation of block height: %d, ShardID: %d", b.Height, b.ShardId)
+
+	//Check state contains beneficiary.
+	acc, err := storage.GetAccount(b.Beneficiary)
+	if err != nil {
+		return errors.New("Don't have the beneficiary")
+	}
+
+	//Check if node is part of the validator set.
+	if !acc.IsStaking {
+		return errors.New("Account isn't staking")
+	}
+
+	//First, initialize an RSA Public Key instance with the modulus of the proposer of the block (acc)
+	//Second, check if the commitment proof of the proposed block can be verified with the public key
+	//Invalid if the commitment proof can not be verified with the public key of the proposer
+	commitmentPubKey, err := crypto.CreateRSAPubKeyFromBytes(acc.CommitmentKey)
+	if err != nil {
+		return errors.New("commitment key cannot be retrieved")
+	}
+
+	err = crypto.VerifyMessageWithRSAKey(commitmentPubKey, fmt.Sprint(b.Height), b.CommitmentProof)
+	logger.Printf("CommitmentPubKey: %x, --------------- Block Height: %d", commitmentPubKey, b.Height)
+	if err != nil {
+		return errors.New("The submitted commitment proof can not be verified.")
+	}
+
+	//Invalid if PoS calculation is not correct.
+	prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, b)
+	if (validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp)) {
+		logger.Printf("proof of stake is valid")
+	} else {
+		return errors.New("proof of stake is invalid")
+	}
+	return nil
+}
 
 
 //Helper functions
