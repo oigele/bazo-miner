@@ -953,6 +953,12 @@ func ChooseCommitteeLeader() (committeeLeader [32]byte) {
 	//randomize the process
 	rand.Seed(time.Now().Unix())
 	//rand.Intn gives me a random number [0,n). For example, if there is only 1 committee, then, it's [0,1) = [0,0] = 0, since the numbers are discrete
+
+	//make sure that newly joining committees can be the leader (simplifies synchronization)
+	if newCommitteeNode != [64]byte{} {
+		return protocol.SerializeHashContent(newCommitteeNode)
+	}
+
 	randomIndex := rand.Intn(DetNumberOfCommittees())
 	committeeSlice := make([][32]byte, 0)
 	for _, acc := range storage.State {

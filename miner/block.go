@@ -313,6 +313,7 @@ func addCommitteeTx(b *protocol.Block, tx *protocol.CommitteeTx) (err error){
 
 	//No further checks needed, static checks were already done with verify().
 	b.CommitteeTxData = append(b.CommitteeTxData, tx.Hash())
+	newCommitteeNode = tx.Account
 	logger.Printf("Added tx (%x) to the CommitteeTx slice: %v", tx.Hash(), *tx)
 
 	return nil
@@ -1068,7 +1069,6 @@ func fetchAccTxData(block *protocol.Block, accTxSlice []*protocol.AccTx, initial
 		if assignedTx != nil {
 			accTx = assignedTx.(*protocol.AccTx)
 			accTxSlice[cnt] = accTx
-			logger.Printf("The transaction was in the assigned Tx")
 			continue
 		}
 
@@ -1127,7 +1127,6 @@ func fetchFundsTxData(block *protocol.Block, fundsTxSlice []*protocol.FundsTx, i
 		if assignedTx != nil {
 			fundsTx = assignedTx.(*protocol.FundsTx)
 			fundsTxSlice[cnt] = fundsTx
-			logger.Printf("The transaction was in the assigned Tx")
 			continue
 		}
 
@@ -1199,7 +1198,6 @@ func fetchDataTxData(block *protocol.Block, dataTxSlice []*protocol.DataTx, init
 		if assignedTx != nil {
 			dataTx = assignedTx.(*protocol.DataTx)
 			dataTxSlice[cnt] = dataTx
-			logger.Printf("The transaction was in the assigned Tx")
 			continue
 		}
 
@@ -1246,7 +1244,6 @@ func fetchConfigTxData(block *protocol.Block, configTxSlice []*protocol.ConfigTx
 		if assignedTx != nil {
 			configTx = assignedTx.(*protocol.ConfigTx)
 			configTxSlice[cnt] = configTx
-			logger.Printf("The transaction was in the assigned Tx")
 			continue
 		}
 
@@ -1299,7 +1296,6 @@ func fetchStakeTxData(block *protocol.Block, stakeTxSlice []*protocol.StakeTx, i
 		if assignedTx != nil {
 			stakeTx = assignedTx.(*protocol.StakeTx)
 			stakeTxSlice[cnt] = stakeTx
-			logger.Printf("The transaction was in the assigned Tx")
 			continue
 		}
 
@@ -1351,7 +1347,6 @@ func fetchCommitteeTxData(block *protocol.Block, committeeTxSlice []*protocol.Co
 		if assignedTx != nil {
 			committeeTx = assignedTx.(*protocol.CommitteeTx)
 			committeeTxSlice[cnt] = committeeTx
-			logger.Printf("The transaction was in the assigned Tx")
 			continue
 		}
 
@@ -1556,7 +1551,6 @@ func fetchAggTxData(block *protocol.Block, aggTxSlice []*protocol.AggTx, initial
 
 				tx := storage.ReadAssignedTx(txHash)
 				if tx != nil {
-					logger.Printf("Found transaction in assigned TX")
 					transactions = append(transactions, tx.(*protocol.FundsTx))
 					continue
 				}
@@ -2358,7 +2352,7 @@ func postValidate(data blockData, initialSetup bool) {
 	// 4. Normal Miner after InitialSetup			-->	Write All Tx Into Closed Tx
 	if !p2p.IsBootstrap() || !initialSetup {
 		//Write all open transactions to closed/validated storage.
-		for _, tx := range data.accTxSlice {
+		/*for _, tx := range data.accTxSlice {
 			storage.WriteClosedTx(tx)
 			storage.DeleteOpenTx(tx)
 		}
@@ -2377,6 +2371,11 @@ func postValidate(data blockData, initialSetup bool) {
 		}
 
 		for _, tx := range data.stakeTxSlice {
+			storage.WriteClosedTx(tx)
+			storage.DeleteOpenTx(tx)
+		}
+
+		for _, tx := range data.committeeTxSlice {
 			storage.WriteClosedTx(tx)
 			storage.DeleteOpenTx(tx)
 		}
@@ -2447,7 +2446,7 @@ func postValidate(data blockData, initialSetup bool) {
 			storage.DeleteOpenTx(tx)
 			storage.DeleteINVALIDOpenTx(tx)
 		}
-
+		*/
 		if len(data.fundsTxSlice) > 0 {
 			//broadcastVerifiedFundsTxs(data.fundsTxSlice)
 			//Current sending mechanism is not  fast enough to broadcast all validated transactions...

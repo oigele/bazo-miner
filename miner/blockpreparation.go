@@ -22,6 +22,7 @@ var (
 	blockSize					int
 	transactionHashSize			int
 	newStakingNode				[64]byte
+	newCommitteeNode			[64]byte
 )
 
 
@@ -236,6 +237,7 @@ func prepareBlock(block *protocol.Block) {
 	logger.Printf("Number of OpenTxs to add right before they get added: %d", len(opentxToAdd))
 
 	newStakingNode = [64]byte{}
+	newCommitteeNode = [64]byte{}
 	//Add previous selected transactions.
 	for _, tx := range opentxToAdd {
 		switch tx.(type) {
