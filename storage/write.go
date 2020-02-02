@@ -93,6 +93,7 @@ func WriteOpenTx(transaction protocol.Transaction) {
 	openTxMutex.Unlock()
 }
 
+
 func WriteOpenTxHashToDelete(hash [32]byte) {
 	openTxToDeleteMutex.Lock()
 	defer openTxToDeleteMutex.Unlock()
@@ -177,7 +178,7 @@ func WriteClosedFundsTxFromAggTxSlice(transactions []protocol.FundsTx) (err erro
 	return err
 }
 
-func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) (err error) {
+func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, committeeTxs []*protocol.CommitteeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) (err error) {
 	bucket := "closedaccs"
 	err = db.Update(func(tx *bolt.Tx) error {
 		var err error
@@ -200,6 +201,23 @@ func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fu
 		var err error
 		b := tx.Bucket([]byte(bucket))
 		for _, transaction := range stakeTxs {
+			hash := transaction.Hash()
+			err = b.Put(hash[:], transaction.Encode())
+			if err != nil {
+				logger.Printf("We GOT AN ERROR")
+			}
+			nrClosedTransactions = nrClosedTransactions + 1
+			totalTransactionSize = totalTransactionSize + float32(transaction.Size())
+			averageTxSize = totalTransactionSize / nrClosedTransactions
+		}
+		return err
+	})
+
+	bucket = "closedcommittees"
+	err = db.Update(func(tx *bolt.Tx) error {
+		var err error
+		b := tx.Bucket([]byte(bucket))
+		for _, transaction := range committeeTxs {
 			hash := transaction.Hash()
 			err = b.Put(hash[:], transaction.Encode())
 			if err != nil {

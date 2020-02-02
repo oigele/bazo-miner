@@ -27,7 +27,7 @@ var (
 
 func prepareBlock(block *protocol.Block) {
 	//openTxs are all the transactions which were assigned to this particular shard
-	opentxs := storage.AssignedTxMempool
+	opentxs := storage.ReadAllAssignedTx()
 	//opentxs = append(opentxs, storage.ReadAllINVALIDOpenTx()...)
 	logger.Printf("Number of OpenTxs: %d", len(opentxs))
 

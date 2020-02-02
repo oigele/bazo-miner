@@ -21,12 +21,13 @@ type CommitteeTx struct {
 	Header        byte                  // 1 Byte
 	Fee           uint64                // 8 Byte
 	IsCommittee   bool                  // 1 Byte
-	Account       [32]byte              // 32 Byte
+	Account       [64]byte              // 64 Byte
+	Issuer        [32]byte				// 32 Byte
 	Sig           [64]byte              // 64 Byte
 	CommitteeKey  [crypto.COMM_KEY_LENGTH]byte // the modulus N of the RSA public key
 }
 
-func ConstrCommitteeTx(header byte, fee uint64, isCommittee bool, account [32]byte, signKey *ecdsa.PrivateKey, commPubKey *rsa.PublicKey) (tx *CommitteeTx, err error) {
+func ConstrCommitteeTx(header byte, fee uint64, isCommittee bool, account [64]byte, signKey *ecdsa.PrivateKey, commPubKey *rsa.PublicKey) (tx *CommitteeTx, err error) {
 
 	tx = new(CommitteeTx)
 
@@ -36,6 +37,14 @@ func ConstrCommitteeTx(header byte, fee uint64, isCommittee bool, account [32]by
 	tx.Account = account
 
 	copy(tx.CommitteeKey[:], commPubKey.N.Bytes())
+
+	var rootPublicKey [64]byte
+	rootPubKey1, rootPubKey2 := signKey.PublicKey.X.Bytes(), signKey.PublicKey.Y.Bytes()
+	copy(rootPublicKey[32-len(rootPubKey1):32], rootPubKey1)
+	copy(rootPublicKey[64-len(rootPubKey2):], rootPubKey2)
+
+	issuer := SerializeHashContent(rootPublicKey)
+	copy(tx.Issuer[:], issuer[:])
 
 	txHash := tx.Hash()
 
@@ -60,16 +69,14 @@ func (tx *CommitteeTx) Hash() (hash [32]byte) {
 		Header      	 byte
 		Fee         	 uint64
 		IsCommittee 	 bool
-		Account     	 [32]byte
-		Sig 			 [64]byte
-		CommitteeKey     [crypto.COMM_KEY_LENGTH]byte
+		Account     	 [64]byte
+		Issuer			 [32]byte
 	}{
 		tx.Header,
 		tx.Fee,
 		tx.IsCommittee,
 		tx.Account,
-		tx.Sig,
-		tx.CommitteeKey,
+		tx.Issuer,
 	}
 
 	return SerializeHashContent(txHash)
@@ -86,6 +93,7 @@ func (tx *CommitteeTx) Encode() (encodedTx []byte) {
 		Fee:    	  tx.Fee,
 		IsCommittee:  tx.IsCommittee,
 		Account:	  tx.Account,
+		Issuer:		  tx.Issuer,
 		Sig:   		  tx.Sig,
 		CommitteeKey: tx.CommitteeKey,
 	}
@@ -114,12 +122,14 @@ func (tx CommitteeTx) String() string {
 			"Fee: %v\n"+
 			"IsCommittee: %v\n"+
 			"Account: %x\n"+
+			"Issuer: %x\n" +
 			"Sig: %x\n"+
 			"CommitteeKey: %x\n",
 		tx.Header,
 		tx.Fee,
 		tx.IsCommittee,
 		tx.Account[0:8],
+		tx.Issuer[0:8],
 		tx.Sig[0:8],
 		tx.CommitteeKey[0:8],
 	)

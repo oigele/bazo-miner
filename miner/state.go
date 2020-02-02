@@ -428,6 +428,26 @@ func accStateChange(txSlice []*protocol.AccTx) error {
 	return nil
 }
 
+func committeeStateChange(txSlice []*protocol.CommitteeTx) (err error) {
+	for _, tx := range txSlice {
+		if tx == nil {
+			logger.Printf("Tx was nil")
+		}
+		newAcc := protocol.NewAccount(tx.Account, tx.Issuer, 0, false, true, [crypto.COMM_KEY_LENGTH]byte{}, tx.CommitteeKey, nil, nil)
+		newAccHash := newAcc.Hash()
+		logger.Printf("Got a committee change to handle")
+		acc, _ := storage.GetAccount(newAccHash)
+		if acc != nil {
+			//Shouldn't happen, because this should have been prevented when adding an accTx to the block
+			return errors.New("Address already exists in the state.")
+		}
+
+		//If acc does not exist, write to state
+		storage.State[newAccHash] = &newAcc
+	}
+	return nil
+}
+
 //this method does inititate the state change for aggregated Transactions.
 func aggTxStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error) {
 	sort.Sort(ByTxCount(txSlice))
@@ -683,11 +703,12 @@ func getDataTxFromAggDataTx(AggregatedDataTxSlice [][32]byte) (dataTxSlice []*pr
 	return dataTxSlice
 }
 
-func collectTxFees(accTxSlice []*protocol.AccTx, fundsTxSlice []*protocol.FundsTx, configTxSlice []*protocol.ConfigTx, stakeTxSlice []*protocol.StakeTx, aggTxSlice []*protocol.AggTx, dataTxSlice []*protocol.DataTx, aggDataTxSlice []*protocol.AggDataTx, minerHash [32]byte, initialSetup bool) (err error) {
+func collectTxFees(accTxSlice []*protocol.AccTx, fundsTxSlice []*protocol.FundsTx, configTxSlice []*protocol.ConfigTx, stakeTxSlice []*protocol.StakeTx, committeeTxSlice []*protocol.CommitteeTx, aggTxSlice []*protocol.AggTx, dataTxSlice []*protocol.DataTx, aggDataTxSlice []*protocol.AggDataTx, minerHash [32]byte, initialSetup bool) (err error) {
 	var tmpAccTx []*protocol.AccTx
 	var tmpFundsTx []*protocol.FundsTx
 	var tmpConfigTx []*protocol.ConfigTx
 	var tmpStakeTx []*protocol.StakeTx
+	var tmpCommiteeTx []*protocol.CommitteeTx
 	var tmpDataTx []*protocol.DataTx
 
 	//if initialSetup { //TODO DELETE THIS
@@ -723,6 +744,22 @@ func collectTxFees(accTxSlice []*protocol.AccTx, fundsTxSlice []*protocol.FundsT
 			minerAcc.Balance += tx.Fee
 			tmpAccTx = append(tmpAccTx, tx)
 		}
+
+	for _, tx := range committeeTxSlice {
+		if minerAcc.Balance+tx.Fee > MAX_MONEY {
+			err = errors.New("Fee amount would lead to balance overflow at the miner account.")
+		}
+
+		if err != nil {
+			//Rollback of all perviously transferred transaction fees to the protocol's account
+			collectTxFeesRollback(tmpAccTx, tmpFundsTx, tmpConfigTx, tmpStakeTx, minerHash)
+			return err
+		}
+
+		//Money gets created from thin air, no need to subtract money from root key
+		minerAcc.Balance += tx.Fee
+		tmpCommiteeTx = append(tmpCommiteeTx, tx)
+	}
 
 		//subtract fees from sender (check if that is allowed has already been done in the block validation)
 		for _, tx := range fundsTxSlice {

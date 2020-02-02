@@ -42,6 +42,7 @@ type Block struct {
 	NrAccTx               uint16
 	NrFundsTx             uint16
 	NrStakeTx             uint16
+	NrCommitteeTx		  uint16
 	NrAggTx         	  uint16
 	NrDataTx			  uint16
 	NrAggDataTx			  uint16
@@ -60,6 +61,7 @@ type Block struct {
 	DataTxData 			 [][32]byte
 	ConfigTxData 		 [][32]byte
 	StakeTxData  		 [][32]byte
+	CommitteeTxData		 [][32]byte
 	AggTxData  	 		 [][32]byte
 	AggDataTxData		 [][32]byte
 }
@@ -194,6 +196,7 @@ func (block *Block) GetBodySize() uint64 {
 		reflect.TypeOf(block.NrStakeTx).Size() +
 		reflect.TypeOf(block.NrAggTx).Size() +
 		reflect.TypeOf(block.NrDataTx).Size() +
+		reflect.TypeOf(block.NrCommitteeTx).Size() +
 		reflect.TypeOf(block.NrAggDataTx).Size() +
 		reflect.TypeOf(block.SlashedAddress).Size() +
 		reflect.TypeOf(block.CommitmentProof).Size() +
@@ -215,7 +218,8 @@ func (block *Block) GetTxDataSize() uint64 {
 		int(block.NrStakeTx)*HASH_LEN +
 		int(block.NrAggTx)*HASH_LEN +
 		int(block.NrDataTx)*HASH_LEN +
-		int(block.NrAggDataTx)*HASH_LEN
+		int(block.NrAggDataTx)*HASH_LEN+
+		int(block.NrCommitteeTx)*HASH_LEN
 
 	return uint64(size)
 }
@@ -251,6 +255,7 @@ func (block *Block) Encode() []byte {
 		NrFundsTx:             			block.NrFundsTx,
 		NrConfigTx:            			block.NrConfigTx,
 		NrStakeTx:             			block.NrStakeTx,
+		NrCommitteeTx: 					block.NrCommitteeTx,
 		NrAggTx:         				block.NrAggTx,
 		NrDataTx:						block.NrDataTx,
 		NrAggDataTx: 					block.NrAggDataTx,
@@ -268,6 +273,7 @@ func (block *Block) Encode() []byte {
 		FundsTxData:  		   			block.FundsTxData,
 		ConfigTxData: 		   			block.ConfigTxData,
 		StakeTxData:  		   			block.StakeTxData,
+		CommitteeTxData:				block.CommitteeTxData,
 		AggTxData:	   					block.AggTxData,
 		DataTxData:						block.DataTxData,
 		AggDataTxData:					block.AggDataTxData,
@@ -330,6 +336,7 @@ func (block Block) String() string {
 		"Amount of accTx: %v --> %x\n"+
 		"Amount of configTx: %v --> %x\n"+
 		"Amount of stakeTx: %v --> %x\n"+
+		"Amount of committeeTx: %v --> %x\n" +
 		"Amount of dataTx: %v --> %x\n" +
 		"Amount of aggDataTx: %v --> %x\n" +
 		"Amount of aggTx: %v --> %x\n"+
@@ -352,6 +359,7 @@ func (block Block) String() string {
 		block.NrAccTx, block.AccTxData,
 		block.NrConfigTx, block.ConfigTxData,
 		block.NrStakeTx, block.StakeTxData,
+		block.NrCommitteeTx, block.CommitteeTxData,
 		block.NrDataTx, block.DataTxData,
 		block.NrAggDataTx, block.AggDataTxData,
 		block.NrAggTx, block.AggTxData,

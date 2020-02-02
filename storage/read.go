@@ -261,6 +261,23 @@ func ReadINVALIDOpenTx(hash [32]byte) (transaction protocol.Transaction) {
 	return txINVALIDMemPool[hash]
 }
 
+func ReadAssignedTx(hash [32]byte) (transaction protocol.Transaction) {
+	assignedTransactionMutex.Lock()
+	defer assignedTransactionMutex.Unlock()
+	return AssignedTxMempool[hash]
+}
+
+func ReadAllAssignedTx() (allAssignedTxs []protocol.Transaction) {
+	assignedTransactionMutex.Lock()
+	defer assignedTransactionMutex.Unlock()
+
+	for key := range AssignedTxMempool {
+		allAssignedTxs = append(allAssignedTxs, AssignedTxMempool[key])
+	}
+	return allAssignedTxs
+
+}
+
 func ReadAllINVALIDOpenTx() (allOpenInvalidTxs []protocol.Transaction) {
 
 	openINVALIDTxMutex.Lock()
@@ -374,6 +391,15 @@ func ReadClosedTx(hash [32]byte) (transaction protocol.Transaction) {
 	})
 	if encodedTx != nil {
 		return staketx.Decode(encodedTx)
+	}
+	var committeetx *protocol.CommitteeTx
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("closedcommittees"))
+		encodedTx = b.Get(hash[:])
+		return nil
+	})
+	if encodedTx != nil {
+		return committeetx.Decode(encodedTx)
 	}
 
 	var aggTx *protocol.AggTx

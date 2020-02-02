@@ -25,6 +25,8 @@ func verify(tx protocol.Transaction) bool {
 		verified = verifyConfigTx(tx.(*protocol.ConfigTx))
 	case *protocol.StakeTx:
 		verified = verifyStakeTx(tx.(*protocol.StakeTx))
+	case *protocol.CommitteeTx:
+		verified = verifyCommitteeTx(tx.(*protocol.CommitteeTx))
 	case *protocol.AggTx:
 		verified = verifyAggTx(tx.(*protocol.AggTx))
 	case *protocol.DataTx:
@@ -192,6 +194,35 @@ func verifyStakeTx(tx *protocol.StakeTx) bool {
 	pubKey := ecdsa.PublicKey{elliptic.P256(), pub1, pub2}
 
 	return ecdsa.Verify(&pubKey, txHash[:], r, s)
+}
+
+func verifyCommitteeTx(tx *protocol.CommitteeTx) bool {
+	if tx == nil {
+		logger.Printf("CommitteeTx is nil")
+		return false
+	}
+
+	r, s := new(big.Int), new(big.Int)
+	pub1, pub2 := new(big.Int), new(big.Int)
+
+	r.SetBytes(tx.Sig[:32])
+	s.SetBytes(tx.Sig[32:])
+
+
+	for _, rootAcc := range storage.RootKeys {
+		pub1.SetBytes(rootAcc.Address[:32])
+		pub2.SetBytes(rootAcc.Address[32:])
+
+		pubKey := ecdsa.PublicKey{elliptic.P256(), pub1, pub2}
+		txHash := tx.Hash()
+
+		//Only the hash of the pubkey is hashed and verified here
+		if ecdsa.Verify(&pubKey, txHash[:], r, s) == true {
+			return true
+		}
+	}
+	logger.Printf("Pubkey cant be verified from the CommitteeTx")
+	return false
 }
 
 //TODO Update this function

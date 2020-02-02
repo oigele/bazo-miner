@@ -17,6 +17,7 @@ const (
 	AGGTX_BRDCST      		= 9
 	DATATX_BRDCST			= 10
 	AGGDATATX_BRDCST		= 11
+	COMMITTEETX_BRDCST		= 12
 
 	GENESIS_REQ			    = 19
 	FUNDSTX_REQ            	= 20

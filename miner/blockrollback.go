@@ -7,7 +7,7 @@ import "github.com/oigele/bazo-miner/storage"
 //No need for an additional state mutex, because this function is called while the blockValidation mutex is actively held.
 //This function is not needed in IoT case and the content is deprecated
 func rollback(b *protocol.Block) error {
-	accTxSlice, fundsTxSlice, configTxSlice, stakeTxSlice, aggTxSlice, err := preValidateRollback(b)
+	accTxSlice, fundsTxSlice, configTxSlice, stakeTxSlice, aggTxSlice, err := FpreValidateRollback(b)
 	if err != nil {
 		return err
 	}

@@ -22,7 +22,7 @@ var (
 	txMemPool          				= make(map[[32]byte]protocol.Transaction)
 
 	//designed a new mempool for this use case
-	AssignedTxMempool 				[]protocol.Transaction
+	AssignedTxMempool 				=  make(map[[32]byte]protocol.Transaction)
 
 	//map of transaction assignments for a given height. Key: ShardID. Value: Assignment
 	AssignedTxMap					= make(map[int]*protocol.TransactionAssignment)
@@ -47,6 +47,7 @@ var (
 	openTxMutex 						= &sync.Mutex{}
 	openTxToDeleteMutex					= &sync.Mutex{}
 	openINVALIDTxMutex 					= &sync.Mutex{}
+	assignedTransactionMutex			= &sync.Mutex{}
 	openFundsTxBeforeAggregationMutex	= &sync.Mutex{}
 	openDataTxBeforeAggregationMutex	= &sync.Mutex{}
 	txcntToTxMapMutex					= &sync.Mutex{}
@@ -140,6 +141,13 @@ func Init(dbname string, bootstrapIpport string) {
 	})
 	db.Update(func(tx *bolt.Tx) error {
 		_, err = tx.CreateBucket([]byte("closedstakes"))
+		if err != nil {
+			return fmt.Errorf(ERROR_MSG+"Create bucket: %s", err)
+		}
+		return nil
+	})
+	db.Update(func(tx *bolt.Tx) error {
+		_, err = tx.CreateBucket([]byte("closedcommittees"))
 		if err != nil {
 			return fmt.Errorf(ERROR_MSG+"Create bucket: %s", err)
 		}

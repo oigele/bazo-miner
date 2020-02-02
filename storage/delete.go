@@ -79,7 +79,7 @@ func DeleteOpenTx(transaction protocol.Transaction) {
 	openTxMutex.Unlock()
 }
 
-func DeleteAllOpenTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) error {
+func DeleteAllOpenTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, committeeTxs []*protocol.CommitteeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) error {
 	openTxMutex.Lock()
 	defer openTxMutex.Unlock()
 
@@ -95,6 +95,14 @@ func DeleteAllOpenTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, fun
 		}
 	}
 	for _, transaction := range stakeTxs {
+		txHash := transaction.Hash()
+		if _, exists := txMemPool[txHash]; !exists {
+			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		} else {
+			delete(txMemPool, txHash)
+		}
+	}
+	for _, transaction := range committeeTxs {
 		txHash := transaction.Hash()
 		if _, exists := txMemPool[txHash]; !exists {
 			return errors.New("The Shard has put a transaction into its block that should not be in there")

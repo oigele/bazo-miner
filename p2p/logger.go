@@ -27,6 +27,7 @@ func InitLogging() {
 	LogMapping[9]  = "AGGTX_BRDCST"
 	LogMapping[10] = "DATATX_BRDCST"
 	LogMapping[11] = "AGGDATATX_BRDCST"
+	LogMapping[12] = "COMMITTEETX_BRDCST"
 
 	LogMapping[19] = "GENESIS_REQ"
 	LogMapping[20] = "FUNDSTX_REQ"

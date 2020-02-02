@@ -446,6 +446,8 @@ func TransactionAssignmentRes(p *peer, payload []byte) {
 			if ta == nil {
 				logger.Printf("Not responsible for transaction Assignment at Height: %d", height)
 				packet = BuildPacket(NOT_FOUND, nil)
+				sendData(p, packet)
+				return
 			}
 			logger.Printf("responding assignment. Just read it from map. ShardID: %d Height: %d", shardID, height)
 			packet = BuildPacket(TRANSACTION_ASSIGNMENT_RES, ta.EncodeTransactionAssignment())
