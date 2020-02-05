@@ -20,11 +20,17 @@ var (
 	//Transaction assignment from the committee to the network
 	TransactionAssignmentOut = make(chan []byte)
 
+	//Committee check from committee to the network
+	CommitteeCheckOut = make(chan []byte)
+
 	//State transition from the network to the miner
 	StateTransitionIn = make(chan []byte)
 
 	//Transaction Assignment from the network to the miner
 	TransactionAssignmentIn = make(chan []byte)
+
+	//CommitteeCheck from the network to the committee
+	CommitteeCheckIn = make(chan []byte)
 
 	//EpochBlock from the network, to the miner
 	EpochBlockIn = make(chan []byte)
@@ -47,7 +53,9 @@ var (
 
 	BlockReqChan                = make(chan []byte)
 	StateTransitionShardReqChan = make(chan []byte)
+	CommitteeCheckReqChan		= make(chan []byte)
 	StateTransitionShardOut     = make(chan []byte)
+	CommitteeCheckShardOut 		= make(chan []byte)
 	ShardBlockShardOut          = make(chan []byte)
 
 	TransactionAssignmentReqOut = make(chan []byte)
@@ -102,6 +110,15 @@ func forwardStateTransitionShardToMiner() {
 	}
 }
 
+func forwardCommitteeCheckRequestToMiner() {
+	for {
+		cc := <- CommitteeCheckShardOut
+		logger.Printf("Building committee check request packet\n")
+		toBrdcst := BuildPacket(COMMITTEE_CHECK_REQ, cc)
+		minerBrdcstMsg <- toBrdcst
+	}
+}
+
 func forwardShardBlockRequestToMiner() {
 	for {
 		block := <-ShardBlockShardOut
@@ -132,6 +149,14 @@ func forwardTransactionAssignmentBrdcstToMiner() {
 	for {
 		transactionAssignment := <-TransactionAssignmentOut
 		toBrdcst := BuildPacket(TRANSACTION_ASSIGNMENT_BRDCST, transactionAssignment)
+		minerBrdcstMsg <- toBrdcst
+	}
+}
+
+func forwardCommitteeCheckToMiner() {
+	for {
+		committeeCheck := <- CommitteeCheckOut
+		toBrdcst := BuildPacket(COMMITTEE_CHECK_BRDCST, committeeCheck)
 		minerBrdcstMsg <- toBrdcst
 	}
 }
@@ -365,6 +390,10 @@ func forwardTransactionAssignmentToMinerIn(p *peer, payload []byte) {
 	TransactionAssignmentIn <- payload
 }
 
+func forwardCommitteeCheckToMinerIn(p *peer, payload []byte) {
+	CommitteeCheckIn <- payload
+}
+
 func forwardLastEpochBlockToMiner(p *peer, payload []byte) {
 	LastEpochBlockReqChan <- payload
 }
@@ -377,6 +406,11 @@ func forwardStateTransitionShardReqToMiner(p *peer, payload []byte) {
 func forwardTransactionAssignmentToMiner(p *peer, payload []byte) {
 	logger.Printf("received transaction assignment response...\n")
 	TransactionAssignmentReqChan <- payload
+}
+
+func forwardCommitteeCheckReqToMiner(p *peer, payload []byte) {
+	logger.Printf("received committee check request response... \n")
+	CommitteeCheckReqChan <- payload
 }
 
 func forwardShardBlockToMiner(p *peer, payload []byte) {

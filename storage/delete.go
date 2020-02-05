@@ -1,9 +1,8 @@
 package storage
 
 import (
-	"errors"
-	"github.com/oigele/bazo-miner/protocol"
 	"github.com/boltdb/bolt"
+	"github.com/oigele/bazo-miner/protocol"
 )
 
 //There exist open/closed buckets and closed tx buckets for all types (open txs are in volatile storage)
@@ -79,70 +78,71 @@ func DeleteOpenTx(transaction protocol.Transaction) {
 	openTxMutex.Unlock()
 }
 
-func DeleteAllOpenTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, committeeTxs []*protocol.CommitteeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) error {
+//In this function, we detect whether the shard put a transaction in a block which wasn't part of the original TX assignment
+func DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, committeeTxs []*protocol.CommitteeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) (notIncludedTxHashes [][32]byte) {
 	openTxMutex.Lock()
 	defer openTxMutex.Unlock()
 
-	//Before deleting any element, look if it's in the local memory pool in the first place. If it's not, then throw an error.
+	//Before deleting any element, look if it's in the local memory pool in the first place. If it's not, then add it to a slice.
 	//Because this would mean that the Shard intentionally included a bogus transaction. Since the committee does not verify these,
 	//A test here is the most effective that we can do.
 	for _, transaction := range accTxs {
 		txHash := transaction.Hash()
-		if _, exists := txMemPool[txHash]; !exists {
-			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		if _, exists := AssignedTxMempool[txHash]; !exists {
+			notIncludedTxHashes = append(notIncludedTxHashes, txHash)
 		} else {
 			delete(txMemPool, txHash)
 		}
 	}
 	for _, transaction := range stakeTxs {
 		txHash := transaction.Hash()
-		if _, exists := txMemPool[txHash]; !exists {
-			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		if _, exists := AssignedTxMempool[txHash]; !exists {
+			notIncludedTxHashes = append(notIncludedTxHashes, txHash)
 		} else {
 			delete(txMemPool, txHash)
 		}
 	}
 	for _, transaction := range committeeTxs {
 		txHash := transaction.Hash()
-		if _, exists := txMemPool[txHash]; !exists {
-			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		if _, exists := AssignedTxMempool[txHash]; !exists {
+			notIncludedTxHashes = append(notIncludedTxHashes, txHash)
 		} else {
 			delete(txMemPool, txHash)
 		}
 	}
 	for _, transaction := range fundsTxs {
 		txHash := transaction.Hash()
-		if _, exists := txMemPool[txHash]; !exists {
-			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		if _, exists := AssignedTxMempool[txHash]; !exists {
+			notIncludedTxHashes = append(notIncludedTxHashes, txHash)
 		} else {
 			delete(txMemPool, txHash)
 		}
 	}
 	for _, transaction := range dataTxs {
 		txHash := transaction.Hash()
-		if _, exists := txMemPool[txHash]; !exists {
-			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		if _, exists := AssignedTxMempool[txHash]; !exists {
+			notIncludedTxHashes = append(notIncludedTxHashes, txHash)
 		} else {
 			delete(txMemPool, txHash)
 		}
 	}
 	for _, transaction := range aggTxs {
 		txHash := transaction.Hash()
-		if _, exists := txMemPool[txHash]; !exists {
-			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		if _, exists := AssignedTxMempool[txHash]; !exists {
+			notIncludedTxHashes = append(notIncludedTxHashes, txHash)
 		} else {
 			delete(txMemPool, txHash)
 		}
 	}
 	for _, transaction := range aggDataTxs {
 		txHash := transaction.Hash()
-		if _, exists := txMemPool[txHash]; !exists {
-			return errors.New("The Shard has put a transaction into its block that should not be in there")
+		if _, exists := AssignedTxMempool[txHash]; !exists {
+			notIncludedTxHashes = append(notIncludedTxHashes, txHash)
 		} else {
 			delete(txMemPool, txHash)
 		}
 	}
-	return nil
+	return notIncludedTxHashes
 }
 
 

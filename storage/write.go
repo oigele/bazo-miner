@@ -178,13 +178,25 @@ func WriteClosedFundsTxFromAggTxSlice(transactions []protocol.FundsTx) (err erro
 	return err
 }
 
-func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, committeeTxs []*protocol.CommitteeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) (err error) {
+//In this method, we can detect whether the transaction included in the block is already in closed storage.
+//If it is already there, there are 2 options. Either the committee or the shard was malicious
+//If bespoke transaction was in the transaction assignment, the committee leader was malicious
+//If bespoke transaction was not in the transaction assignment, the shard was malicious
+//To make the code more efficient and performant, the check of who is actually malicious will be conducted at a different part of the code
+func WriteAllClosedTxAndReturnAlreadyClosedTxHashes(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, committeeTxs []*protocol.CommitteeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) (alreadyIncludedTxHashes [][32]byte, err error) {
 	bucket := "closedaccs"
 	err = db.Update(func(tx *bolt.Tx) error {
 		var err error
 		b := tx.Bucket([]byte(bucket))
 		for _, transaction := range accTxs {
 			hash := transaction.Hash()
+			var accTx *protocol.AccTx
+			encodedTx := b.Get(hash[:])
+			//this means that an already closed Tx was included in the block
+			if hash == accTx.Decode(encodedTx).Hash() {
+				alreadyIncludedTxHashes = append(alreadyIncludedTxHashes, hash)
+			}
+
 			err = b.Put(hash[:], transaction.Encode())
 			if err != nil {
 				logger.Printf("We GOT AN ERROR")
@@ -202,6 +214,12 @@ func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, co
 		b := tx.Bucket([]byte(bucket))
 		for _, transaction := range stakeTxs {
 			hash := transaction.Hash()
+			var accTx *protocol.StakeTx
+			encodedTx := b.Get(hash[:])
+			//this means that an already closed Tx was included in the block
+			if hash == accTx.Decode(encodedTx).Hash() {
+				alreadyIncludedTxHashes = append(alreadyIncludedTxHashes, hash)
+			}
 			err = b.Put(hash[:], transaction.Encode())
 			if err != nil {
 				logger.Printf("We GOT AN ERROR")
@@ -219,6 +237,12 @@ func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, co
 		b := tx.Bucket([]byte(bucket))
 		for _, transaction := range committeeTxs {
 			hash := transaction.Hash()
+			var accTx *protocol.CommitteeTx
+			encodedTx := b.Get(hash[:])
+			//this means that an already closed Tx was included in the block
+			if hash == accTx.Decode(encodedTx).Hash() {
+				alreadyIncludedTxHashes = append(alreadyIncludedTxHashes, hash)
+			}
 			err = b.Put(hash[:], transaction.Encode())
 			if err != nil {
 				logger.Printf("We GOT AN ERROR")
@@ -236,6 +260,12 @@ func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, co
 		b := tx.Bucket([]byte(bucket))
 		for _, transaction := range fundsTxs {
 			hash := transaction.Hash()
+			var accTx *protocol.FundsTx
+			encodedTx := b.Get(hash[:])
+			//this means that an already closed Tx was included in the block
+			if hash == accTx.Decode(encodedTx).Hash() {
+				alreadyIncludedTxHashes = append(alreadyIncludedTxHashes, hash)
+			}
 			err = b.Put(hash[:], transaction.Encode())
 			if err != nil {
 				logger.Printf("We GOT AN ERROR")
@@ -253,6 +283,12 @@ func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, co
 		b := tx.Bucket([]byte(bucket))
 		for _, transaction := range aggTxs {
 			hash := transaction.Hash()
+			var accTx *protocol.AggTx
+			encodedTx := b.Get(hash[:])
+			//this means that an already closed Tx was included in the block
+			if hash == accTx.Decode(encodedTx).Hash() {
+				alreadyIncludedTxHashes = append(alreadyIncludedTxHashes, hash)
+			}
 			err = b.Put(hash[:], transaction.Encode())
 			if err != nil {
 				logger.Printf("We GOT AN ERROR")
@@ -270,6 +306,12 @@ func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, co
 		b := tx.Bucket([]byte(bucket))
 		for _, transaction := range dataTxs {
 			hash := transaction.Hash()
+			var accTx *protocol.DataTx
+			encodedTx := b.Get(hash[:])
+			//this means that an already closed Tx was included in the block
+			if hash == accTx.Decode(encodedTx).Hash() {
+				alreadyIncludedTxHashes = append(alreadyIncludedTxHashes, hash)
+			}
 			err = b.Put(hash[:], transaction.Encode())
 			if err != nil {
 				logger.Printf("We GOT AN ERROR")
@@ -287,6 +329,12 @@ func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, co
 		b := tx.Bucket([]byte(bucket))
 		for _, transaction := range aggDataTxs {
 			hash := transaction.Hash()
+			var accTx *protocol.AggDataTx
+			encodedTx := b.Get(hash[:])
+			//this means that an already closed Tx was included in the block
+			if hash == accTx.Decode(encodedTx).Hash() {
+				alreadyIncludedTxHashes = append(alreadyIncludedTxHashes, hash)
+			}
 			err = b.Put(hash[:], transaction.Encode())
 			if err != nil {
 				logger.Printf("We GOT AN ERROR")
@@ -298,8 +346,7 @@ func WriteAllClosedTx(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, co
 		return err
 	})
 
-
-	return err
+	return alreadyIncludedTxHashes, err
 }
 
 func WriteClosedTx(transaction protocol.Transaction) (err error) {

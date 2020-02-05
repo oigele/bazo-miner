@@ -171,3 +171,17 @@ func StateTransitionReqShard(shardID int,height int) {
 
 	StateTransitionShardOut <- []byte(strRequest)
 }
+
+func CommitteeCheckReq(address [32]byte, height int) {
+	strSender := string(address[:])
+	strHeight := strconv.Itoa(height)
+
+	strRequest := ""
+	strRequest += strSender
+	//can use : as delimiter because addresses don't contain :
+	strRequest += ":"
+	strRequest += strHeight
+
+
+	CommitteeCheckShardOut <- []byte(strRequest)
+}

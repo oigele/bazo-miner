@@ -57,6 +57,12 @@ func TestCommitteeGoRoutines(t *testing.T) {
 		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
+		if err := SendTx("127.0.0.1:8003", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
+		if err := SendTx("127.0.0.1:8004", accTx, p2p.ACCTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}
 
 		newNodeAddress := crypto.GetAddressFromPubKey(&newAccAddress.PublicKey)
 		hasherNewNode := protocol.SerializeHashContent(newNodeAddress)
@@ -106,6 +112,12 @@ func TestCommitteeGoRoutines(t *testing.T) {
 					if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
+					if err := SendTx("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
 				}
 			}
 		}
@@ -131,6 +143,12 @@ func TestCommitteeGoRoutines(t *testing.T) {
 						nil)
 
 					if err := SendTx2("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx2("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
 				}
@@ -160,6 +178,12 @@ func TestCommitteeGoRoutines(t *testing.T) {
 					if err := SendTx3("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
+					if err := SendTx3("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
 				}
 			}
 		}
@@ -185,6 +209,12 @@ func TestCommitteeGoRoutines(t *testing.T) {
 						nil)
 
 					if err := SendTx4("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx4("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
 				}

@@ -86,7 +86,7 @@ func finalizeBlock(block *protocol.Block) error {
 
 	//Merkle tree includes the hashes of all txs in this block
 	block.MerkleRoot = protocol.BuildMerkleTree(block).MerkleRoot()
-	validatorAcc, err := storage.GetAccount(protocol.SerializeHashContent(validatorAccAddress))
+	validatorAcc, err := storage.GetAccount(protocol.SerializeHashContent(ValidatorAccAddress))
 	if err != nil {
 		return err
 	}
@@ -154,7 +154,7 @@ Code from Kürsat
 */
 func finalizeEpochBlock(epochBlock *protocol.EpochBlock) error {
 
-	validatorAcc, err := storage.ReadAccount(validatorAccAddress)
+	validatorAcc, err := storage.ReadAccount(ValidatorAccAddress)
 	if err != nil {
 		return err
 	}
@@ -184,8 +184,9 @@ func finalizeEpochBlock(epochBlock *protocol.EpochBlock) error {
 
 	epochBlock.CommitteeLeader = ChooseCommitteeLeader()
 	CommitteeLeader = epochBlock.CommitteeLeader
+	storage.CommitteeLeader = CommitteeLeader
 
-	storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
+	storage.ThisShardID = ValidatorShardMap.ValMapping[ValidatorAccAddress]
 	storage.ThisShardMap[int(epochBlock.Height)] = storage.ThisShardID
 
 	epochBlock.State = storage.State
@@ -1833,6 +1834,33 @@ func validateStateTransition(st *protocol.StateTransition) (err error) 	 {
 
 }
 
+func validateCommitteeCheck(cc *protocol.CommitteeCheck) (err error) {
+	committeeCheckValidation.Lock()
+	defer committeeCheckValidation.Unlock()
+
+	var committeeKey [crypto.COMM_KEY_LENGTH]byte
+	//need to map the sender to the public committee key. This is safe because height and sender are part of the hash, which is signed
+	//with the private key
+	for _, account := range storage.State {
+		if protocol.SerializeHashContent(account.Address) == cc.Sender {
+			committeeKey = account.CommitteeKey
+			break
+		}
+	}
+
+	committeePubKey, err := crypto.CreateRSAPubKeyFromBytes(committeeKey)
+	if err != nil {
+		return  errors.New("Invalid commitment key in account.")
+	}
+
+	err = crypto.VerifyMessageWithRSAKey(committeePubKey, fmt.Sprint(cc.Height), cc.CommitteeProof)
+	if err != nil {
+		return errors.New("The submitted committee proof can not be verified.")
+	}
+
+	return nil
+}
+
 
 //This function serves to validate an epoch block
 
@@ -1862,6 +1890,7 @@ func validateEpochBlock(b *protocol.EpochBlock, relativeStates map[int]*protocol
 		b.CommitmentProof,
 		b.Timestamp) {
 		logger.Printf("could not validate the epoch block")
+		ShardsToBePunished = append(ShardsToBePunished, b.Beneficiary)
 	} else {
 		logger.Printf("the epoch block could be successfully validated (PoS validation)")
 	}
@@ -1884,9 +1913,8 @@ func validateEpochBlock(b *protocol.EpochBlock, relativeStates map[int]*protocol
 	
 	if !sameRelativeState(relativeStateCalculated, relativeStateFromEpochBlock) {
 		logger.Printf("FOUND A CHEATER: Shard 1 inside the Epoch Block")
-		return errors.New("Shard 1 cheated with the epoch block")
+		ShardsToBePunished = append(ShardsToBePunished, b.Beneficiary)
 	}
-
 
 	return nil
 

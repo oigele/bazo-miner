@@ -44,6 +44,13 @@ func incomingTransactionAssignment() {
 	}
 }
 
+func incomingCommitteeCheck() {
+	for {
+		committeeCheck := <- p2p.CommitteeCheckIn
+		processCommitteeCheck(committeeCheck)
+	}
+}
+
 func processEpochBlock(eb []byte) {
 	var epochBlock *protocol.EpochBlock
 	epochBlock = epochBlock.Decode(eb)
@@ -97,16 +104,42 @@ func processStateData(payload []byte) {
 	}
 }
 
-//End code from Kürsat
+//No check if committee because only committee process this message in the first place.
+func processCommitteeCheck(payload []byte) {
+	var committeeCheck *protocol.CommitteeCheck
+	committeeCheck = committeeCheck.DecodeCommitteeCheck(payload)
+	if lastEpochBlock != nil {
+		checkHash := committeeCheck.HashCommitteCheck()
+		if storage.ReceivedCommitteeCheckStash.CommitteeCheckIncluded(checkHash) == false {
+			logger.Printf("Writing committee check to stash. Height: %d, Sender: %x", committeeCheck.Height, committeeCheck.Sender[0:8])
+			storage.ReceivedCommitteeCheckStash.Set(checkHash, committeeCheck)
+		} else {
+			logger.Printf("Received committee check already included")
+		}
+	}
+}
+
 
 func processAssignmentData(payload []byte) {
 	var transactionAssignment *protocol.TransactionAssignment
 	transactionAssignment = transactionAssignment.DecodeTransactionAssignment(payload)
 	//safety check and only store the transaction assignment of the own shard
-	if lastEpochBlock != nil && transactionAssignment.ShardID == storage.ThisShardID {
-		//got the desired transaction assignment. write it to the channel which will be consumed after epoch block reception
-		logger.Printf("received the transaction assignment from a broadcast. writing to request channel")
-		p2p.TransactionAssignmentReqChan <- payload
+	if !storage.IsCommittee {
+		if lastEpochBlock != nil && transactionAssignment.ShardID == storage.ThisShardID {
+			//got the desired transaction assignment. write it to the channel which will be consumed after epoch block reception
+			logger.Printf("received the transaction assignment from a broadcast. writing to request channel")
+			p2p.TransactionAssignmentReqChan <- payload
+		}
+		//is committee. Store all assignments
+	} else {
+		if lastEpochBlock != nil {
+			if !storage.ReceivedTransactionAssignmentStash.TransactionAssignmentIncluded(transactionAssignment.HashTransactionAssignment()) {
+				logger.Printf("Writing transaction assignment to stash. Height: %d, ShardID: %d", transactionAssignment.Height, transactionAssignment.ShardID)
+				storage.ReceivedTransactionAssignmentStash.Set(transactionAssignment.HashTransactionAssignment(), transactionAssignment)
+			} else {
+				logger.Printf("Received transaction assignment already included")
+			}
+		}
 	}
 }
 
@@ -144,6 +177,10 @@ func broadcastStateTransition(st *protocol.StateTransition) {
 
 func broadcastAssignmentData(data *protocol.TransactionAssignment) {
 	p2p.TransactionAssignmentOut <- data.EncodeTransactionAssignment()
+}
+
+func broadcastCommitteeCheck(cc *protocol.CommitteeCheck) {
+	p2p.CommitteeCheckOut <- cc.EncodeCommitteeCheck()
 }
 
 //p2p.BlockOut is a channel whose data get consumed by the p2p package

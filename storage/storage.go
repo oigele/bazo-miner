@@ -27,6 +27,8 @@ var (
 	//map of transaction assignments for a given height. Key: ShardID. Value: Assignment
 	AssignedTxMap					= make(map[int]*protocol.TransactionAssignment)
 
+	OwnCommitteeCheck 					 *protocol.CommitteeCheck
+
 	openTxToDeleteMempool			= make(map[[32]byte]bool)
 	txINVALIDMemPool   				= make(map[[32]byte]protocol.Transaction)
 	bootstrapReceivedMemPool		= make(map[[32]byte]protocol.Transaction)
@@ -37,6 +39,7 @@ var (
 	DataTxBeforeAggregation			= make([]*protocol.DataTx, 0)
 	ReceivedBlockStash				= make([]*protocol.Block, 0)
 	TxcntToTxMap					= make(map[uint32][][32]byte)
+	ValidatorAccAddress 			[64]byte
 
 
 	AllClosedBlocksAsc []*protocol.Block
@@ -59,10 +62,14 @@ var (
 	EpochLength				int
 	ReceivedStateStash                      = protocol.NewStateStash()
 	ReceivedShardBlockStash					= protocol.NewShardBlockStash()
+	ReceivedCommitteeCheckStash				= protocol.NewCommitteeCheckStash()
+	ReceivedTransactionAssignmentStash		= protocol.NewTransactionAssignmentStash()
 	memPoolMutex                        = &sync.Mutex{}
 
 	IsCommittee			bool
 	AssignmentHeight	int
+
+	CommitteeLeader [32]byte
 )
 
 const (

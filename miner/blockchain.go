@@ -17,20 +17,21 @@ import (
 )
 
 var (
-	logger                       *log.Logger
-	blockValidation              = &sync.Mutex{}
-	epochBlockValidation	     = &sync.Mutex{}
-	stateTransitionValidation    = &sync.Mutex{}
+	logger                          *log.Logger
+	blockValidation                 = &sync.Mutex{}
+	epochBlockValidation            = &sync.Mutex{}
+	stateTransitionValidation       = &sync.Mutex{}
+	committeeCheckValidation        = &sync.Mutex{}
 	transactionAssignmentValidation = &sync.Mutex{}
-	parameterSlice               []Parameters
-	ActiveParameters 			*Parameters
-	uptodate                     bool
-	slashingDict                 = make(map[[32]byte]SlashingProof)
-	validatorAccAddress          [64]byte
-	hasher                       [32]byte
-	multisigPubKey               *ecdsa.PublicKey
-	commPrivKey, rootCommPrivKey *rsa.PrivateKey
-	committeePrivKey			 *rsa.PrivateKey
+	parameterSlice                  []Parameters
+	ActiveParameters                *Parameters
+	uptodate                        bool
+	slashingDict                    = make(map[[32]byte]SlashingProof)
+	ValidatorAccAddress             [64]byte
+	hasher                          [32]byte
+	multisigPubKey                  *ecdsa.PublicKey
+	commPrivKey, rootCommPrivKey    *rsa.PrivateKey
+	committeePrivKey                *rsa.PrivateKey
 	// This map keeps track of the validator assignment to the shards
 	ValidatorShardMap *protocol.ValShardMapping
 	CommitteeLeader   [32]byte
@@ -38,7 +39,7 @@ var (
 	// This slice stores the hashes of the last blocks from the other shards, needed to create the next epoch block.
 	LastShardHashes [][32]byte
 
-	FirstStartCommittee  bool
+	FirstStartCommittee bool
 
 	//Kursat Extras
 	prevBlockIsEpochBlock bool
@@ -48,10 +49,13 @@ var (
 	blockEndTime          int64
 	totalSyncTime         int64
 	NumberOfShardsDelayed int
+
+	//Committee Slashing Extras
+	ShardsToBePunished		[][32]byte
+	CommitteesToBePunished	[][32]byte
 )
 
 //p2p First start entry point
-
 
 func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKey) {
 
@@ -59,10 +63,9 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKe
 	storage.IsCommittee = true
 
 	//This information has to be stored as it will be important later on, for sortition purposes and for
-	validatorAccAddress = crypto.GetAddressFromPubKey(committeeWallet)
+	ValidatorAccAddress = crypto.GetAddressFromPubKey(committeeWallet)
+	storage.ValidatorAccAddress = ValidatorAccAddress
 	committeePrivKey = committeeKey
-
-
 
 	//Set up logger.
 	logger = storage.InitLogger()
@@ -101,16 +104,20 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKe
 	go incomingEpochData()
 	//Listen to state transitions for validation purposes
 	go incomingStateData()
+	//Listen to committee check data for validation purposes
+	go incomingCommitteeCheck()
 
 	//wait for the first epoch block
 	for {
 		time.Sleep(time.Second)
-		if (lastEpochBlock != nil) {
-			if (lastEpochBlock.Height >= 2) {
+		if lastEpochBlock != nil {
+			if lastEpochBlock.Height >= 2 {
 				logger.Printf("accepting the state of epoch block height: %d", lastEpochBlock.Height)
 				storage.State = lastEpochBlock.State
 				NumberOfShards = lastEpochBlock.NofShards
 				CommitteeLeader = lastEpochBlock.CommitteeLeader
+				storage.CommitteeLeader = CommitteeLeader
+				ValidatorShardMap = lastEpochBlock.ValMapping
 				break
 			}
 		}
@@ -124,21 +131,112 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKe
 	CommitteeMining(int(lastEpochBlock.Height))
 }
 
-
-
 func CommitteeMining(height int) {
 	logger.Printf("---------------------------------------- Committee Mining for Epoch Height: %d ----------------------------------------", height)
-	blockIDBoolMap := make(map[int]bool)
-	for k, _ := range blockIDBoolMap {
-		blockIDBoolMap[k] = false
+
+	//If we have more than one committee member in the blockchain, perform the slashing synchronization steps
+	//If its just one, perform the check for it
+	if DetNumberOfCommittees() > 1 {
+		committeeMembers := getOtherCommitteeMemberAddresses()
+		committeesStateBoolMap := make(map[[32]byte]bool)
+		for k, _ := range committeesStateBoolMap {
+			committeesStateBoolMap[k] = false
+		}
+
+		logger.Printf("We have %d Committee Nodes in the network. The commitee Leader is %x", DetNumberOfCommittees(), CommitteeLeader[0:8])
+
+		if CommitteeLeader == protocol.SerializeHashContent(ValidatorAccAddress) {
+			logger.Printf("I am the committee leader. Start the committee collection mechanism")
+
+			//start the mechanism
+			for {
+				//Retrieve all state transitions from the local state with the height of my last block
+				//height - 2 because we check for the previous epoch
+				committeeCheckStashForHeight := protocol.ReturnCommitteeCheckForHeight(storage.ReceivedCommitteeCheckStash, uint32(height-2))
+				if len(committeeCheckStashForHeight) != 0 {
+					//Iterate through committee checks, keep track of processed checks
+					for _, cc := range committeeCheckStashForHeight {
+						if committeesStateBoolMap[cc.Sender] == false {
+							//first check the commitment Proof. If it's invalid, continue the search
+							err := validateCommitteeCheck(cc)
+							if err != nil {
+								logger.Printf("Cannot validate committee check")
+								continue
+							}
+							committeesStateBoolMap[cc.Sender] = true
+						}
+					}
+				}
+				//If all state transitions have been received, stop synchronisation.
+				if len(committeeCheckStashForHeight) == DetNumberOfCommittees() -1 {
+					logger.Printf("Received all committee checks. Initiate the byzantine mechanism.")
+					for _, committeeCheck := range committeeCheckStashForHeight {
+						logger.Printf("Committee Check from account : %x. #Slashed Committees: %d, #Slashed Shards: %d", committeeCheck.Sender[0:8], len(committeeCheck.SlashedAddressesCommittee), len(committeeCheck.SlashedAddressesShards))
+						logger.Printf("Byzantine Mechanism and Fine Tx still has to be implemented")
+					}
+					break
+				} else {
+					logger.Printf("Length of committee stash: %d", len(committeeCheckStashForHeight))
+				}
+				//Iterate over shard IDs to check which ones are still missing, and request them from the network
+				for _, address := range committeeMembers {
+					if committeesStateBoolMap[address] == false {
+
+						//Maybe the committee check was received in the meantime. Then dont request it again.
+						foundCc := searchCommitteeCheck(address, height)
+						if foundCc != nil {
+							logger.Printf("skip planned request for address %x", address[0:8])
+							continue
+						}
+
+						var committeeCheck *protocol.CommitteeCheck
+
+						logger.Printf("requesting committeeCheck for lastblock height: %d from address: %x\n", height - 2, address)
+
+						//Because we check for the previous epoch
+						p2p.CommitteeCheckReq(address, height-2)
+						//Blocking wait
+						select {
+						case encodedCommitteeCheck := <-p2p.CommitteeCheckReqChan:
+							committeeCheck = committeeCheck.DecodeCommitteeCheck(encodedCommitteeCheck)
+
+							//double check to make sure we got the right committee check
+							if committeeCheck.Sender != address || committeeCheck.Height != height -2 {
+								continue
+							}
+
+							logger.Printf("Received the committee check")
+							//first check the commitment Proof. If it's invalid, continue the search
+							err := validateCommitteeCheck(committeeCheck)
+							if err != nil {
+								logger.Printf(err.Error())
+								continue
+							}
+							storage.ReceivedCommitteeCheckStash.Set(committeeCheck.HashCommitteCheck(), committeeCheck)
+							committeesStateBoolMap[committeeCheck.Sender] = true
+
+
+							//Limit waiting time to 5 seconds seconds before aborting.
+						case <-time.After(2 * time.Second):
+							logger.Printf("have been waiting for 2 seconds for committee check height: %d\n", height-2)
+							//It the requested state transition has not been received, then continue with requesting the other missing ones
+							continue
+						}
+					}
+				}
+			}
+		}
+	} else {
+		logger.Printf("Only one Committee. Here simulate the verification of the own stash")
 	}
 
-	//generate sequence of all shard IDs starting from 1
-	shardIDs := makeRange(1,NumberOfShards)
-	logger.Printf("Number of shards: %d\n",NumberOfShards)
 
+	//generate sequence of all shard IDs starting from 1
+	shardIDs := makeRange(1, NumberOfShards)
+	logger.Printf("Number of shards: %d\n", NumberOfShards)
 	//find out if I am the committee leader. If yes, construct the transaction assignment
-	if CommitteeLeader == protocol.SerializeHashContent(validatorAccAddress) {
+	if CommitteeLeader == protocol.SerializeHashContent(ValidatorAccAddress) {
+		//generate sequence of all shard IDs starting from 1
 		//generating the assignment data
 		logger.Printf("before assigning transactions")
 		for _, shardId := range shardIDs {
@@ -149,7 +247,10 @@ func CommitteeMining(height int) {
 			var fundsTxs []*protocol.FundsTx
 			var dataTxs []*protocol.DataTx
 
+			//Reset the map
+			storage.AssignedTxMempool = make(map[[32]byte]protocol.Transaction)
 			openTransactions := storage.ReadAllOpenTxs()
+
 
 			//empty the assignment and all the slices
 			ta = nil
@@ -162,6 +263,8 @@ func CommitteeMining(height int) {
 			//since shard number 1 writes the epoch block, it is required to process all acctx and stake tx
 			//the other transactions are distributed to the shards based on the public address of the sender
 			for _, openTransaction := range openTransactions {
+				//set the transaction as assigned
+				storage.AssignedTxMempool[openTransaction.Hash()] = openTransaction
 				switch openTransaction.(type) {
 				case *protocol.AccTx:
 					if shardId == 1 {
@@ -193,7 +296,6 @@ func CommitteeMining(height int) {
 				return
 			}
 
-
 			ta = protocol.NewTransactionAssignment(height, shardId, committeeProof, accTxs, stakeTxs, committeeTxs, fundsTxs, dataTxs)
 
 			logger.Printf("length of open transactions: %d", len(storage.ReadAllOpenTxs()))
@@ -203,20 +305,143 @@ func CommitteeMining(height int) {
 			broadcastAssignmentData(ta)
 		}
 		logger.Printf("After assigning transactions")
+		//If I am not the committee leader, wait for the assignment
+	} else {
+		//reset the assigned tx map
+		storage.AssignedTxMempool = make(map[[32]byte]protocol.Transaction)
+		shardIDs := makeRange(1, NumberOfShards)
+		// receive all transaction assignments for the height
+		shardIDBoolMap := make(map[int]bool)
+		for k, _ := range shardIDBoolMap {
+			shardIDBoolMap[k] = false
+		}
+		for {
+			//Retrieve all state transitions from the local state with the height of my last block
+			transactionAssignmentsForHeight := protocol.ReturnTransactionAssignmentForHeight(storage.ReceivedTransactionAssignmentStash, uint32(height))
+			if len(transactionAssignmentsForHeight) != 0 {
+				//Iterate through committee checks, keep track of processed checks
+				for _, ta := range transactionAssignmentsForHeight {
+					if shardIDBoolMap[ta.ShardID] == false {
+						//first check the commitment Proof. If it's invalid, continue the search
+						err := validateTransactionAssignment(ta)
+						if err != nil {
+							logger.Printf("Cannot validate transaction assignment")
+							continue
+						}
+						storage.AssignedTxMap[ta.ShardID]= ta
+
+						//overwrite the previous mempool. Take the new transactions
+						//this is thread safe because it's all done sequentially
+						//it's important so we can have all TXs for prevalidation
+						for _, transaction := range ta.AccTxs {
+							storage.AssignedTxMempool[transaction.Hash()] = transaction
+						}
+						for _, transaction := range ta.StakeTxs {
+							storage.AssignedTxMempool[transaction.Hash()] = transaction
+						}
+						for _, transaction := range ta.CommitteeTxs {
+							storage.AssignedTxMempool[transaction.Hash()] = transaction
+						}
+						for _, transaction := range ta.FundsTxs {
+							storage.AssignedTxMempool[transaction.Hash()] = transaction
+						}
+						for _, transaction := range ta.DataTxs {
+							storage.AssignedTxMempool[transaction.Hash()] = transaction
+						}
+						shardIDBoolMap[ta.ShardID] = true
+					}
+				}
+			}
+			//If all state transitions have been received, stop synchronisation
+			if len(transactionAssignmentsForHeight) == NumberOfShards {
+				logger.Printf("Received all transaction assignments. Continue")
+				break
+			} else {
+				logger.Printf("Length of transaction assignment stash: %d", len(transactionAssignmentsForHeight))
+			}
+			//Iterate over shard IDs to check which ones are still missing, and request them from the network
+			for _, id := range shardIDs {
+				if shardIDBoolMap[id] == false {
+
+					//Maybe the committee check was received in the meantime. Then dont request it again.
+					foundTa := searchTransactionAssignment(id, height)
+					if foundTa != nil {
+						logger.Printf("skip planned request for id %d", id)
+						continue
+					}
+
+					var transactionAssignment *protocol.TransactionAssignment
+
+
+					p2p.TransactionAssignmentReq(height, id)
+					//Blocking wait
+					select {
+					case encodedTransactionAssignment := <-p2p.TransactionAssignmentReqChan:
+						transactionAssignment = transactionAssignment.DecodeTransactionAssignment(encodedTransactionAssignment)
+
+						//double check to make sure that the received TA is actually what we are looking for
+						if transactionAssignment.ShardID != id || transactionAssignment.Height != height{
+							continue
+						}
+
+						//first check the commitment Proof. If it's invalid, continue the search
+						err := validateTransactionAssignment(transactionAssignment)
+						if err != nil {
+							logger.Printf(err.Error())
+							continue
+						}
+
+						storage.AssignedTxMap[transactionAssignment.ShardID]= transactionAssignment
+
+						//overwrite the previous mempool. Take the new transactions
+						//this is thread safe because it's all done sequentially
+						//it's important so we can have all TXs for prevalidation
+						for _, transaction := range transactionAssignment.AccTxs {
+							storage.AssignedTxMempool[transaction.Hash()] = transaction
+						}
+						for _, transaction := range transactionAssignment.StakeTxs {
+							storage.AssignedTxMempool[transaction.Hash()] = transaction
+						}
+						for _, transaction := range transactionAssignment.CommitteeTxs {
+							storage.AssignedTxMempool[transaction.Hash()] = transaction
+						}
+						for _, transaction := range transactionAssignment.FundsTxs {
+							storage.AssignedTxMempool[transaction.Hash()] = transaction
+						}
+						for _, transaction := range transactionAssignment.DataTxs {
+							storage.AssignedTxMempool[transaction.Hash()] = transaction
+						}
+
+						storage.ReceivedTransactionAssignmentStash.Set(transactionAssignment.HashTransactionAssignment(), transactionAssignment)
+
+						shardIDBoolMap[transactionAssignment.ShardID] = true
+
+						//Limit waiting time to 5 seconds seconds before aborting.
+					case <-time.After(2 * time.Second):
+						logger.Printf("have been waiting for 2 seconds for transaction assignment height: %d\n", height)
+						//It the requested state transition has not been received, then continue with requesting the other missing ones
+						continue
+					}
+				}
+			}
+		}
 	}
 	storage.AssignmentHeight = height
-
 
 	//let the goroutine collect the state transitions in the background and contionue with the block collection
 	waitGroup := sync.WaitGroup{}
 	go fetchStateTransitionsForHeight(height+1, &waitGroup)
 
-
 	//key: shard ID; value: Relative state of the corresponding shard
 	relativeStatesToCheck := make(map[int]*protocol.RelativeState)
 
+	blockIDBoolMap := make(map[int]bool)
+	for k, _ := range blockIDBoolMap {
+		blockIDBoolMap[k] = false
+	}
+
 	//no block validation in the first round to make sure that the genesis block isn't checked
-	if !FirstStartCommittee {
+	if !FirstStartCommittee || DetNumberOfCommittees() > 1 {
 		logger.Printf("before block validation")
 		for {
 			//the committee member is now bootstrapped. In an infinite for-loop, perform its task
@@ -231,7 +456,7 @@ func CommitteeMining(height int) {
 
 						err := CommitteeValidateBlock(b)
 						if err != nil {
-							logger.Printf(err.Error())
+							ShardsToBePunished = append(ShardsToBePunished, b.Beneficiary)
 						}
 
 						//fetch data from the block
@@ -242,27 +467,36 @@ func CommitteeMining(height int) {
 						dataTxs = append(dataTxs, aggregatedDataTxSlice...)
 
 
-						//only the leader has to reconstruct the relative account to compare it to the state transition
-						if protocol.SerializeHashContent(validatorAccAddress) == CommitteeLeader {
-							relativeState := ReconstructRelativeState(b, accTxs, stakeTxs, committeeTxs, fundsTxs, dataTxs)
-							relativeStatesToCheck[b.ShardId] = relativeState
-						}
+						relativeState := ReconstructRelativeState(b, accTxs, stakeTxs, committeeTxs, fundsTxs, dataTxs)
+						relativeStatesToCheck[b.ShardId] = relativeState
 
 						UpdateSummary(dataTxs)
 
 						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, committeeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(committeeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs))
 
-						err = storage.WriteAllClosedTx(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+
+						alreadyClosedTxHashes, err := storage.WriteAllClosedTxAndReturnAlreadyClosedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
 						if err != nil {
 							logger.Printf(err.Error())
 							return
 						}
-						//An error here would most definitely mean that the shard included a transaction that was not in the initial
-						//assignment. In that case, the shard is cheating and has to be punished.
-						err = storage.DeleteAllOpenTx(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
-						if err != nil {
-							logger.Printf(err.Error())
-							return
+						if len(alreadyClosedTxHashes) > 0{
+							for _,hash := range alreadyClosedTxHashes{
+								//check if the transaction was in the assignment
+								if _, ok := storage.AssignedTxMempool[hash]; ok {
+									//the transaction is in the assignment, punish the committee leader
+									CommitteesToBePunished = append(CommitteesToBePunished, CommitteeLeader)
+								} else {
+									//the transaction is not in the assignment, punish the shard
+									ShardsToBePunished = append(ShardsToBePunished, b.Beneficiary)
+								}
+							}
+						}
+
+						notIncludedTxHashes := storage.DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						//If this evaluates to true, then the shard created a transaction out of thin air.
+						if len(notIncludedTxHashes) > 0 {
+							ShardsToBePunished = append(ShardsToBePunished, b.Beneficiary)
 						}
 
 						blockIDBoolMap[b.ShardId] = true
@@ -285,7 +519,7 @@ func CommitteeMining(height int) {
 			for _, shardIdReq := range shardIDs {
 				if !blockIDBoolMap[shardIdReq] {
 					var b *protocol.Block
-					logger.Printf("Requesting Block for Height: %d and ShardID %d",int(height)+1, shardIdReq)
+					logger.Printf("Requesting Block for Height: %d and ShardID %d", int(height)+1, shardIdReq)
 					p2p.ShardBlockReq(int(height)+1, shardIdReq)
 					//blocking wait
 					select {
@@ -307,7 +541,7 @@ func CommitteeMining(height int) {
 
 						err := CommitteeValidateBlock(b)
 						if err != nil {
-							logger.Printf(err.Error())
+							ShardsToBePunished = append(ShardsToBePunished, b.Beneficiary)
 						}
 
 						//fetch data from the block
@@ -317,28 +551,35 @@ func CommitteeMining(height int) {
 						fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
 						dataTxs = append(dataTxs, aggregatedDataTxSlice...)
 
-
 						UpdateSummary(dataTxs)
 
-						//only the leader has to reconstruct the relative account to compare it to the state transition
-						if protocol.SerializeHashContent(validatorAccAddress) == CommitteeLeader {
-							relativeState := ReconstructRelativeState(b, accTxs, stakeTxs, committeeTxs, fundsTxs, dataTxs)
-							relativeStatesToCheck[b.ShardId] = relativeState
-						}
+
+						relativeState := ReconstructRelativeState(b, accTxs, stakeTxs, committeeTxs, fundsTxs, dataTxs)
+						relativeStatesToCheck[b.ShardId] = relativeState
 
 
-						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs))
-
-						//database and RAM operations
-						err = storage.WriteAllClosedTx(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						alreadyClosedTxHashes, err := storage.WriteAllClosedTxAndReturnAlreadyClosedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
 						if err != nil {
 							logger.Printf(err.Error())
 							return
 						}
-						err = storage.DeleteAllOpenTx(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
-						if err != nil {
-							logger.Printf(err.Error())
-							return
+						if len(alreadyClosedTxHashes) > 0{
+							for _,hash := range alreadyClosedTxHashes{
+								//check if the transaction was in the assignment
+								if _, ok := storage.AssignedTxMempool[hash]; ok {
+									//the transaction is in the assignment, punish the committee leader
+									CommitteesToBePunished = append(CommitteesToBePunished, CommitteeLeader)
+								} else {
+									//the transaction is not in the assignment, punish the shard
+									ShardsToBePunished = append(ShardsToBePunished, b.Beneficiary)
+								}
+							}
+						}
+
+						notIncludedTxHashes := storage.DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						//If this evaluates to true, then the shard created a transaction out of thin air.
+						if len(notIncludedTxHashes) > 0 {
+							ShardsToBePunished = append(ShardsToBePunished, b.Beneficiary)
 						}
 
 						blockIDBoolMap[shardIdReq] = true
@@ -368,21 +609,18 @@ func CommitteeMining(height int) {
 	waitGroup.Wait()
 	logger.Printf("All state transitions already received")
 
-	//only the leader has to perform this check
-	if protocol.SerializeHashContent(validatorAccAddress) == CommitteeLeader {
-		//go through all state transitions and compare them with the actual transactions inside the block
-		stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, uint32(height+1))
-		for _, st := range stateStashForHeight {
-			ownRelativeState := relativeStatesToCheck[st.ShardID]
-			if !sameRelativeState(st.RelativeStateChange, ownRelativeState.RelativeState) {
-				logger.Printf("FOUND A CHEATER: Shard %d", st.ShardID)
-				//TODO include punishment
-				return
-			} else {
-				logger.Printf("For Shard ID: %d the relative states match", st.ShardID)
-			}
+	//go through all state transitions and compare them with the actual transactions inside the block
+	stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, uint32(height+1))
+	for _, st := range stateStashForHeight {
+		ownRelativeState := relativeStatesToCheck[st.ShardID]
+		if !sameRelativeState(st.RelativeStateChange, ownRelativeState.RelativeState) {
+			logger.Printf("FOUND A CHEATER: Shard %d", st.ShardID)
+			ShardsToBePunished = append(ShardsToBePunished, ownRelativeState.Beneficiary)
+		} else {
+			logger.Printf("For Shard ID: %d the relative states match", st.ShardID)
 		}
 	}
+
 
 	logger.Printf("Wait for next epoch block")
 	//wait for next epoch block
@@ -396,31 +634,46 @@ func CommitteeMining(height int) {
 			epochBlockReceived = true
 
 			//since it's safely not the first step of mining anymore, it's safe to perform proof of stake at this step
-			if protocol.SerializeHashContent(validatorAccAddress) == CommitteeLeader {
-				err := validateEpochBlock(&newEpochBlock, relativeStatesToCheck)
-				if err != nil {
-					logger.Printf(err.Error())
-					return
-				} else {
-					logger.Printf("The Epoch Block and its state are valid")
-				}
+			err := validateEpochBlock(&newEpochBlock, relativeStatesToCheck)
+			if err != nil {
+				//no further actions to be taken because the slashing already happens inside the validation function
+				logger.Printf(err.Error())
+			} else {
+				logger.Printf("The Epoch Block and its state are valid")
 			}
 
 			//before being able to validate the proof of stake, the state needs to updated
 			storage.State = newEpochBlock.State
 			CommitteeLeader = newEpochBlock.CommitteeLeader
+			storage.CommitteeLeader = CommitteeLeader
 			ValidatorShardMap = newEpochBlock.ValMapping
-
 			NumberOfShards = newEpochBlock.NofShards
 		}
 	}
+	committeeProof, err := crypto.SignMessageWithRSAKey(committeePrivKey, fmt.Sprint(storage.AssignmentHeight))
+	if err != nil {
+		logger.Printf("Got a problem with creating the committeeProof.")
+		return
+	}
+	//broadcast committee check to the network
+	committeeCheck := protocol.NewCommitteeCheck(storage.AssignmentHeight, protocol.SerializeHashContent(ValidatorAccAddress), committeeProof, CommitteesToBePunished, ShardsToBePunished)
+	copy(committeeCheck.CommitteeProof[0:crypto.COMM_PROOF_LENGTH], committeeProof[:])
+	storage.OwnCommitteeCheck = committeeCheck
+	//only broadcast if I am not the leader
+	broadcastCommitteeCheck(committeeCheck)
+
+	logger.Printf("Length of committees to be slashed: %d, length of shards to be slashed: %d", len(CommitteesToBePunished), len(ShardsToBePunished))
+
+	//Reset the slices where the slashed addresses are saved
+	CommitteesToBePunished = [][32]byte{}
+	ShardsToBePunished = [][32]byte{}
+
 	FirstStartCommittee = false
 	//Empty the map
 	storage.AssignedTxMap = make(map[int]*protocol.TransactionAssignment)
 	logger.Printf("Received epoch block. Start next round")
 	CommitteeMining(int(lastEpochBlock.Height))
 }
-
 
 // Doesnt do much, just bootstraps the system with the things that are needed for the first start, i.e. a genesis block and a first epoch block.
 func InitFirstStart(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validatorCommitment, rootCommitment *rsa.PrivateKey) error {
@@ -440,10 +693,8 @@ func InitFirstStart(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey
 		return err
 	}
 
-
 	rootAddress := crypto.GetAddressFromPubKey(rootWallet)
 	firstCommitteeAddress := crypto.GetAddressFromPubKey(firstCommitteePubKey)
-
 
 	var rootCommitmentKey [crypto.COMM_KEY_LENGTH]byte
 	copy(rootCommitmentKey[:], rootCommitment.N.Bytes())
@@ -473,12 +724,11 @@ func InitFirstStart(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey
 	return Init(validatorWallet, multisigWallet, rootWallet, validatorCommitment, rootCommitment)
 }
 
-
 //Miner entry point
 func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validatorCommitment, rootCommitment *rsa.PrivateKey) error {
 	var err error
 
-	validatorAccAddress = crypto.GetAddressFromPubKey(validatorWallet)
+	ValidatorAccAddress = crypto.GetAddressFromPubKey(validatorWallet)
 	multisigPubKey = multisigWallet
 	commPrivKey = validatorCommitment
 	rootCommPrivKey = rootCommitment
@@ -486,7 +736,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 
 	//Set up logger.
 	logger = storage.InitLogger()
-	hasher = protocol.SerializeHashContent(validatorAccAddress)
+	hasher = protocol.SerializeHashContent(ValidatorAccAddress)
 	logger.Printf("Acc hash is (%x)", hasher[0:8])
 	logger.Printf("\n\n\n" +
 		"BBBBBBBBBBBBBBBBB               AAA               ZZZZZZZZZZZZZZZZZZZ     OOOOOOOOO\n" +
@@ -535,7 +785,6 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 
 	var initialBlock *protocol.Block
 
-
 	//Listen for incoming epoch blocks from the network
 	go incomingEpochData()
 	//Listen for incoming assignments from the network
@@ -543,12 +792,10 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	//Listen for incoming state transitions from the network
 	go incomingStateData()
 
-
 	//Since new validators only join after the currently running epoch ends, they do no need to download the whole shardchain history,
 	//but can continue with their work after the next epoch block and directly set their state to the global state of the first received epoch block
 
-
-	if (p2p.IsBootstrap()) {
+	if p2p.IsBootstrap() {
 		initialBlock, err = initState() //From here on, every validator should have the same state representation
 		if err != nil {
 			return err
@@ -562,14 +809,15 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 			time.Sleep(time.Second)
 			if lastEpochBlock != nil {
 				logger.Printf("First statement ok")
-				if (lastEpochBlock.Height > 0) {
+				if lastEpochBlock.Height > 0 {
 					storage.State = lastEpochBlock.State
 					NumberOfShards = lastEpochBlock.NofShards
 					ValidatorShardMap = lastEpochBlock.ValMapping
-					storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress] //Save my ShardID
+					storage.ThisShardID = ValidatorShardMap.ValMapping[ValidatorAccAddress] //Save my ShardID
 					storage.ThisShardMap[int(lastEpochBlock.Height)] = storage.ThisShardID
 					FirstStartAfterEpoch = true
 					CommitteeLeader = lastEpochBlock.CommitteeLeader
+					storage.CommitteeLeader = CommitteeLeader
 					lastBlock = dummyLastBlock
 					epochMining(lastEpochBlock.Hash, lastEpochBlock.Height) //start mining based on the received Epoch Block
 					//set the ID to 0 such that there wont be any answers to requests that shouldnt be answered
@@ -586,17 +834,18 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 	logger.Printf("Number of Shards: %v", NumberOfShards)
 
 	/*First validator assignment is done by the bootstrapping node, the others will be done based on PoS at the end of each epoch*/
-	if (p2p.IsBootstrap()) {
+	if p2p.IsBootstrap() {
 		var validatorShardMapping = protocol.NewMapping()
 		validatorShardMapping.ValMapping = AssignValidatorsToShards()
 		validatorShardMapping.EpochHeight = int(lastEpochBlock.Height)
 		ValidatorShardMap = validatorShardMapping
 		CommitteeLeader = ChooseCommitteeLeader()
+		storage.CommitteeLeader = CommitteeLeader
 		logger.Printf("Validator Shard Mapping:\n")
 		logger.Printf(validatorShardMapping.String())
 	}
 
-	storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
+	storage.ThisShardID = ValidatorShardMap.ValMapping[ValidatorAccAddress]
 	storage.ThisShardMap[int(lastEpochBlock.Height)] = storage.ThisShardID
 	epochMining(lastBlock.Hash, lastBlock.Height)
 
@@ -618,10 +867,10 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 			mining(hashPrevBlock, heightPrevBlock)
 		}
 
-		if (lastBlock.Height == uint32(lastEpochBlock.Height)+uint32(ActiveParameters.Epoch_length)) {
-			if (storage.ThisShardID == 1) {
+		if lastBlock.Height == uint32(lastEpochBlock.Height)+uint32(ActiveParameters.Epoch_length) {
+			if storage.ThisShardID == 1 {
 
-				shardIDs := makeRange(1,NumberOfShards)
+				shardIDs := makeRange(1, NumberOfShards)
 
 				shardIDStateBoolMap := make(map[int]bool)
 				for k, _ := range shardIDStateBoolMap {
@@ -630,14 +879,14 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 				for {
 					//If there is only one shard, then skip synchronisation mechanism
-					if (NumberOfShards == 1) {
+					if NumberOfShards == 1 {
 						break
 					}
 
 					//Retrieve all state transitions from the local state with the height of my last block
 					stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, lastBlock.Height)
 
-					if (len(stateStashForHeight) != 0) {
+					if len(stateStashForHeight) != 0 {
 						//Iterate through state transitions and apply them to local state, keep track of processed shards
 						for _, st := range stateStashForHeight {
 							if shardIDStateBoolMap[st.ShardID] == false && st.ShardID != storage.ThisShardID {
@@ -656,7 +905,7 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 							}
 						}
 						//If all state transitions have been received, stop synchronisation
-						if (len(stateStashForHeight) == NumberOfShards-1) {
+						if len(stateStashForHeight) == NumberOfShards-1 {
 							logger.Printf("Received all transitions. Continue.")
 							break
 						} else {
@@ -664,8 +913,8 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 						}
 					}
 					//Iterate over shard IDs to check which ones are still missing, and request them from the network
-					for _,id := range shardIDs{
-						if(id != storage.ThisShardID && shardIDStateBoolMap[id] == false){
+					for _, id := range shardIDs {
+						if id != storage.ThisShardID && shardIDStateBoolMap[id] == false {
 
 							//Maybe the transition was received in the meantime. Then dont request it again.
 							foundSt := searchStateTransition(id, int(lastBlock.Height))
@@ -676,9 +925,9 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 							var stateTransition *protocol.StateTransition
 
-							logger.Printf("requesting state transition for lastblock height: %d\n",lastBlock.Height)
+							logger.Printf("requesting state transition for lastblock height: %d\n", lastBlock.Height)
 
-							p2p.StateTransitionReqShard(id,int(lastBlock.Height))
+							p2p.StateTransitionReqShard(id, int(lastBlock.Height))
 							//Blocking wait
 							select {
 							case encodedStateTransition := <-p2p.StateTransitionShardReqChan:
@@ -692,20 +941,20 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 								}
 
 								//Apply state transition to my local state
-								storage.State = storage.ApplyRelativeState(storage.State,stateTransition.RelativeStateChange)
+								storage.State = storage.ApplyRelativeState(storage.State, stateTransition.RelativeStateChange)
 
-								logger.Printf("Writing state back to stash Shard ID: %v  VS my shard ID: %v - Height: %d\n",stateTransition.ShardID,storage.ThisShardID,stateTransition.Height)
-								storage.ReceivedStateStash.Set(stateTransition.HashTransition(),stateTransition)
+								logger.Printf("Writing state back to stash Shard ID: %v  VS my shard ID: %v - Height: %d\n", stateTransition.ShardID, storage.ThisShardID, stateTransition.Height)
+								storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
 
 								//Delete transactions from mempool, which were validated by the other shards
 
 								shardIDStateBoolMap[stateTransition.ShardID] = true
 
-								logger.Printf("Processed state transition of shard: %d\n",stateTransition.ShardID)
+								logger.Printf("Processed state transition of shard: %d\n", stateTransition.ShardID)
 
 								//Limit waiting time to 5 seconds seconds before aborting.
 							case <-time.After(2 * time.Second):
-								logger.Printf("have been waiting for 5 seconds for lastblock height: %d\n",lastBlock.Height)
+								logger.Printf("have been waiting for 5 seconds for lastblock height: %d\n", lastBlock.Height)
 								//It the requested state transition has not been received, then continue with requesting the other missing ones
 								continue
 							}
@@ -718,20 +967,16 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 				epochBlock = protocol.NewEpochBlock([][32]byte{lastBlock.Hash}, lastBlock.Height+1)
 				logger.Printf("epochblock beingprocessed height: %d\n", epochBlock.Height)
 
-
 				logger.Printf("Before finalizeEpochBlock() ---- Height: %d\n", epochBlock.Height)
 				//Finalize creation of the epoch block. In case another epoch block was mined in the meantime, abort PoS here
 
-
 				//add the beneficiary to the epoch block
-				validatorAcc, err := storage.GetAccount(protocol.SerializeHashContent(validatorAccAddress))
+				validatorAcc, err := storage.GetAccount(protocol.SerializeHashContent(ValidatorAccAddress))
 				if err != nil {
 					logger.Printf("problem with getting the validator acc")
 				}
 
 				validatorAccHash := validatorAcc.Hash()
-
-
 
 				copy(epochBlock.Beneficiary[:], validatorAccHash[:])
 
@@ -761,7 +1006,6 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					logger.Printf("Created Validator Shard Mapping :\n")
 					logger.Printf(ValidatorShardMap.String() + "\n")
 
-
 					for _, prevHash := range epochBlock.PrevShardHashes {
 						//FileConnections.WriteString(fmt.Sprintf("'%x' -> 'EPOCH BLOCK: %x'\n", prevHash[0:15], epochBlock.Hash[0:15]))
 						logger.Printf(`"Hash : %x \n Height : %d" -> "EPOCH BLOCK: \n Hash : %x \n Height : %d \nMPT : %x"`+"\n", prevHash[0:8], epochBlock.Height-1, epochBlock.Hash[0:8], epochBlock.Height, epochBlock.MerklePatriciaRoot[0:8])
@@ -769,21 +1013,22 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					}
 				}
 
-			// I'm not shard number one so I just wait until I receive the next epoch block
+				// I'm not shard number one so I just wait until I receive the next epoch block
 			} else {
 				//wait until epoch block is received
 				epochBlockReceived := false
 				for !epochBlockReceived {
-					newEpochBlock := <- p2p.EpochBlockReceivedChan
+					newEpochBlock := <-p2p.EpochBlockReceivedChan
 					//the new epoch block from the channel is the epoch block that i need at the moment
-					if newEpochBlock.Height == lastBlock.Height + 1 {
+					if newEpochBlock.Height == lastBlock.Height+1 {
 						epochBlockReceived = true
 						// take over state
 						storage.State = newEpochBlock.State
 						ValidatorShardMap = newEpochBlock.ValMapping
 						NumberOfShards = newEpochBlock.NofShards
 						CommitteeLeader = newEpochBlock.CommitteeLeader
-						storage.ThisShardID = ValidatorShardMap.ValMapping[validatorAccAddress]
+						storage.CommitteeLeader = CommitteeLeader
+						storage.ThisShardID = ValidatorShardMap.ValMapping[ValidatorAccAddress]
 						storage.ThisShardMap[int(newEpochBlock.Height)] = storage.ThisShardID
 						lastEpochBlock = &newEpochBlock
 						logger.Printf("Received  last epoch block with height %d. Continue mining", lastEpochBlock.Height)
@@ -852,10 +1097,9 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 
 			logger.Printf("received both my transaction assignment and the epoch block. can continue now")
 
-
 			//Continue mining with the hash of the last epoch block
 			mining(lastEpochBlock.Hash, lastEpochBlock.Height)
-		} else if (lastEpochBlock.Height == lastBlock.Height+1) {
+		} else if lastEpochBlock.Height == lastBlock.Height+1 {
 			prevBlockIsEpochBlock = true
 			mining(lastEpochBlock.Hash, lastEpochBlock.Height) //lastblock was received before we started creation of next epoch block
 		} else {
@@ -905,7 +1149,7 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					logger.Printf("Got a problem with creating the commimentProof.")
 					return
 				}
-				stateTransition := protocol.NewStateTransition(storage.RelativeState,int(currentBlock.Height), storage.ThisShardID, commitmentProof)
+				stateTransition := protocol.NewStateTransition(storage.RelativeState, int(currentBlock.Height), storage.ThisShardID, commitmentProof)
 				copy(stateTransition.CommitmentProof[0:crypto.COMM_PROOF_LENGTH], commitmentProof[:])
 				storage.WriteToOwnStateTransitionkStash(stateTransition)
 				broadcastStateTransition(stateTransition)
@@ -920,7 +1164,6 @@ func mining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 	//Prints miner connections
 	p2p.EmptyingiplistChan()
 	p2p.PrintMinerConns()
-
 
 	FirstStartAfterEpoch = false
 	NumberOfShardsDelayed = NumberOfShards
@@ -943,11 +1186,24 @@ func initRootKey(rootKey *ecdsa.PublicKey) error {
 	return nil
 }
 
-
 func DetNumberOfCommittees() (numberOfCommittees int) {
 	return GetCommitteesCount()
 }
 
+func getOtherCommitteeMemberAddresses() (committeeMembers [][32]byte) {
+
+	for address, account := range storage.State {
+		//only add to list if its not the own address
+		if account.IsCommittee && account.Address != ValidatorAccAddress {
+			committeeMembers = append(committeeMembers, address)
+		}
+	}
+	if len(committeeMembers) != DetNumberOfCommittees() - 1 {
+		logger.Printf("Error in this function")
+	}
+
+	return committeeMembers
+}
 
 func ChooseCommitteeLeader() (committeeLeader [32]byte) {
 	//randomize the process
@@ -968,7 +1224,6 @@ func ChooseCommitteeLeader() (committeeLeader [32]byte) {
 	}
 	return committeeSlice[randomIndex]
 }
-
 
 /**
 Number of Shards is determined based on the total number of validators in the network. Currently, the system supports only
@@ -1063,12 +1318,31 @@ func AssignValidatorsToShards() map[[64]byte]int {
 	return validatorShardAssignment
 }
 
-
 func searchStateTransition(shardID int, height int) *protocol.StateTransition {
 	stateStash := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, uint32(height))
-	for _,st := range stateStash {
+	for _, st := range stateStash {
 		if st.ShardID == shardID {
 			return st
+		}
+	}
+	return nil
+}
+
+func searchCommitteeCheck(address [32]byte, height int) *protocol.CommitteeCheck {
+	committeeStash := protocol.ReturnCommitteeCheckForHeight(storage.ReceivedCommitteeCheckStash, uint32(height))
+	for _,cc := range committeeStash {
+		if cc.Sender == address {
+			return cc
+		}
+	}
+	return nil
+}
+
+func searchTransactionAssignment(shardId int, height int) *protocol.TransactionAssignment {
+	transactionAssignmentStash := protocol.ReturnTransactionAssignmentForHeight(storage.ReceivedTransactionAssignmentStash, uint32(height))
+	for _,ta := range transactionAssignmentStash {
+		if ta.ShardID == shardId {
+			return ta
 		}
 	}
 	return nil
@@ -1079,11 +1353,11 @@ func fetchStateTransitionsForHeight(height int, group *sync.WaitGroup) {
 	group.Add(1)
 	defer group.Done()
 	// if there is only one, shard, then no state transitions will be in the system to be fetched
-	logger.Printf("Start fetch staet transitions for height: %d. Number of Shards: %d", height, NumberOfShards)
+	logger.Printf("Start fetch state transitions for height: %d. Number of Shards: %d", height, NumberOfShards)
 	if NumberOfShards == 1 {
 		return
 	} else {
-		shardIDs := makeRange(1,NumberOfShards)
+		shardIDs := makeRange(1, NumberOfShards)
 		shardIDStateBoolMap := make(map[int]bool)
 		for k, _ := range shardIDStateBoolMap {
 			shardIDStateBoolMap[k] = false
@@ -1093,10 +1367,10 @@ func fetchStateTransitionsForHeight(height int, group *sync.WaitGroup) {
 		for {
 			//Retrieve all state transitions from the local state with the height of my last block
 			stateStashForHeight := protocol.ReturnStateTransitionForHeight(storage.ReceivedStateStash, uint32(height))
-			if (len(stateStashForHeight) != 0) {
+			if len(stateStashForHeight) != 0 {
 				//Iterate through state transitions and apply them to local state, keep track of processed shards
 				for _, st := range stateStashForHeight {
-					if shardIDStateBoolMap[st.ShardID] == false  {
+					if shardIDStateBoolMap[st.ShardID] == false {
 						//first check the commitment Proof. If it's invalid, continue the search
 						err := validateStateTransition(st)
 						if err != nil {
@@ -1108,15 +1382,15 @@ func fetchStateTransitionsForHeight(height int, group *sync.WaitGroup) {
 					}
 				}
 				//If all state transitions have been received, stop synchronisation
-				if (len(stateStashForHeight) == NumberOfShards-1) {
+				if len(stateStashForHeight) == NumberOfShards-1 {
 					logger.Printf("Received all transitions. Continue.")
 					return
 				} else {
 					logger.Printf("Length of state stash: %d", len(stateStashForHeight))
 				}
 				//Iterate over shard IDs to check which ones are still missing, and request them from the network
-				for _,id := range shardIDs{
-					if  shardIDStateBoolMap[id] == false{
+				for _, id := range shardIDs {
+					if shardIDStateBoolMap[id] == false {
 
 						//Maybe the transition was received in the meantime. Then dont request it again.
 						foundSt := searchStateTransition(id, height)
@@ -1127,9 +1401,9 @@ func fetchStateTransitionsForHeight(height int, group *sync.WaitGroup) {
 
 						var stateTransition *protocol.StateTransition
 
-						logger.Printf("requesting state transition for lastblock height: %d\n",height)
+						logger.Printf("requesting state transition for lastblock height: %d\n", height)
 
-						p2p.StateTransitionReqShard(id,height)
+						p2p.StateTransitionReqShard(id, height)
 						//Blocking wait
 						select {
 						case encodedStateTransition := <-p2p.StateTransitionShardReqChan:
@@ -1142,15 +1416,13 @@ func fetchStateTransitionsForHeight(height int, group *sync.WaitGroup) {
 								continue
 							}
 
-							storage.ReceivedStateStash.Set(stateTransition.HashTransition(),stateTransition)
-
+							storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
 
 							shardIDStateBoolMap[stateTransition.ShardID] = true
 
-
 							//Limit waiting time to 5 seconds seconds before aborting.
 						case <-time.After(2 * time.Second):
-							logger.Printf("have been waiting for 2 seconds for lastblock height: %d\n",height)
+							logger.Printf("have been waiting for 2 seconds for lastblock height: %d\n", height)
 							//It the requested state transition has not been received, then continue with requesting the other missing ones
 							continue
 						}
@@ -1161,8 +1433,7 @@ func fetchStateTransitionsForHeight(height int, group *sync.WaitGroup) {
 	}
 }
 
-
-func applyDataTxFees(state map[[32]byte]protocol.Account, beneficiary [32]byte,  dataTxs []*protocol.DataTx) (map[[32]byte]protocol.Account,  error) {
+func applyDataTxFees(state map[[32]byte]protocol.Account, beneficiary [32]byte, dataTxs []*protocol.DataTx) (map[[32]byte]protocol.Account, error) {
 	var err error
 	//the beneficiary stays the same for one round
 	minerAcc := state[beneficiary]
@@ -1180,7 +1451,7 @@ func applyDataTxFees(state map[[32]byte]protocol.Account, beneficiary [32]byte, 
 	return state, err
 }
 
-func applyAccTxFeesAndCreateAccTx(state map[[32]byte]protocol.Account, beneficiary [32]byte,  accTxs []*protocol.AccTx) (map[[32]byte]protocol.Account,  error) {
+func applyAccTxFeesAndCreateAccTx(state map[[32]byte]protocol.Account, beneficiary [32]byte, accTxs []*protocol.AccTx) (map[[32]byte]protocol.Account, error) {
 	var err error
 	//the beneficiary stays the same for one round
 	minerAcc := state[beneficiary]
@@ -1192,14 +1463,14 @@ func applyAccTxFeesAndCreateAccTx(state map[[32]byte]protocol.Account, beneficia
 		minerAcc.Balance += tx.Fee
 		state[beneficiary] = minerAcc
 		//create the account and add it to the account
-		newAcc := protocol.NewAccount(tx.PubKey, tx.Issuer, 100000, false, false, [crypto.COMM_KEY_LENGTH]byte{},  [crypto.COMM_KEY_LENGTH]byte{}, tx.Contract, tx.ContractVariables)
+		newAcc := protocol.NewAccount(tx.PubKey, tx.Issuer, 100000, false, false, [crypto.COMM_KEY_LENGTH]byte{}, [crypto.COMM_KEY_LENGTH]byte{}, tx.Contract, tx.ContractVariables)
 		newAccHash := newAcc.Hash()
 		state[newAccHash] = newAcc
 	}
 	return state, err
 }
 
-func applyCommitteeTxFeesAndCreateAcc(state map[[32]byte]protocol.Account, beneficiary [32]byte,  committeeTxs []*protocol.CommitteeTx) (map[[32]byte]protocol.Account,  error) {
+func applyCommitteeTxFeesAndCreateAcc(state map[[32]byte]protocol.Account, beneficiary [32]byte, committeeTxs []*protocol.CommitteeTx) (map[[32]byte]protocol.Account, error) {
 	var err error
 	//the beneficiary stays the same for one round
 	minerAcc := state[beneficiary]
@@ -1211,14 +1482,14 @@ func applyCommitteeTxFeesAndCreateAcc(state map[[32]byte]protocol.Account, benef
 		minerAcc.Balance += tx.Fee
 		state[beneficiary] = minerAcc
 		//create the account and add it to the account
-		newAcc := protocol.NewAccount(tx.Account, tx.Issuer, 0, false, true, [crypto.COMM_KEY_LENGTH]byte{},  tx.CommitteeKey, nil, nil)
+		newAcc := protocol.NewAccount(tx.Account, tx.Issuer, 0, false, true, [crypto.COMM_KEY_LENGTH]byte{}, tx.CommitteeKey, nil, nil)
 		newAccHash := newAcc.Hash()
 		state[newAccHash] = newAcc
 	}
 	return state, err
 }
 
-func applyStakeTxFees(state map[[32]byte]protocol.Account, beneficiary [32]byte,  stakeTxs []*protocol.StakeTx) (map[[32]byte]protocol.Account,  error) {
+func applyStakeTxFees(state map[[32]byte]protocol.Account, beneficiary [32]byte, stakeTxs []*protocol.StakeTx) (map[[32]byte]protocol.Account, error) {
 	var err error
 	//the beneficiary stays the same for one round
 	minerAcc := state[beneficiary]
@@ -1235,7 +1506,7 @@ func applyStakeTxFees(state map[[32]byte]protocol.Account, beneficiary [32]byte,
 	return state, err
 }
 
-func applyFundsTxFeesFundsMovement(state map[[32]byte]protocol.Account, beneficiary [32]byte,  fundsTxs []*protocol.FundsTx) (map[[32]byte]protocol.Account,  error) {
+func applyFundsTxFeesFundsMovement(state map[[32]byte]protocol.Account, beneficiary [32]byte, fundsTxs []*protocol.FundsTx) (map[[32]byte]protocol.Account, error) {
 	var err error
 	//the beneficiary stays the same for one round
 	minerAcc := state[beneficiary]
@@ -1262,7 +1533,6 @@ func applyFundsTxFeesFundsMovement(state map[[32]byte]protocol.Account, benefici
 	return state, err
 }
 
-
 func sameRelativeState(calculatedMap map[[32]byte]*protocol.RelativeAccount, receivedMap map[[32]byte]*protocol.RelativeAccount) bool {
 	//at the moment, we only care about funds. This, however could be extended in the future
 	for account, _ := range calculatedMap {
@@ -1277,7 +1547,8 @@ func sameRelativeState(calculatedMap map[[32]byte]*protocol.RelativeAccount, rec
 func UpdateSummary(dataTxs []*protocol.DataTx) {
 	//only iterate through data Txs once, so write summary AND check fee just once.
 	if len(dataTxs) > 0 {
-		err := storage.UpdateDataSummary(dataTxs); if err != nil {
+		err := storage.UpdateDataSummary(dataTxs)
+		if err != nil {
 			logger.Printf("Error when updating the data summary")
 			return
 		} else {
@@ -1311,15 +1582,13 @@ func ReconstructRelativeState(b *protocol.Block, accTxs []*protocol.AccTx, stake
 		StateCopy, _ = applyFundsTxFeesFundsMovement(StateCopy, b.Beneficiary, fundsTxs)
 	}
 
-
 	//the fees are applied on the state copy
 	StateCopy, _ = applyDataTxFees(StateCopy, b.Beneficiary, dataTxs)
 
 	relativeStateProvisory := storage.GetRelativeStateForCommittee(StateOld, StateCopy)
 
-	return protocol.NewRelativeState(relativeStateProvisory, b.ShardId)
+	return protocol.NewRelativeState(relativeStateProvisory, b.ShardId, b.Beneficiary)
 }
-
 
 func CommitteeValidateBlock(b *protocol.Block) (err error) {
 	logger.Printf("Validation of block height: %d, ShardID: %d", b.Height, b.ShardId)
@@ -1351,14 +1620,13 @@ func CommitteeValidateBlock(b *protocol.Block) (err error) {
 
 	//Invalid if PoS calculation is not correct.
 	prevProofs := GetLatestProofs(ActiveParameters.num_included_prev_proofs, b)
-	if (validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp)) {
+	if validateProofOfStake(getDifficulty(), prevProofs, b.Height, acc.Balance, b.CommitmentProof, b.Timestamp) {
 		logger.Printf("proof of stake is valid")
 	} else {
 		return errors.New("proof of stake is invalid")
 	}
 	return nil
 }
-
 
 //Helper functions
 

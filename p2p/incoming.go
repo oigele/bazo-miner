@@ -33,6 +33,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		forwardStateTransitionToMiner(p,payload)
 	case TRANSACTION_ASSIGNMENT_BRDCST:
 		forwardTransactionAssignmentToMinerIn(p, payload)
+	case COMMITTEE_CHECK_BRDCST:
+		forwardCommitteeCheckToMinerIn(p, payload)
 
 		//REQUESTS
 	case FUNDSTX_REQ:
@@ -85,6 +87,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		LastEpochBlockRes(p,payload)
 	case TRANSACTION_ASSIGNMENT_REQ:
 		TransactionAssignmentRes(p, payload)
+	case COMMITTEE_CHECK_REQ:
+		CommitteeCheckRes(p, payload)
 
 		//RESPONSES
 	case NEIGHBOR_RES:
@@ -121,6 +125,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		forwardTransactionAssignmentToMiner(p,payload)
 	case SHARD_BLOCK_RES:
 		forwardShardBlockToMiner(p, payload)
+	case COMMITTEE_CHECK_RES:
+		forwardCommitteeCheckReqToMiner(p, payload)
 	}
 
 

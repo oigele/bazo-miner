@@ -49,6 +49,8 @@ func Init(ipport string) {
 	go timeService()
 	go forwardBlockBrdcstToMiner()
 	go forwardStateTransitionShardToMiner()
+	go forwardCommitteeCheckToMiner()
+	go forwardCommitteeCheckRequestToMiner()
 	go forwardShardBlockRequestToMiner()
 	go forwardTransactionAssignmentRequestToMiner()
 	go forwardStateTransitionBrdcstToMiner()

@@ -425,40 +425,85 @@ func TransactionAssignmentRes(p *peer, payload []byte) {
 	var packet []byte
 	var ta *protocol.TransactionAssignment
 
+	//prepare packet
+	packet = BuildPacket(NOT_FOUND, nil)
+
 	strPayload := string(payload)
-	shardID,_ := strconv.ParseInt(strings.Split(strPayload,":")[0],10,64)
+	shardID, _ := strconv.ParseInt(strings.Split(strPayload, ":")[0], 10, 64)
 
-	height,_ := strconv.ParseInt(strings.Split(strPayload,":")[1],10,64)
-
+	height, _ := strconv.ParseInt(strings.Split(strPayload, ":")[1], 10, 64)
 
 	if !storage.IsCommittee {
-		packet = BuildPacket(NOT_FOUND,nil)
+		packet = BuildPacket(NOT_FOUND, nil)
 		sendData(p, packet)
 		return
 	} else {
-		logger.Printf("responding transaction assignment request for shard %d for height: %d\n", shardID, height)
-		//security check becuase the listener to incoming blocks is a concurrent goroutine
-		if storage.ReadLastClosedEpochBlock() == nil {
-			logger.Printf("Haven't stored last epoch block yet.")
-			packet = BuildPacket(NOT_FOUND,nil)
-		} else if storage.AssignmentHeight == int(height){
-			ta = storage.AssignedTxMap[int(shardID)]
-			if ta == nil {
-				logger.Printf("Not responsible for transaction Assignment at Height: %d", height)
+		//only the leader answers the request
+		if storage.CommitteeLeader == protocol.SerializeHashContent(storage.ValidatorAccAddress) {
+			logger.Printf("responding transaction assignment request for shard %d for height: %d\n", shardID, height)
+			//security check becuase the listener to incoming blocks is a concurrent goroutine
+			if storage.ReadLastClosedEpochBlock() == nil {
+				logger.Printf("Haven't stored last epoch block yet.")
 				packet = BuildPacket(NOT_FOUND, nil)
-				sendData(p, packet)
-				return
+			} else if storage.AssignmentHeight == int(height) {
+				ta = storage.AssignedTxMap[int(shardID)]
+				if ta == nil {
+					logger.Printf("Error: Can't find Assignment at Height: %d", height)
+					packet = BuildPacket(NOT_FOUND, nil)
+					sendData(p, packet)
+					return
+				}
+				logger.Printf("responding assignment. Just read it from map. ShardID: %d Height: %d", shardID, height)
+				packet = BuildPacket(TRANSACTION_ASSIGNMENT_RES, ta.EncodeTransactionAssignment())
 			}
-			logger.Printf("responding assignment. Just read it from map. ShardID: %d Height: %d", shardID, height)
-			packet = BuildPacket(TRANSACTION_ASSIGNMENT_RES, ta.EncodeTransactionAssignment())
 		} else {
-			logger.Printf("Haven't reached latest assignment height yet. Can't send the transaction assignment yet. Assignment height: %d", storage.AssignmentHeight)
-			packet = BuildPacket(NOT_FOUND,nil)
+			packet = BuildPacket(NOT_FOUND, nil)
 		}
 		sendData(p, packet)
 
 	}
 }
+
+func CommitteeCheckRes(p *peer, payload []byte) {
+	var packet []byte
+	var cc *protocol.CommitteeCheck
+
+	//prepare packet
+	packet = BuildPacket(NOT_FOUND, nil)
+
+	//only committee responds to this request
+	if !storage.IsCommittee {
+		packet = BuildPacket(NOT_FOUND, nil)
+		sendData(p, packet)
+		return
+	}
+
+	if storage.ReadLastClosedEpochBlock() == nil {
+		logger.Printf("Haven't stored the last Epoch Block yet.")
+		packet = BuildPacket(NOT_FOUND, nil)
+		sendData(p,packet)
+		return
+	}
+
+	logger.Printf("Committee Check Request received. Answering...")
+
+	strPayload := string(payload)
+	address := strings.Split(strPayload, ":")[0]
+	height, _ := strconv.ParseInt(strings.Split(strPayload, ":")[1], 10, 64)
+
+	validatorAccAddress := protocol.SerializeHashContent(storage.ValidatorAccAddress)
+
+	//we reached the right height
+	if storage.AssignmentHeight == int(height) && string(validatorAccAddress[:]) == address  {
+		cc = storage.OwnCommitteeCheck
+		logger.Printf("Sending committee check request answer for height: %d", cc.Height)
+		packet = BuildPacket(COMMITTEE_CHECK_RES, cc.EncodeCommitteeCheck())
+	}
+
+	sendData(p, packet)
+
+}
+
 
 func stateTransitionRes(p *peer, payload []byte) {
 	var packet []byte

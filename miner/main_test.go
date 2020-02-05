@@ -137,7 +137,7 @@ func addTestingAccounts() {
 	validatorAcc.IsStaking = true
 
 	//Set the global variable in blockchain.go
-	validatorAccAddress = validatorAcc.Address
+	ValidatorAccAddress = validatorAcc.Address
 	commPrivKey = commPrivKeyValidator
 
 	storage.State[hashAccA] = accA

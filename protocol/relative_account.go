@@ -23,6 +23,8 @@ type StateTransition struct {
 type RelativeState struct {
 	RelativeState 				map[[32]byte]*RelativeAccount
 	ShardID						int
+	//The beneficiary is the beneficiary of the block which was used as the basis to create this relative state
+	Beneficiary					[32]byte
 }
 
 
@@ -81,10 +83,11 @@ func NewRelativeAccount(address [64]byte,
 	return newAcc
 }
 
-func NewRelativeState(stateChange map[[32]byte]*RelativeAccount, shardid int) *RelativeState {
+func NewRelativeState(stateChange map[[32]byte]*RelativeAccount, shardid int, beneficiary [32]byte) *RelativeState {
 	newRelativeState := RelativeState{
 		RelativeState: stateChange,
 		ShardID:       shardid,
+		Beneficiary:   beneficiary,
 	}
 	return &newRelativeState
 }
