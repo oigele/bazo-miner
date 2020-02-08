@@ -34,7 +34,6 @@ var (
 	committeePrivKey                *rsa.PrivateKey
 	// This map keeps track of the validator assignment to the shards
 	ValidatorShardMap *protocol.ValShardMapping
-	CommitteeLeader   [32]byte
 	NumberOfShards    int
 	// This slice stores the hashes of the last blocks from the other shards, needed to create the next epoch block.
 	LastShardHashes [][32]byte
@@ -115,8 +114,7 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKe
 				logger.Printf("accepting the state of epoch block height: %d", lastEpochBlock.Height)
 				storage.State = lastEpochBlock.State
 				NumberOfShards = lastEpochBlock.NofShards
-				CommitteeLeader = lastEpochBlock.CommitteeLeader
-				storage.CommitteeLeader = CommitteeLeader
+				storage.CommitteeLeader = lastEpochBlock.CommitteeLeader
 				ValidatorShardMap = lastEpochBlock.ValMapping
 				break
 			}
@@ -143,9 +141,9 @@ func CommitteeMining(height int) {
 			committeesStateBoolMap[k] = false
 		}
 
-		logger.Printf("We have %d Committee Nodes in the network. The commitee Leader is %x", DetNumberOfCommittees(), CommitteeLeader[0:8])
+		logger.Printf("We have %d Committee Nodes in the network. The commitee Leader is %x", DetNumberOfCommittees(), storage.CommitteeLeader[0:8])
 
-		if CommitteeLeader == protocol.SerializeHashContent(ValidatorAccAddress) {
+		if storage.CommitteeLeader == protocol.SerializeHashContent(ValidatorAccAddress) {
 			logger.Printf("I am the committee leader. Start the committee collection mechanism")
 
 			//start the mechanism
@@ -172,7 +170,7 @@ func CommitteeMining(height int) {
 					logger.Printf("Received all committee checks. Initiate the byzantine mechanism.")
 					for _, committeeCheck := range committeeCheckStashForHeight {
 						logger.Printf("Committee Check from account : %x. #Slashed Committees: %d, #Slashed Shards: %d", committeeCheck.Sender[0:8], len(committeeCheck.SlashedAddressesCommittee), len(committeeCheck.SlashedAddressesShards))
-						logger.Printf("Byzantine Mechanism and Fine Tx still has to be implemented")
+
 					}
 					break
 				} else {
@@ -227,7 +225,23 @@ func CommitteeMining(height int) {
 			}
 		}
 	} else {
-		logger.Printf("Only one Committee. Here simulate the verification of the own stash")
+		if !FirstStartCommittee {
+			logger.Printf("Only one Committee. Here simulate the verification of the own stash")
+			for _, account := range storage.State {
+				if account.IsStaking {
+					if containsAddress(storage.OwnCommitteeCheck.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
+						addressHash := protocol.SerializeHashContent(account.Address)
+						logger.Printf("We need to fine Account %x", addressHash[0:8])
+					}
+				}
+				if account.IsCommittee {
+					if containsAddress(storage.OwnCommitteeCheck.SlashedAddressesCommittee, protocol.SerializeHashContent(account.Address)) {
+						addressHash := protocol.SerializeHashContent(account.Address)
+						logger.Printf("We need to fine Account %x", addressHash[0:8])
+					}
+				}
+			}
+		}
 	}
 
 
@@ -235,7 +249,7 @@ func CommitteeMining(height int) {
 	shardIDs := makeRange(1, NumberOfShards)
 	logger.Printf("Number of shards: %d\n", NumberOfShards)
 	//find out if I am the committee leader. If yes, construct the transaction assignment
-	if CommitteeLeader == protocol.SerializeHashContent(ValidatorAccAddress) {
+	if storage.CommitteeLeader == protocol.SerializeHashContent(ValidatorAccAddress) {
 		//generate sequence of all shard IDs starting from 1
 		//generating the assignment data
 		logger.Printf("before assigning transactions")
@@ -454,6 +468,11 @@ func CommitteeMining(height int) {
 				for _, b := range blockStashForHeight {
 					if blockIDBoolMap[b.ShardId] == false {
 
+						//keep looking if the sender cannot be verified
+						if !ValidateBlockSender(b){
+							continue
+						}
+
 						err := CommitteeValidateBlock(b)
 						if err != nil {
 							ShardsToBePunished = append(ShardsToBePunished, b.Beneficiary)
@@ -485,7 +504,7 @@ func CommitteeMining(height int) {
 								//check if the transaction was in the assignment
 								if _, ok := storage.AssignedTxMempool[hash]; ok {
 									//the transaction is in the assignment, punish the committee leader
-									CommitteesToBePunished = append(CommitteesToBePunished, CommitteeLeader)
+									CommitteesToBePunished = append(CommitteesToBePunished, storage.CommitteeLeader)
 								} else {
 									//the transaction is not in the assignment, punish the shard
 									ShardsToBePunished = append(ShardsToBePunished, b.Beneficiary)
@@ -537,6 +556,11 @@ func CommitteeMining(height int) {
 							continue
 						}
 
+						//keep looking if the sender cannot be verified
+						if !ValidateBlockSender(b){
+							continue
+						}
+
 						logger.Printf("Validation of block height: %d, ShardID: %d", b.Height, b.ShardId)
 
 						err := CommitteeValidateBlock(b)
@@ -568,7 +592,7 @@ func CommitteeMining(height int) {
 								//check if the transaction was in the assignment
 								if _, ok := storage.AssignedTxMempool[hash]; ok {
 									//the transaction is in the assignment, punish the committee leader
-									CommitteesToBePunished = append(CommitteesToBePunished, CommitteeLeader)
+									CommitteesToBePunished = append(CommitteesToBePunished, storage.CommitteeLeader)
 								} else {
 									//the transaction is not in the assignment, punish the shard
 									ShardsToBePunished = append(ShardsToBePunished, b.Beneficiary)
@@ -630,6 +654,12 @@ func CommitteeMining(height int) {
 		newEpochBlock := <-p2p.EpochBlockReceivedChan
 		logger.Printf("received the desired epoch block")
 		if newEpochBlock.Height == uint32(storage.AssignmentHeight)+1+EPOCH_LENGTH {
+
+			//check if the sender of the epoch block is legit
+			if !ValidateEpochBlockSender(&newEpochBlock) {
+				continue
+			}
+
 			//broadcastEpochBlock(storage.ReadLastClosedEpochBlock())
 			epochBlockReceived = true
 
@@ -644,8 +674,7 @@ func CommitteeMining(height int) {
 
 			//before being able to validate the proof of stake, the state needs to updated
 			storage.State = newEpochBlock.State
-			CommitteeLeader = newEpochBlock.CommitteeLeader
-			storage.CommitteeLeader = CommitteeLeader
+			storage.CommitteeLeader = newEpochBlock.CommitteeLeader
 			ValidatorShardMap = newEpochBlock.ValMapping
 			NumberOfShards = newEpochBlock.NofShards
 		}
@@ -816,8 +845,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 					storage.ThisShardID = ValidatorShardMap.ValMapping[ValidatorAccAddress] //Save my ShardID
 					storage.ThisShardMap[int(lastEpochBlock.Height)] = storage.ThisShardID
 					FirstStartAfterEpoch = true
-					CommitteeLeader = lastEpochBlock.CommitteeLeader
-					storage.CommitteeLeader = CommitteeLeader
+					storage.CommitteeLeader = lastEpochBlock.CommitteeLeader
 					lastBlock = dummyLastBlock
 					epochMining(lastEpochBlock.Hash, lastEpochBlock.Height) //start mining based on the received Epoch Block
 					//set the ID to 0 such that there wont be any answers to requests that shouldnt be answered
@@ -839,8 +867,7 @@ func Init(validatorWallet, multisigWallet, rootWallet *ecdsa.PublicKey, validato
 		validatorShardMapping.ValMapping = AssignValidatorsToShards()
 		validatorShardMapping.EpochHeight = int(lastEpochBlock.Height)
 		ValidatorShardMap = validatorShardMapping
-		CommitteeLeader = ChooseCommitteeLeader()
-		storage.CommitteeLeader = CommitteeLeader
+		storage.CommitteeLeader = ChooseCommitteeLeader()
 		logger.Printf("Validator Shard Mapping:\n")
 		logger.Printf(validatorShardMapping.String())
 	}
@@ -1021,13 +1048,16 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					newEpochBlock := <-p2p.EpochBlockReceivedChan
 					//the new epoch block from the channel is the epoch block that i need at the moment
 					if newEpochBlock.Height == lastBlock.Height+1 {
+						//check if the sender of the epoch block is legit
+						if !ValidateEpochBlockSender(&newEpochBlock) {
+							continue
+						}
 						epochBlockReceived = true
 						// take over state
 						storage.State = newEpochBlock.State
 						ValidatorShardMap = newEpochBlock.ValMapping
 						NumberOfShards = newEpochBlock.NofShards
-						CommitteeLeader = newEpochBlock.CommitteeLeader
-						storage.CommitteeLeader = CommitteeLeader
+						storage.CommitteeLeader = newEpochBlock.CommitteeLeader
 						storage.ThisShardID = ValidatorShardMap.ValMapping[ValidatorAccAddress]
 						storage.ThisShardMap[int(newEpochBlock.Height)] = storage.ThisShardID
 						lastEpochBlock = &newEpochBlock
@@ -1590,6 +1620,65 @@ func ReconstructRelativeState(b *protocol.Block, accTxs []*protocol.AccTx, stake
 	return protocol.NewRelativeState(relativeStateProvisory, b.ShardId, b.Beneficiary)
 }
 
+func ValidateEpochBlockSender(b *protocol.EpochBlock) bool {
+	//Check state contains beneficiary.
+	acc, err := storage.GetAccount(b.Beneficiary)
+	if err != nil {
+		return false
+	}
+
+	if !acc.IsStaking {
+		return false
+	}
+
+	for address, shardId := range ValidatorShardMap.ValMapping {
+		//because shard 1 is responsible for epoch block creation
+		if shardId == 1 {
+			if protocol.SerializeHashContent(address) == b.Beneficiary {
+				commitmentPubKey, err := crypto.CreateRSAPubKeyFromBytes(acc.CommitmentKey)
+				if err != nil {
+					return false
+				}
+				err = crypto.VerifyMessageWithRSAKey(commitmentPubKey, fmt.Sprint(b.Height), b.CommitmentProof)
+				if err != nil {
+					return false
+				}
+				return true
+			}
+		}
+	}
+	return false
+}
+
+func ValidateBlockSender(b *protocol.Block) bool {
+	//Check state contains beneficiary.
+	acc, err := storage.GetAccount(b.Beneficiary)
+	if err != nil {
+		return false
+	}
+
+	if !acc.IsStaking {
+		return false
+	}
+
+	for address, shardId := range ValidatorShardMap.ValMapping {
+		if shardId == b.ShardId {
+			if protocol.SerializeHashContent(address) == b.Beneficiary {
+				commitmentPubKey, err := crypto.CreateRSAPubKeyFromBytes(acc.CommitmentKey)
+				if err != nil {
+					return false
+				}
+				err = crypto.VerifyMessageWithRSAKey(commitmentPubKey, fmt.Sprint(b.Height), b.CommitmentProof)
+				if err != nil {
+					return false
+				}
+				return true
+			}
+		}
+	}
+	return false
+}
+
 func CommitteeValidateBlock(b *protocol.Block) (err error) {
 	logger.Printf("Validation of block height: %d, ShardID: %d", b.Height, b.ShardId)
 
@@ -1642,4 +1731,13 @@ func makeRange(min, max int) []int {
 		a[i] = min + i
 	}
 	return a
+}
+
+func containsAddress(slice [][32]byte, add [32]byte) bool {
+	for _, address := range slice {
+		if address == add {
+			return true
+		}
+	}
+	return false
 }

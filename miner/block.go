@@ -183,8 +183,7 @@ func finalizeEpochBlock(epochBlock *protocol.EpochBlock) error {
 	epochBlock.NofShards = DetNumberOfShards()
 
 	epochBlock.CommitteeLeader = ChooseCommitteeLeader()
-	CommitteeLeader = epochBlock.CommitteeLeader
-	storage.CommitteeLeader = CommitteeLeader
+	storage.CommitteeLeader = epochBlock.CommitteeLeader
 
 	storage.ThisShardID = ValidatorShardMap.ValMapping[ValidatorAccAddress]
 	storage.ThisShardMap[int(epochBlock.Height)] = storage.ThisShardID
@@ -1780,7 +1779,7 @@ func validateTransactionAssignment(ta *protocol.TransactionAssignment) (err erro
 
 
 	//Get the Committee Leader's account
-	acc, err := storage.GetAccount(CommitteeLeader)
+	acc, err := storage.GetAccount(storage.CommitteeLeader)
 	if err != nil {
 		return errors.New("Cannot fetch the sender account")
 	}
