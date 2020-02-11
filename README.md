@@ -112,7 +112,7 @@ Now, due to the architecture of this branch of BAZO, a committee member has to b
 The committee member bootstraps to the bootstrap node. All it needs additionally is a database to store transactions, an own address and an address to bootstrap to. 
 
 
-### Start additional shards
+### Start additional Miners
 
 Starting miner B requires more work since new accounts have to be registered by a root account.
 In our case, we can use miner's A `WalletA.txt` (e.g. copy the file to the Bazo client directory) to create and add a new account to the network.
