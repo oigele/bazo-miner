@@ -156,7 +156,7 @@ Using the [Bazo client](https://github.com/oigele/bazo-client/tree/ClientForIoT)
 ```
 Wallet and committee keys are automatically created.
 
-Now ce can start committee B at address and port `127.0.0.1:8003` and conntect to miner A (which is the bootstrap node), using the generated WalletCommitteeB.txt and CommitteeB.txt files (i.e. copy them from the client application to the miner application).
+Now we can start committee B at address and port `127.0.0.1:8003` and conntect to miner A (which is the bootstrap node), using the generated WalletCommitteeB.txt and CommitteeB.txt files (i.e. copy them from the client application to the miner application).
 
 
 ```bash
