@@ -154,8 +154,12 @@ Using the [Bazo client](https://github.com/oigele/bazo-client/tree/ClientForIoT)
 ```bash
 ./bazo-client committee --wallet WalletCommitteeB.txt --committee CommitteeB.txt --rootwallet WalletA.txt
 ```
-Now ce can start committee B at address and port `127.0.0.1:8001` and conntect to miner A (which is the bootstrap node). 
+Now ce can start committee B at address and port `127.0.0.1:8003` and conntect to miner A (which is the bootstrap node). 
 Wallet and committee keys are automatically created.
+
+```bash
+./bazo-miner committee --database StoreCommitteeB.db --address 127.0.0.1:8003 --bootstrap 127.0.0.1:8000  --wallet WalletCommitteeB.txt --committee CommitteeB.txt
+```
 
 ### Generate a wallet
 
