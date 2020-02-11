@@ -38,11 +38,28 @@ Options
 * `--rootcommitment`: The file to load root's commitment key from. A new commitment key is generated if it does not exist yet.
 * `--confirm`: In order to review the miner startup options, the user must press Enter before the miner starts.
 
+
+### Start the committee
+
+Start the committee with a breeze. 
+
+```bash
+bazo-miner committee [command options] [arguments...]
+```
+
+Options
+* `--database`: (default store.db) Specify where to load database of the disk-based key/value store from. The database is created if it does not exist yet.
+* `--address`: (default: localhost:8000) Specify starting address and port, in format `IP:PORT`
+* `--bootstrap`: (default: localhost:8000) Specify the address and port of the boostrapping node. Note that when this option is not specified, the miner connects to itself.
+* `--wallet`: (default: wallet.txt) Load the public key from this file. A new private key is generated if it does not exist yet. Note that only the public key is required.
+* `--committee`: The file to load the validator's committee key from (will be created if it does not exist)
+* `--confirm`: In order to review the miner startup options, the user must press Enter before the miner starts.
+
 Example
 
 Using a sample scenario, the use of the command line should become clear.
 
-Let's assume we want to start two miners, miner `A` and miner `B`, whereas miner `A` acts as the bootstrap node.
+Let's assume we want to start two miners, miner `A` and miner `B`, whereas miner `A` acts as the bootstrap node. Moreover, we want just one node in the Committee, which will be called committee `A`.
 Further assume that we start from scratch and no key files have been created yet.
 
 Miner A (Root)
@@ -61,6 +78,13 @@ Miner B
 * Bootstrap Address: `localhost:8000`
 * Wallet: `WalletB.txt`
 * Commitment: `CommitmentB.txt`
+
+Committee A
+* Database: `StoreCommitteeA.db`
+* Address: `localhost:8002`
+* Bootstrap Address: `localhost:8000`
+* Wallet: `WalletCommitteeA.txt`
+* Committee: `CommitteeA.txt`
 
 Commands
 
