@@ -121,10 +121,11 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKe
 		}
 	}
 
+	//check in order to determine if all checks can be done already. If the epoch height is less than 2, a null pointer exception would happen
 	if lastEpochBlock.Height == 2 {
-		FirstStartCommittee = 0 == 0
+		FirstStartCommittee = true
 	} else {
-		FirstStartCommittee = 0 != 0
+		FirstStartCommittee = false
 	}
 	CommitteeMining(int(lastEpochBlock.Height))
 }
@@ -227,6 +228,7 @@ func CommitteeMining(height int) {
 	} else {
 		if !FirstStartCommittee {
 			logger.Printf("Only one Committee. Here simulate the verification of the own stash")
+			logger.Printf("Length of slashed shards: %d --- committees: %d", len(storage.OwnCommitteeCheck.SlashedAddressesShards), len(storage.OwnCommitteeCheck.SlashedAddressesCommittee))
 			for _, account := range storage.State {
 				if account.IsStaking {
 					if containsAddress(storage.OwnCommitteeCheck.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
@@ -281,15 +283,18 @@ func CommitteeMining(height int) {
 				storage.AssignedTxMempool[openTransaction.Hash()] = openTransaction
 				switch openTransaction.(type) {
 				case *protocol.AccTx:
-					if shardId == 1 {
+					//if shardId == 1 {
+					if shardId == assignTransactionToShard(openTransaction) {
 						accTxs = append(accTxs, openTransaction.(*protocol.AccTx))
 					}
 				case *protocol.StakeTx:
-					if shardId == 1 {
+					//if shardId == 1 {
+					if shardId == assignTransactionToShard(openTransaction) {
 						stakeTxs = append(stakeTxs, openTransaction.(*protocol.StakeTx))
 					}
 				case *protocol.CommitteeTx:
-					if shardId == 1 {
+					if shardId == assignTransactionToShard(openTransaction) {
+					//if shardId == 1 {
 						committeeTxs = append(committeeTxs, openTransaction.(*protocol.CommitteeTx))
 					}
 				case *protocol.FundsTx:
@@ -486,6 +491,7 @@ func CommitteeMining(height int) {
 						dataTxs = append(dataTxs, aggregatedDataTxSlice...)
 
 
+
 						relativeState := ReconstructRelativeState(b, accTxs, stakeTxs, committeeTxs, fundsTxs, dataTxs)
 						relativeStatesToCheck[b.ShardId] = relativeState
 
@@ -512,9 +518,13 @@ func CommitteeMining(height int) {
 							}
 						}
 
+						storage.ReadAllOpenTxs()
+
+
 						notIncludedTxHashes := storage.DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
 						//If this evaluates to true, then the shard created a transaction out of thin air.
 						if len(notIncludedTxHashes) > 0 {
+							logger.Printf("found a shard to be punished")
 							ShardsToBePunished = append(ShardsToBePunished, b.Beneficiary)
 						}
 
@@ -601,7 +611,8 @@ func CommitteeMining(height int) {
 						}
 
 						notIncludedTxHashes := storage.DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
-						//If this evaluates to true, then the shard created a transaction out of thin air.
+
+					//If this evaluates to true, then the shard created a transaction out of thin air.
 						if len(notIncludedTxHashes) > 0 {
 							ShardsToBePunished = append(ShardsToBePunished, b.Beneficiary)
 						}

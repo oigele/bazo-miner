@@ -126,21 +126,20 @@ func DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs []*protocol.AccTx, st
 			delete(txMemPool, txHash)
 		}
 	}
+	//Aggregated transactions don't need to be checked, because they aren't part of the assignment anyways
 	for _, transaction := range aggTxs {
 		txHash := transaction.Hash()
-		if _, exists := AssignedTxMempool[txHash]; !exists {
+		delete(txMemPool, txHash)
+		/*if _, exists := AssignedTxMempool[txHash]; !exists {
 			notIncludedTxHashes = append(notIncludedTxHashes, txHash)
 		} else {
 			delete(txMemPool, txHash)
-		}
+		}*/
 	}
+	//Aggregated transactions don't need to be checked, because they aren't part of the assignment anyways
 	for _, transaction := range aggDataTxs {
 		txHash := transaction.Hash()
-		if _, exists := AssignedTxMempool[txHash]; !exists {
-			notIncludedTxHashes = append(notIncludedTxHashes, txHash)
-		} else {
-			delete(txMemPool, txHash)
-		}
+		delete(txMemPool, txHash)
 	}
 	return notIncludedTxHashes
 }
