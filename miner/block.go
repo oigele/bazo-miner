@@ -1724,9 +1724,10 @@ func fetchAggDataTxData(block *protocol.Block, aggTxSlice []*protocol.AggDataTx,
 		for _, txHash := range aggDataTx.(*protocol.AggDataTx).AggregatedDataTx {
 			
 			tx := storage.ReadAssignedTx(txHash)
+			//transaction was found, continue
 			if tx != nil {
 				transactions = append(transactions, tx.(*protocol.DataTx))
-				logger.Printf("Found data Transaction in assigned TX")
+				continue
 			}
 			
 			tx = storage.ReadClosedTx(txHash)
@@ -1998,6 +1999,7 @@ func validate(b *protocol.Block, initialSetup bool) error {
 			if err := validateState(blockDataMap[block.Hash], initialSetup); err != nil {
 				return err
 			}
+
 
 			storage.RelativeState = storage.GetRelativeState(previousStateCopy,storage.State)
 
