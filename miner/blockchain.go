@@ -254,75 +254,54 @@ func CommitteeMining(height int) {
 	if storage.CommitteeLeader == protocol.SerializeHashContent(ValidatorAccAddress) {
 		//generate sequence of all shard IDs starting from 1
 		//generating the assignment data
+
+		//Reset the map
+		storage.AssignedTxMempool = make(map[[32]byte]protocol.Transaction)
+		openTransactions := storage.ReadAllOpenTxs()
+
+		logger.Printf("length of open transactions: %d", len(openTransactions))
+
+		accTxsMap := make(map[int][]*protocol.AccTx)
+		stakeTxsMap := make(map[int][]*protocol.StakeTx)
+		committeeTxsMap := make(map[int][]*protocol.CommitteeTx)
+		fundsTxsMap := make(map[int][]*protocol.FundsTx)
+		dataTxsMap := make(map[int][]*protocol.DataTx)
+
 		logger.Printf("before assigning transactions")
-		for _, shardId := range shardIDs {
-			var ta *protocol.TransactionAssignment
-			var accTxs []*protocol.AccTx
-			var stakeTxs []*protocol.StakeTx
-			var committeeTxs []*protocol.CommitteeTx
-			var fundsTxs []*protocol.FundsTx
-			var dataTxs []*protocol.DataTx
 
-			//Reset the map
-			storage.AssignedTxMempool = make(map[[32]byte]protocol.Transaction)
-			openTransactions := storage.ReadAllOpenTxs()
-
-
-			//empty the assignment and all the slices
-			ta = nil
-			accTxs = nil
-			stakeTxs = nil
-			committeeTxs = nil
-			fundsTxs = nil
-			dataTxs = nil
-
-			//since shard number 1 writes the epoch block, it is required to process all acctx and stake tx
-			//the other transactions are distributed to the shards based on the public address of the sender
-			for _, openTransaction := range openTransactions {
-				//set the transaction as assigned
-				storage.AssignedTxMempool[openTransaction.Hash()] = openTransaction
-				switch openTransaction.(type) {
-				case *protocol.AccTx:
-					//if shardId == 1 {
-					if shardId == assignTransactionToShard(openTransaction) {
-						accTxs = append(accTxs, openTransaction.(*protocol.AccTx))
-					}
-				case *protocol.StakeTx:
-					//if shardId == 1 {
-					if shardId == assignTransactionToShard(openTransaction) {
-						stakeTxs = append(stakeTxs, openTransaction.(*protocol.StakeTx))
-					}
-				case *protocol.CommitteeTx:
-					if shardId == assignTransactionToShard(openTransaction) {
-					//if shardId == 1 {
-						committeeTxs = append(committeeTxs, openTransaction.(*protocol.CommitteeTx))
-					}
-				case *protocol.FundsTx:
-					if shardId == assignTransactionToShard(openTransaction) {
-						//if shardId == 1 {
-						fundsTxs = append(fundsTxs, openTransaction.(*protocol.FundsTx))
-					}
-				case *protocol.DataTx:
-					if shardId == assignTransactionToShard(openTransaction) {
-						dataTxs = append(dataTxs, openTransaction.(*protocol.DataTx))
-					}
-				}
+		//the transactions are distributed to the shards based on the public address of the sender
+		for _, openTransaction := range openTransactions {
+			//set the transaction as assigned
+			storage.AssignedTxMempool[openTransaction.Hash()] = openTransaction
+			switch openTransaction.(type) {
+			case *protocol.AccTx:
+				accTxsMap[assignTransactionToShard(openTransaction)] = append(accTxsMap[assignTransactionToShard(openTransaction)], openTransaction.(*protocol.AccTx))
+			case *protocol.StakeTx:
+				stakeTxsMap[assignTransactionToShard(openTransaction)] = append(stakeTxsMap[assignTransactionToShard(openTransaction)], openTransaction.(*protocol.StakeTx))
+			case *protocol.CommitteeTx:
+				committeeTxsMap[assignTransactionToShard(openTransaction)] = append(committeeTxsMap[assignTransactionToShard(openTransaction)], openTransaction.(*protocol.CommitteeTx))
+			case *protocol.FundsTx:
+				fundsTxsMap[assignTransactionToShard(openTransaction)] = append(fundsTxsMap[assignTransactionToShard(openTransaction)], openTransaction.(*protocol.FundsTx))
+			case *protocol.DataTx:
+				dataTxsMap[assignTransactionToShard(openTransaction)] = append(dataTxsMap[assignTransactionToShard(openTransaction)], openTransaction.(*protocol.DataTx))
 			}
+		}
 
+		for _, shardId := range shardIDs {
 			committeeProof, err := crypto.SignMessageWithRSAKey(committeePrivKey, fmt.Sprint(height))
 			if err != nil {
 				logger.Printf("Error with signing the Committee Proof Message")
 				return
 			}
 
-			ta = protocol.NewTransactionAssignment(height, shardId, committeeProof, accTxs, stakeTxs, committeeTxs, fundsTxs, dataTxs)
+			ta := protocol.NewTransactionAssignment(height, shardId, committeeProof, accTxsMap[shardId], stakeTxsMap[shardId], committeeTxsMap[shardId], fundsTxsMap[shardId], dataTxsMap[shardId])
 
-			logger.Printf("length of open transactions: %d", len(storage.ReadAllOpenTxs()))
 			storage.AssignedTxMap[shardId] = ta
 			logger.Printf("broadcasting assignment data for ShardId: %d", shardId)
-			logger.Printf("Length of AccTx: %d, StakeTx: %d, CommitteeTx: %d, FundsTx: %d, DataTx: %d", len(accTxs), len(stakeTxs), len(committeeTxs), len(fundsTxs), len(dataTxs))
+			logger.Printf("Length of AccTx: %d, StakeTx: %d, CommitteeTx: %d, FundsTx: %d, DataTx: %d", len(accTxsMap[shardId]), len(stakeTxsMap[shardId]), len(committeeTxsMap[shardId]), len(fundsTxsMap[shardId]), len(dataTxsMap[shardId]))
 			broadcastAssignmentData(ta)
 		}
+
 		logger.Printf("After assigning transactions")
 		//If I am not the committee leader, wait for the assignment
 	} else {
@@ -548,6 +527,13 @@ func CommitteeMining(height int) {
 			for _, shardIdReq := range shardIDs {
 				if !blockIDBoolMap[shardIdReq] {
 					var b *protocol.Block
+
+					foundBlock := searchBlock(shardIdReq, height + 1)
+					if foundBlock != nil {
+						logger.Printf("skip planned block request for shardID %d", shardIdReq)
+						continue
+					}
+
 					logger.Printf("Requesting Block for Height: %d and ShardID %d", int(height)+1, shardIdReq)
 					p2p.ShardBlockReq(int(height)+1, shardIdReq)
 					//blocking wait
@@ -1364,6 +1350,16 @@ func searchStateTransition(shardID int, height int) *protocol.StateTransition {
 	for _, st := range stateStash {
 		if st.ShardID == shardID {
 			return st
+		}
+	}
+	return nil
+}
+
+func searchBlock(shardID int, height int) *protocol.Block {
+	blockStash := protocol.ReturnBlockStashForHeight(storage.ReceivedShardBlockStash, uint32(height))
+	for _, b := range blockStash {
+		if b.ShardId == shardID {
+			return b
 		}
 	}
 	return nil

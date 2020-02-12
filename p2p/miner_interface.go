@@ -190,11 +190,11 @@ func forwardBlockToMiner(p *peer, payload []byte) {
 	//	block = block.Decode(payload)
 	//	storage.WriteToReceivedStash(block)
 	//	if !BlockAlreadyReceived(storage.ReadReceivedBlockStash(),block.Hash){
-	if len(BlockIn) > 0 {
+	/*if len(BlockIn) > 0 {
 		var block *protocol.Block
 		block = block.Decode(payload)
 		logger.Printf("Inside ForwardBlockToMiner --> len(BlockIn) = %v for block %x", len(BlockIn), block.Hash[0:8])
-	}
+	}*/
 	BlockIn <- payload
 	//	}
 	//	blockStashMutex.Unlock()

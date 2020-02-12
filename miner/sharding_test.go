@@ -39,7 +39,7 @@ func TestCommitteeGoRoutines(t *testing.T) {
 	var nodeMap4 = make(map[[32]byte]*ecdsa.PrivateKey)
 
 
-	for i := 1; i <= 15; i++ {
+	for i := 1; i <= 60; i++ {
 
 		accTx, newAccAddress, err := protocol.ConstrAccTx(
 			byte(0),
