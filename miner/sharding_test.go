@@ -24,6 +24,362 @@ var (
 	TotalNodes			int
 )
 
+func TestCommitteeGoRoutinesTwoSenders(t *testing.T) {
+	rootNode := fmt.Sprintf("WalletA.txt")
+	rootNodePubKey, _ := crypto.ExtractECDSAPublicKeyFromFile(rootNode)
+	rootNodePrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
+	rootNodeAddress := crypto.GetAddressFromPubKey(rootNodePubKey)
+	hasherRootNode := protocol.SerializeHashContent(rootNodeAddress)
+
+	fromPrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
+
+	var nodeMap1 = make(map[[32]byte]*ecdsa.PrivateKey)
+	var nodeMap2 = make(map[[32]byte]*ecdsa.PrivateKey)
+	var nodeMap3 = make(map[[32]byte]*ecdsa.PrivateKey)
+	var nodeMap4 = make(map[[32]byte]*ecdsa.PrivateKey)
+	var nodeMap5 = make(map[[32]byte]*ecdsa.PrivateKey)
+	var nodeMap6 = make(map[[32]byte]*ecdsa.PrivateKey)
+	var nodeMap7 = make(map[[32]byte]*ecdsa.PrivateKey)
+	var nodeMap8 = make(map[[32]byte]*ecdsa.PrivateKey)
+
+	for i := 1; i <= 60; i++ {
+
+		accTx, newAccAddress, err := protocol.ConstrAccTx(
+			byte(0),
+			uint64(1),
+			[64]byte{},
+			rootNodePrivKey,
+			nil,
+			nil)
+
+		if err != nil {
+			t.Log("got an issue")
+		}
+
+		//send to the address of the committee
+		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
+		if err := SendTx("127.0.0.1:8003", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
+		/*if err := SendTx("127.0.0.1:8004", accTx, p2p.ACCTX_BRDCST); err != nil {
+			t.Log(fmt.Sprintf("Error"))
+		}*/
+
+		newNodeAddress := crypto.GetAddressFromPubKey(&newAccAddress.PublicKey)
+		hasherNewNode := protocol.SerializeHashContent(newNodeAddress)
+
+		//append all 60 hashers to a new map
+		if i % 8 == 0{
+			nodeMap1[hasherNewNode] = newAccAddress
+		} else if i % 8 == 1 {
+			nodeMap2[hasherNewNode] = newAccAddress
+		} else if i % 8 == 2 {
+			nodeMap3[hasherNewNode] = newAccAddress
+		} else if i % 8 == 3 {
+			nodeMap4[hasherNewNode] = newAccAddress
+		} else if i % 8 == 4 {
+			nodeMap5[hasherNewNode] = newAccAddress
+		} else if i % 8 == 5 {
+			nodeMap6[hasherNewNode] = newAccAddress
+		} else if i % 8 == 6 {
+			nodeMap7[hasherNewNode] = newAccAddress
+		} else if i % 8 == 7 {
+			nodeMap8[hasherNewNode] = newAccAddress
+		}
+
+	}
+
+
+	numberOfRounds := 20
+	j := 150
+
+
+
+
+	start := time.Now()
+
+	wg := sync.WaitGroup{}
+	wg.Add(8)
+
+
+
+	go func() {
+		for i := 1; i <= numberOfRounds; i++ {
+			for hasher,_  := range nodeMap1 {
+				for txCount := 1; txCount <= j; txCount++ {
+					tx, _ := protocol.ConstrFundsTx(
+						byte(0),
+						uint64(10),
+						uint64(1),
+						//can do it like this because no txcount check. the important part is that the txcount is unique
+						uint32(i*j-txCount),
+						hasher,
+						hasherRootNode,
+						nodeMap1[hasher],
+						fromPrivKey,
+						nil)
+
+					if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}*/
+				}
+			}
+		}
+		wg.Done()
+	}()
+
+	time.Sleep(5 * time.Millisecond)
+
+	go func() {
+		for i := 1; i <= numberOfRounds; i++ {
+			for hasher,_  := range nodeMap2 {
+				for txCount := 1; txCount <= j; txCount++ {
+					tx, _ := protocol.ConstrFundsTx(
+						byte(0),
+						uint64(10),
+						uint64(1),
+						//can do it like this because no txcount check. the important part is that the txcount is unique
+						uint32(i*j-txCount),
+						hasher,
+						hasherRootNode,
+						nodeMap2[hasher],
+						fromPrivKey,
+						nil)
+
+					if err := SendTx2("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx2("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}*/
+				}
+			}
+		}
+		wg.Done()
+	}()
+
+	time.Sleep(5 * time.Millisecond)
+
+	go func() {
+		for i := 1; i <= numberOfRounds; i++ {
+			for hasher,_  := range nodeMap3 {
+				for txCount := 1; txCount <= j; txCount++ {
+					tx, _ := protocol.ConstrFundsTx(
+						byte(0),
+						uint64(10),
+						uint64(1),
+						//can do it like this because no txcount check. the important part is that the txcount is unique
+						uint32(i*j-txCount),
+						hasher,
+						hasherRootNode,
+						nodeMap3[hasher],
+						fromPrivKey,
+						nil)
+
+					if err := SendTx3("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx3("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}*/
+				}
+			}
+		}
+		wg.Done()
+	}()
+
+	time.Sleep(5 * time.Millisecond)
+
+	go func() {
+		for i := 1; i <= numberOfRounds; i++ {
+			for hasher,_  := range nodeMap4 {
+				for txCount := 1; txCount <= j; txCount++ {
+					tx, _ := protocol.ConstrFundsTx(
+						byte(0),
+						uint64(10),
+						uint64(1),
+						//can do it like this because no txcount check. the important part is that the txcount is unique
+						uint32(i*j-txCount),
+						hasher,
+						hasherRootNode,
+						nodeMap4[hasher],
+						fromPrivKey,
+						nil)
+
+					if err := SendTx4("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx4("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}*/
+				}
+			}
+		}
+		wg.Done()
+	}()
+
+	time.Sleep(5 * time.Millisecond)
+
+	go func() {
+		for i := 1; i <= numberOfRounds; i++ {
+			for hasher,_  := range nodeMap5 {
+				for txCount := 1; txCount <= j; txCount++ {
+					tx, _ := protocol.ConstrFundsTx(
+						byte(0),
+						uint64(10),
+						uint64(1),
+						//can do it like this because no txcount check. the important part is that the txcount is unique
+						uint32(i*j-txCount),
+						hasher,
+						hasherRootNode,
+						nodeMap5[hasher],
+						fromPrivKey,
+						nil)
+
+					if err := SendTx5("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx5("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}*/
+				}
+			}
+		}
+		wg.Done()
+	}()
+
+	time.Sleep(5 * time.Millisecond)
+
+	go func() {
+		for i := 1; i <= numberOfRounds; i++ {
+			for hasher,_  := range nodeMap6 {
+				for txCount := 1; txCount <= j; txCount++ {
+					tx, _ := protocol.ConstrFundsTx(
+						byte(0),
+						uint64(10),
+						uint64(1),
+						//can do it like this because no txcount check. the important part is that the txcount is unique
+						uint32(i*j-txCount),
+						hasher,
+						hasherRootNode,
+						nodeMap6[hasher],
+						fromPrivKey,
+						nil)
+
+					if err := SendTx6("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx6("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}*/
+				}
+			}
+		}
+		wg.Done()
+	}()
+
+	time.Sleep(5 * time.Millisecond)
+
+	go func() {
+		for i := 1; i <= numberOfRounds; i++ {
+			for hasher,_  := range nodeMap7 {
+				for txCount := 1; txCount <= j; txCount++ {
+					tx, _ := protocol.ConstrFundsTx(
+						byte(0),
+						uint64(10),
+						uint64(1),
+						//can do it like this because no txcount check. the important part is that the txcount is unique
+						uint32(i*j-txCount),
+						hasher,
+						hasherRootNode,
+						nodeMap7[hasher],
+						fromPrivKey,
+						nil)
+
+					if err := SendTx7("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx7("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}*/
+				}
+			}
+		}
+		wg.Done()
+	}()
+
+	time.Sleep(5 * time.Millisecond)
+
+	go func() {
+		for i := 1; i <= numberOfRounds; i++ {
+			for hasher,_  := range nodeMap8 {
+				for txCount := 1; txCount <= j; txCount++ {
+					tx, _ := protocol.ConstrFundsTx(
+						byte(0),
+						uint64(10),
+						uint64(1),
+						//can do it like this because no txcount check. the important part is that the txcount is unique
+						uint32(i*j-txCount),
+						hasher,
+						hasherRootNode,
+						nodeMap8[hasher],
+						fromPrivKey,
+						nil)
+
+					if err := SendTx8("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					if err := SendTx8("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}
+					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+						t.Log(fmt.Sprintf("Error"))
+					}*/
+				}
+			}
+		}
+		wg.Done()
+	}()
+
+	wg.Wait()
+
+	t.Log("Waiting for goroutines to finish")
+
+	elapsed := time.Now().Sub(start)
+
+
+	t.Log(elapsed.Seconds())
+	t.Log(elapsed.Nanoseconds())
+
+
+}
+
 func TestCommitteeGoRoutines(t *testing.T) {
 	rootNode := fmt.Sprintf("WalletA.txt")
 	rootNodePubKey, _ := crypto.ExtractECDSAPublicKeyFromFile(rootNode)
@@ -57,10 +413,10 @@ func TestCommitteeGoRoutines(t *testing.T) {
 		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
-		/*if err := SendTx("127.0.0.1:8003", accTx, p2p.ACCTX_BRDCST); err != nil {
+		if err := SendTx("127.0.0.1:8003", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
-		if err := SendTx("127.0.0.1:8004", accTx, p2p.ACCTX_BRDCST); err != nil {
+		/*if err := SendTx("127.0.0.1:8004", accTx, p2p.ACCTX_BRDCST); err != nil {
 			t.Log(fmt.Sprintf("Error"))
 		}*/
 
@@ -112,10 +468,10 @@ func TestCommitteeGoRoutines(t *testing.T) {
 					if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
-					/*if err := SendTx("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					if err := SendTx("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
-					if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}*/
 				}
@@ -145,10 +501,10 @@ func TestCommitteeGoRoutines(t *testing.T) {
 					if err := SendTx2("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
-					/*if err := SendTx2("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					if err := SendTx2("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
-					if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}*/
 				}
@@ -211,10 +567,10 @@ func TestCommitteeGoRoutines(t *testing.T) {
 					if err := SendTx4("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
-					/*if err := SendTx4("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					if err := SendTx4("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
-					if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}*/
 				}
@@ -1451,6 +1807,78 @@ func SendTx3(dial string, tx protocol.Transaction, typeID uint8) (err error) {
 }
 
 func SendTx4(dial string, tx protocol.Transaction, typeID uint8) (err error) {
+	if conn := p2p.Connect(dial); conn != nil {
+		packet := p2p.BuildPacket(typeID, tx.Encode())
+		conn.Write(packet)
+
+		header, payload, err := p2p.RcvData_(conn)
+		if err != nil || header.TypeID == p2p.NOT_FOUND {
+			err = errors.New(string(payload[:]))
+		}
+		conn.Close()
+
+		return err
+	}
+
+	txHash := tx.Hash()
+	return errors.New(fmt.Sprintf("Sending tx %x failed.", txHash[:8]))
+}
+
+func SendTx5(dial string, tx protocol.Transaction, typeID uint8) (err error) {
+	if conn := p2p.Connect(dial); conn != nil {
+		packet := p2p.BuildPacket(typeID, tx.Encode())
+		conn.Write(packet)
+
+		header, payload, err := p2p.RcvData_(conn)
+		if err != nil || header.TypeID == p2p.NOT_FOUND {
+			err = errors.New(string(payload[:]))
+		}
+		conn.Close()
+
+		return err
+	}
+
+	txHash := tx.Hash()
+	return errors.New(fmt.Sprintf("Sending tx %x failed.", txHash[:8]))
+}
+
+func SendTx6(dial string, tx protocol.Transaction, typeID uint8) (err error) {
+	if conn := p2p.Connect(dial); conn != nil {
+		packet := p2p.BuildPacket(typeID, tx.Encode())
+		conn.Write(packet)
+
+		header, payload, err := p2p.RcvData_(conn)
+		if err != nil || header.TypeID == p2p.NOT_FOUND {
+			err = errors.New(string(payload[:]))
+		}
+		conn.Close()
+
+		return err
+	}
+
+	txHash := tx.Hash()
+	return errors.New(fmt.Sprintf("Sending tx %x failed.", txHash[:8]))
+}
+
+func SendTx7(dial string, tx protocol.Transaction, typeID uint8) (err error) {
+	if conn := p2p.Connect(dial); conn != nil {
+		packet := p2p.BuildPacket(typeID, tx.Encode())
+		conn.Write(packet)
+
+		header, payload, err := p2p.RcvData_(conn)
+		if err != nil || header.TypeID == p2p.NOT_FOUND {
+			err = errors.New(string(payload[:]))
+		}
+		conn.Close()
+
+		return err
+	}
+
+	txHash := tx.Hash()
+	return errors.New(fmt.Sprintf("Sending tx %x failed.", txHash[:8]))
+}
+
+func SendTx8(dial string, tx protocol.Transaction, typeID uint8) (err error) {
 	if conn := p2p.Connect(dial); conn != nil {
 		packet := p2p.BuildPacket(typeID, tx.Encode())
 		conn.Write(packet)

@@ -133,6 +133,9 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKe
 func CommitteeMining(height int) {
 	logger.Printf("---------------------------------------- Committee Mining for Epoch Height: %d ----------------------------------------", height)
 
+	//In the beginning of each round, the slashing of the last round is performed. The reason for this is the division of power.
+	//The leader of the new round should be the one who performs the checks for the last height
+
 	//If we have more than one committee member in the blockchain, perform the slashing synchronization steps
 	//If its just one, perform the check for it
 	if DetNumberOfCommittees() > 1 {
@@ -166,13 +169,10 @@ func CommitteeMining(height int) {
 						}
 					}
 				}
-				//If all state transitions have been received, stop synchronisation.
+				//If all committee checks have been received, stop synchronisation.
 				if len(committeeCheckStashForHeight) == DetNumberOfCommittees() -1 {
 					logger.Printf("Received all committee checks. Initiate the byzantine mechanism.")
-					for _, committeeCheck := range committeeCheckStashForHeight {
-						logger.Printf("Committee Check from account : %x. #Slashed Committees: %d, #Slashed Shards: %d", committeeCheck.Sender[0:8], len(committeeCheck.SlashedAddressesCommittee), len(committeeCheck.SlashedAddressesShards))
-
-					}
+					runByzantineMechanism(committeeCheckStashForHeight)
 					break
 				} else {
 					logger.Printf("Length of committee stash: %d", len(committeeCheckStashForHeight))
@@ -192,7 +192,7 @@ func CommitteeMining(height int) {
 
 						logger.Printf("requesting committeeCheck for lastblock height: %d from address: %x\n", height - 2, address)
 
-						//Because we check for the previous epoch
+						//-2 Because we check for the previous epoch
 						p2p.CommitteeCheckReq(address, height-2)
 						//Blocking wait
 						select {
@@ -227,22 +227,8 @@ func CommitteeMining(height int) {
 		}
 	} else {
 		if !FirstStartCommittee {
-			logger.Printf("Only one Committee. Here simulate the verification of the own stash")
-			logger.Printf("Length of slashed shards: %d --- committees: %d", len(storage.OwnCommitteeCheck.SlashedAddressesShards), len(storage.OwnCommitteeCheck.SlashedAddressesCommittee))
-			for _, account := range storage.State {
-				if account.IsStaking {
-					if containsAddress(storage.OwnCommitteeCheck.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
-						addressHash := protocol.SerializeHashContent(account.Address)
-						logger.Printf("We need to fine Account %x", addressHash[0:8])
-					}
-				}
-				if account.IsCommittee {
-					if containsAddress(storage.OwnCommitteeCheck.SlashedAddressesCommittee, protocol.SerializeHashContent(account.Address)) {
-						addressHash := protocol.SerializeHashContent(account.Address)
-						logger.Printf("We need to fine Account %x", addressHash[0:8])
-					}
-				}
-			}
+			//give no received committee checks because I'm the only committee member
+			runByzantineMechanism(nil)
 		}
 	}
 
@@ -1291,25 +1277,7 @@ func AssignValidatorsToShards() map[[64]byte]int {
 
 			//finished the process of assigning the validators to shards
 			if len(validatorSlices) == 0 {
-				//The following code makes sure that the newly staking node gets to mine the next epoch block
-				if newStakingNode != [64]byte{} {
-					logger.Printf("There is a new staking node")
-					shardID := validatorShardAssignment[newStakingNode]
-					logger.Printf("Designated ShardID of the new staking node: %d", shardID)
-					//ned to fix the shard assignment
-					if shardID != 1 {
-						for designatedValidator, _ := range validatorShardAssignment {
-							if validatorShardAssignment[designatedValidator] == 1 {
-								logger.Printf("Validator with the designated shard ID 1: %x", designatedValidator[0:8])
-								validatorShardAssignment[designatedValidator] = shardID
-								validatorShardAssignment[newStakingNode] = 1
-								break
-							}
-						}
-					}
-				} else {
-					logger.Printf("Content of new staking node: %x", newStakingNode)
-				}
+
 				return validatorShardAssignment
 			}
 
@@ -1320,26 +1288,6 @@ func AssignValidatorsToShards() map[[64]byte]int {
 			validatorShardAssignment[randomValidator] = i
 			//Remove assigned validator from active list
 			validatorSlices = removeValidator(validatorSlices, randomIndex)
-		}
-	}
-
-	//The following code makes sure that the newly staking node gets to mine the next epoch block
-	if newStakingNode != [64]byte{} {
-		logger.Printf("There is a new staking node: %x", newStakingNode[0:8])
-		shardID := validatorShardAssignment[newStakingNode]
-		logger.Printf("Designated ShardID of the new staking node: %d", shardID)
-		//ned to fix the shard assignment
-		if shardID != 1 {
-			for designatedValidator, _ := range validatorShardAssignment {
-				if validatorShardAssignment[designatedValidator] == 1 {
-					logger.Printf("Validator with the designated shard ID 1: %x", designatedValidator[0:8])
-					validatorShardAssignment[designatedValidator] = shardID
-					validatorShardAssignment[newStakingNode] = 1
-					break
-				}
-			}
-		} else {
-			logger.Printf("Assignment should be correct without change")
 		}
 	}
 	return validatorShardAssignment
@@ -1684,6 +1632,74 @@ func ValidateBlockSender(b *protocol.Block) bool {
 		}
 	}
 	return false
+}
+
+func runByzantineMechanism(committeeChecks []*protocol.CommitteeCheck) {
+	//determine the number of committee members. If only one, just work with own stash
+	numberOfCommittees := DetNumberOfCommittees()
+	//now determine how many votes are required for slashing. The percentage needed for slashing can be set in the config file.
+	numberOfVotesForSlashing := math.Ceil(float64(numberOfCommittees) * PERCENTAGE_NEEDED_FOR_SLASHING)
+	//fineMapShards keeps the addresses of all shards along with the number of committee members that voted to slash it
+	fineMapShards := make(map[[32]byte]int)
+	//fineMapCommittees keeps the addresses of all committee members along with the number of committee members that voted to slash it
+	fineMapCommittees := make(map[[32]byte]int)
+	if numberOfCommittees == 1 {
+		logger.Printf("Only one Committee. Here simulate the verification of the own stash")
+		logger.Printf("Length of slashed shards: %d --- committees: %d", len(storage.OwnCommitteeCheck.SlashedAddressesShards), len(storage.OwnCommitteeCheck.SlashedAddressesCommittee))
+		for _, account := range storage.State {
+			if account.IsStaking {
+				if containsAddress(storage.OwnCommitteeCheck.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
+					fineMapShards[protocol.SerializeHashContent(account.Address)] += 1
+				}
+			}
+			if account.IsCommittee {
+				if containsAddress(storage.OwnCommitteeCheck.SlashedAddressesCommittee, protocol.SerializeHashContent(account.Address)) {
+					fineMapCommittees[protocol.SerializeHashContent(account.Address)] += 1
+				}
+			}
+		}
+	} else {
+		logger.Printf("Amount of Committee members: %d", numberOfCommittees)
+		for _, account := range storage.State {
+			if account.IsStaking {
+				//iterate through the other committee checks
+				for _, committeeCheck := range committeeChecks {
+					if containsAddress(committeeCheck.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
+						//vote to slash the account
+						fineMapShards[protocol.SerializeHashContent(account.Address)] += 1
+					}
+				}
+				//give own vote as well
+				if containsAddress(storage.OwnCommitteeCheck.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
+					fineMapShards[protocol.SerializeHashContent(account.Address)] += 1
+				}
+			}
+			if account.IsCommittee {
+				//iterate through the other committee checks
+				for _, committeeCheck := range committeeChecks {
+					if containsAddress(committeeCheck.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
+						//vote to slash the account
+						fineMapCommittees[protocol.SerializeHashContent(account.Address)] += 1
+					}
+				}
+				//give own vote as well
+				if containsAddress(storage.OwnCommitteeCheck.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
+					fineMapCommittees[protocol.SerializeHashContent(account.Address)] += 1
+				}
+			}
+		}
+	}
+	//now the maps contain the desired information
+	for address, votes := range fineMapShards {
+		if votes >= int(numberOfVotesForSlashing) {
+			logger.Printf("The committee decided to slash %x", address[0:8])
+		}
+	}
+	for address, votes := range fineMapCommittees {
+		if votes >= int(numberOfVotesForSlashing) {
+			logger.Printf("The committee decided to slash %x", address[0:8])
+		}
+	}
 }
 
 func CommitteeValidateBlock(b *protocol.Block) (err error) {

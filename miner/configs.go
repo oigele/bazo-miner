@@ -32,4 +32,5 @@ const (
 	EPOCH_LENGTH         = 1 //blocks
 	VALIDATORS_PER_SHARD = 1 //validators
 	EPOCHBLOCKFETCH_TIMEOUT 	= 20 //Sec
+	PERCENTAGE_NEEDED_FOR_SLASHING = 0.5  //use a number between 0 and 1 as percentage, where 0 is 0% and 1 is 100%. 0.5 stands for 50%
 )

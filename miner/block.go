@@ -1031,9 +1031,6 @@ func addStakeTx(b *protocol.Block, tx *protocol.StakeTx) error {
 		}
 	}
 
-	//overwrite new staking node
-	logger.Printf("Overwriting new staking node to %x", storage.State[tx.Account].Address)
-	newStakingNode = storage.State[tx.Account].Address
 
 	//Root accounts are exempt from balance requirements. All other accounts need to have (at least)
 	//fee + minimum amount that is required for staking.
