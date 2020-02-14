@@ -1634,7 +1634,7 @@ func ValidateBlockSender(b *protocol.Block) bool {
 	return false
 }
 
-func runByzantineMechanism(committeeChecks []*protocol.CommitteeCheck) {
+func runByzantineMechanism(receivedCC []*protocol.CommitteeCheck) {
 	//determine the number of committee members. If only one, just work with own stash
 	numberOfCommittees := DetNumberOfCommittees()
 	//now determine how many votes are required for slashing. The percentage needed for slashing can be set in the config file.
@@ -1663,8 +1663,8 @@ func runByzantineMechanism(committeeChecks []*protocol.CommitteeCheck) {
 		for _, account := range storage.State {
 			if account.IsStaking {
 				//iterate through the other committee checks
-				for _, committeeCheck := range committeeChecks {
-					if containsAddress(committeeCheck.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
+				for _, cc := range receivedCC {
+					if containsAddress(cc.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
 						//vote to slash the account
 						fineMapShards[protocol.SerializeHashContent(account.Address)] += 1
 					}
@@ -1676,8 +1676,8 @@ func runByzantineMechanism(committeeChecks []*protocol.CommitteeCheck) {
 			}
 			if account.IsCommittee {
 				//iterate through the other committee checks
-				for _, committeeCheck := range committeeChecks {
-					if containsAddress(committeeCheck.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
+				for _, cc := range receivedCC {
+					if containsAddress(cc.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
 						//vote to slash the account
 						fineMapCommittees[protocol.SerializeHashContent(account.Address)] += 1
 					}
@@ -1693,11 +1693,15 @@ func runByzantineMechanism(committeeChecks []*protocol.CommitteeCheck) {
 	for address, votes := range fineMapShards {
 		if votes >= int(numberOfVotesForSlashing) {
 			logger.Printf("The committee decided to slash %x", address[0:8])
+		} else {
+			logger.Printf("The committee decided not to slash %x because there weren't enough votes.", address[0:8])
 		}
 	}
 	for address, votes := range fineMapCommittees {
 		if votes >= int(numberOfVotesForSlashing) {
 			logger.Printf("The committee decided to slash %x", address[0:8])
+		} else {
+			logger.Printf("The committee decided not to slash %x because there weren't enough votes.", address[0:8])
 		}
 	}
 }
