@@ -1638,52 +1638,29 @@ func runByzantineMechanism(receivedCC []*protocol.CommitteeCheck) {
 	//determine the number of committee members. If only one, just work with own stash
 	numberOfCommittees := DetNumberOfCommittees()
 	//now determine how many votes are required for slashing. The percentage needed for slashing can be set in the config file.
-	numberOfVotesForSlashing := math.Ceil(float64(numberOfCommittees) * PERCENTAGE_NEEDED_FOR_SLASHING)
+	numberOfVotesForSlashing := DetNumberOfVotersForSlashing(numberOfCommittees)
 	//fineMapShards keeps the addresses of all shards along with the number of committee members that voted to slash it
 	fineMapShards := make(map[[32]byte]int)
 	//fineMapCommittees keeps the addresses of all committee members along with the number of committee members that voted to slash it
 	fineMapCommittees := make(map[[32]byte]int)
-	if numberOfCommittees == 1 {
-		logger.Printf("Only one Committee. Here simulate the verification of the own stash")
-		logger.Printf("Length of slashed shards: %d --- committees: %d", len(storage.OwnCommitteeCheck.SlashedAddressesShards), len(storage.OwnCommitteeCheck.SlashedAddressesCommittee))
-		for _, account := range storage.State {
-			if account.IsStaking {
-				if containsAddress(storage.OwnCommitteeCheck.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
+	//add own committee check to the slice
+	receivedCC = append(receivedCC, storage.OwnCommitteeCheck)
+	logger.Printf("Amount of Committee members: %d", numberOfCommittees)
+	for _, account := range storage.State {
+		if account.IsStaking {
+			//iterate through the other committee checks
+			for _, cc := range receivedCC {
+				if containsAddress(cc.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
+					//vote to slash the account
 					fineMapShards[protocol.SerializeHashContent(account.Address)] += 1
-				}
-			}
-			if account.IsCommittee {
-				if containsAddress(storage.OwnCommitteeCheck.SlashedAddressesCommittee, protocol.SerializeHashContent(account.Address)) {
-					fineMapCommittees[protocol.SerializeHashContent(account.Address)] += 1
 				}
 			}
 		}
-	} else {
-		logger.Printf("Amount of Committee members: %d", numberOfCommittees)
-		for _, account := range storage.State {
-			if account.IsStaking {
-				//iterate through the other committee checks
-				for _, cc := range receivedCC {
-					if containsAddress(cc.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
-						//vote to slash the account
-						fineMapShards[protocol.SerializeHashContent(account.Address)] += 1
-					}
-				}
-				//give own vote as well
-				if containsAddress(storage.OwnCommitteeCheck.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
-					fineMapShards[protocol.SerializeHashContent(account.Address)] += 1
-				}
-			}
-			if account.IsCommittee {
-				//iterate through the other committee checks
-				for _, cc := range receivedCC {
-					if containsAddress(cc.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
-						//vote to slash the account
-						fineMapCommittees[protocol.SerializeHashContent(account.Address)] += 1
-					}
-				}
-				//give own vote as well
-				if containsAddress(storage.OwnCommitteeCheck.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
+		if account.IsCommittee {
+			//iterate through the other committee checks
+			for _, cc := range receivedCC {
+				if containsAddress(cc.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
+					//vote to slash the account
 					fineMapCommittees[protocol.SerializeHashContent(account.Address)] += 1
 				}
 			}
@@ -1704,6 +1681,10 @@ func runByzantineMechanism(receivedCC []*protocol.CommitteeCheck) {
 			logger.Printf("The committee decided not to slash %x because there weren't enough votes.", address[0:8])
 		}
 	}
+}
+
+func DetNumberOfVotersForSlashing(numberOfCommittees int) int {
+	return int(math.Ceil(float64(numberOfCommittees) * PERCENTAGE_NEEDED_FOR_SLASHING))
 }
 
 func CommitteeValidateBlock(b *protocol.Block) (err error) {
