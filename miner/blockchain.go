@@ -31,7 +31,6 @@ var (
 	hasher                          [32]byte
 	multisigPubKey                  *ecdsa.PublicKey
 	commPrivKey, rootCommPrivKey    *rsa.PrivateKey
-	committeePrivKey                *rsa.PrivateKey
 	// This map keeps track of the validator assignment to the shards
 	ValidatorShardMap *protocol.ValShardMapping
 	NumberOfShards    int
@@ -64,7 +63,7 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKe
 	//This information has to be stored as it will be important later on, for sortition purposes and for
 	ValidatorAccAddress = crypto.GetAddressFromPubKey(committeeWallet)
 	storage.ValidatorAccAddress = ValidatorAccAddress
-	committeePrivKey = committeeKey
+	storage.CommitteePrivKey = committeeKey
 
 	//Set up logger.
 	logger = storage.InitLogger()
@@ -116,6 +115,8 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKe
 				NumberOfShards = lastEpochBlock.NofShards
 				storage.CommitteeLeader = lastEpochBlock.CommitteeLeader
 				ValidatorShardMap = lastEpochBlock.ValMapping
+				//initialize the assignment height
+				storage.AssignmentHeight = int(lastEpochBlock.Height) - 1 - EPOCH_LENGTH
 				break
 			}
 		}
@@ -274,7 +275,7 @@ func CommitteeMining(height int) {
 		}
 
 		for _, shardId := range shardIDs {
-			committeeProof, err := crypto.SignMessageWithRSAKey(committeePrivKey, fmt.Sprint(height))
+			committeeProof, err := crypto.SignMessageWithRSAKey(storage.CommitteePrivKey, fmt.Sprint(height))
 			if err != nil {
 				logger.Printf("Error with signing the Committee Proof Message")
 				return
@@ -662,7 +663,7 @@ func CommitteeMining(height int) {
 			NumberOfShards = newEpochBlock.NofShards
 		}
 	}
-	committeeProof, err := crypto.SignMessageWithRSAKey(committeePrivKey, fmt.Sprint(storage.AssignmentHeight))
+	committeeProof, err := crypto.SignMessageWithRSAKey(storage.CommitteePrivKey, fmt.Sprint(storage.AssignmentHeight))
 	if err != nil {
 		logger.Printf("Got a problem with creating the committeeProof.")
 		return

@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"crypto/rsa"
 	"fmt"
 	"log"
 	"sync"
@@ -70,6 +71,7 @@ var (
 	AssignmentHeight	int
 
 	CommitteeLeader [32]byte
+	CommitteePrivKey                *rsa.PrivateKey
 )
 
 const (
