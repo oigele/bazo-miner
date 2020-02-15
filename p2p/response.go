@@ -3,8 +3,6 @@ package p2p
 import (
 	"bytes"
 	"encoding/binary"
-	"fmt"
-	"github.com/oigele/bazo-miner/crypto"
 	"github.com/oigele/bazo-miner/protocol"
 	"github.com/oigele/bazo-miner/storage"
 	"strconv"
@@ -498,17 +496,6 @@ func CommitteeCheckRes(p *peer, payload []byte) {
 	//we reached the right height
 	if storage.AssignmentHeight == int(height) && string(validatorAccAddress[:]) == address  {
 		cc = storage.OwnCommitteeCheck
-		//it is possible that no Committee check exists, if the committee member newly joined and therefore didnt do any validation in the last epoch. In this case, produce an empty one.
-		if cc == nil {
-			committeeProof, err := crypto.SignMessageWithRSAKey(storage.CommitteePrivKey, fmt.Sprint(storage.AssignmentHeight))
-			if err != nil {
-				logger.Printf("Got a problem with creating the committeeProof.")
-				return
-			}
-			cc = protocol.NewCommitteeCheck(int(height), protocol.SerializeHashContent(validatorAccAddress), [256]byte{}, [][32]byte{}, [][32]byte{})
-			copy(cc.CommitteeProof[0:crypto.COMM_PROOF_LENGTH], committeeProof[:])
-			storage.OwnCommitteeCheck = cc
-		}
 		logger.Printf("Sending committee check request answer for height: %d", cc.Height)
 		packet = BuildPacket(COMMITTEE_CHECK_RES, cc.EncodeCommitteeCheck())
 	}

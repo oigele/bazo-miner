@@ -117,10 +117,20 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKe
 				ValidatorShardMap = lastEpochBlock.ValMapping
 				//initialize the assignment height
 				storage.AssignmentHeight = int(lastEpochBlock.Height) - 1 - EPOCH_LENGTH
+				//now initiate the committee check for the previous epoch in order to circumvent a NPE
+				committeeProof, err := crypto.SignMessageWithRSAKey(storage.CommitteePrivKey, fmt.Sprint(storage.AssignmentHeight))
+				if err != nil {
+					logger.Printf("Got a problem with creating the committeeProof.")
+					return
+				}
+				cc := protocol.NewCommitteeCheck(storage.AssignmentHeight, protocol.SerializeHashContent(ValidatorAccAddress), [256]byte{}, [][32]byte{}, [][32]byte{})
+				copy(cc.CommitteeProof[0:crypto.COMM_PROOF_LENGTH], committeeProof[:])
+				storage.OwnCommitteeCheck = cc
 				break
 			}
 		}
 	}
+
 
 	//check in order to determine if all checks can be done already. If the epoch height is less than 2, a null pointer exception would happen
 	if lastEpochBlock.Height == 2 {
@@ -1660,7 +1670,7 @@ func runByzantineMechanism(receivedCC []*protocol.CommitteeCheck) {
 		if account.IsCommittee {
 			//iterate through the other committee checks
 			for _, cc := range receivedCC {
-				if containsAddress(cc.SlashedAddressesShards, protocol.SerializeHashContent(account.Address)) {
+				if containsAddress(cc.SlashedAddressesCommittee, protocol.SerializeHashContent(account.Address)) {
 					//vote to slash the account
 					fineMapCommittees[protocol.SerializeHashContent(account.Address)] += 1
 				}
@@ -1670,18 +1680,19 @@ func runByzantineMechanism(receivedCC []*protocol.CommitteeCheck) {
 	//now the maps contain the desired information
 	for address, votes := range fineMapShards {
 		if votes >= int(numberOfVotesForSlashing) {
-			logger.Printf("The committee decided to slash %x", address[0:8])
+			logger.Printf("The committee decided to slash %x with %d votes in favor of slashing", address[0:8], votes)
 		} else {
-			logger.Printf("The committee decided not to slash %x because there weren't enough votes.", address[0:8])
+			logger.Printf("The committee decided not to slash %x because there weren't enough votes: %d.", address[0:8], votes)
 		}
 	}
 	for address, votes := range fineMapCommittees {
 		if votes >= int(numberOfVotesForSlashing) {
-			logger.Printf("The committee decided to slash %x", address[0:8])
+			logger.Printf("The committee decided to slash %x with %d votes in favor of slashing", address[0:8], votes)
 		} else {
-			logger.Printf("The committee decided not to slash %x because there weren't enough votes.", address[0:8])
+			logger.Printf("The committee decided not to slash %x because there weren't enough votes: %d", address[0:8], votes)
 		}
 	}
+	logger.Printf("End of Byzantine slashing mechanism")
 }
 
 func DetNumberOfVotersForSlashing(numberOfCommittees int) int {

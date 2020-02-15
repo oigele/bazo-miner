@@ -623,6 +623,9 @@ func TestDataTx(t *testing.T) {
 		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
+		if err := SendTx("127.0.0.1:8003", accTx, p2p.ACCTX_BRDCST); err != nil {
+			fmt.Sprintf("Error")
+		}
 
 		newNodeAddress := crypto.GetAddressFromPubKey(&newAccAddress.PublicKey)
 		hasherNewNode := protocol.SerializeHashContent(newNodeAddress)
@@ -657,6 +660,9 @@ func TestDataTx(t *testing.T) {
 				if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 					t.Log(fmt.Sprintf("Error"))
 				}
+				if err := SendTx("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					t.Log(fmt.Sprintf("Error"))
+				}
 			}
 		}
 	}
@@ -676,6 +682,9 @@ func TestDataTx(t *testing.T) {
 					[]byte(String(random(1, 10))))
 
 				if err := SendTx("127.0.0.1:8002", tx, p2p.DATATX_BRDCST); err != nil {
+					t.Log(fmt.Sprintf("Error"))
+				}
+				if err := SendTx("127.0.0.1:8003", tx, p2p.DATATX_BRDCST); err != nil {
 					t.Log(fmt.Sprintf("Error"))
 				}
 			}
@@ -723,7 +732,7 @@ func TestCommittee(t *testing.T) {
 
 	var nodeMap = make(map[[32]byte]*ecdsa.PrivateKey)
 
-	for i := 1; i <= 30; i++ {
+	for i := 1; i <= 10; i++ {
 
 		accTx, newAccAddress, err := protocol.ConstrAccTx(
 			byte(0),
