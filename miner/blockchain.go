@@ -156,6 +156,7 @@ func CommitteeMining(height int) {
 			committeesStateBoolMap[k] = false
 		}
 
+
 		logger.Printf("We have %d Committee Nodes in the network. The commitee Leader is %x", DetNumberOfCommittees(), storage.CommitteeLeader[0:8])
 
 		if storage.CommitteeLeader == protocol.SerializeHashContent(ValidatorAccAddress) {
@@ -252,7 +253,7 @@ func CommitteeMining(height int) {
 		//generate sequence of all shard IDs starting from 1
 		//generating the assignment data
 
-		//Reset the map
+		//Reset the map in order to start the mempool from scratch
 		storage.AssignedTxMempool = make(map[[32]byte]protocol.Transaction)
 		openTransactions := storage.ReadAllOpenTxs()
 
@@ -425,6 +426,7 @@ func CommitteeMining(height int) {
 
 	//let the goroutine collect the state transitions in the background and contionue with the block collection
 	waitGroup := sync.WaitGroup{}
+	//height + 1 because the blocks have height one more than the epoch block
 	go fetchStateTransitionsForHeight(height+1, &waitGroup)
 
 	//key: shard ID; value: Relative state of the corresponding shard
@@ -493,9 +495,6 @@ func CommitteeMining(height int) {
 								}
 							}
 						}
-
-						storage.ReadAllOpenTxs()
-
 
 						notIncludedTxHashes := storage.DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
 						//If this evaluates to true, then the shard created a transaction out of thin air.
@@ -633,6 +632,7 @@ func CommitteeMining(height int) {
 		ownRelativeState := relativeStatesToCheck[st.ShardID]
 		if !sameRelativeState(st.RelativeStateChange, ownRelativeState.RelativeState) {
 			logger.Printf("FOUND A CHEATER: Shard %d", st.ShardID)
+			//in the beneficiary we stored the address of the shard which is responsible for the relative state
 			ShardsToBePunished = append(ShardsToBePunished, ownRelativeState.Beneficiary)
 		} else {
 			logger.Printf("For Shard ID: %d the relative states match", st.ShardID)
@@ -1447,6 +1447,24 @@ func applyDataTxFees(state map[[32]byte]protocol.Account, beneficiary [32]byte, 
 	return state, err
 }
 
+func applyBlockReward(state map[[32]byte]protocol.Account, beneficiary [32]byte) (map[[32]byte]protocol.Account, error) {
+	var err error
+
+
+	miner := state[beneficiary]
+
+	if miner.Balance+ActiveParameters.Block_reward > MAX_MONEY {
+		err = errors.New("Block reward would lead to balance overflow at the miner account.")
+	}
+
+
+	miner.Balance += ActiveParameters.Block_reward
+
+	state[beneficiary] = miner
+
+	return state, err
+}
+
 func applyAccTxFeesAndCreateAccTx(state map[[32]byte]protocol.Account, beneficiary [32]byte, accTxs []*protocol.AccTx) (map[[32]byte]protocol.Account, error) {
 	var err error
 	//the beneficiary stays the same for one round
@@ -1570,16 +1588,12 @@ func ReconstructRelativeState(b *protocol.Block, accTxs []*protocol.AccTx, stake
 
 	//Shard 1 has more transactions to check
 	//order matters
-	//if b.ShardId == 1 {
-	if true {
-		StateCopy, _ = applyAccTxFeesAndCreateAccTx(StateCopy, b.Beneficiary, accTxs)
-		StateCopy, _ = applyCommitteeTxFeesAndCreateAcc(StateCopy, b.Beneficiary, committeeTxs)
-		StateCopy, _ = applyStakeTxFees(StateCopy, b.Beneficiary, stakeTxs)
-		StateCopy, _ = applyFundsTxFeesFundsMovement(StateCopy, b.Beneficiary, fundsTxs)
-	}
-
-	//the fees are applied on the state copy
+	StateCopy, _ = applyAccTxFeesAndCreateAccTx(StateCopy, b.Beneficiary, accTxs)
+	StateCopy, _ = applyCommitteeTxFeesAndCreateAcc(StateCopy, b.Beneficiary, committeeTxs)
+	StateCopy, _ = applyStakeTxFees(StateCopy, b.Beneficiary, stakeTxs)
+	StateCopy, _ = applyFundsTxFeesFundsMovement(StateCopy, b.Beneficiary, fundsTxs)
 	StateCopy, _ = applyDataTxFees(StateCopy, b.Beneficiary, dataTxs)
+	StateCopy, _ = applyBlockReward(StateCopy, b.Beneficiary)
 
 	relativeStateProvisory := storage.GetRelativeStateForCommittee(StateOld, StateCopy)
 
