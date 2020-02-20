@@ -101,7 +101,7 @@ func UpdateDataSummary(dataTxs []*protocol.DataTx) (err error){
 			//if there is nothing to write, then dont write it
 			if newDataSummary.Data == nil {
 				logger.Printf("None of the transactions had data. Not writing a new data summary to database")
-				return nil
+				continue
 			}
 			err = WriteDataSummary(newDataSummary); if err != nil {
 				logger.Printf("Got an error when writing data Summary")
