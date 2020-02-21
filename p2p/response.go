@@ -416,7 +416,7 @@ func shardBlockRes(p *peer, payload []byte) {
 		} else {
 			if b == nil {
 				logger.Printf("Last closed block is nil")
-				packet = BuildPacket(SHARD_BLOCK_RES, b.Encode())
+				packet = BuildPacket(NOT_FOUND, nil)
 				sendData(p,packet)
 				return
 			}
