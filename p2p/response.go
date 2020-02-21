@@ -413,6 +413,8 @@ func shardBlockRes(p *peer, payload []byte) {
 		if b != nil && b.Height != 1 && int(b.Height) == int(height) && b.ShardId == int(shardID) {
 			logger.Printf("Responding Shard Block Request with block height: %d from shard ID: %d", b.Height, shardID)
 			packet = BuildPacket(SHARD_BLOCK_RES, b.Encode())
+			sendData(p, packet)
+			return
 		} else {
 			if b == nil {
 				logger.Printf("Last closed block is nil")
