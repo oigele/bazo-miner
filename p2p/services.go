@@ -107,7 +107,7 @@ func sendAndSearchMessages(msg []byte) {
 			receiver.l.Lock()
 			time.Sleep(5 * time.Millisecond)
 			receiver.conn.Write(msg)
-			logger.Printf("Tx with payload: %s successfully sent to %s", LogMapping[msg[4]], receiver.getIPPort())
+			//logger.Printf("Tx with payload: %s successfully sent to %s", LogMapping[msg[4]], receiver.getIPPort())
 			time.Sleep(5 * time.Millisecond)
 			receiver.l.Unlock()
 			//receiver.ch <- msg
