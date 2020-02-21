@@ -401,7 +401,7 @@ func shardBlockRes(p *peer, payload []byte) {
 		return
 	}
 
-	logger.Printf("responding block request for shard %d for height: %d\n", shardID, height)
+	logger.Printf("responding block request for shard %d for height: %d\n from peer: %s", shardID, height, p.getIPPort())
 
 	//security check becuase the listener to incoming blocks is a concurrent goroutine
 	if storage.ReadLastClosedEpochBlock() == nil || storage.ReadLastClosedBlock() == nil {
