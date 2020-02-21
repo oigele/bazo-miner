@@ -422,7 +422,7 @@ func shardBlockRes(p *peer, payload []byte) {
 				sendData(p,packet)
 				return
 			}
-			logger.Printf("Last closed block height: %d and shard ID: %", b.Height, b.ShardId)
+			logger.Printf("Last closed block height: %d and shard ID: d%", b.Height, b.ShardId)
 			packet = BuildPacket(NOT_FOUND, nil)
 		}
 	}
