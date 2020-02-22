@@ -191,6 +191,7 @@ func peerConn(p *peer) {
 	go peerBroadcast(p)
 
 	for {
+		logger.Printf("Before receiving data. Peer: %s")
 		header, payload, err := RcvData(p)
 		logger.Printf("Received message from %s", p.getIPPort())
 		if err != nil {
