@@ -96,7 +96,7 @@ func sendData(p *peer, payload []byte) {
 		logger.Printf("Strange Header.TypeID (%v) to send to %v", payload[4], p.getIPPort())
 	}
 	p.conn.Write(payload)
-	//logger.Printf("Tx with payload: %s successfully sent to %s", LogMapping[payload[4]], p.getIPPort())
+	logger.Printf("Tx with payload: %s successfully sent to %s", LogMapping[payload[4]], p.getIPPort())
 	p.l.Unlock()
 }
 
