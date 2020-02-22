@@ -1377,51 +1377,51 @@ func fetchStateTransitionsForHeight(height int, group *sync.WaitGroup) {
 						shardIDStateBoolMap[st.ShardID] = true
 					}
 				}
-				//If all state transitions have been received, stop synchronisation
-				if len(stateStashForHeight) == NumberOfShards-1 {
-					logger.Printf("Received all transitions. Continue.")
-					return
-				} else {
-					logger.Printf("Length of state stash: %d", len(stateStashForHeight))
-				}
-				//Iterate over shard IDs to check which ones are still missing, and request them from the network
-				for _, id := range shardIDs {
-					if shardIDStateBoolMap[id] == false {
+			}
+			//If all state transitions have been received, stop synchronisation
+			if len(stateStashForHeight) == NumberOfShards-1 {
+				logger.Printf("Received all transitions. Continue.")
+				return
+			} else {
+				logger.Printf("Length of state stash: %d", len(stateStashForHeight))
+			}
+			//Iterate over shard IDs to check which ones are still missing, and request them from the network
+			for _, id := range shardIDs {
+				if shardIDStateBoolMap[id] == false {
 
-						//Maybe the transition was received in the meantime. Then dont request it again.
-						foundSt := searchStateTransition(id, height)
-						if foundSt != nil {
-							logger.Printf("skip planned request for shardID %d", id)
+					//Maybe the transition was received in the meantime. Then dont request it again.
+					foundSt := searchStateTransition(id, height)
+					if foundSt != nil {
+						logger.Printf("skip planned request for shardID %d", id)
+						continue
+					}
+
+					var stateTransition *protocol.StateTransition
+
+					logger.Printf("requesting state transition for lastblock height: %d\n", height)
+
+					p2p.StateTransitionReqShard(id, height)
+					//Blocking wait
+					select {
+					case encodedStateTransition := <-p2p.StateTransitionShardReqChan:
+						stateTransition = stateTransition.DecodeTransition(encodedStateTransition)
+
+						//first check the commitment Proof. If it's invalid, continue the search
+						err := validateStateTransition(stateTransition)
+						if err != nil {
+							logger.Printf(err.Error())
 							continue
 						}
 
-						var stateTransition *protocol.StateTransition
+						storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
 
-						logger.Printf("requesting state transition for lastblock height: %d\n", height)
+						shardIDStateBoolMap[stateTransition.ShardID] = true
 
-						p2p.StateTransitionReqShard(id, height)
-						//Blocking wait
-						select {
-						case encodedStateTransition := <-p2p.StateTransitionShardReqChan:
-							stateTransition = stateTransition.DecodeTransition(encodedStateTransition)
-
-							//first check the commitment Proof. If it's invalid, continue the search
-							err := validateStateTransition(stateTransition)
-							if err != nil {
-								logger.Printf(err.Error())
-								continue
-							}
-
-							storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
-
-							shardIDStateBoolMap[stateTransition.ShardID] = true
-
-							//Limit waiting time to 5 seconds seconds before aborting.
-						case <-time.After(2 * time.Second):
-							logger.Printf("have been waiting for 2 seconds for lastblock height: %d\n", height)
-							//It the requested state transition has not been received, then continue with requesting the other missing ones
-							continue
-						}
+						//Limit waiting time to 5 seconds seconds before aborting.
+					case <-time.After(2 * time.Second):
+						logger.Printf("have been waiting for 2 seconds for lastblock height: %d\n", height)
+						//It the requested state transition has not been received, then continue with requesting the other missing ones
+						continue
 					}
 				}
 			}
