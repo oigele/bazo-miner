@@ -192,6 +192,7 @@ func peerConn(p *peer) {
 
 	for {
 		header, payload, err := RcvData(p)
+		logger.Printf("Received message from %s", p.getIPPort())
 		if err != nil {
 			if p.peerType == PEERTYPE_MINER {
 				logger.Printf("Miner disconnected: %v\n", err)
