@@ -30,9 +30,11 @@ func Connect(connectionString string) *net.TCPConn {
 }
 
 func RcvData(p *peer) (header *Header, payload []byte, err error) {
-
+	logger.Printf("Before creating reader")
 	reader := bufio.NewReader(p.conn)
+	logger.Printf("after creating reader")
 	header, err = ReadHeader(reader)
+	logger.Printf("after reading from reader")
 	if err != nil {
 		p.conn.Close()
 		if p.peerType == PEERTYPE_MINER {
