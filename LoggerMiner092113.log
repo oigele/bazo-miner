@@ -1,0 +1,2546 @@
+INFO: 2020/02/23 09:21:13.240520 blockchain.go:763: Acc hash is (29dfd854dac5030e)
+INFO: 2020/02/23 09:21:13.241175 blockchain.go:764: 
+
+
+BBBBBBBBBBBBBBBBB               AAA               ZZZZZZZZZZZZZZZZZZZ     OOOOOOOOO
+B::::::::::::::::B             A:::A              Z:::::::::::::::::Z   OO:::::::::OO
+B::::::BBBBBB:::::B           A:::::A             Z:::::::::::::::::Z OO:::::::::::::OO
+BB:::::B     B:::::B         A:::::::A            Z:::ZZZZZZZZ:::::Z O:::::::OOO:::::::O
+  B::::B     B:::::B        A:::::::::A           ZZZZZ     Z:::::Z  O::::::O   O::::::O
+  B::::B     B:::::B       A:::::A:::::A                  Z:::::Z    O:::::O     O:::::O
+  B::::BBBBBB:::::B       A:::::A A:::::A                Z:::::Z     O:::::O     O:::::O
+  B:::::::::::::BB       A:::::A   A:::::A              Z:::::Z      O:::::O     O:::::O
+  B::::BBBBBB:::::B     A:::::A     A:::::A            Z:::::Z       O:::::O     O:::::O
+  B::::B     B:::::B   A:::::AAAAAAAAA:::::A          Z:::::Z        O:::::O     O:::::O
+  B::::B     B:::::B  A:::::::::::::::::::::A        Z:::::Z         O:::::O     O:::::O
+  B::::B     B:::::B A:::::AAAAAAAAAAAAA:::::A    ZZZ:::::Z     ZZZZZO::::::O   O::::::O
+BB:::::BBBBBB::::::BA:::::A             A:::::A   Z::::::ZZZZZZZZ:::ZO:::::::OOO:::::::O
+B:::::::::::::::::BA:::::A               A:::::A  Z:::::::::::::::::Z OO:::::::::::::OO
+B::::::::::::::::BA:::::A                 A:::::A Z:::::::::::::::::Z   OO:::::::::OO
+BBBBBBBBBBBBBBBBBAAAAAAA                   AAAAAAAZZZZZZZZZZZZZZZZZZZ     OOOOOOOOO
+
+
+INFO: 2020/02/23 09:21:13.243923 blockchain.go:782: 
+
+
+-------------------- START MINER ---------------------
+INFO: 2020/02/23 09:21:13.244426 blockchain.go:783: This Miners IP-Address: 130.211.232.196:8000
+
+INFO: 2020/02/23 09:21:15.245146 blockchain.go:798: ActiveConfigParams: 
+
+Block Hash: 0000000000000000
+Block size: 800
+Difficulty interval: 10
+Fee minimum: 1
+Block interval: 15
+Block reward: 0
+Staking minimum: 100
+Waiting minimum: 0
+Acceptanced time difference: 60
+Slashing window size: 100
+Slash reward: 2
+Num of previous proofs included in PoS: 5
+
+------------------------------------------------------------------------
+
+BAZO is Running
+
+INFO: 2020/02/23 09:21:15.249367 p2p_interface.go:24: Listening to incoming epoch blocks...
+INFO: 2020/02/23 09:21:15.258273 state.go:275: 
+
+0 block(s) validated. Chain good to go.
+------------------------------------------------------------------------
+
+INFO: 2020/02/23 09:21:15.259177 state.go:276: Last Block: 
+<nil>
+------------------------------------------------------------------------
+
+INFO: 2020/02/23 09:21:15.259875 state.go:277: Current STATE: 
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+------------------------------------------------------------------------
+
+INFO: 2020/02/23 09:21:15.260705 blockchain.go:852: Active config params:
+Block Hash: 0000000000000000
+Block size: 800
+Difficulty interval: 10
+Fee minimum: 1
+Block interval: 15
+Block reward: 0
+Staking minimum: 100
+Waiting minimum: 0
+Acceptanced time difference: 60
+Slashing window size: 100
+Slash reward: 2
+Num of previous proofs included in PoS: 5
+
+INFO: 2020/02/23 09:21:15.262625 blockchain.go:856: Number of Shards: 1
+INFO: 2020/02/23 09:21:15.262850 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:21:15.263115 blockchain.go:865: Validator Shard Mapping:
+INFO: 2020/02/23 09:21:15.263333 blockchain.go:866: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 0
+INFO: 2020/02/23 09:21:15.263845 blockchain.go:989: epochblock beingprocessed height: 2
+INFO: 2020/02/23 09:21:15.264064 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 2
+INFO: 2020/02/23 09:21:15.267574 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:21:15.267948 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:21:15.268286 block.go:192: Before Epoch Block proofofstake for height: 2
+INFO: 2020/02/23 09:21:18.269643 block.go:198: After Epoch Block proofofstake for height: 2
+INFO: 2020/02/23 09:21:18.269736 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 2
+INFO: 2020/02/23 09:21:18.269751 blockchain.go:1011: EPOCH BLOCK mined (b2d852999d5797c5)
+INFO: 2020/02/23 09:21:18.269760 blockchain.go:1016: Broadcast epoch block (b2d852999d5797c5)
+INFO: 2020/02/23 09:21:18.269768 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:18.276194 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:21:18.276239 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 2
+INFO: 2020/02/23 09:21:18.276321 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: b2d852999d5797c5
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: a0c9ed229fe2cee71cce8f1a7c77617a3324a54017b9da0b4ed50a6ace6c0244
+
+Timestamp: 1582449678
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 2
+Commitment Proof: 57f95447adda064e
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 2
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:21:18.276392 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:21:18.276405 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 2
+
+INFO: 2020/02/23 09:21:18.276435 blockchain.go:1032: "Hash : a0c9ed229fe2cee7 \n Height : 1" -> "EPOCH BLOCK: \n Hash : b2d852999d5797c5 \n Height : 2 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:21:18.276448 blockchain.go:1033: "EPOCH BLOCK: \n Hash : b2d852999d5797c5 \n Height : 2 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:21:18.276460 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:21:20.276637 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:20.276713 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:22.277048 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:22.277127 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:24.277468 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:24.277598 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:26.277942 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:26.278024 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:28.278414 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:28.278493 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:30.278860 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:30.278944 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:32.279326 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:32.279400 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:34.279759 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:34.279845 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:36.280177 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:36.280266 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:38.280652 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:38.280731 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:40.281059 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:40.281148 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:42.281476 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:42.281604 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:44.281934 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:44.282015 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:46.282370 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:46.282442 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:48.282798 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:48.282902 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:50.283313 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:50.283394 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:52.283741 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:52.283816 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:54.284201 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:54.284292 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:56.284679 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:56.284815 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:21:58.285182 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:21:58.285263 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:00.285652 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:00.285761 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:02.286137 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:02.286228 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:04.286621 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:04.286698 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:06.287181 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:06.287266 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:08.287680 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:08.287826 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:10.288201 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:10.288362 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:12.288734 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:12.288812 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:14.289268 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:14.289348 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:16.289778 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:16.289875 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:18.290289 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:18.290419 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:20.290829 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:20.290932 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:22.291355 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:22.291456 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:24.291907 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:24.292008 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:26.292473 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:26.292557 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:28.292948 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:28.293065 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:30.293470 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:30.293553 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:32.294084 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:32.294185 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:34.294608 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:34.294694 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:36.295136 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:36.295226 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:38.295670 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:38.295790 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:40.296194 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:40.296287 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:42.296697 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:42.296803 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:44.297225 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:44.297316 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:46.297731 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:46.297820 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:48.298195 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:48.298271 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:50.298625 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:50.298702 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:52.299146 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:52.299230 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:54.299658 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:54.299751 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:56.300227 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:56.300321 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:22:58.300917 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:22:58.301013 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:00.301375 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:00.301451 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:02.301846 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:02.301935 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:04.302289 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:04.302408 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:06.302775 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:06.302853 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:08.303267 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:08.303358 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:10.308354 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:10.308432 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:12.308912 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:12.309000 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:14.309642 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:14.309753 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:16.310191 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:16.310300 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:18.310680 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:18.310806 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:20.311213 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:20.311376 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:22.311768 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:22.311861 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:24.312235 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:24.312338 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:26.312711 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:26.312798 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:28.313192 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:28.313281 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:30.313651 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:30.313748 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:32.314189 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:32.314283 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:34.314692 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:34.314803 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:36.315187 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:36.315283 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:38.315636 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:38.315705 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:40.316114 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:40.316179 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:42.316549 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:42.316635 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:44.317035 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:44.317129 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:46.317529 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:46.317619 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:48.318060 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:48.318155 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:50.318533 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:50.318675 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:52.319101 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:52.319297 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:54.319686 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:54.319777 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:56.320282 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:56.320375 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:23:58.320855 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:23:58.320948 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:00.321368 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:00.321530 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:02.322007 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:02.322097 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:04.322548 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:04.322958 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:06.323390 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:06.323505 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:08.324273 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:08.324366 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:10.324811 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:10.324899 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:12.325298 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:12.325377 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:14.325757 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:14.325850 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:16.326236 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:16.326312 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:18.326688 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:18.326817 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:20.327280 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:20.327374 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:22.327770 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:22.328028 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:24.328492 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:24.328623 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:26.329067 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:26.329182 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:28.329648 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:28.329824 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:30.330197 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:30.330266 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:32.330660 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:32.330754 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:34.331168 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:34.331259 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:36.331638 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:36.331734 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:38.332185 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:38.332289 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:40.332735 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:40.332838 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:42.333222 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:42.333375 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:44.333783 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:44.333973 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:46.334469 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:46.334560 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:48.334928 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:48.335020 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:50.335429 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 2
+INFO: 2020/02/23 09:24:50.335525 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:50.402154 p2p_interface.go:26: Retrieved Epoch block from channel EpochBlockIn.
+INFO: 2020/02/23 09:24:50.402869 p2p_interface.go:59: Received Epoch Block (b2d852999d5797c5) already in storage
+INFO: 2020/02/23 09:24:50.583906 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:24:50.584434 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:24:50.584456 blockchain.go:1109: Success. Received assignment for height: 2
+INFO: 2020/02/23 09:24:50.584464 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:24:50.584472 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:24:50.584479 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:24:50.584487 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:24:50.584509 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:24:50.584517 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:24:50.584566 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:24:50.584574 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:24:50.584648 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:24:50.584655 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:24:50.584661 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:24:50.584667 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:24:50.584682 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:24:50.584688 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:24:51.589132 proofofstake.go:131: Try Block with Time: 092451 and cnt: 1
+INFO: 2020/02/23 09:24:51.589228 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:24:51.589250 blockchain.go:1159: Finalize Next Block -> Done. Block height: 3
+INFO: 2020/02/23 09:24:51.589261 blockchain.go:1163: Block mined (5b6fbf000c8a6ed8)
+INFO: 2020/02/23 09:24:51.589907 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 3
+INFO: 2020/02/23 09:24:51.590102 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:24:51.597651 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:24:51.599022 block.go:2516: Wrriting last closed block. Height: 3
+INFO: 2020/02/23 09:24:51.600622 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:24:51.600870 blockchain.go:1182: Validated block (mined): 
+Hash: 5b6fbf000c8a6ed8			Previous Hash: b2d852999d5797c5		Nonce: 000000005e5244e3
+Timestamp: 1582449891
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 3
+Commitment Proof: 3bb1f1d77ae66ad4
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:24:51.600937 blockchain.go:989: epochblock beingprocessed height: 4
+INFO: 2020/02/23 09:24:51.600946 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 4
+INFO: 2020/02/23 09:24:51.603557 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:24:51.603572 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:24:51.603620 block.go:192: Before Epoch Block proofofstake for height: 4
+INFO: 2020/02/23 09:24:52.603842 block.go:198: After Epoch Block proofofstake for height: 4
+INFO: 2020/02/23 09:24:52.603924 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 4
+INFO: 2020/02/23 09:24:52.603939 blockchain.go:1011: EPOCH BLOCK mined (bd6ca2b6c8b543b0)
+INFO: 2020/02/23 09:24:52.603947 blockchain.go:1016: Broadcast epoch block (bd6ca2b6c8b543b0)
+INFO: 2020/02/23 09:24:52.603955 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:52.610555 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:24:52.610607 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 4
+INFO: 2020/02/23 09:24:52.610684 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: bd6ca2b6c8b543b0
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 5b6fbf000c8a6ed877a301684e3308301cd228a9cefbf670432b7179bce488c0
+
+Timestamp: 1582449892
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 4
+Commitment Proof: 78b797dfb907c427
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 4
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:24:52.610714 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:24:52.610723 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 4
+
+INFO: 2020/02/23 09:24:52.610733 blockchain.go:1032: "Hash : 5b6fbf000c8a6ed8 \n Height : 3" -> "EPOCH BLOCK: \n Hash : bd6ca2b6c8b543b0 \n Height : 4 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:24:52.610744 blockchain.go:1033: "EPOCH BLOCK: \n Hash : bd6ca2b6c8b543b0 \n Height : 4 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:24:52.610752 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:24:54.610969 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 4
+INFO: 2020/02/23 09:24:54.611051 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:54.667912 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:24:54.667928 blockchain.go:1109: Success. Received assignment for height: 4
+INFO: 2020/02/23 09:24:54.667936 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:24:54.667943 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:24:54.667951 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:24:54.667958 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:24:54.667964 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:24:54.667971 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:24:54.667980 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:24:54.667986 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:24:54.667993 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:24:54.667999 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:24:54.668006 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:24:54.668012 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:24:54.668018 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:24:54.668024 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:24:54.686369 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:24:55.671947 proofofstake.go:131: Try Block with Time: 092455 and cnt: 1
+INFO: 2020/02/23 09:24:55.672463 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:24:55.672681 blockchain.go:1159: Finalize Next Block -> Done. Block height: 5
+INFO: 2020/02/23 09:24:55.672768 blockchain.go:1163: Block mined (c4ed0a15fa4fb738)
+INFO: 2020/02/23 09:24:55.673573 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 5
+INFO: 2020/02/23 09:24:55.674214 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:24:55.677744 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:24:55.679299 block.go:2516: Wrriting last closed block. Height: 5
+INFO: 2020/02/23 09:24:55.681182 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:24:55.681788 blockchain.go:1182: Validated block (mined): 
+Hash: c4ed0a15fa4fb738			Previous Hash: bd6ca2b6c8b543b0		Nonce: 000000005e5244e7
+Timestamp: 1582449895
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 5
+Commitment Proof: 54537573d7620fd4
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:24:55.683861 blockchain.go:989: epochblock beingprocessed height: 6
+INFO: 2020/02/23 09:24:55.683895 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 6
+INFO: 2020/02/23 09:24:55.687781 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:24:55.688044 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:24:55.688303 block.go:192: Before Epoch Block proofofstake for height: 6
+INFO: 2020/02/23 09:24:57.688758 block.go:198: After Epoch Block proofofstake for height: 6
+INFO: 2020/02/23 09:24:57.688850 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 6
+INFO: 2020/02/23 09:24:57.688866 blockchain.go:1011: EPOCH BLOCK mined (970e5c2c07f4fcf6)
+INFO: 2020/02/23 09:24:57.688900 blockchain.go:1016: Broadcast epoch block (970e5c2c07f4fcf6)
+INFO: 2020/02/23 09:24:57.688910 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:24:57.698399 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:24:57.698793 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 6
+INFO: 2020/02/23 09:24:57.699375 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: 970e5c2c07f4fcf6
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: c4ed0a15fa4fb738ccbf4656e5a73527d421a29d0349cd07c8cae86ad20c9276
+
+Timestamp: 1582449897
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 6
+Commitment Proof: 772348d577cbba83
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 6
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:24:57.700045 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:24:57.700140 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 6
+
+INFO: 2020/02/23 09:24:57.700162 blockchain.go:1032: "Hash : c4ed0a15fa4fb738 \n Height : 5" -> "EPOCH BLOCK: \n Hash : 970e5c2c07f4fcf6 \n Height : 6 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:24:57.700207 blockchain.go:1033: "EPOCH BLOCK: \n Hash : 970e5c2c07f4fcf6 \n Height : 6 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:24:57.700232 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:24:59.700914 blockchain.go:1079: Assignment height: 4 vs epoch height 6
+INFO: 2020/02/23 09:25:01.701239 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 6
+INFO: 2020/02/23 09:25:01.701333 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:25:01.758398 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:25:01.758414 blockchain.go:1109: Success. Received assignment for height: 6
+INFO: 2020/02/23 09:25:01.758422 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:25:01.758430 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:25:01.758437 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:25:01.758444 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:25:01.758450 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:25:01.758457 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:25:01.758465 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:25:01.758472 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:25:01.758479 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:25:01.758485 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:25:01.758491 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:25:01.758497 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:25:01.758503 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:25:01.758510 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:25:01.789817 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:25:02.762556 proofofstake.go:131: Try Block with Time: 092502 and cnt: 1
+INFO: 2020/02/23 09:25:02.762656 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:25:02.762668 blockchain.go:1159: Finalize Next Block -> Done. Block height: 7
+INFO: 2020/02/23 09:25:02.762679 blockchain.go:1163: Block mined (19c251cace37852e)
+INFO: 2020/02/23 09:25:02.763054 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 7
+INFO: 2020/02/23 09:25:02.763099 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:25:02.766055 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:25:02.767235 block.go:2516: Wrriting last closed block. Height: 7
+INFO: 2020/02/23 09:25:02.768544 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:25:02.768812 blockchain.go:1182: Validated block (mined): 
+Hash: 19c251cace37852e			Previous Hash: 970e5c2c07f4fcf6		Nonce: 000000005e5244ee
+Timestamp: 1582449902
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 7
+Commitment Proof: b0c19b77b8c0bab3
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:25:02.768979 blockchain.go:989: epochblock beingprocessed height: 8
+INFO: 2020/02/23 09:25:02.768991 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 8
+INFO: 2020/02/23 09:25:02.773090 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:25:02.773350 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:25:02.773637 block.go:192: Before Epoch Block proofofstake for height: 8
+INFO: 2020/02/23 09:25:09.774103 block.go:198: After Epoch Block proofofstake for height: 8
+INFO: 2020/02/23 09:25:09.774187 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 8
+INFO: 2020/02/23 09:25:09.774204 blockchain.go:1011: EPOCH BLOCK mined (c0421ee72613c9fc)
+INFO: 2020/02/23 09:25:09.774212 blockchain.go:1016: Broadcast epoch block (c0421ee72613c9fc)
+INFO: 2020/02/23 09:25:09.774220 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:25:09.782039 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:25:09.782542 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 8
+INFO: 2020/02/23 09:25:09.782838 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: c0421ee72613c9fc
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 19c251cace37852ec0359b0dbab869625465edbc54674a595347fd00daa5b65a
+
+Timestamp: 1582449909
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 8
+Commitment Proof: 11f3663c10a443fd
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 8
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:25:09.783068 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:25:09.783194 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 8
+
+INFO: 2020/02/23 09:25:09.783216 blockchain.go:1032: "Hash : 19c251cace37852e \n Height : 7" -> "EPOCH BLOCK: \n Hash : c0421ee72613c9fc \n Height : 8 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:25:09.783229 blockchain.go:1033: "EPOCH BLOCK: \n Hash : c0421ee72613c9fc \n Height : 8 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:25:09.783248 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:25:11.784120 blockchain.go:1079: Assignment height: 6 vs epoch height 8
+INFO: 2020/02/23 09:25:13.784435 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 8
+INFO: 2020/02/23 09:25:13.784531 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:25:13.841772 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:25:13.841790 blockchain.go:1109: Success. Received assignment for height: 8
+INFO: 2020/02/23 09:25:13.841799 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:25:13.841806 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:25:13.841813 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:25:13.841821 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:25:13.841828 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:25:13.841835 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:25:13.841844 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:25:13.841850 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:25:13.841877 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:25:13.841883 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:25:13.841889 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:25:13.841895 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:25:13.841902 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:25:13.841908 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:25:13.858977 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:25:14.844837 proofofstake.go:131: Try Block with Time: 092514 and cnt: 1
+INFO: 2020/02/23 09:25:15.844844 proofofstake.go:131: Try Block with Time: 092515 and cnt: 2
+INFO: 2020/02/23 09:25:16.844841 proofofstake.go:131: Try Block with Time: 092516 and cnt: 3
+INFO: 2020/02/23 09:25:17.844859 proofofstake.go:131: Try Block with Time: 092517 and cnt: 4
+INFO: 2020/02/23 09:25:18.844820 proofofstake.go:131: Try Block with Time: 092518 and cnt: 5
+INFO: 2020/02/23 09:25:19.844860 proofofstake.go:131: Try Block with Time: 092519 and cnt: 6
+INFO: 2020/02/23 09:25:20.844861 proofofstake.go:131: Try Block with Time: 092520 and cnt: 7
+INFO: 2020/02/23 09:25:20.844989 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:25:20.845024 blockchain.go:1159: Finalize Next Block -> Done. Block height: 9
+INFO: 2020/02/23 09:25:20.845057 blockchain.go:1163: Block mined (1657f0c5bcff214b)
+INFO: 2020/02/23 09:25:20.845533 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 9
+INFO: 2020/02/23 09:25:20.845611 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:25:20.849520 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:25:20.850786 block.go:2516: Wrriting last closed block. Height: 9
+INFO: 2020/02/23 09:25:20.852841 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:25:20.853105 blockchain.go:1182: Validated block (mined): 
+Hash: 1657f0c5bcff214b			Previous Hash: c0421ee72613c9fc		Nonce: 000000005e524500
+Timestamp: 1582449920
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 9
+Commitment Proof: 059e5b59ce7cfa60
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:25:20.853263 blockchain.go:989: epochblock beingprocessed height: 10
+INFO: 2020/02/23 09:25:20.853275 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 10
+INFO: 2020/02/23 09:25:20.857278 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:25:20.857473 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:25:20.857729 block.go:192: Before Epoch Block proofofstake for height: 10
+INFO: 2020/02/23 09:25:22.858108 block.go:198: After Epoch Block proofofstake for height: 10
+INFO: 2020/02/23 09:25:22.858191 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 10
+INFO: 2020/02/23 09:25:22.858233 blockchain.go:1011: EPOCH BLOCK mined (bab9e85f5363a05a)
+INFO: 2020/02/23 09:25:22.858244 blockchain.go:1016: Broadcast epoch block (bab9e85f5363a05a)
+INFO: 2020/02/23 09:25:22.858254 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:25:22.865153 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:25:22.865527 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 10
+INFO: 2020/02/23 09:25:22.866145 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: bab9e85f5363a05a
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 1657f0c5bcff214b8b91a49f22ff144f4089c0fd59095be78a8f5fab6de90f1f
+
+Timestamp: 1582449922
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 10
+Commitment Proof: 440a7ae0a60ac626
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 10
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:25:22.866665 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:25:22.866682 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 10
+
+INFO: 2020/02/23 09:25:22.866703 blockchain.go:1032: "Hash : 1657f0c5bcff214b \n Height : 9" -> "EPOCH BLOCK: \n Hash : bab9e85f5363a05a \n Height : 10 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:25:22.866717 blockchain.go:1033: "EPOCH BLOCK: \n Hash : bab9e85f5363a05a \n Height : 10 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:25:22.866741 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:25:24.867482 blockchain.go:1079: Assignment height: 8 vs epoch height 10
+INFO: 2020/02/23 09:25:26.867716 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 10
+INFO: 2020/02/23 09:25:26.867801 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:25:26.923260 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:25:26.923275 blockchain.go:1109: Success. Received assignment for height: 10
+INFO: 2020/02/23 09:25:26.923304 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:25:26.923312 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:25:26.923318 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:25:26.923325 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:25:26.923331 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:25:26.923337 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:25:26.923346 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:25:26.923352 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:25:26.923359 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:25:26.923365 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:25:26.923371 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:25:26.923376 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:25:26.923382 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:25:26.923388 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:25:26.941194 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:25:27.926585 proofofstake.go:131: Try Block with Time: 092527 and cnt: 1
+INFO: 2020/02/23 09:25:28.926591 proofofstake.go:131: Try Block with Time: 092528 and cnt: 2
+INFO: 2020/02/23 09:25:28.926714 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:25:28.926740 blockchain.go:1159: Finalize Next Block -> Done. Block height: 11
+INFO: 2020/02/23 09:25:28.926755 blockchain.go:1163: Block mined (d3c0940db057e2a5)
+INFO: 2020/02/23 09:25:28.927548 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 11
+INFO: 2020/02/23 09:25:28.927701 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:25:28.931395 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:25:28.934076 block.go:2516: Wrriting last closed block. Height: 11
+INFO: 2020/02/23 09:25:28.935771 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:25:28.936117 blockchain.go:1182: Validated block (mined): 
+Hash: d3c0940db057e2a5			Previous Hash: bab9e85f5363a05a		Nonce: 000000005e524508
+Timestamp: 1582449928
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 11
+Commitment Proof: 36ba9a6e94c9c8c7
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:25:28.936510 blockchain.go:989: epochblock beingprocessed height: 12
+INFO: 2020/02/23 09:25:28.936552 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 12
+INFO: 2020/02/23 09:25:28.940514 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:25:28.940712 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:25:28.940951 block.go:192: Before Epoch Block proofofstake for height: 12
+INFO: 2020/02/23 09:25:29.941377 block.go:198: After Epoch Block proofofstake for height: 12
+INFO: 2020/02/23 09:25:29.941456 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 12
+INFO: 2020/02/23 09:25:29.941472 blockchain.go:1011: EPOCH BLOCK mined (9b3f6f55b1fac2ad)
+INFO: 2020/02/23 09:25:29.941481 blockchain.go:1016: Broadcast epoch block (9b3f6f55b1fac2ad)
+INFO: 2020/02/23 09:25:29.941489 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:25:29.947134 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:25:29.947183 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 12
+INFO: 2020/02/23 09:25:29.947280 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: 9b3f6f55b1fac2ad
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: d3c0940db057e2a59ffc568d43339d51ad9df09f35576077ee7a97ac009a09d7
+
+Timestamp: 1582449929
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 12
+Commitment Proof: 27c8e0444a5a8301
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 12
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:25:29.947378 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:25:29.947392 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 12
+
+INFO: 2020/02/23 09:25:29.947413 blockchain.go:1032: "Hash : d3c0940db057e2a5 \n Height : 11" -> "EPOCH BLOCK: \n Hash : 9b3f6f55b1fac2ad \n Height : 12 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:25:29.947426 blockchain.go:1033: "EPOCH BLOCK: \n Hash : 9b3f6f55b1fac2ad \n Height : 12 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:25:29.947439 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:25:31.947799 blockchain.go:1079: Assignment height: 10 vs epoch height 12
+INFO: 2020/02/23 09:25:33.948051 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 12
+INFO: 2020/02/23 09:25:33.948144 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:25:34.003849 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:25:34.003864 blockchain.go:1109: Success. Received assignment for height: 12
+INFO: 2020/02/23 09:25:34.003871 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:25:34.003878 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:25:34.003885 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:25:34.003892 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:25:34.003898 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:25:34.003904 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:25:34.003913 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:25:34.003919 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:25:34.003926 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:25:34.003932 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:25:34.003939 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:25:34.003944 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:25:34.003950 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:25:34.003956 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:25:34.032276 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:25:35.008168 proofofstake.go:131: Try Block with Time: 092535 and cnt: 1
+INFO: 2020/02/23 09:25:36.008165 proofofstake.go:131: Try Block with Time: 092536 and cnt: 2
+INFO: 2020/02/23 09:25:36.008360 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:25:36.008476 blockchain.go:1159: Finalize Next Block -> Done. Block height: 13
+INFO: 2020/02/23 09:25:36.008491 blockchain.go:1163: Block mined (7072e75e2a5ed18f)
+INFO: 2020/02/23 09:25:36.009336 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 13
+INFO: 2020/02/23 09:25:36.009749 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:25:36.014413 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:25:36.016231 block.go:2516: Wrriting last closed block. Height: 13
+INFO: 2020/02/23 09:25:36.018720 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:25:36.019268 blockchain.go:1182: Validated block (mined): 
+Hash: 7072e75e2a5ed18f			Previous Hash: 9b3f6f55b1fac2ad		Nonce: 000000005e524510
+Timestamp: 1582449936
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 13
+Commitment Proof: 76cbe936562ddbca
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:25:36.020266 blockchain.go:989: epochblock beingprocessed height: 14
+INFO: 2020/02/23 09:25:36.020281 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 14
+INFO: 2020/02/23 09:25:36.024165 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:25:36.024391 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:25:36.024617 block.go:192: Before Epoch Block proofofstake for height: 14
+INFO: 2020/02/23 09:25:39.025023 block.go:198: After Epoch Block proofofstake for height: 14
+INFO: 2020/02/23 09:25:39.025112 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 14
+INFO: 2020/02/23 09:25:39.025128 blockchain.go:1011: EPOCH BLOCK mined (ace43d7ebc1e214e)
+INFO: 2020/02/23 09:25:39.025137 blockchain.go:1016: Broadcast epoch block (ace43d7ebc1e214e)
+INFO: 2020/02/23 09:25:39.025146 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:25:39.031221 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:25:39.031256 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 14
+INFO: 2020/02/23 09:25:39.031321 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: ace43d7ebc1e214e
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 7072e75e2a5ed18f64a1fb8ba9ea6501056589dac4b2b4a47e162ab057745aa4
+
+Timestamp: 1582449939
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 14
+Commitment Proof: 9ac09679da56d105
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 14
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:25:39.031338 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:25:39.031347 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 14
+
+INFO: 2020/02/23 09:25:39.031357 blockchain.go:1032: "Hash : 7072e75e2a5ed18f \n Height : 13" -> "EPOCH BLOCK: \n Hash : ace43d7ebc1e214e \n Height : 14 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:25:39.031368 blockchain.go:1033: "EPOCH BLOCK: \n Hash : ace43d7ebc1e214e \n Height : 14 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:25:39.031377 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:25:41.031719 blockchain.go:1079: Assignment height: 12 vs epoch height 14
+INFO: 2020/02/23 09:25:43.032001 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 14
+INFO: 2020/02/23 09:25:43.032130 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:25:43.087670 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:25:43.087715 blockchain.go:1109: Success. Received assignment for height: 14
+INFO: 2020/02/23 09:25:43.087724 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:25:43.087753 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:25:43.087761 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:25:43.087769 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:25:43.087776 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:25:43.087784 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:25:43.087797 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:25:43.087804 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:25:43.087812 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:25:43.087819 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:25:43.087826 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:25:43.087832 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:25:43.087839 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:25:43.087846 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:25:43.105321 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:25:44.092618 proofofstake.go:131: Try Block with Time: 092544 and cnt: 1
+INFO: 2020/02/23 09:25:44.094391 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:25:44.094728 blockchain.go:1159: Finalize Next Block -> Done. Block height: 15
+INFO: 2020/02/23 09:25:44.095035 blockchain.go:1163: Block mined (84275d5546685d27)
+INFO: 2020/02/23 09:25:44.095769 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 15
+INFO: 2020/02/23 09:25:44.096415 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:25:44.099764 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:25:44.101492 block.go:2516: Wrriting last closed block. Height: 15
+INFO: 2020/02/23 09:25:44.103347 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:25:44.103825 blockchain.go:1182: Validated block (mined): 
+Hash: 84275d5546685d27			Previous Hash: ace43d7ebc1e214e		Nonce: 000000005e524518
+Timestamp: 1582449944
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 15
+Commitment Proof: 79567d8321060c8e
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:25:44.106604 blockchain.go:989: epochblock beingprocessed height: 16
+INFO: 2020/02/23 09:25:44.106617 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 16
+INFO: 2020/02/23 09:25:44.109921 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:25:44.110181 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:25:44.110413 block.go:192: Before Epoch Block proofofstake for height: 16
+INFO: 2020/02/23 09:25:46.110831 block.go:198: After Epoch Block proofofstake for height: 16
+INFO: 2020/02/23 09:25:46.110913 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 16
+INFO: 2020/02/23 09:25:46.110928 blockchain.go:1011: EPOCH BLOCK mined (d28d51720d8f23db)
+INFO: 2020/02/23 09:25:46.110937 blockchain.go:1016: Broadcast epoch block (d28d51720d8f23db)
+INFO: 2020/02/23 09:25:46.110946 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:25:46.116117 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:25:46.116498 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 16
+INFO: 2020/02/23 09:25:46.117043 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: d28d51720d8f23db
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 84275d5546685d272999838a5319d55df34bcf4c93286f21b402a77e2ee52dfb
+
+Timestamp: 1582449946
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 16
+Commitment Proof: 58d22becb934ac5d
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 16
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:25:46.117762 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:25:46.117780 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 16
+
+INFO: 2020/02/23 09:25:46.117803 blockchain.go:1032: "Hash : 84275d5546685d27 \n Height : 15" -> "EPOCH BLOCK: \n Hash : d28d51720d8f23db \n Height : 16 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:25:46.117817 blockchain.go:1033: "EPOCH BLOCK: \n Hash : d28d51720d8f23db \n Height : 16 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:25:46.117842 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:25:48.118560 blockchain.go:1079: Assignment height: 14 vs epoch height 16
+INFO: 2020/02/23 09:25:50.118894 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 16
+INFO: 2020/02/23 09:25:50.118986 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:25:50.176090 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:25:50.176105 blockchain.go:1109: Success. Received assignment for height: 16
+INFO: 2020/02/23 09:25:50.176113 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:25:50.176121 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:25:50.176128 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:25:50.176153 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:25:50.176159 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:25:50.176167 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:25:50.176176 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:25:50.176182 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:25:50.176189 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:25:50.176195 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:25:50.176201 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:25:50.176207 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:25:50.176217 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:25:50.176223 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:25:50.207877 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:25:51.180570 proofofstake.go:131: Try Block with Time: 092551 and cnt: 1
+INFO: 2020/02/23 09:25:52.180556 proofofstake.go:131: Try Block with Time: 092552 and cnt: 2
+INFO: 2020/02/23 09:25:53.180569 proofofstake.go:131: Try Block with Time: 092553 and cnt: 3
+INFO: 2020/02/23 09:25:53.180685 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:25:53.180708 blockchain.go:1159: Finalize Next Block -> Done. Block height: 17
+INFO: 2020/02/23 09:25:53.180722 blockchain.go:1163: Block mined (5a48c8f7d2f6b744)
+INFO: 2020/02/23 09:25:53.181420 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 17
+INFO: 2020/02/23 09:25:53.181476 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:25:53.185049 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:25:53.186515 block.go:2516: Wrriting last closed block. Height: 17
+INFO: 2020/02/23 09:25:53.188121 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:25:53.188822 blockchain.go:1182: Validated block (mined): 
+Hash: 5a48c8f7d2f6b744			Previous Hash: d28d51720d8f23db		Nonce: 000000005e524521
+Timestamp: 1582449953
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 17
+Commitment Proof: 8320ec20907d411e
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:25:53.189811 blockchain.go:989: epochblock beingprocessed height: 18
+INFO: 2020/02/23 09:25:53.189826 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 18
+INFO: 2020/02/23 09:25:53.194367 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:25:53.194583 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:25:53.194811 block.go:192: Before Epoch Block proofofstake for height: 18
+INFO: 2020/02/23 09:25:55.195153 block.go:198: After Epoch Block proofofstake for height: 18
+INFO: 2020/02/23 09:25:55.195252 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 18
+INFO: 2020/02/23 09:25:55.195267 blockchain.go:1011: EPOCH BLOCK mined (f69a8e17e3cb681e)
+INFO: 2020/02/23 09:25:55.195275 blockchain.go:1016: Broadcast epoch block (f69a8e17e3cb681e)
+INFO: 2020/02/23 09:25:55.195284 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:25:55.201228 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:25:55.201551 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 18
+INFO: 2020/02/23 09:25:55.202207 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: f69a8e17e3cb681e
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 5a48c8f7d2f6b744c8f5c5c234a8dcbf86d5765b83ff55953339dc19e20f2043
+
+Timestamp: 1582449955
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 18
+Commitment Proof: 40a3309e57dd0a9b
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 18
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:25:55.203136 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:25:55.203210 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 18
+
+INFO: 2020/02/23 09:25:55.203230 blockchain.go:1032: "Hash : 5a48c8f7d2f6b744 \n Height : 17" -> "EPOCH BLOCK: \n Hash : f69a8e17e3cb681e \n Height : 18 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:25:55.203243 blockchain.go:1033: "EPOCH BLOCK: \n Hash : f69a8e17e3cb681e \n Height : 18 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:25:55.203255 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:25:57.203933 blockchain.go:1079: Assignment height: 16 vs epoch height 18
+INFO: 2020/02/23 09:25:59.204279 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 18
+INFO: 2020/02/23 09:25:59.204346 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:25:59.259909 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:25:59.259927 blockchain.go:1109: Success. Received assignment for height: 18
+INFO: 2020/02/23 09:25:59.259936 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:25:59.259944 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:25:59.259952 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:25:59.259959 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:25:59.259966 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:25:59.259973 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:25:59.259983 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:25:59.259991 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:25:59.259999 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:25:59.260006 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:25:59.260013 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:25:59.260019 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:25:59.260026 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:25:59.260033 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:25:59.277848 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:26:00.264854 proofofstake.go:131: Try Block with Time: 092600 and cnt: 1
+INFO: 2020/02/23 09:26:00.266878 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:26:00.267321 blockchain.go:1159: Finalize Next Block -> Done. Block height: 19
+INFO: 2020/02/23 09:26:00.267732 blockchain.go:1163: Block mined (40e526cdb9bd0715)
+INFO: 2020/02/23 09:26:00.268431 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 19
+INFO: 2020/02/23 09:26:00.269014 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:26:00.272569 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:26:00.274389 block.go:2516: Wrriting last closed block. Height: 19
+INFO: 2020/02/23 09:26:00.276200 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:26:00.276714 blockchain.go:1182: Validated block (mined): 
+Hash: 40e526cdb9bd0715			Previous Hash: f69a8e17e3cb681e		Nonce: 000000005e524528
+Timestamp: 1582449960
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 19
+Commitment Proof: 5e8067c6fdf186d4
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:26:00.279811 blockchain.go:989: epochblock beingprocessed height: 20
+INFO: 2020/02/23 09:26:00.279827 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 20
+INFO: 2020/02/23 09:26:00.283296 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:26:00.283756 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:26:00.283999 block.go:192: Before Epoch Block proofofstake for height: 20
+INFO: 2020/02/23 09:26:03.284456 block.go:198: After Epoch Block proofofstake for height: 20
+INFO: 2020/02/23 09:26:03.284536 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 20
+INFO: 2020/02/23 09:26:03.284561 blockchain.go:1011: EPOCH BLOCK mined (57b187438eb82c3d)
+INFO: 2020/02/23 09:26:03.284570 blockchain.go:1016: Broadcast epoch block (57b187438eb82c3d)
+INFO: 2020/02/23 09:26:03.284578 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:03.291428 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:03.291837 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 20
+INFO: 2020/02/23 09:26:03.292423 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: 57b187438eb82c3d
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 40e526cdb9bd0715e4ba71829b2863350ebb10dce9e1f77da82c07dba5605494
+
+Timestamp: 1582449963
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 20
+Commitment Proof: 9eab9f1490681578
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 20
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:26:03.293344 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:03.293428 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 20
+
+INFO: 2020/02/23 09:26:03.293448 blockchain.go:1032: "Hash : 40e526cdb9bd0715 \n Height : 19" -> "EPOCH BLOCK: \n Hash : 57b187438eb82c3d \n Height : 20 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:26:03.293461 blockchain.go:1033: "EPOCH BLOCK: \n Hash : 57b187438eb82c3d \n Height : 20 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:26:03.293478 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:26:05.294929 blockchain.go:1079: Assignment height: 18 vs epoch height 20
+INFO: 2020/02/23 09:26:07.295369 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 20
+INFO: 2020/02/23 09:26:07.295441 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:07.352487 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:26:07.352522 blockchain.go:1109: Success. Received assignment for height: 20
+INFO: 2020/02/23 09:26:07.352531 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:26:07.352539 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:26:07.352546 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:26:07.352555 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:26:07.352561 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:26:07.352569 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:26:07.352579 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:26:07.352585 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:26:07.352592 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:26:07.352599 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:26:07.352605 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:26:07.352612 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:26:07.352619 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:26:07.352628 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:26:07.369898 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:26:08.356054 proofofstake.go:131: Try Block with Time: 092608 and cnt: 1
+INFO: 2020/02/23 09:26:09.356091 proofofstake.go:131: Try Block with Time: 092609 and cnt: 2
+INFO: 2020/02/23 09:26:10.356106 proofofstake.go:131: Try Block with Time: 092610 and cnt: 3
+INFO: 2020/02/23 09:26:10.356567 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:26:10.356728 blockchain.go:1159: Finalize Next Block -> Done. Block height: 21
+INFO: 2020/02/23 09:26:10.356756 blockchain.go:1163: Block mined (a25e6392479499c9)
+INFO: 2020/02/23 09:26:10.357337 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 21
+INFO: 2020/02/23 09:26:10.357981 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:26:10.361961 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:26:10.363581 block.go:2516: Wrriting last closed block. Height: 21
+INFO: 2020/02/23 09:26:10.365416 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:26:10.366155 blockchain.go:1182: Validated block (mined): 
+Hash: a25e6392479499c9			Previous Hash: 57b187438eb82c3d		Nonce: 000000005e524532
+Timestamp: 1582449970
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 21
+Commitment Proof: ac46bf4d3df09790
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:26:10.368074 blockchain.go:989: epochblock beingprocessed height: 22
+INFO: 2020/02/23 09:26:10.368159 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 22
+INFO: 2020/02/23 09:26:10.371945 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:26:10.372248 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:26:10.372478 block.go:192: Before Epoch Block proofofstake for height: 22
+INFO: 2020/02/23 09:26:11.372867 block.go:198: After Epoch Block proofofstake for height: 22
+INFO: 2020/02/23 09:26:11.372953 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 22
+INFO: 2020/02/23 09:26:11.372967 blockchain.go:1011: EPOCH BLOCK mined (944dfb1f65af8cbf)
+INFO: 2020/02/23 09:26:11.372976 blockchain.go:1016: Broadcast epoch block (944dfb1f65af8cbf)
+INFO: 2020/02/23 09:26:11.372985 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:11.378812 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:11.379274 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 22
+INFO: 2020/02/23 09:26:11.379903 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: 944dfb1f65af8cbf
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: a25e6392479499c93a576d727063e813ca0c6640f3e6445fc07f2322fb274e10
+
+Timestamp: 1582449971
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 22
+Commitment Proof: 0dfdcd90f01281d5
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 22
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:26:11.380706 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:11.380724 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 22
+
+INFO: 2020/02/23 09:26:11.380745 blockchain.go:1032: "Hash : a25e6392479499c9 \n Height : 21" -> "EPOCH BLOCK: \n Hash : 944dfb1f65af8cbf \n Height : 22 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:26:11.380759 blockchain.go:1033: "EPOCH BLOCK: \n Hash : 944dfb1f65af8cbf \n Height : 22 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:26:11.380787 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:26:13.381349 blockchain.go:1079: Assignment height: 20 vs epoch height 22
+INFO: 2020/02/23 09:26:15.381638 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 22
+INFO: 2020/02/23 09:26:15.381733 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:15.447861 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:26:15.447878 blockchain.go:1109: Success. Received assignment for height: 22
+INFO: 2020/02/23 09:26:15.447887 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:26:15.447894 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:26:15.447901 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:26:15.447909 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:26:15.447915 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:26:15.447923 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:26:15.447931 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:26:15.447938 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:26:15.447945 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:26:15.447950 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:26:15.447957 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:26:15.447980 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:26:15.447987 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:26:15.447992 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:26:15.453643 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:26:16.452193 proofofstake.go:131: Try Block with Time: 092616 and cnt: 1
+INFO: 2020/02/23 09:26:16.452767 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:26:16.452981 blockchain.go:1159: Finalize Next Block -> Done. Block height: 23
+INFO: 2020/02/23 09:26:16.453209 blockchain.go:1163: Block mined (68f638f81c2ad8cb)
+INFO: 2020/02/23 09:26:16.454111 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 23
+INFO: 2020/02/23 09:26:16.454627 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:26:16.454849 blockchainparam.go:91: TARGET_CHECK: Target changed, new target: 13
+INFO: 2020/02/23 09:26:16.459077 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:26:16.461048 block.go:2516: Wrriting last closed block. Height: 23
+INFO: 2020/02/23 09:26:16.463185 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:26:16.463783 blockchain.go:1182: Validated block (mined): 
+Hash: 68f638f81c2ad8cb			Previous Hash: 944dfb1f65af8cbf		Nonce: 000000005e524538
+Timestamp: 1582449976
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 23
+Commitment Proof: 34eda16207981374
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:26:16.467171 blockchain.go:989: epochblock beingprocessed height: 24
+INFO: 2020/02/23 09:26:16.467194 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 24
+INFO: 2020/02/23 09:26:16.471527 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:26:16.471718 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:26:16.471935 block.go:192: Before Epoch Block proofofstake for height: 24
+INFO: 2020/02/23 09:26:18.472287 block.go:198: After Epoch Block proofofstake for height: 24
+INFO: 2020/02/23 09:26:18.472371 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 24
+INFO: 2020/02/23 09:26:18.472385 blockchain.go:1011: EPOCH BLOCK mined (8f3a503f94e182bc)
+INFO: 2020/02/23 09:26:18.472394 blockchain.go:1016: Broadcast epoch block (8f3a503f94e182bc)
+INFO: 2020/02/23 09:26:18.472402 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:18.477208 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:18.477515 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 24
+INFO: 2020/02/23 09:26:18.478045 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: 8f3a503f94e182bc
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 68f638f81c2ad8cb2d4c32e6a2df31d6f54c51eca9e9248de5d2fda1243aefd4
+
+Timestamp: 1582449978
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 24
+Commitment Proof: 47113c6dd4477383
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 24
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:26:18.479242 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:18.479292 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 24
+
+INFO: 2020/02/23 09:26:18.479315 blockchain.go:1032: "Hash : 68f638f81c2ad8cb \n Height : 23" -> "EPOCH BLOCK: \n Hash : 8f3a503f94e182bc \n Height : 24 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:26:18.479330 blockchain.go:1033: "EPOCH BLOCK: \n Hash : 8f3a503f94e182bc \n Height : 24 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:26:18.479356 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:26:20.479878 blockchain.go:1079: Assignment height: 22 vs epoch height 24
+INFO: 2020/02/23 09:26:22.480202 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 24
+INFO: 2020/02/23 09:26:22.480281 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:22.539221 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:26:22.539237 blockchain.go:1109: Success. Received assignment for height: 24
+INFO: 2020/02/23 09:26:22.539244 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:26:22.539252 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:26:22.539259 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:26:22.539265 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:26:22.539271 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:26:22.539277 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:26:22.539287 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:26:22.539293 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:26:22.539299 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:26:22.539305 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:26:22.539312 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:26:22.539317 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:26:22.539323 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:26:22.539329 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:26:22.557001 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:26:23.543137 proofofstake.go:131: Try Block with Time: 092623 and cnt: 1
+INFO: 2020/02/23 09:26:23.543258 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:26:23.543291 blockchain.go:1159: Finalize Next Block -> Done. Block height: 25
+INFO: 2020/02/23 09:26:23.543307 blockchain.go:1163: Block mined (9059149128b4b306)
+INFO: 2020/02/23 09:26:23.543760 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 25
+INFO: 2020/02/23 09:26:23.543896 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:26:23.547762 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:26:23.549137 block.go:2516: Wrriting last closed block. Height: 25
+INFO: 2020/02/23 09:26:23.550760 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:26:23.551018 blockchain.go:1182: Validated block (mined): 
+Hash: 9059149128b4b306			Previous Hash: 8f3a503f94e182bc		Nonce: 000000005e52453f
+Timestamp: 1582449983
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 25
+Commitment Proof: 1d9d94ea85969360
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:26:23.551179 blockchain.go:989: epochblock beingprocessed height: 26
+INFO: 2020/02/23 09:26:23.551192 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 26
+INFO: 2020/02/23 09:26:23.555244 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:26:23.555497 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:26:23.555907 block.go:192: Before Epoch Block proofofstake for height: 26
+INFO: 2020/02/23 09:26:25.561100 block.go:198: After Epoch Block proofofstake for height: 26
+INFO: 2020/02/23 09:26:25.561182 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 26
+INFO: 2020/02/23 09:26:25.561198 blockchain.go:1011: EPOCH BLOCK mined (4ee5f8613d24533f)
+INFO: 2020/02/23 09:26:25.561207 blockchain.go:1016: Broadcast epoch block (4ee5f8613d24533f)
+INFO: 2020/02/23 09:26:25.561216 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:25.568341 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:25.568818 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 26
+INFO: 2020/02/23 09:26:25.569385 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: 4ee5f8613d24533f
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 9059149128b4b306f8a50d69d670607dc25cf9cdcce8783e4502072f74901b38
+
+Timestamp: 1582449985
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 26
+Commitment Proof: 232f421d46c11dfa
+State: 
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 26
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:26:25.570611 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:25.570630 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 26
+
+INFO: 2020/02/23 09:26:25.570651 blockchain.go:1032: "Hash : 9059149128b4b306 \n Height : 25" -> "EPOCH BLOCK: \n Hash : 4ee5f8613d24533f \n Height : 26 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:26:25.570664 blockchain.go:1033: "EPOCH BLOCK: \n Hash : 4ee5f8613d24533f \n Height : 26 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:26:25.570690 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:26:27.571436 blockchain.go:1079: Assignment height: 24 vs epoch height 26
+INFO: 2020/02/23 09:26:29.571807 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 26
+INFO: 2020/02/23 09:26:29.571890 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:29.627112 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:26:29.627128 blockchain.go:1109: Success. Received assignment for height: 26
+INFO: 2020/02/23 09:26:29.627135 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:26:29.627143 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:26:29.627150 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:26:29.627157 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:26:29.627162 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:26:29.627169 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:26:29.627180 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:26:29.627186 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:26:29.627193 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:26:29.627198 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:26:29.627204 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:26:29.627210 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:26:29.627216 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:26:29.627222 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:26:29.644720 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:26:30.631074 proofofstake.go:131: Try Block with Time: 092630 and cnt: 1
+INFO: 2020/02/23 09:26:31.631094 proofofstake.go:131: Try Block with Time: 092631 and cnt: 2
+INFO: 2020/02/23 09:26:32.631060 proofofstake.go:131: Try Block with Time: 092632 and cnt: 3
+INFO: 2020/02/23 09:26:32.631152 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:26:32.631164 blockchain.go:1159: Finalize Next Block -> Done. Block height: 27
+INFO: 2020/02/23 09:26:32.631184 blockchain.go:1163: Block mined (15682d54e1e9b453)
+INFO: 2020/02/23 09:26:32.631701 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 27
+INFO: 2020/02/23 09:26:32.631739 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:26:32.635536 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:26:32.637465 block.go:2516: Wrriting last closed block. Height: 27
+INFO: 2020/02/23 09:26:32.639431 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:26:32.639995 blockchain.go:1182: Validated block (mined): 
+Hash: 15682d54e1e9b453			Previous Hash: 4ee5f8613d24533f		Nonce: 000000005e524548
+Timestamp: 1582449992
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 27
+Commitment Proof: 7bcd3ae05319e0f0
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:26:32.642772 blockchain.go:989: epochblock beingprocessed height: 28
+INFO: 2020/02/23 09:26:32.642784 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 28
+INFO: 2020/02/23 09:26:32.646897 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:26:32.647161 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:26:32.647406 block.go:192: Before Epoch Block proofofstake for height: 28
+INFO: 2020/02/23 09:26:33.647874 block.go:198: After Epoch Block proofofstake for height: 28
+INFO: 2020/02/23 09:26:33.647969 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 28
+INFO: 2020/02/23 09:26:33.647984 blockchain.go:1011: EPOCH BLOCK mined (4b670fcccd2a175d)
+INFO: 2020/02/23 09:26:33.647994 blockchain.go:1016: Broadcast epoch block (4b670fcccd2a175d)
+INFO: 2020/02/23 09:26:33.648005 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:33.653451 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:33.653841 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 28
+INFO: 2020/02/23 09:26:33.654495 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: 4b670fcccd2a175d
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 15682d54e1e9b4532c4505272de7f9d23836e9ef0a7a2ecb20b36b44d348df55
+
+Timestamp: 1582449993
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 28
+Commitment Proof: 3a9c91a2d35ffbca
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 28
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:26:33.655071 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:33.655153 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 28
+
+INFO: 2020/02/23 09:26:33.655177 blockchain.go:1032: "Hash : 15682d54e1e9b453 \n Height : 27" -> "EPOCH BLOCK: \n Hash : 4b670fcccd2a175d \n Height : 28 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:26:33.655254 blockchain.go:1033: "EPOCH BLOCK: \n Hash : 4b670fcccd2a175d \n Height : 28 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:26:33.655312 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:26:35.656126 blockchain.go:1079: Assignment height: 26 vs epoch height 28
+INFO: 2020/02/23 09:26:37.656370 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 28
+INFO: 2020/02/23 09:26:37.656500 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:37.711849 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:26:37.711865 blockchain.go:1109: Success. Received assignment for height: 28
+INFO: 2020/02/23 09:26:37.711872 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:26:37.711879 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:26:37.711887 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:26:37.711893 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:26:37.711902 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:26:37.711909 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:26:37.711918 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:26:37.711923 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:26:37.711931 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:26:37.711954 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:26:37.711960 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:26:37.711965 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:26:37.711971 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:26:37.711977 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:26:37.730458 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:26:38.716145 proofofstake.go:131: Try Block with Time: 092638 and cnt: 1
+INFO: 2020/02/23 09:26:39.716145 proofofstake.go:131: Try Block with Time: 092639 and cnt: 2
+INFO: 2020/02/23 09:26:39.716852 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:26:39.717117 blockchain.go:1159: Finalize Next Block -> Done. Block height: 29
+INFO: 2020/02/23 09:26:39.717392 blockchain.go:1163: Block mined (7432ee628c6c17d8)
+INFO: 2020/02/23 09:26:39.718450 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 29
+INFO: 2020/02/23 09:26:39.719000 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:26:39.725018 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:26:39.727426 block.go:2516: Wrriting last closed block. Height: 29
+INFO: 2020/02/23 09:26:39.729360 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:26:39.730008 blockchain.go:1182: Validated block (mined): 
+Hash: 7432ee628c6c17d8			Previous Hash: 4b670fcccd2a175d		Nonce: 000000005e52454f
+Timestamp: 1582449999
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 29
+Commitment Proof: a20a5e2e7d49ff00
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:26:39.732376 blockchain.go:989: epochblock beingprocessed height: 30
+INFO: 2020/02/23 09:26:39.732391 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 30
+INFO: 2020/02/23 09:26:39.736446 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:26:39.736678 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:26:39.736910 block.go:192: Before Epoch Block proofofstake for height: 30
+INFO: 2020/02/23 09:26:45.737447 block.go:198: After Epoch Block proofofstake for height: 30
+INFO: 2020/02/23 09:26:45.737524 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 30
+INFO: 2020/02/23 09:26:45.737539 blockchain.go:1011: EPOCH BLOCK mined (527941fba1938903)
+INFO: 2020/02/23 09:26:45.737549 blockchain.go:1016: Broadcast epoch block (527941fba1938903)
+INFO: 2020/02/23 09:26:45.737557 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:45.744510 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:45.744916 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 30
+INFO: 2020/02/23 09:26:45.745558 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: 527941fba1938903
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 7432ee628c6c17d8831eb8de7597e4127cf26fa3add0ccf0427fda67ffddd688
+
+Timestamp: 1582450005
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 30
+Commitment Proof: 1a67eace46bc7aac
+State: 
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 30
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:26:45.746750 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:45.746770 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 30
+
+INFO: 2020/02/23 09:26:45.746791 blockchain.go:1032: "Hash : 7432ee628c6c17d8 \n Height : 29" -> "EPOCH BLOCK: \n Hash : 527941fba1938903 \n Height : 30 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:26:45.746821 blockchain.go:1033: "EPOCH BLOCK: \n Hash : 527941fba1938903 \n Height : 30 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:26:45.746835 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:26:47.747619 blockchain.go:1079: Assignment height: 28 vs epoch height 30
+INFO: 2020/02/23 09:26:49.747911 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 30
+INFO: 2020/02/23 09:26:49.748003 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:49.804798 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:26:49.804813 blockchain.go:1109: Success. Received assignment for height: 30
+INFO: 2020/02/23 09:26:49.804820 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:26:49.804827 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:26:49.804835 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:26:49.804842 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:26:49.804848 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:26:49.804854 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:26:49.804863 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:26:49.804868 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:26:49.804875 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:26:49.804881 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:26:49.804887 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:26:49.804892 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:26:49.804898 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:26:49.804904 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:26:49.822617 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:26:50.807747 proofofstake.go:131: Try Block with Time: 092650 and cnt: 1
+INFO: 2020/02/23 09:26:50.809584 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:26:50.810085 blockchain.go:1159: Finalize Next Block -> Done. Block height: 31
+INFO: 2020/02/23 09:26:50.810424 blockchain.go:1163: Block mined (0d6ee8fde4e5427e)
+INFO: 2020/02/23 09:26:50.811096 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 31
+INFO: 2020/02/23 09:26:50.811678 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:26:50.815119 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:26:50.817037 block.go:2516: Wrriting last closed block. Height: 31
+INFO: 2020/02/23 09:26:50.819650 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:26:50.820240 blockchain.go:1182: Validated block (mined): 
+Hash: 0d6ee8fde4e5427e			Previous Hash: 527941fba1938903		Nonce: 000000005e52455a
+Timestamp: 1582450010
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 31
+Commitment Proof: 70f2867f06c2b0f8
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:26:50.823701 blockchain.go:989: epochblock beingprocessed height: 32
+INFO: 2020/02/23 09:26:50.823715 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 32
+INFO: 2020/02/23 09:26:50.827129 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:26:50.827373 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:26:50.827612 block.go:192: Before Epoch Block proofofstake for height: 32
+INFO: 2020/02/23 09:26:52.828194 block.go:198: After Epoch Block proofofstake for height: 32
+INFO: 2020/02/23 09:26:52.828274 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 32
+INFO: 2020/02/23 09:26:52.828288 blockchain.go:1011: EPOCH BLOCK mined (393b619d5f524576)
+INFO: 2020/02/23 09:26:52.828296 blockchain.go:1016: Broadcast epoch block (393b619d5f524576)
+INFO: 2020/02/23 09:26:52.828304 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:52.835108 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:52.835493 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 32
+INFO: 2020/02/23 09:26:52.836130 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: 393b619d5f524576
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 0d6ee8fde4e5427efcd8ae1117b3b92e844d6e70234b5708003a734144618898
+
+Timestamp: 1582450012
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 32
+Commitment Proof: a5c17634b110a3e1
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 32
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:26:52.836411 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:26:52.836428 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 32
+
+INFO: 2020/02/23 09:26:52.836448 blockchain.go:1032: "Hash : 0d6ee8fde4e5427e \n Height : 31" -> "EPOCH BLOCK: \n Hash : 393b619d5f524576 \n Height : 32 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:26:52.836460 blockchain.go:1033: "EPOCH BLOCK: \n Hash : 393b619d5f524576 \n Height : 32 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:26:52.836506 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:26:54.837275 blockchain.go:1079: Assignment height: 30 vs epoch height 32
+INFO: 2020/02/23 09:26:56.837559 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 32
+INFO: 2020/02/23 09:26:56.837651 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:26:56.908036 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:26:56.908312 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:26:56.908324 blockchain.go:1109: Success. Received assignment for height: 32
+INFO: 2020/02/23 09:26:56.908331 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:26:56.908344 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:26:56.908356 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:26:56.908363 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:26:56.908370 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:26:56.908378 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:26:56.908386 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:26:56.908393 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:26:56.908400 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:26:56.908407 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:26:56.908413 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:26:56.908419 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:26:56.908426 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:26:56.908432 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:26:57.912910 proofofstake.go:131: Try Block with Time: 092657 and cnt: 1
+INFO: 2020/02/23 09:26:58.912865 proofofstake.go:131: Try Block with Time: 092658 and cnt: 2
+INFO: 2020/02/23 09:26:59.912898 proofofstake.go:131: Try Block with Time: 092659 and cnt: 3
+INFO: 2020/02/23 09:27:00.912864 proofofstake.go:131: Try Block with Time: 092700 and cnt: 4
+INFO: 2020/02/23 09:27:00.912947 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:27:00.912959 blockchain.go:1159: Finalize Next Block -> Done. Block height: 33
+INFO: 2020/02/23 09:27:00.912971 blockchain.go:1163: Block mined (74d4645ca87511fd)
+INFO: 2020/02/23 09:27:00.913669 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 33
+INFO: 2020/02/23 09:27:00.913731 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:27:00.917202 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:27:00.919155 block.go:2516: Wrriting last closed block. Height: 33
+INFO: 2020/02/23 09:27:00.921286 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:27:00.921837 blockchain.go:1182: Validated block (mined): 
+Hash: 74d4645ca87511fd			Previous Hash: 393b619d5f524576		Nonce: 000000005e524564
+Timestamp: 1582450020
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 33
+Commitment Proof: 771da7b967804153
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:27:00.923424 blockchain.go:989: epochblock beingprocessed height: 34
+INFO: 2020/02/23 09:27:00.923438 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 34
+INFO: 2020/02/23 09:27:00.927137 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:27:00.927346 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:27:00.927554 block.go:192: Before Epoch Block proofofstake for height: 34
+INFO: 2020/02/23 09:27:02.927906 block.go:198: After Epoch Block proofofstake for height: 34
+INFO: 2020/02/23 09:27:02.927989 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 34
+INFO: 2020/02/23 09:27:02.928016 blockchain.go:1011: EPOCH BLOCK mined (97fa7fb664f8114d)
+INFO: 2020/02/23 09:27:02.928025 blockchain.go:1016: Broadcast epoch block (97fa7fb664f8114d)
+INFO: 2020/02/23 09:27:02.928034 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:02.933883 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:27:02.934143 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 34
+INFO: 2020/02/23 09:27:02.934237 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: 97fa7fb664f8114d
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 74d4645ca87511fd04c6b694745f023690655a135bab9e50cb891a1e031ba38c
+
+Timestamp: 1582450022
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 34
+Commitment Proof: 9befe8c5b18e93cd
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 34
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:27:02.934505 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:27:02.934525 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 34
+
+INFO: 2020/02/23 09:27:02.934545 blockchain.go:1032: "Hash : 74d4645ca87511fd \n Height : 33" -> "EPOCH BLOCK: \n Hash : 97fa7fb664f8114d \n Height : 34 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:27:02.934557 blockchain.go:1033: "EPOCH BLOCK: \n Hash : 97fa7fb664f8114d \n Height : 34 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:27:02.934569 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:27:04.935262 blockchain.go:1079: Assignment height: 32 vs epoch height 34
+INFO: 2020/02/23 09:27:06.935521 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 34
+INFO: 2020/02/23 09:27:06.935612 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:06.991166 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:27:06.991184 blockchain.go:1109: Success. Received assignment for height: 34
+INFO: 2020/02/23 09:27:06.991192 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:27:06.991200 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:27:06.991208 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:27:06.991216 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:27:06.991242 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:27:06.991250 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:27:06.991259 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:27:06.991266 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:27:06.991273 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:27:06.991280 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:27:06.991286 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:27:06.991293 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:27:06.991299 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:27:06.991306 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:27:07.009278 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:27:07.996127 proofofstake.go:131: Try Block with Time: 092707 and cnt: 1
+INFO: 2020/02/23 09:27:08.996131 proofofstake.go:131: Try Block with Time: 092708 and cnt: 2
+INFO: 2020/02/23 09:27:09.996140 proofofstake.go:131: Try Block with Time: 092709 and cnt: 3
+INFO: 2020/02/23 09:27:09.996261 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:27:09.996274 blockchain.go:1159: Finalize Next Block -> Done. Block height: 35
+INFO: 2020/02/23 09:27:09.996322 blockchain.go:1163: Block mined (aef415f3ca4080c4)
+INFO: 2020/02/23 09:27:09.997478 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 35
+INFO: 2020/02/23 09:27:09.998559 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:27:10.003654 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:27:10.005433 block.go:2516: Wrriting last closed block. Height: 35
+INFO: 2020/02/23 09:27:10.007338 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:27:10.007877 blockchain.go:1182: Validated block (mined): 
+Hash: aef415f3ca4080c4			Previous Hash: 97fa7fb664f8114d		Nonce: 000000005e52456d
+Timestamp: 1582450029
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 35
+Commitment Proof: 4ecb4a4f42857667
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:27:10.011206 blockchain.go:989: epochblock beingprocessed height: 36
+INFO: 2020/02/23 09:27:10.011287 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 36
+INFO: 2020/02/23 09:27:10.015108 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:27:10.015364 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:27:10.015596 block.go:192: Before Epoch Block proofofstake for height: 36
+INFO: 2020/02/23 09:27:12.015994 block.go:198: After Epoch Block proofofstake for height: 36
+INFO: 2020/02/23 09:27:12.016074 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 36
+INFO: 2020/02/23 09:27:12.016088 blockchain.go:1011: EPOCH BLOCK mined (544c68fded00d346)
+INFO: 2020/02/23 09:27:12.016121 blockchain.go:1016: Broadcast epoch block (544c68fded00d346)
+INFO: 2020/02/23 09:27:12.016130 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:12.022752 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:27:12.023157 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 36
+INFO: 2020/02/23 09:27:12.023808 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: 544c68fded00d346
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: aef415f3ca4080c47b8a54739fd4ef3abd3e9a394508d645c096ddaf24e91872
+
+Timestamp: 1582450032
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 36
+Commitment Proof: 22bbe947fd1f7616
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 36
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:27:12.024843 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:27:12.024862 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 36
+
+INFO: 2020/02/23 09:27:12.024900 blockchain.go:1032: "Hash : aef415f3ca4080c4 \n Height : 35" -> "EPOCH BLOCK: \n Hash : 544c68fded00d346 \n Height : 36 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:27:12.024916 blockchain.go:1033: "EPOCH BLOCK: \n Hash : 544c68fded00d346 \n Height : 36 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:27:12.024930 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:27:14.025663 blockchain.go:1079: Assignment height: 34 vs epoch height 36
+INFO: 2020/02/23 09:27:16.025899 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 36
+INFO: 2020/02/23 09:27:16.026004 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:16.103762 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:27:16.103778 blockchain.go:1109: Success. Received assignment for height: 36
+INFO: 2020/02/23 09:27:16.103787 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:27:16.103793 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:27:16.103800 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:27:16.103807 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:27:16.103813 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:27:16.103819 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:27:16.103827 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:27:16.103833 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:27:16.103840 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:27:16.103845 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:27:16.103851 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:27:16.103857 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:27:16.103863 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:27:16.103869 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:27:16.109615 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:27:17.108107 proofofstake.go:131: Try Block with Time: 092717 and cnt: 1
+INFO: 2020/02/23 09:27:17.109878 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:27:17.110219 blockchain.go:1159: Finalize Next Block -> Done. Block height: 37
+INFO: 2020/02/23 09:27:17.110507 blockchain.go:1163: Block mined (fd6f751f3b399a2a)
+INFO: 2020/02/23 09:27:17.111280 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 37
+INFO: 2020/02/23 09:27:17.111768 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:27:17.115584 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:27:17.117305 block.go:2516: Wrriting last closed block. Height: 37
+INFO: 2020/02/23 09:27:17.119443 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:27:17.119992 blockchain.go:1182: Validated block (mined): 
+Hash: fd6f751f3b399a2a			Previous Hash: 544c68fded00d346		Nonce: 000000005e524575
+Timestamp: 1582450037
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 37
+Commitment Proof: b678e920c539d260
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:27:17.124345 blockchain.go:989: epochblock beingprocessed height: 38
+INFO: 2020/02/23 09:27:17.124566 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 38
+INFO: 2020/02/23 09:27:17.127964 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:27:17.128273 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:27:17.128512 block.go:192: Before Epoch Block proofofstake for height: 38
+INFO: 2020/02/23 09:27:18.129175 block.go:198: After Epoch Block proofofstake for height: 38
+INFO: 2020/02/23 09:27:18.129261 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 38
+INFO: 2020/02/23 09:27:18.129277 blockchain.go:1011: EPOCH BLOCK mined (4a3de5f8ed9cc4c0)
+INFO: 2020/02/23 09:27:18.129287 blockchain.go:1016: Broadcast epoch block (4a3de5f8ed9cc4c0)
+INFO: 2020/02/23 09:27:18.129299 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:18.134720 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:27:18.135170 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 38
+INFO: 2020/02/23 09:27:18.135842 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: 4a3de5f8ed9cc4c0
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: fd6f751f3b399a2ab94e887fadf0294da1249eaaf415d3cd7463cd523ebf4ceb
+
+Timestamp: 1582450038
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 38
+Commitment Proof: a2d6fe710a2568fa
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 38
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:27:18.136980 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:27:18.137015 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 38
+
+INFO: 2020/02/23 09:27:18.137058 blockchain.go:1032: "Hash : fd6f751f3b399a2a \n Height : 37" -> "EPOCH BLOCK: \n Hash : 4a3de5f8ed9cc4c0 \n Height : 38 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:27:18.137073 blockchain.go:1033: "EPOCH BLOCK: \n Hash : 4a3de5f8ed9cc4c0 \n Height : 38 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:27:18.137088 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:27:20.137807 blockchain.go:1079: Assignment height: 36 vs epoch height 38
+INFO: 2020/02/23 09:27:22.138096 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 38
+INFO: 2020/02/23 09:27:22.138185 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:22.203814 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:27:22.203832 blockchain.go:1109: Success. Received assignment for height: 38
+INFO: 2020/02/23 09:27:22.203839 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:27:22.203847 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:27:22.203854 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:27:22.203861 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:27:22.203867 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:27:22.203873 blockpreparation.go:32: Number of OpenTxs: 0
+INFO: 2020/02/23 09:27:22.203882 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:27:22.203888 blockpreparation.go:82: length of tx assigned to shard: 0
+INFO: 2020/02/23 09:27:22.203895 blockpreparation.go:86: length of open tx to add with best combination: 0
+INFO: 2020/02/23 09:27:22.203900 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 0
+INFO: 2020/02/23 09:27:22.203906 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:27:22.203912 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:27:22.203919 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:27:22.203925 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:27:22.210169 p2p_interface.go:130: received the transaction assignment from a broadcast. writing to request channel
+INFO: 2020/02/23 09:27:23.208091 proofofstake.go:131: Try Block with Time: 092723 and cnt: 1
+INFO: 2020/02/23 09:27:24.208048 proofofstake.go:131: Try Block with Time: 092724 and cnt: 2
+INFO: 2020/02/23 09:27:24.208098 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:27:24.208118 blockchain.go:1159: Finalize Next Block -> Done. Block height: 39
+INFO: 2020/02/23 09:27:24.208127 blockchain.go:1163: Block mined (0c61c8cf81d9a415)
+INFO: 2020/02/23 09:27:24.208792 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 39
+INFO: 2020/02/23 09:27:24.208829 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:27:24.212262 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:27:24.213621 block.go:2516: Wrriting last closed block. Height: 39
+INFO: 2020/02/23 09:27:24.215258 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:27:24.215468 blockchain.go:1182: Validated block (mined): 
+Hash: 0c61c8cf81d9a415			Previous Hash: 4a3de5f8ed9cc4c0		Nonce: 000000005e52457c
+Timestamp: 1582450044
+MerkleRoot: 0000000000000000
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 0 --> []
+Total Transactions in this block: 0
+Height: 39
+Commitment Proof: 9dcc05f2f9cd8fe2
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:27:24.215530 blockchain.go:989: epochblock beingprocessed height: 40
+INFO: 2020/02/23 09:27:24.215539 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 40
+INFO: 2020/02/23 09:27:24.219250 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:27:24.219480 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:27:24.219886 block.go:192: Before Epoch Block proofofstake for height: 40
+INFO: 2020/02/23 09:27:25.220110 block.go:198: After Epoch Block proofofstake for height: 40
+INFO: 2020/02/23 09:27:25.220184 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 40
+INFO: 2020/02/23 09:27:25.220204 blockchain.go:1011: EPOCH BLOCK mined (c9ff420d5d46de34)
+INFO: 2020/02/23 09:27:25.220214 blockchain.go:1016: Broadcast epoch block (c9ff420d5d46de34)
+INFO: 2020/02/23 09:27:25.220223 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:25.225936 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:27:25.225972 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 40
+INFO: 2020/02/23 09:27:25.226062 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: c9ff420d5d46de34
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 0c61c8cf81d9a415a9f9073d036614f4dc43c77a4cdb36b08a35603a01231654
+
+Timestamp: 1582450045
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 40
+Commitment Proof: 114a065e5f5774f6
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 0, Balance: 4000, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 0, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 40
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:27:25.226080 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:27:25.226089 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 40
+
+INFO: 2020/02/23 09:27:25.226099 blockchain.go:1032: "Hash : 0c61c8cf81d9a415 \n Height : 39" -> "EPOCH BLOCK: \n Hash : c9ff420d5d46de34 \n Height : 40 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:27:25.226108 blockchain.go:1033: "EPOCH BLOCK: \n Hash : c9ff420d5d46de34 \n Height : 40 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:27:25.226117 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:27:27.226394 blockchain.go:1079: Assignment height: 38 vs epoch height 40
+INFO: 2020/02/23 09:27:29.226599 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 40
+INFO: 2020/02/23 09:27:29.226713 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:29.325008 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:27:29.328126 blockchain.go:1109: Success. Received assignment for height: 40
+INFO: 2020/02/23 09:27:29.329326 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:27:29.329585 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:27:29.330098 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:27:29.330341 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:27:29.330537 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:27:29.330784 blockpreparation.go:32: Number of OpenTxs: 89
+INFO: 2020/02/23 09:27:29.330985 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:27:29.331067 blockpreparation.go:82: length of tx assigned to shard: 89
+INFO: 2020/02/23 09:27:29.331123 blockpreparation.go:86: length of open tx to add with best combination: 89
+INFO: 2020/02/23 09:27:29.331186 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 89
+INFO: 2020/02/23 09:27:29.356161 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:27:29.356614 blockpreparation.go:264: Adding funds tx or data tx before aggregation
+INFO: 2020/02/23 09:27:29.356801 block.go:531: #PossibleTransactionsToAggregate: 89
+INFO: 2020/02/23 09:27:29.357005 block.go:532: #PossibleDataTransactionsToAggregate: 0
+INFO: 2020/02/23 09:27:29.360544 block.go:799: 
+ ________
+| AGGTX: |____________________________________________________________________
+|  Hash: 9a6e40aa5a3b1f881a1716744b89b62ba9db70d1b1b97e868006d940bf20028a
+|  Amount: 890
+|  Fee: 0
+|  From: [29dfd854dac5030e83fe6ef44f994afd2307d130682c11f089378ef146f7fb04]
+|  To: [5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001]
+|  Merkle Root: 4354cf0513dc2ff1e4c6e23d1dc82fbb998236088f9b85c18b2b808cbf621bfa
+|  #Tx: 89
+|  Aggregated: false
+|_________________________________________________________________________________
+INFO: 2020/02/23 09:27:29.362273 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:27:29.362426 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:27:29.362564 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:27:30.365586 proofofstake.go:131: Try Block with Time: 092730 and cnt: 1
+INFO: 2020/02/23 09:27:30.365666 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:27:30.365709 blockchain.go:1159: Finalize Next Block -> Done. Block height: 41
+INFO: 2020/02/23 09:27:30.365737 blockchain.go:1163: Block mined (102f8b3df3d0a006)
+INFO: 2020/02/23 09:27:30.365957 block.go:2191: -- Fetch AggTxData - Start
+INFO: 2020/02/23 09:27:30.365974 block.go:2197: -- Fetch AggTxData - End
+INFO: 2020/02/23 09:27:30.366104 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 41
+INFO: 2020/02/23 09:27:30.367909 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:27:30.367932 block.go:2485: broadcasting agg tx
+INFO: 2020/02/23 09:27:30.371694 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:27:30.372911 block.go:2516: Wrriting last closed block. Height: 41
+INFO: 2020/02/23 09:27:30.374312 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:27:30.374636 blockchain.go:1182: Validated block (mined): 
+Hash: 102f8b3df3d0a006			Previous Hash: c9ff420d5d46de34		Nonce: 000000005e524582
+Timestamp: 1582450050
+MerkleRoot: a3f5dcb9647043d0
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 1 --> [9a6e40aa5a3b1f881a1716744b89b62ba9db70d1b1b97e868006d940bf20028a]
+Total Transactions in this block: 1
+Height: 41
+Commitment Proof: 0fc10a56fa3fb003
+Slashed Address:0000000000000000
+State:
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 89, Balance: 4089, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 890, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+INFO: 2020/02/23 09:27:30.374801 blockchain.go:989: epochblock beingprocessed height: 42
+INFO: 2020/02/23 09:27:30.374813 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 42
+INFO: 2020/02/23 09:27:30.378946 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:27:30.379809 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:27:30.380163 block.go:192: Before Epoch Block proofofstake for height: 42
+INFO: 2020/02/23 09:27:32.380628 block.go:198: After Epoch Block proofofstake for height: 42
+INFO: 2020/02/23 09:27:32.380734 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 42
+INFO: 2020/02/23 09:27:32.380748 blockchain.go:1011: EPOCH BLOCK mined (c5f6fd6d8d67745c)
+INFO: 2020/02/23 09:27:32.380757 blockchain.go:1016: Broadcast epoch block (c5f6fd6d8d67745c)
+INFO: 2020/02/23 09:27:32.380766 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:32.387990 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:27:32.388060 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 42
+INFO: 2020/02/23 09:27:32.388160 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: c5f6fd6d8d67745c
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 102f8b3df3d0a00676bed4e808a28b262a44882d48e78e9bb98c900064a9f543
+
+Timestamp: 1582450052
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 42
+Commitment Proof: 81f45f3819467323
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 89, Balance: 4089, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 890, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 42
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:27:32.388251 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:27:32.388278 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 42
+
+INFO: 2020/02/23 09:27:32.388301 blockchain.go:1032: "Hash : 102f8b3df3d0a006 \n Height : 41" -> "EPOCH BLOCK: \n Hash : c5f6fd6d8d67745c \n Height : 42 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:27:32.388317 blockchain.go:1033: "EPOCH BLOCK: \n Hash : c5f6fd6d8d67745c \n Height : 42 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:27:32.388332 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:27:34.388544 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 42
+INFO: 2020/02/23 09:27:34.388636 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:36.389044 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 42
+INFO: 2020/02/23 09:27:36.389136 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:36.504465 blockchain.go:1089: The received transaction assignment is valid
+INFO: 2020/02/23 09:27:36.506789 blockchain.go:1109: Success. Received assignment for height: 42
+INFO: 2020/02/23 09:27:36.507024 blockchain.go:1122: received both my transaction assignment and the epoch block. can continue now
+INFO: 2020/02/23 09:27:36.507248 blockchain.go:1138: 
+
+ __________________________________________________ New Mining Round __________________________________________________
+INFO: 2020/02/23 09:27:36.507653 blockchain.go:1139: Create Next Block
+INFO: 2020/02/23 09:27:36.507848 blockchain.go:1149: This shard ID: 1
+INFO: 2020/02/23 09:27:36.508036 blockchain.go:1151: Prepare Next Block
+INFO: 2020/02/23 09:27:36.508289 blockpreparation.go:32: Number of OpenTxs: 106
+INFO: 2020/02/23 09:27:36.508475 blockpreparation.go:47: block.GetBloomFilterSize() 0
+INFO: 2020/02/23 09:27:36.508652 blockpreparation.go:82: length of tx assigned to shard: 106
+INFO: 2020/02/23 09:27:36.508863 blockpreparation.go:86: length of open tx to add with best combination: 106
+INFO: 2020/02/23 09:27:36.509050 blockpreparation.go:236: Number of OpenTxs to add right before they get added: 106
+INFO: 2020/02/23 09:27:36.540030 blockpreparation.go:260: Stuff added. Transactions validated
+INFO: 2020/02/23 09:27:36.540820 blockpreparation.go:264: Adding funds tx or data tx before aggregation
+INFO: 2020/02/23 09:27:36.541124 block.go:531: #PossibleTransactionsToAggregate: 106
+INFO: 2020/02/23 09:27:36.541295 block.go:532: #PossibleDataTransactionsToAggregate: 0
+INFO: 2020/02/23 09:27:36.545465 block.go:799: 
+ ________
+| AGGTX: |____________________________________________________________________
+|  Hash: 6783242d75b048c291a4a2e2351b52d5db8494fb9f02442b1c91316cdb353281
+|  Amount: 1060
+|  Fee: 0
+|  From: [29dfd854dac5030e83fe6ef44f994afd2307d130682c11f089378ef146f7fb04]
+|  To: [5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001]
+|  Merkle Root: daf128bb1ba904958d757ca30a2bed6d27e0fcbb4eb8a019d9749e342735c86e
+|  #Tx: 106
+|  Aggregated: false
+|_________________________________________________________________________________
+INFO: 2020/02/23 09:27:36.547397 blockchain.go:1154: Prepare Next Block --> Done
+INFO: 2020/02/23 09:27:36.547577 blockchain.go:1156: Finalize Next Block
+INFO: 2020/02/23 09:27:36.547742 block.go:74: -- Start Finalize
+INFO: 2020/02/23 09:27:37.551050 proofofstake.go:131: Try Block with Time: 092737 and cnt: 1
+INFO: 2020/02/23 09:27:37.551139 block.go:148: -- End Finalization
+INFO: 2020/02/23 09:27:37.551150 blockchain.go:1159: Finalize Next Block -> Done. Block height: 43
+INFO: 2020/02/23 09:27:37.551162 blockchain.go:1163: Block mined (0e96eed5edfac1e1)
+INFO: 2020/02/23 09:27:37.551685 block.go:2191: -- Fetch AggTxData - Start
+INFO: 2020/02/23 09:27:37.551703 block.go:2197: -- Fetch AggTxData - End
+INFO: 2020/02/23 09:27:37.551841 block.go:2230: CommitmentPubKey: &{b94067127fcab7c63545b3dfaa989f2db142e09e88a191a6a0b137020be29c3752fcd5887f6f23a20df3cd2fcc009d08543662c2424eeb41ca17c6419057905116edcc006a6e8fbcc7d053177d14557b15521b874270e322e7d9f5b29434eb5c6fb324796d0f97376f7fec0b0c88da2343278d62dc965bf811c9e08e57b85a55b55d8159bf8317167d13891326103cbaca02d0ec8928ec5e1b6cc3721f857cb8f16719e3303134cb30cbc5f8fff1c0ae94988abf8d404715c5c97d997a78a5f004a9c1bee4d6164abba7c15c4fc80f64d15d63af7adec5ae7e2828ebd1e8c67c191710608a81e1ed633896ba3fce93058ebe26599a9a9b1517ad3c9f3f6faa27 10001}, --------------- Block Height: 43
+INFO: 2020/02/23 09:27:37.554406 block.go:2003: before postvalidation
+INFO: 2020/02/23 09:27:37.554542 blockchainparam.go:91: TARGET_CHECK: Target changed, new target: 14
+INFO: 2020/02/23 09:27:37.554569 block.go:2485: broadcasting agg tx
+INFO: 2020/02/23 09:27:37.558857 block.go:2514: Delete all last closed blocks
+INFO: 2020/02/23 09:27:37.561064 block.go:2516: Wrriting last closed block. Height: 43
+INFO: 2020/02/23 09:27:37.563136 block.go:2005: after postvalidation
+INFO: 2020/02/23 09:27:37.563794 blockchain.go:1182: Validated block (mined): 
+Hash: 0e96eed5edfac1e1			Previous Hash: c5f6fd6d8d67745c		Nonce: 000000005e524589
+Timestamp: 1582450057
+MerkleRoot: b53484be2dc7adb5
+Beneficiary: 29dfd854dac5030e
+Amount of fundsTx: 0 --> []
+Amount of accTx: 0 --> []
+Amount of configTx: 0 --> []
+Amount of stakeTx: 0 --> []
+Amount of committeeTx: 0 --> []
+Amount of dataTx: 0 --> []
+Amount of aggDataTx: 0 --> []
+Amount of aggTx: 1 --> [6783242d75b048c291a4a2e2351b52d5db8494fb9f02442b1c91316cdb353281]
+Total Transactions in this block: 1
+Height: 43
+Commitment Proof: b77fcdde50488ac5
+Slashed Address:0000000000000000
+State:
+Is root: false, Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 1950, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+Is root: true, Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 195, Balance: 4195, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+INFO: 2020/02/23 09:27:37.565444 blockchain.go:989: epochblock beingprocessed height: 44
+INFO: 2020/02/23 09:27:37.565458 blockchain.go:991: Before finalizeEpochBlock() ---- Height: 44
+INFO: 2020/02/23 09:27:37.569925 block.go:177: Initiating new mapping
+INFO: 2020/02/23 09:27:37.570164 blockchain.go:1266: Assign validators to shards start
+INFO: 2020/02/23 09:27:37.570384 block.go:192: Before Epoch Block proofofstake for height: 44
+INFO: 2020/02/23 09:27:45.570784 block.go:198: After Epoch Block proofofstake for height: 44
+INFO: 2020/02/23 09:27:45.570855 blockchain.go:1006: After finalizeEpochBlock() ---- Height: 44
+INFO: 2020/02/23 09:27:45.570869 blockchain.go:1011: EPOCH BLOCK mined (8b0fa57b765eea3d)
+INFO: 2020/02/23 09:27:45.570878 blockchain.go:1016: Broadcast epoch block (8b0fa57b765eea3d)
+INFO: 2020/02/23 09:27:45.570886 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:45.577338 blockchain.go:1024: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:27:45.577440 blockchain.go:1025: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 44
+INFO: 2020/02/23 09:27:45.577507 blockchain.go:1026: Inserting EPOCH BLOCK: Hash: 8b0fa57b765eea3d
+Len Previous Shard Hashes: 1
+Prev Shard Hashes: 0e96eed5edfac1e1122d1a6866d075afe71255c11c4f88e432da4799992a8282
+
+Timestamp: 1582450065
+MerkleRoot: 0000000000000000
+MerklePatriciaRoot: 0000000000000000000000000000000000000000000000000000000000000000
+Height: 44
+Commitment Proof: b2cb89391ea6b4a6
+State: 
+Is root: Hash: 29dfd854dac5030e, Address: b64a7c9ac5636f6d, TxCnt: 195, Balance: 4195, IsStaking: true, IsCommittee: false, CommitmentKey: b94067127fcab7c6, CommitteeKey: 0000000000000000
+Is root: Hash: 5db65267f8a36514, Address: 4f5e8ab9fe4f4d21, TxCnt: 0, Balance: 1950, IsStaking: false, IsCommittee: true, CommitmentKey: 0000000000000000, CommitteeKey: e3cb397cd7a77cbd
+
+Validator Shard Mapping: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 44
+
+Number of Shards: 1
+Committee Leader: 5db65267f8a365141e788d3684670d640df06697336220341676e6daabf1d001
+
+INFO: 2020/02/23 09:27:45.577525 blockchain.go:1027: Created Validator Shard Mapping :
+INFO: 2020/02/23 09:27:45.577534 blockchain.go:1028: 
+Entry: b64a7c9ac5636f6d -> 1
+Epoch Height: 44
+
+INFO: 2020/02/23 09:27:45.577543 blockchain.go:1032: "Hash : 0e96eed5edfac1e1 \n Height : 43" -> "EPOCH BLOCK: \n Hash : 8b0fa57b765eea3d \n Height : 44 \nMPT : 0000000000000000"
+INFO: 2020/02/23 09:27:45.577553 blockchain.go:1033: "EPOCH BLOCK: \n Hash : 8b0fa57b765eea3d \n Height : 44 \nMPT : 0000000000000000"[color = red, shape = box]
+INFO: 2020/02/23 09:27:45.577563 blockchain.go:1068: Wait for transaction assignment
+INFO: 2020/02/23 09:27:47.577722 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:27:47.577798 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:49.578318 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:27:49.578394 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:51.578737 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:27:51.578809 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:53.579152 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:27:53.579222 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:55.579559 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:27:55.579636 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:57.579997 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:27:57.580074 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:27:59.580443 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:27:59.580525 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:01.580933 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:01.581015 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:03.581372 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:03.581505 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:05.582000 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:05.582118 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:07.582552 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:07.582672 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:09.583076 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:09.583166 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:11.583667 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:11.583750 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:13.584162 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:13.584255 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:15.584681 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:15.584768 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:17.585157 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:17.585253 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:19.585766 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:19.585908 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:21.586360 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:21.586440 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:23.586885 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:23.586978 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:25.587408 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:25.587497 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:27.587911 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:27.587999 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:29.588459 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:29.588538 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:31.589013 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:31.589113 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:33.589507 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:33.589594 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:35.589897 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:35.589978 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:37.590374 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:37.590547 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:39.590952 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:39.591068 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:41.591548 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:41.591653 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:43.592030 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:43.592131 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:45.592676 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:45.592760 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:47.593145 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:47.593243 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:49.593652 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:49.593748 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:51.594151 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:51.594259 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:53.594679 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:53.594758 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:55.595149 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:55.595243 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:57.595649 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:57.595745 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:28:59.596203 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:28:59.596360 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:01.596801 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:01.596942 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:03.597392 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:03.597480 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:05.597920 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:05.598005 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:07.598445 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:07.598574 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:09.598975 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:09.599061 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:11.599501 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:11.599586 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:13.599983 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:13.600083 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:15.600522 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:15.600613 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:17.601006 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:17.601092 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:19.601510 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:19.601622 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:21.602039 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:21.602136 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:23.602566 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:23.602643 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:25.603068 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:25.603151 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:27.603565 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:27.603656 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:29.603906 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:29.603985 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:31.604397 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:31.604514 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:33.604887 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:33.605031 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:35.605603 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:35.605734 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:37.606274 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:37.606780 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:39.607320 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:39.607406 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:41.607822 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:41.607914 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:43.608284 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:43.608418 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:45.609258 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:45.609338 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:47.609752 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:47.609847 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:49.610362 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:49.610465 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:51.610860 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:51.610957 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:53.611366 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:53.611456 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:55.611825 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:55.611916 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:57.612336 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:57.612423 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:29:59.612778 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:29:59.612863 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:01.613286 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:01.613370 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:03.613752 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:03.613832 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:05.614177 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:05.614311 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:07.614689 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:07.614777 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:09.615262 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:09.615364 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:11.615783 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:11.615870 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:13.616243 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:13.616336 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:15.616759 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:15.616850 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:17.617223 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:17.617313 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:19.617703 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:19.617823 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:21.618195 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:21.618327 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:23.618671 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:23.618764 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:25.619155 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:25.619244 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:27.619642 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:27.619736 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:29.620154 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:29.620242 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:31.620610 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:31.620691 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:33.621027 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:33.621110 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:35.621547 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:35.621631 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:37.622023 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:37.622113 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:39.622484 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:39.622576 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:41.622959 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:41.623041 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:43.623426 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:43.623509 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:45.623870 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:45.623965 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:47.624364 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:47.624448 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:49.624950 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:49.625065 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:51.625430 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:51.625583 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:53.625996 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:53.626101 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:55.626572 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:55.626653 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:57.627133 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:57.627255 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:30:59.627729 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:30:59.627813 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:31:01.628232 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:31:01.628316 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:31:03.628764 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:31:03.628846 p2p_interface.go:168: broadcasting an epoch block
+INFO: 2020/02/23 09:31:05.629268 blockchain.go:1112: Requesting transaction assignment for shard ID: 1 with height: 44
+INFO: 2020/02/23 09:31:05.629355 p2p_interface.go:168: broadcasting an epoch block
