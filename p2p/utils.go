@@ -30,11 +30,11 @@ func Connect(connectionString string) *net.TCPConn {
 }
 
 func RcvData(p *peer) (header *Header, payload []byte, err error) {
-	logger.Printf("Before creating reader")
+	//logger.Printf("Before creating reader")
 	reader := bufio.NewReader(p.conn)
-	logger.Printf("after creating reader")
+	//logger.Printf("after creating reader")
 	header, err = ReadHeader(reader)
-	logger.Printf("after reading from reader")
+	//logger.Printf("after reading from reader")
 	if err != nil {
 		p.conn.Close()
 		if p.peerType == PEERTYPE_MINER {
@@ -54,7 +54,7 @@ func RcvData(p *peer) (header *Header, payload []byte, err error) {
 
 	payload = make([]byte, header.Len)
 
-	logger.Printf("Before reading payload. Header.Len = %d", header.Len)
+	//logger.Printf("Before reading payload. Header.Len = %d", header.Len)
 	for cnt := 0; cnt < int(header.Len); cnt++ {
 		payload[cnt], err = reader.ReadByte()
 		if err != nil {
@@ -65,7 +65,7 @@ func RcvData(p *peer) (header *Header, payload []byte, err error) {
 			return nil, nil, errors.New(fmt.Sprintf("Connection to %v aborted: %v", p.getIPPort(), err))
 		}
 	}
-	logger.Printf("After reading payload")
+	//logger.Printf("After reading payload")
 
 	//logger.Printf("Receive message:\nSender: %v\nType: %v\nPayload length: %v\n", p.getIPPort(), LogMapping[header.TypeID], len(payload))
 	return header, payload, nil
@@ -99,7 +99,7 @@ func sendData(p *peer, payload []byte) {
 		logger.Printf("Strange Header.TypeID (%v) to send to %v", payload[4], p.getIPPort())
 	}
 	p.conn.Write(payload)
-	logger.Printf("Tx with payload: %s successfully sent to %s", LogMapping[payload[4]], p.getIPPort())
+	//logger.Printf("Tx with payload: %s successfully sent to %s", LogMapping[payload[4]], p.getIPPort())
 	p.l.Unlock()
 }
 
