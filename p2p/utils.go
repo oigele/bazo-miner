@@ -43,7 +43,7 @@ func RcvData(p *peer) (header *Header, payload []byte, err error) {
 		return nil, nil, errors.New(fmt.Sprintf("Connection to %v aborted: %v", p.getIPPort(), err))
 	}
 
-	if int(header.Len) > 80000000 { //FABIO
+	if int(header.Len) > 800000 { //FABIO
 		logger.Printf("Header.Len = %v --> Abort here to prevent an Out Of Memory Error", header.Len)
 		p.conn.Close()
 		if p.peerType == PEERTYPE_MINER {
@@ -54,6 +54,7 @@ func RcvData(p *peer) (header *Header, payload []byte, err error) {
 
 	payload = make([]byte, header.Len)
 
+	logger.Printf("Before reading payload. Header.Len = %d", header.Len)
 	for cnt := 0; cnt < int(header.Len); cnt++ {
 		payload[cnt], err = reader.ReadByte()
 		if err != nil {
@@ -64,7 +65,7 @@ func RcvData(p *peer) (header *Header, payload []byte, err error) {
 			return nil, nil, errors.New(fmt.Sprintf("Connection to %v aborted: %v", p.getIPPort(), err))
 		}
 	}
-
+	logger.Printf("After reading payload")
 
 	//logger.Printf("Receive message:\nSender: %v\nType: %v\nPayload length: %v\n", p.getIPPort(), LogMapping[header.TypeID], len(payload))
 	return header, payload, nil
