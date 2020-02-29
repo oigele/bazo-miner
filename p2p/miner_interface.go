@@ -17,6 +17,9 @@ var (
 	//State transition from the miner to the network
 	StateTransitionOut = make(chan []byte)
 
+	//Fine TX from the miner to the network
+	FineTxOut = make(chan []byte)
+
 	//Transaction assignment from the committee to the network
 	TransactionAssignmentOut = make(chan []byte)
 
@@ -31,6 +34,9 @@ var (
 
 	//CommitteeCheck from the network to the committee
 	CommitteeCheckIn = make(chan []byte)
+
+	//FineTx from the network to the committee
+	FineTxIn = make(chan []byte)
 
 	//EpochBlock from the network, to the miner
 	EpochBlockIn = make(chan []byte)
@@ -141,6 +147,14 @@ func forwardStateTransitionBrdcstToMiner() {
 	for {
 		st := <-StateTransitionOut
 		toBrdcst := BuildPacket(STATE_TRANSITION_BRDCST, st)
+		minerBrdcstMsg <- toBrdcst
+	}
+}
+
+func forwardFineTxBrdcstToMiner() {
+	for {
+		tx := <- FineTxOut
+		toBrdcst := BuildPacket(FINETX_BRDCST, tx)
 		minerBrdcstMsg <- toBrdcst
 	}
 }
@@ -392,6 +406,10 @@ func forwardTransactionAssignmentToMinerIn(p *peer, payload []byte) {
 
 func forwardCommitteeCheckToMinerIn(p *peer, payload []byte) {
 	CommitteeCheckIn <- payload
+}
+
+func forwardFineTxBrdcstToMinerIn(p *peer, payload []byte) {
+	FineTxIn <- payload
 }
 
 func forwardLastEpochBlockToMiner(p *peer, payload []byte) {

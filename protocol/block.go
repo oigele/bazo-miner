@@ -46,6 +46,7 @@ type Block struct {
 	NrAggTx         	  uint16
 	NrDataTx			  uint16
 	NrAggDataTx			  uint16
+	NrFineTx			  uint16
 	SlashedAddress        [32]byte
 	CommitmentProof       [crypto.COMM_PROOF_LENGTH]byte
 	ConflictingBlockHash1 [32]byte
@@ -64,6 +65,7 @@ type Block struct {
 	CommitteeTxData		 [][32]byte
 	AggTxData  	 		 [][32]byte
 	AggDataTxData		 [][32]byte
+	FineTxData			 [][32]byte
 }
 
 func NewBlock(prevHash [32]byte, height uint32) *Block {
@@ -198,6 +200,7 @@ func (block *Block) GetBodySize() uint64 {
 		reflect.TypeOf(block.NrDataTx).Size() +
 		reflect.TypeOf(block.NrCommitteeTx).Size() +
 		reflect.TypeOf(block.NrAggDataTx).Size() +
+		reflect.TypeOf(block.NrFineTx).Size() +
 		reflect.TypeOf(block.SlashedAddress).Size() +
 		reflect.TypeOf(block.CommitmentProof).Size() +
 		reflect.TypeOf(block.ConflictingBlockHash1).Size() +
@@ -219,7 +222,8 @@ func (block *Block) GetTxDataSize() uint64 {
 		int(block.NrAggTx)*HASH_LEN +
 		int(block.NrDataTx)*HASH_LEN +
 		int(block.NrAggDataTx)*HASH_LEN+
-		int(block.NrCommitteeTx)*HASH_LEN
+		int(block.NrCommitteeTx)*HASH_LEN+
+		int(block.NrFineTx)*HASH_LEN
 
 	return uint64(size)
 }
@@ -259,6 +263,7 @@ func (block *Block) Encode() []byte {
 		NrAggTx:         				block.NrAggTx,
 		NrDataTx:						block.NrDataTx,
 		NrAggDataTx: 					block.NrAggDataTx,
+		NrFineTx:						block.NrFineTx,
 		NrElementsBF:          			block.NrElementsBF,
 		BloomFilter:           			block.BloomFilter,
 		SlashedAddress:        			block.SlashedAddress,
@@ -277,6 +282,7 @@ func (block *Block) Encode() []byte {
 		AggTxData:	   					block.AggTxData,
 		DataTxData:						block.DataTxData,
 		AggDataTxData:					block.AggDataTxData,
+		FineTxData:						block.FineTxData,
 	}
 
 	buffer := new(bytes.Buffer)
@@ -340,6 +346,7 @@ func (block Block) String() string {
 		"Amount of dataTx: %v --> %x\n" +
 		"Amount of aggDataTx: %v --> %x\n" +
 		"Amount of aggTx: %v --> %x\n"+
+		"Amount of fineTx: %v ---> %x\n" +
 		"Total Transactions in this block: %v\n"+
 		"Height: %d\n"+
 		"Commitment Proof: %x\n"+
@@ -363,6 +370,7 @@ func (block Block) String() string {
 		block.NrDataTx, block.DataTxData,
 		block.NrAggDataTx, block.AggDataTxData,
 		block.NrAggTx, block.AggTxData,
+		block.NrFineTx, block.FineTxData,
 		uint16(block.NrFundsTx) + uint16(block.NrAccTx) + uint16(block.NrConfigTx) + uint16(block.NrStakeTx) + uint16(block.NrAggTx),
 		block.Height,
 		block.CommitmentProof[0:8],

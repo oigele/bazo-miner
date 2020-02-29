@@ -32,5 +32,7 @@ const (
 	EPOCH_LENGTH         = 1 //blocks
 	VALIDATORS_PER_SHARD = 1 //validators
 	EPOCHBLOCKFETCH_TIMEOUT 	= 20 //Sec
-	PERCENTAGE_NEEDED_FOR_SLASHING = 0.5  //use a number between 0 and 1 as percentage, where 0 is 0% and 1 is 100%. 0.5 stands for 50%
+	PERCENTAGE_NEEDED_FOR_SLASHING = 0.6667  //use a number between 0 and 1 as percentage, where 0 is 0% and 1 is 100%. 0.6667 stands for 66.67%
+	DEFAULT_FINE_SHARD 			=  10 //standard fine if a shard is fined
+	DEFAULT_FINE_COMMITTEE      =  25 //standard fine if a committee is fined
 )

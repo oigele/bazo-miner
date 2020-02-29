@@ -183,7 +183,7 @@ func WriteClosedFundsTxFromAggTxSlice(transactions []protocol.FundsTx) (err erro
 //If bespoke transaction was in the transaction assignment, the committee leader was malicious
 //If bespoke transaction was not in the transaction assignment, the shard was malicious
 //To make the code more efficient and performant, the check of who is actually malicious will be conducted at a different part of the code
-func WriteAllClosedTxAndReturnAlreadyClosedTxHashes(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, committeeTxs []*protocol.CommitteeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) (alreadyIncludedTxHashes [][32]byte, err error) {
+func WriteAllClosedTxAndReturnAlreadyClosedTxHashes(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, committeeTxs []*protocol.CommitteeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx, fineTxs []*protocol.FineTx) (alreadyIncludedTxHashes [][32]byte, err error) {
 	bucket := "closedaccs"
 	err = db.Update(func(tx *bolt.Tx) error {
 		var err error
@@ -333,6 +333,29 @@ func WriteAllClosedTxAndReturnAlreadyClosedTxHashes(accTxs []*protocol.AccTx, st
 			encodedTx := b.Get(hash[:])
 			//this means that an already closed Tx was included in the block
 			if hash == accTx.Decode(encodedTx).Hash() {
+				alreadyIncludedTxHashes = append(alreadyIncludedTxHashes, hash)
+			}
+			err = b.Put(hash[:], transaction.Encode())
+			if err != nil {
+				logger.Printf("We GOT AN ERROR")
+			}
+			nrClosedTransactions = nrClosedTransactions + 1
+			totalTransactionSize = totalTransactionSize + float32(transaction.Size())
+			averageTxSize = totalTransactionSize / nrClosedTransactions
+		}
+		return err
+	})
+
+	bucket = "closedfines"
+	err = db.Update(func(tx *bolt.Tx) error {
+		var err error
+		b := tx.Bucket([]byte(bucket))
+		for _, transaction := range aggDataTxs {
+			hash := transaction.Hash()
+			var fineTx *protocol.FineTx
+			encodedTx := b.Get(hash[:])
+			//this means that an already closed Tx was included in the block
+			if hash == fineTx.Decode(encodedTx).Hash() {
 				alreadyIncludedTxHashes = append(alreadyIncludedTxHashes, hash)
 			}
 			err = b.Put(hash[:], transaction.Encode())

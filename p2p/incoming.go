@@ -35,6 +35,8 @@ func processIncomingMsg(p *peer, header *Header, payload []byte) {
 		forwardTransactionAssignmentToMinerIn(p, payload)
 	case COMMITTEE_CHECK_BRDCST:
 		forwardCommitteeCheckToMinerIn(p, payload)
+	case FINETX_BRDCST:
+		forwardFineTxBrdcstToMinerIn(p,payload)
 
 		//REQUESTS
 	case FUNDSTX_REQ:

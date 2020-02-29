@@ -94,6 +94,7 @@ func InitLogging() {
 	LogMapping[146] = "COMMITTEE_CHECK_BRDCST"
 	LogMapping[147] = "COMMITTEE_CHECK_REQ"
 	LogMapping[148] = "COMMITTEE_CHECK_RES"
+	LogMapping[149] = "FINETX_BRDCST"
 
 
 }

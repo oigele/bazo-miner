@@ -17,12 +17,13 @@ type TransactionAssignment struct {
 	CommitteeTxs				[]*CommitteeTx
 	FundsTxs					[]*FundsTx
 	DataTxs						[]*DataTx
+	FineTxs						[]*FineTx
 }
 
 
 
 
-func NewTransactionAssignment(height int, shardid int, committeeProof [crypto.COMM_PROOF_LENGTH]byte, accTxs []*AccTx, stakeTxs []*StakeTx, committeeTxs []*CommitteeTx, fundsTxs []*FundsTx, dataTxs []*DataTx) *TransactionAssignment {
+func NewTransactionAssignment(height int, shardid int, committeeProof [crypto.COMM_PROOF_LENGTH]byte, accTxs []*AccTx, stakeTxs []*StakeTx, committeeTxs []*CommitteeTx, fundsTxs []*FundsTx, dataTxs []*DataTx, fineTxs []*FineTx) *TransactionAssignment {
 	newTransition := TransactionAssignment{
 		height,
 		shardid,
@@ -32,6 +33,7 @@ func NewTransactionAssignment(height int, shardid int, committeeProof [crypto.CO
 		committeeTxs,
 		fundsTxs,
 		dataTxs,
+		fineTxs,
 	}
 
 	return &newTransition
@@ -72,6 +74,7 @@ func (ta *TransactionAssignment) EncodeTransactionAssignment() []byte {
 		CommitteeTxs:				ta.CommitteeTxs,
 		FundsTxs:					ta.FundsTxs,
 		DataTxs:					ta.DataTxs,
+		FineTxs: 					ta.FineTxs,
 	}
 
 	buffer := new(bytes.Buffer)

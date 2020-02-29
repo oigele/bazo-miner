@@ -432,6 +432,17 @@ func ReadClosedTx(hash [32]byte) (transaction protocol.Transaction) {
 		return aggDataTx.Decode(encodedTx)
 	}
 
+	var fineTx *protocol.FineTx
+	db.View(func(tx *bolt.Tx) error {
+		b := tx.Bucket([]byte("closedfines"))
+		encodedTx = b.Get(hash[:])
+		return nil
+	})
+	if encodedTx != nil {
+		return fineTx.Decode(encodedTx)
+	}
+
+
 	return nil
 }
 

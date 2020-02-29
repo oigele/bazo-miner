@@ -79,7 +79,7 @@ func DeleteOpenTx(transaction protocol.Transaction) {
 }
 
 //In this function, we detect whether the shard put a transaction in a block which wasn't part of the original TX assignment
-func DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, committeeTxs []*protocol.CommitteeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx) (notIncludedTxHashes [][32]byte) {
+func DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, committeeTxs []*protocol.CommitteeTx, fundsTxs []*protocol.FundsTx, aggTxs []*protocol.AggTx, dataTxs []*protocol.DataTx, aggDataTxs []*protocol.AggDataTx, fineTxs []*protocol.FineTx) (notIncludedTxHashes [][32]byte) {
 	openTxMutex.Lock()
 	defer openTxMutex.Unlock()
 
@@ -126,6 +126,15 @@ func DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs []*protocol.AccTx, st
 			delete(txMemPool, txHash)
 		}
 	}
+	for _, transaction := range fineTxs {
+		txHash := transaction.Hash()
+		if _, exists := AssignedTxMempool[txHash]; !exists {
+			notIncludedTxHashes = append(notIncludedTxHashes, txHash)
+		} else {
+			delete(txMemPool, txHash)
+		}
+	}
+
 	//Aggregated transactions don't need to be checked, because they aren't part of the assignment anyways
 	for _, transaction := range aggTxs {
 		txHash := transaction.Hash()

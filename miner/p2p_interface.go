@@ -51,6 +51,13 @@ func incomingCommitteeCheck() {
 	}
 }
 
+func incomingFineTx() {
+	for {
+		fineTx := <- p2p.FineTxIn
+		processFineTx(fineTx)
+	}
+}
+
 func processEpochBlock(eb []byte) {
 	var epochBlock *protocol.EpochBlock
 	epochBlock = epochBlock.Decode(eb)
@@ -120,6 +127,14 @@ func processCommitteeCheck(payload []byte) {
 }
 
 
+func processFineTx(payload []byte) {
+	var fineTx *protocol.FineTx
+	fineTx = fineTx.Decode(payload)
+	storage.WriteOpenTx(fineTx)
+}
+
+
+
 func processAssignmentData(payload []byte) {
 	var transactionAssignment *protocol.TransactionAssignment
 	transactionAssignment = transactionAssignment.DecodeTransactionAssignment(payload)
@@ -173,7 +188,12 @@ func broadcastStateTransition(st *protocol.StateTransition) {
 	p2p.StateTransitionOut <- st.EncodeTransition()
 }
 
+
 //here Kürsat's code ends
+
+func broadcastFineTx(tx *protocol.FineTx) {
+	p2p.FineTxOut <- tx.Encode()
+}
 
 func broadcastAssignmentData(data *protocol.TransactionAssignment) {
 	p2p.TransactionAssignmentOut <- data.EncodeTransactionAssignment()

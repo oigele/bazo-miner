@@ -55,7 +55,7 @@ var (
 
 //p2p First start entry point
 
-func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKey) {
+func InitCommittee(committeeWallet *ecdsa.PublicKey, committeePrivKey *ecdsa.PrivateKey, committeeKey *rsa.PrivateKey) {
 
 	FirstStartAfterEpoch = true
 	storage.IsCommittee = true
@@ -64,6 +64,8 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKe
 	ValidatorAccAddress = crypto.GetAddressFromPubKey(committeeWallet)
 	storage.ValidatorAccAddress = ValidatorAccAddress
 	storage.CommitteePrivKey = committeeKey
+	storage.CommitteeWalletPrivKey = committeePrivKey
+
 
 	//Set up logger.
 	logger = storage.InitLogger()
@@ -104,6 +106,9 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKe
 	go incomingStateData()
 	//Listen to committee check data for validation purposes
 	go incomingCommitteeCheck()
+	//Listen to incoming fine tx. This is done in this way to make sure that only committee members get the fine tx.
+	//Committee members need the fine tx in order to correctly reconstruct the relative states including fine tx.
+	go incomingFineTx()
 
 	//wait for the first epoch block
 	for {
@@ -131,6 +136,44 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeeKey *rsa.PrivateKe
 		}
 	}
 
+	/*
+	//here build the transaction set
+
+	rootNode := fmt.Sprintf("WalletA.txt")
+	nodeCommitteeA := fmt.Sprintf("WalletCommitteeA.txt")
+	rootNodePubKey, _ := crypto.ExtractECDSAPublicKeyFromFile(rootNode)
+	committeeAPubKey, _ := crypto.ExtractECDSAPublicKeyFromFile(nodeCommitteeA)
+	committeeAAddress := crypto.GetAddressFromPubKey(committeeAPubKey)
+	hashTo := protocol.SerializeHashContent(committeeAAddress)
+	rootNodeAddress := crypto.GetAddressFromPubKey(rootNodePubKey)
+	hashFrom := protocol.SerializeHashContent(rootNodeAddress)
+	rootPrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
+	//nodeCommitteeAPrivKey, _ := crypto.ExtractECDSAKeyFromFile(nodeCommitteeA)
+
+
+	logger.Printf("Start building transactions")
+
+	for i := 1; i<=900; i++ {
+		tx, _ := protocol.ConstrFundsTx(
+			byte(0),
+			uint64(10),
+			uint64(1),
+			//can do it like this because no txcount check. the important part is that the txcount is unique
+			uint32(i),
+			hashFrom,
+			hashTo,
+			rootPrivKey,
+			rootPrivKey,
+			nil)
+		storage.WriteOpenTx(tx)
+	}
+
+	logger.Printf("End building transactions")
+
+
+	//end of building transaction set
+
+	 */
 
 	//check in order to determine if all checks can be done already. If the epoch height is less than 2, a null pointer exception would happen
 	if lastEpochBlock.Height == 2 {
@@ -245,6 +288,7 @@ func CommitteeMining(height int) {
 	}
 
 
+	FirstStartCommittee = false
 	//generate sequence of all shard IDs starting from 1
 	shardIDs := makeRange(1, NumberOfShards)
 	logger.Printf("Number of shards: %d\n", NumberOfShards)
@@ -264,6 +308,7 @@ func CommitteeMining(height int) {
 		committeeTxsMap := make(map[int][]*protocol.CommitteeTx)
 		fundsTxsMap := make(map[int][]*protocol.FundsTx)
 		dataTxsMap := make(map[int][]*protocol.DataTx)
+		fineTxsMap := make(map[int][]*protocol.FineTx)
 
 		logger.Printf("before assigning transactions")
 
@@ -282,6 +327,8 @@ func CommitteeMining(height int) {
 				fundsTxsMap[assignTransactionToShard(openTransaction)] = append(fundsTxsMap[assignTransactionToShard(openTransaction)], openTransaction.(*protocol.FundsTx))
 			case *protocol.DataTx:
 				dataTxsMap[assignTransactionToShard(openTransaction)] = append(dataTxsMap[assignTransactionToShard(openTransaction)], openTransaction.(*protocol.DataTx))
+			case *protocol.FineTx:
+				fineTxsMap[assignTransactionToShard(openTransaction)] = append(fineTxsMap[assignTransactionToShard(openTransaction)], openTransaction.(*protocol.FineTx))
 			}
 		}
 
@@ -292,7 +339,7 @@ func CommitteeMining(height int) {
 				return
 			}
 
-			ta := protocol.NewTransactionAssignment(height, shardId, committeeProof, accTxsMap[shardId], stakeTxsMap[shardId], committeeTxsMap[shardId], fundsTxsMap[shardId], dataTxsMap[shardId])
+			ta := protocol.NewTransactionAssignment(height, shardId, committeeProof, accTxsMap[shardId], stakeTxsMap[shardId], committeeTxsMap[shardId], fundsTxsMap[shardId], dataTxsMap[shardId], fineTxsMap[shardId])
 
 			storage.AssignedTxMap[shardId] = ta
 			logger.Printf("broadcasting assignment data for ShardId: %d", shardId)
@@ -342,6 +389,9 @@ func CommitteeMining(height int) {
 							storage.AssignedTxMempool[transaction.Hash()] = transaction
 						}
 						for _, transaction := range ta.DataTxs {
+							storage.AssignedTxMempool[transaction.Hash()] = transaction
+						}
+						for _, transaction := range ta.FineTxs {
 							storage.AssignedTxMempool[transaction.Hash()] = transaction
 						}
 						shardIDBoolMap[ta.ShardID] = true
@@ -407,12 +457,15 @@ func CommitteeMining(height int) {
 						for _, transaction := range transactionAssignment.DataTxs {
 							storage.AssignedTxMempool[transaction.Hash()] = transaction
 						}
+						for _, transaction := range transactionAssignment.FineTxs {
+							storage.AssignedTxMempool[transaction.Hash()] = transaction
+						}
 
 						storage.ReceivedTransactionAssignmentStash.Set(transactionAssignment.HashTransactionAssignment(), transactionAssignment)
 
 						shardIDBoolMap[transactionAssignment.ShardID] = true
 
-						//Limit waiting time to 5 seconds seconds before aborting.
+						//Limit waiting time to 2 seconds seconds before aborting.
 					case <-time.After(2 * time.Second):
 						logger.Printf("have been waiting for 2 seconds for transaction assignment height: %d\n", height)
 						//It the requested state transition has not been received, then continue with requesting the other missing ones
@@ -462,7 +515,7 @@ func CommitteeMining(height int) {
 						}
 
 						//fetch data from the block
-						accTxs, fundsTxs, _, stakeTxs, committeeTxs, aggTxs, aggregatedFundsTxSlice, dataTxs, aggregatedDataTxSlice, aggDataTxs, err := preValidate(b, false)
+						accTxs, fundsTxs, _, stakeTxs, committeeTxs, aggTxs, aggregatedFundsTxSlice, dataTxs, aggregatedDataTxSlice, aggDataTxs, fineTxs, err := preValidate(b, false)
 
 						//append the aggTxs to the normal fundsTxs to delete
 						fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
@@ -470,7 +523,7 @@ func CommitteeMining(height int) {
 
 
 
-						relativeState := ReconstructRelativeState(b, accTxs, stakeTxs, committeeTxs, fundsTxs, dataTxs)
+						relativeState := ReconstructRelativeState(b, accTxs, stakeTxs, committeeTxs, fundsTxs, dataTxs, fineTxs)
 						relativeStatesToCheck[b.ShardId] = relativeState
 
 						UpdateSummary(dataTxs)
@@ -478,7 +531,7 @@ func CommitteeMining(height int) {
 						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, committeeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(committeeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs))
 
 
-						alreadyClosedTxHashes, err := storage.WriteAllClosedTxAndReturnAlreadyClosedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						alreadyClosedTxHashes, err := storage.WriteAllClosedTxAndReturnAlreadyClosedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs, fineTxs)
 						if err != nil {
 							logger.Printf(err.Error())
 							return
@@ -496,7 +549,7 @@ func CommitteeMining(height int) {
 							}
 						}
 
-						notIncludedTxHashes := storage.DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						notIncludedTxHashes := storage.DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs, fineTxs)
 						//If this evaluates to true, then the shard created a transaction out of thin air.
 						if len(notIncludedTxHashes) > 0 {
 							logger.Printf("found a shard to be punished")
@@ -561,7 +614,7 @@ func CommitteeMining(height int) {
 						}
 
 						//fetch data from the block
-						accTxs, fundsTxs, _, stakeTxs, committeeTxs, aggTxs, aggregatedFundsTxSlice, dataTxs, aggregatedDataTxSlice, aggDataTxs, err := preValidate(b, false)
+						accTxs, fundsTxs, _, stakeTxs, committeeTxs, aggTxs, aggregatedFundsTxSlice, dataTxs, aggregatedDataTxSlice, aggDataTxs, fineTxs, err := preValidate(b, false)
 
 						//append the aggTxs to the normal fundsTxs to delete
 						fundsTxs = append(fundsTxs, aggregatedFundsTxSlice...)
@@ -570,11 +623,11 @@ func CommitteeMining(height int) {
 						UpdateSummary(dataTxs)
 
 
-						relativeState := ReconstructRelativeState(b, accTxs, stakeTxs, committeeTxs, fundsTxs, dataTxs)
+						relativeState := ReconstructRelativeState(b, accTxs, stakeTxs, committeeTxs, fundsTxs, dataTxs, fineTxs)
 						relativeStatesToCheck[b.ShardId] = relativeState
 
 
-						alreadyClosedTxHashes, err := storage.WriteAllClosedTxAndReturnAlreadyClosedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						alreadyClosedTxHashes, err := storage.WriteAllClosedTxAndReturnAlreadyClosedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs, fineTxs)
 						if err != nil {
 							logger.Printf(err.Error())
 							return
@@ -592,7 +645,7 @@ func CommitteeMining(height int) {
 							}
 						}
 
-						notIncludedTxHashes := storage.DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs)
+						notIncludedTxHashes := storage.DeleteAllOpenTxAndReturnAllNotIncludedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs, fineTxs)
 
 					//If this evaluates to true, then the shard created a transaction out of thin air.
 						if len(notIncludedTxHashes) > 0 {
@@ -1106,6 +1159,9 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 					for _, transaction := range transactionAssignment.DataTxs {
 						storage.AssignedTxMempool[transaction.Hash()] = transaction
 					}
+					for _, transaction := range transactionAssignment.FineTxs {
+						storage.AssignedTxMempool[transaction.Hash()] = transaction
+					}
 					logger.Printf("Success. Received assignment for height: %d", transactionAssignment.Height)
 					received = true
 				case <-time.After(2 * time.Second):
@@ -1547,6 +1603,31 @@ func applyFundsTxFeesFundsMovement(state map[[32]byte]protocol.Account, benefici
 	return state, err
 }
 
+func applyFineTxFeesFundsMovement(state map[[32]byte]protocol.Account, beneficiary [32]byte, fineTxs []*protocol.FineTx) (map[[32]byte]protocol.Account, error) {
+	var err error
+	//the beneficiary stays the same for one round
+	minerAcc := state[beneficiary]
+	for _, tx := range fineTxs {
+		if minerAcc.Balance+tx.Fee > MAX_MONEY {
+			err = errors.New("Fee amount would lead to balance overflow at the miner account.")
+		}
+		//first handle penalty
+		receiverAcc := state[tx.To]
+		receiverAcc.Balance -= tx.Amount
+		state[tx.To] = receiverAcc
+
+		//now handle fee
+		minerAcc := state[beneficiary]
+		senderAcc := state[tx.From]
+		senderAcc.Balance -= tx.Fee
+		minerAcc.Balance += tx.Fee
+		state[tx.From] = senderAcc
+		state[beneficiary] = minerAcc
+	}
+
+	return state, err
+}
+
 func sameRelativeState(calculatedMap map[[32]byte]*protocol.RelativeAccount, receivedMap map[[32]byte]*protocol.RelativeAccount) bool {
 	//at the moment, we only care about funds. This, however could be extended in the future
 	for account, _ := range calculatedMap {
@@ -1580,7 +1661,7 @@ func UpdateSummary(dataTxs []*protocol.DataTx) {
 	}
 }
 
-func ReconstructRelativeState(b *protocol.Block, accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, committeeTxs []*protocol.CommitteeTx, fundsTxs []*protocol.FundsTx, dataTxs []*protocol.DataTx) *protocol.RelativeState {
+func ReconstructRelativeState(b *protocol.Block, accTxs []*protocol.AccTx, stakeTxs []*protocol.StakeTx, committeeTxs []*protocol.CommitteeTx, fundsTxs []*protocol.FundsTx, dataTxs []*protocol.DataTx, fineTxs []*protocol.FineTx) *protocol.RelativeState {
 	//here create the state copy and calculate the relative state
 	//for this purpose, only the flow of funds has to be analyzed
 	var StateCopy = CopyState(storage.State)
@@ -1593,6 +1674,7 @@ func ReconstructRelativeState(b *protocol.Block, accTxs []*protocol.AccTx, stake
 	StateCopy, _ = applyStakeTxFees(StateCopy, b.Beneficiary, stakeTxs)
 	StateCopy, _ = applyFundsTxFeesFundsMovement(StateCopy, b.Beneficiary, fundsTxs)
 	StateCopy, _ = applyDataTxFees(StateCopy, b.Beneficiary, dataTxs)
+	StateCopy, _ = applyFineTxFeesFundsMovement(StateCopy, b.Beneficiary, fineTxs)
 	StateCopy, _ = applyBlockReward(StateCopy, b.Beneficiary)
 
 	relativeStateProvisory := storage.GetRelativeStateForCommittee(StateOld, StateCopy)
@@ -1695,6 +1777,7 @@ func runByzantineMechanism(receivedCC []*protocol.CommitteeCheck) {
 	for address, votes := range fineMapShards {
 		if votes >= int(numberOfVotesForSlashing) {
 			logger.Printf("The committee decided to slash %x with %d votes in favor of slashing", address[0:8], votes)
+			SlashShard(address)
 		} else {
 			logger.Printf("The committee decided not to slash %x because there weren't enough votes: %d.", address[0:8], votes)
 		}
@@ -1702,11 +1785,30 @@ func runByzantineMechanism(receivedCC []*protocol.CommitteeCheck) {
 	for address, votes := range fineMapCommittees {
 		if votes >= int(numberOfVotesForSlashing) {
 			logger.Printf("The committee decided to slash %x with %d votes in favor of slashing", address[0:8], votes)
+			SlashCommittee(address)
 		} else {
 			logger.Printf("The committee decided not to slash %x because there weren't enough votes: %d", address[0:8], votes)
 		}
 	}
 	logger.Printf("End of Byzantine slashing mechanism")
+}
+
+func SlashShard(address [32]byte) {
+	fineTx, err := protocol.ConstrFineTx(byte(0), uint64(1), DEFAULT_FINE_SHARD, protocol.SerializeHashContent(ValidatorAccAddress), address, storage.CommitteeWalletPrivKey)
+	if err != nil {
+		logger.Printf("Got an error")
+		return
+	}
+	broadcastFineTx(fineTx)
+}
+
+func SlashCommittee(address [32]byte) {
+	fineTx, err := protocol.ConstrFineTx(byte(0), uint64(1), DEFAULT_FINE_COMMITTEE, protocol.SerializeHashContent(ValidatorAccAddress), address, storage.CommitteeWalletPrivKey)
+	if err != nil {
+		logger.Printf("Got an error")
+		return
+	}
+	broadcastFineTx(fineTx)
 }
 
 func DetNumberOfVotersForSlashing(numberOfCommittees int) int {

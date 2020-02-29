@@ -181,6 +181,8 @@ func StartCommittee(args *startArgs, logger *log.Logger) error {
 		return err
 	}
 
+	validatorPrivKey, err := crypto.ExtractECDSAKeyFromFile(args.walletFile)
+
 	committeePrivKey, err := crypto.ExtractRSAKeyFromFile(args.committeeFile)
 	if err != nil {
 		logger.Printf("%v\n", err)
@@ -188,7 +190,7 @@ func StartCommittee(args *startArgs, logger *log.Logger) error {
 	}
 
 
-	miner.InitCommittee(validatorPubKey, committeePrivKey)
+	miner.InitCommittee(validatorPubKey, validatorPrivKey, committeePrivKey)
 
 	return nil
 

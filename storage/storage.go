@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"crypto/ecdsa"
 	"crypto/rsa"
 	"fmt"
 	"log"
@@ -72,6 +73,7 @@ var (
 
 	CommitteeLeader [32]byte
 	CommitteePrivKey                *rsa.PrivateKey
+	CommitteeWalletPrivKey			*ecdsa.PrivateKey
 )
 
 const (
@@ -227,6 +229,13 @@ func Init(dbname string, bootstrapIpport string) {
 	})
 	db.Update(func(tx *bolt.Tx) error {
 		_, err = tx.CreateBucket([]byte("datasummary"))
+		if err != nil {
+			return fmt.Errorf(ERROR_MSG + "Create bucket: %s", err)
+		}
+		return nil
+	})
+	db.Update(func(tx *bolt.Tx) error {
+		_, err = tx.CreateBucket([]byte("closedfines"))
 		if err != nil {
 			return fmt.Errorf(ERROR_MSG + "Create bucket: %s", err)
 		}

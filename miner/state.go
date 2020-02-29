@@ -557,6 +557,29 @@ func fundsStateChange(txSlice []*protocol.FundsTx, initialSetup bool) (err error
 	return nil
 }
 
+func fineStateChange(fineTxSlice []*protocol.FineTx, initialSetup bool) (err error) {
+	for _, tx := range fineTxSlice {
+
+		//If transaction is in closed tx, the state was adjusted already.
+		if storage.ReadClosedTx(tx.Hash()) != nil && !initialSetup {
+			continue
+		}
+
+		var  accReceiver *protocol.Account
+		accReceiver, err = storage.GetAccount(tx.To)
+
+
+		//After Tx fees, account must still have more than the minimum staking amount
+		if accReceiver.IsStaking && ((tx.Fee + protocol.MIN_STAKING_MINIMUM + tx.Amount) > accReceiver.Balance) {
+			err = errors.New("Recipient of fine is staking and does not have enough funds in order to fulfill the required staking minimum.")
+		}
+
+		//We're manipulating pointer, no need to write back
+		accReceiver.Balance -= tx.Amount
+	}
+	return nil
+}
+
 func dataStateChange(dataTxSlice []*protocol.DataTx, initialSetup bool) (err error) {
 	for _, tx := range dataTxSlice {
 
@@ -703,7 +726,7 @@ func getDataTxFromAggDataTx(AggregatedDataTxSlice [][32]byte) (dataTxSlice []*pr
 	return dataTxSlice
 }
 
-func collectTxFees(accTxSlice []*protocol.AccTx, fundsTxSlice []*protocol.FundsTx, configTxSlice []*protocol.ConfigTx, stakeTxSlice []*protocol.StakeTx, committeeTxSlice []*protocol.CommitteeTx, aggTxSlice []*protocol.AggTx, dataTxSlice []*protocol.DataTx, aggDataTxSlice []*protocol.AggDataTx, minerHash [32]byte, initialSetup bool) (err error) {
+func collectTxFees(accTxSlice []*protocol.AccTx, fundsTxSlice []*protocol.FundsTx, configTxSlice []*protocol.ConfigTx, stakeTxSlice []*protocol.StakeTx, committeeTxSlice []*protocol.CommitteeTx, aggTxSlice []*protocol.AggTx, dataTxSlice []*protocol.DataTx, aggDataTxSlice []*protocol.AggDataTx, fineTxSlice []*protocol.FineTx, minerHash [32]byte, initialSetup bool) (err error) {
 	var tmpAccTx []*protocol.AccTx
 	var tmpFundsTx []*protocol.FundsTx
 	var tmpConfigTx []*protocol.ConfigTx
@@ -829,6 +852,20 @@ func collectTxFees(accTxSlice []*protocol.AccTx, fundsTxSlice []*protocol.FundsT
 			//This list is used for rollbacks. For "legacy support", also create this list
 			tmpDataTx = append(tmpDataTx, tx)
 		}
+
+		for _, tx := range fineTxSlice {
+			if minerAcc.Balance + tx.Fee > MAX_MONEY {
+				err = errors.New("Fee amount would lead to balance overflow at the miner account.")
+			}
+
+			//currently the sender of the fine tx has to pay. Doesn't really make sense maybe. Fix if there is a better solution...
+			senderAcc, err = storage.GetAccount(tx.From)
+
+			senderAcc.Balance -= tx.Fee
+			minerAcc.Balance += tx.Fee
+
+		}
+
 	return nil
 }
 

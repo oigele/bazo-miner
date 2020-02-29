@@ -33,6 +33,8 @@ func verify(tx protocol.Transaction) bool {
 		verified = verifyDataTx(tx.(*protocol.DataTx))
 	case *protocol.AggDataTx:
 		verified = verifyAggDataTx(tx.(*protocol.AggDataTx))
+	case *protocol.FineTx:
+		verified = verifyFineTx(tx.(*protocol.FineTx))
 	}
 
 	return verified
@@ -240,6 +242,73 @@ func verifyAggDataTx(tx *protocol.AggDataTx) bool {
 		logger.Printf("Transaction does not exist")
 	}
 	return true
+}
+
+func verifyFineTx(tx *protocol.FineTx) bool {
+	if tx == nil {
+		return false
+	}
+
+	pubKey1Sig1, pubKey2Sig1 := new(big.Int), new(big.Int)
+	r, s := new(big.Int), new(big.Int)
+
+	//fundsTx only makes sense if amount > 0
+	if tx.Amount == 0 || tx.Amount > MAX_MONEY {
+		logger.Printf("Invalid transaction amount: %v\n", tx.Amount)
+		return false
+	}
+
+	//Check if accounts are present in the actual state
+	accFrom := storage.State[tx.From]
+	accTo := storage.State[tx.To]
+
+	//Accounts non existent
+	if accFrom == nil || accTo == nil {
+		logger.Printf("Account non existent. From: %v\nTo: %v\n", accFrom, accTo)
+		return false
+	}
+
+	if tx.From != lastEpochBlock.CommitteeLeader {
+		return false
+	}
+
+	accFromHash := protocol.SerializeHashContent(accFrom.Address)
+	accToHash := protocol.SerializeHashContent(accTo.Address)
+
+	pubKey1Sig1.SetBytes(accFrom.Address[:32])
+	pubKey2Sig1.SetBytes(accFrom.Address[32:])
+
+	r.SetBytes(tx.Sig[:32])
+	s.SetBytes(tx.Sig[32:])
+
+	tx.From = accFromHash
+	tx.To = accToHash
+
+	txHash := tx.Hash()
+
+	var validSig1, validSig2 bool
+
+	pubKey := ecdsa.PublicKey{elliptic.P256(), pubKey1Sig1, pubKey2Sig1}
+	if ecdsa.Verify(&pubKey, txHash[:], r, s) && !reflect.DeepEqual(accFrom, accTo) {
+		tx.From = accFromHash
+		tx.To = accToHash
+		validSig1 = true
+	} else {
+		logger.Printf("Sig1 invalid. FromHash: %x\nToHash: %x\n", accFromHash[0:8], accToHash[0:8])
+		return false
+	}
+
+	r.SetBytes(tx.Sig[:32])
+	s.SetBytes(tx.Sig[32:])
+
+	if ecdsa.Verify(multisigPubKey, txHash[:], r, s) {
+		validSig2 = true
+	} else {
+		logger.Printf("Sig2 invalid. FromHash: %x\nToHash: %x\n", accFromHash[0:8], accToHash[0:8])
+		return false
+	}
+
+	return validSig1 && validSig2
 }
 
 func verifyDataTx(tx *protocol.DataTx) bool {
