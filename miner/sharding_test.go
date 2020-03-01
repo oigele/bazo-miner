@@ -395,7 +395,7 @@ func TestCommitteeGoRoutines(t *testing.T) {
 	var nodeMap4 = make(map[[32]byte]*ecdsa.PrivateKey)
 
 
-	for i := 1; i <= 60; i++ {
+	for i := 1; i <= 10; i++ {
 
 		accTx, newAccAddress, err := protocol.ConstrAccTx(
 			byte(0),
@@ -413,10 +413,10 @@ func TestCommitteeGoRoutines(t *testing.T) {
 		if err := SendTx("127.0.0.1:8002", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
-		if err := SendTx("127.0.0.1:8003", accTx, p2p.ACCTX_BRDCST); err != nil {
+		/*if err := SendTx("127.0.0.1:8003", accTx, p2p.ACCTX_BRDCST); err != nil {
 			fmt.Sprintf("Error")
 		}
-		/*if err := SendTx("127.0.0.1:8004", accTx, p2p.ACCTX_BRDCST); err != nil {
+		if err := SendTx("127.0.0.1:8004", accTx, p2p.ACCTX_BRDCST); err != nil {
 			t.Log(fmt.Sprintf("Error"))
 		}*/
 
@@ -437,7 +437,7 @@ func TestCommitteeGoRoutines(t *testing.T) {
 
 
 	numberOfRounds := 20
-	j := 150
+	j := 15
 
 
 
@@ -468,10 +468,10 @@ func TestCommitteeGoRoutines(t *testing.T) {
 					if err := SendTx("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
-					if err := SendTx("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					/*if err := SendTx("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
-					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}*/
 				}
@@ -501,10 +501,10 @@ func TestCommitteeGoRoutines(t *testing.T) {
 					if err := SendTx2("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
-					if err := SendTx2("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					/*if err := SendTx2("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
-					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}*/
 				}
@@ -567,10 +567,10 @@ func TestCommitteeGoRoutines(t *testing.T) {
 					if err := SendTx4("127.0.0.1:8002", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
-					if err := SendTx4("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					/*if err := SendTx4("127.0.0.1:8003", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}
-					/*if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
+					if err := SendTx("127.0.0.1:8004", tx, p2p.FUNDSTX_BRDCST); err != nil {
 						t.Log(fmt.Sprintf("Error"))
 					}*/
 				}

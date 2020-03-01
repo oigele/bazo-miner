@@ -343,7 +343,7 @@ func CommitteeMining(height int) {
 
 			storage.AssignedTxMap[shardId] = ta
 			logger.Printf("broadcasting assignment data for ShardId: %d", shardId)
-			logger.Printf("Length of AccTx: %d, StakeTx: %d, CommitteeTx: %d, FundsTx: %d, DataTx: %d", len(accTxsMap[shardId]), len(stakeTxsMap[shardId]), len(committeeTxsMap[shardId]), len(fundsTxsMap[shardId]), len(dataTxsMap[shardId]))
+			logger.Printf("Length of AccTx: %d, StakeTx: %d, CommitteeTx: %d, FundsTx: %d, DataTx: %d, FineTx: %d", len(accTxsMap[shardId]), len(stakeTxsMap[shardId]), len(committeeTxsMap[shardId]), len(fundsTxsMap[shardId]), len(dataTxsMap[shardId]), len(fineTxsMap[shardId]))
 			broadcastAssignmentData(ta)
 		}
 
@@ -528,7 +528,7 @@ func CommitteeMining(height int) {
 
 						UpdateSummary(dataTxs)
 
-						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, committeeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(committeeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs))
+						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, committeeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d, fineTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(committeeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs), len(fineTxs))
 
 
 						alreadyClosedTxHashes, err := storage.WriteAllClosedTxAndReturnAlreadyClosedTxHashes(accTxs, stakeTxs, committeeTxs, fundsTxs, aggTxs, dataTxs, aggDataTxs, fineTxs)
@@ -621,6 +621,8 @@ func CommitteeMining(height int) {
 						dataTxs = append(dataTxs, aggregatedDataTxSlice...)
 
 						UpdateSummary(dataTxs)
+
+						logger.Printf("In block from shardID: %d, height: %d, deleting accTxs: %d, stakeTxs: %d, committeeTxs: %d, fundsTxs: %d, aggTxs: %d, dataTxs: %d, aggDataTxs: %d, fineTxs: %d", b.ShardId, b.Height, len(accTxs), len(stakeTxs), len(committeeTxs), len(fundsTxs), len(aggTxs), len(dataTxs), len(aggDataTxs), len(fineTxs))
 
 
 						relativeState := ReconstructRelativeState(b, accTxs, stakeTxs, committeeTxs, fundsTxs, dataTxs, fineTxs)
@@ -1799,6 +1801,7 @@ func SlashShard(address [32]byte) {
 		logger.Printf("Got an error")
 		return
 	}
+	storage.WriteOpenTx(fineTx)
 	broadcastFineTx(fineTx)
 }
 
@@ -1808,6 +1811,7 @@ func SlashCommittee(address [32]byte) {
 		logger.Printf("Got an error")
 		return
 	}
+	storage.WriteOpenTx(fineTx)
 	broadcastFineTx(fineTx)
 }
 
