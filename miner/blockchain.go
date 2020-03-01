@@ -1620,10 +1620,7 @@ func applyFineTxFeesFundsMovement(state map[[32]byte]protocol.Account, beneficia
 
 		//now handle fee
 		minerAcc := state[beneficiary]
-		senderAcc := state[tx.From]
-		senderAcc.Balance -= tx.Fee
 		minerAcc.Balance += tx.Fee
-		state[tx.From] = senderAcc
 		state[beneficiary] = minerAcc
 	}
 

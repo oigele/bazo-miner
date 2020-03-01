@@ -286,7 +286,7 @@ func verifyFineTx(tx *protocol.FineTx) bool {
 
 	txHash := tx.Hash()
 
-	var validSig1, validSig2 bool
+	var validSig1 bool
 
 	pubKey := ecdsa.PublicKey{elliptic.P256(), pubKey1Sig1, pubKey2Sig1}
 	if ecdsa.Verify(&pubKey, txHash[:], r, s) && !reflect.DeepEqual(accFrom, accTo) {
@@ -298,17 +298,8 @@ func verifyFineTx(tx *protocol.FineTx) bool {
 		return false
 	}
 
-	r.SetBytes(tx.Sig[:32])
-	s.SetBytes(tx.Sig[32:])
 
-	if ecdsa.Verify(multisigPubKey, txHash[:], r, s) {
-		validSig2 = true
-	} else {
-		logger.Printf("Sig2 invalid. FromHash: %x\nToHash: %x\n", accFromHash[0:8], accToHash[0:8])
-		return false
-	}
-
-	return validSig1 && validSig2
+	return validSig1
 }
 
 func verifyDataTx(tx *protocol.DataTx) bool {

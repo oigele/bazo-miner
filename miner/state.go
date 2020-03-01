@@ -857,11 +857,7 @@ func collectTxFees(accTxSlice []*protocol.AccTx, fundsTxSlice []*protocol.FundsT
 			if minerAcc.Balance + tx.Fee > MAX_MONEY {
 				err = errors.New("Fee amount would lead to balance overflow at the miner account.")
 			}
-
-			//currently the sender of the fine tx has to pay. Doesn't really make sense maybe. Fix if there is a better solution...
-			senderAcc, err = storage.GetAccount(tx.From)
-
-			senderAcc.Balance -= tx.Fee
+			//fee generated out of thin air
 			minerAcc.Balance += tx.Fee
 
 		}

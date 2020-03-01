@@ -599,6 +599,8 @@ func (f openTxs) Less(i, j int) bool {
 		return true
 	case *protocol.DataTx:
 		return true
+	case *protocol.FineTx:
+		return true
 	}
 
 	switch f[j].(type) {
@@ -613,6 +615,8 @@ func (f openTxs) Less(i, j int) bool {
 	case *protocol.AggDataTx:
 		return false
 	case *protocol.DataTx:
+		return false
+	case *protocol.FineTx:
 		return false
 	}
 

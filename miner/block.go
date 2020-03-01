@@ -564,15 +564,7 @@ func addFineTx(b *protocol.Block, tx *protocol.FineTx) error {
 		}
 	}
 
-	//Root accounts are exempt from balance requirements. All other accounts need to have (at least)
-	//fee + amount to spend as balance available.
-	if !storage.IsRootKey(tx.From) {
-		if (tx.Fee) > b.StateCopy[tx.From].Balance {
-			storage.WriteINVALIDOpenTx(tx)
-			return errors.New("Not enough funds to complete the transaction!")
-		}
-	}
-
+	logger.Printf("Added tx (%x) to the FineTxData slice: %v", tx.Hash(), *tx)
 	b.FineTxData = append(b.FineTxData, tx.Hash())
 
 	return nil
