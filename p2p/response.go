@@ -506,6 +506,8 @@ func CommitteeCheckRes(p *peer, payload []byte) {
 		cc = storage.OwnCommitteeCheck
 		logger.Printf("Sending committee check request answer for height: %d", cc.Height)
 		packet = BuildPacket(COMMITTEE_CHECK_RES, cc.EncodeCommitteeCheck())
+	} else {
+		logger.Printf("Assignment height: %d vs Request height: %d", storage.AssignmentHeight, height)
 	}
 
 	sendData(p, packet)
