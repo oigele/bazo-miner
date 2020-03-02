@@ -202,7 +202,7 @@ func CommitteeMining(height int) {
 
 		logger.Printf("We have %d Committee Nodes in the network. The commitee Leader is %x", DetNumberOfCommittees(), storage.CommitteeLeader[0:8])
 
-		if storage.CommitteeLeader == protocol.SerializeHashContent(ValidatorAccAddress) {
+		if lastEpochBlock.CommitteeLeader == protocol.SerializeHashContent(ValidatorAccAddress) {
 			logger.Printf("I am the committee leader. Start the committee collection mechanism")
 
 			//start the mechanism
@@ -287,6 +287,9 @@ func CommitteeMining(height int) {
 		}
 	}
 
+	//Empty the map
+	storage.AssignedTxMap = make(map[int]*protocol.TransactionAssignment)
+	storage.CommitteeLeader = lastEpochBlock.CommitteeLeader
 
 	FirstStartCommittee = false
 	//generate sequence of all shard IDs starting from 1
@@ -723,7 +726,6 @@ func CommitteeMining(height int) {
 
 			//before being able to validate the proof of stake, the state needs to updated
 			storage.State = newEpochBlock.State
-			storage.CommitteeLeader = newEpochBlock.CommitteeLeader
 			ValidatorShardMap = newEpochBlock.ValMapping
 			NumberOfShards = newEpochBlock.NofShards
 		}
@@ -747,8 +749,6 @@ func CommitteeMining(height int) {
 	ShardsToBePunished = [][32]byte{}
 
 	FirstStartCommittee = false
-	//Empty the map
-	storage.AssignedTxMap = make(map[int]*protocol.TransactionAssignment)
 	logger.Printf("Received epoch block. Start next round")
 	CommitteeMining(int(lastEpochBlock.Height))
 }
