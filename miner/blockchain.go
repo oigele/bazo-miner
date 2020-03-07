@@ -245,7 +245,7 @@ func CommitteeMining(height int) {
 
 						var committeeCheck *protocol.CommitteeCheck
 
-						logger.Printf("requesting committeeCheck for lastblock height: %d from address: %x\n", height - 2, address)
+						logger.Printf("requesting committeeCheck for lastblock height: %d from address: %x\n", height - 2, address[0:8])
 
 						//-2 Because we check for the previous epoch
 						p2p.CommitteeCheckReq(address, height-2)
@@ -287,16 +287,13 @@ func CommitteeMining(height int) {
 		}
 	}
 
-	//Empty the map
-	storage.AssignedTxMap = make(map[int]*protocol.TransactionAssignment)
-	storage.CommitteeLeader = lastEpochBlock.CommitteeLeader
 
 	FirstStartCommittee = false
 	//generate sequence of all shard IDs starting from 1
 	shardIDs := makeRange(1, NumberOfShards)
 	logger.Printf("Number of shards: %d\n", NumberOfShards)
 	//find out if I am the committee leader. If yes, construct the transaction assignment
-	if storage.CommitteeLeader == protocol.SerializeHashContent(ValidatorAccAddress) {
+	if lastEpochBlock.CommitteeLeader == protocol.SerializeHashContent(ValidatorAccAddress) {
 		//generate sequence of all shard IDs starting from 1
 		//generating the assignment data
 
@@ -478,6 +475,7 @@ func CommitteeMining(height int) {
 			}
 		}
 	}
+	storage.CommitteeLeader = lastEpochBlock.CommitteeLeader
 	storage.AssignmentHeight = height
 
 	//let the goroutine collect the state transitions in the background and contionue with the block collection

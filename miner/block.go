@@ -1875,7 +1875,8 @@ func validateTransactionAssignment(ta *protocol.TransactionAssignment) (err erro
 
 
 	//Get the Committee Leader's account
-	acc, err := storage.GetAccount(storage.CommitteeLeader)
+	//use lastepochblock committee leader for delayed committee leader. its only updated later in code
+	acc, err := storage.GetAccount(lastEpochBlock.CommitteeLeader)
 	if err != nil {
 		return errors.New("Cannot fetch the sender account")
 	}
