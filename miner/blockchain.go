@@ -1533,7 +1533,7 @@ func applyAccTxFeesAndCreateAccTx(state map[[32]byte]protocol.Account, beneficia
 		minerAcc.Balance += tx.Fee
 		state[beneficiary] = minerAcc
 		//create the account and add it to the account
-		newAcc := protocol.NewAccount(tx.PubKey, tx.Issuer, 100000, false, false, [crypto.COMM_KEY_LENGTH]byte{}, [crypto.COMM_KEY_LENGTH]byte{}, tx.Contract, tx.ContractVariables)
+		newAcc := protocol.NewAccount(tx.PubKey, tx.Issuer, 0, false, false, [crypto.COMM_KEY_LENGTH]byte{}, [crypto.COMM_KEY_LENGTH]byte{}, tx.Contract, tx.ContractVariables)
 		newAccHash := newAcc.Hash()
 		state[newAccHash] = newAcc
 	}
