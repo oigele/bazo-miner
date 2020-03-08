@@ -136,45 +136,6 @@ func InitCommittee(committeeWallet *ecdsa.PublicKey, committeePrivKey *ecdsa.Pri
 		}
 	}
 
-	/*
-	//here build the transaction set
-
-	rootNode := fmt.Sprintf("WalletA.txt")
-	nodeCommitteeA := fmt.Sprintf("WalletCommitteeA.txt")
-	rootNodePubKey, _ := crypto.ExtractECDSAPublicKeyFromFile(rootNode)
-	committeeAPubKey, _ := crypto.ExtractECDSAPublicKeyFromFile(nodeCommitteeA)
-	committeeAAddress := crypto.GetAddressFromPubKey(committeeAPubKey)
-	hashTo := protocol.SerializeHashContent(committeeAAddress)
-	rootNodeAddress := crypto.GetAddressFromPubKey(rootNodePubKey)
-	hashFrom := protocol.SerializeHashContent(rootNodeAddress)
-	rootPrivKey, _ := crypto.ExtractECDSAKeyFromFile(rootNode)
-	//nodeCommitteeAPrivKey, _ := crypto.ExtractECDSAKeyFromFile(nodeCommitteeA)
-
-
-	logger.Printf("Start building transactions")
-
-	for i := 1; i<=900; i++ {
-		tx, _ := protocol.ConstrFundsTx(
-			byte(0),
-			uint64(10),
-			uint64(1),
-			//can do it like this because no txcount check. the important part is that the txcount is unique
-			uint32(i),
-			hashFrom,
-			hashTo,
-			rootPrivKey,
-			rootPrivKey,
-			nil)
-		storage.WriteOpenTx(tx)
-	}
-
-	logger.Printf("End building transactions")
-
-
-	//end of building transaction set
-
-	 */
-
 	//check in order to determine if all checks can be done already. If the epoch height is less than 2, a null pointer exception would happen
 	if lastEpochBlock.Height == 2 {
 		FirstStartCommittee = true
@@ -270,7 +231,7 @@ func CommitteeMining(height int) {
 							committeesStateBoolMap[committeeCheck.Sender] = true
 
 
-							//Limit waiting time to 5 seconds seconds before aborting.
+							//Limit waiting time to 2 seconds seconds before aborting.
 						case <-time.After(2 * time.Second):
 							logger.Printf("have been waiting for 2 seconds for committee check height: %d\n", height-2)
 							//It the requested state transition has not been received, then continue with requesting the other missing ones
