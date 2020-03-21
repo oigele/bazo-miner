@@ -148,7 +148,7 @@ Wallet and commitment keys are automatically created.
 ### Start Additional Committee Members
 
 As it is with additional miners, additional committee members need more work because they also have to be registered by a root account.
-In our case, we can use miner's A `WalletA.txt` (e.g. copy the file to the Bazo client directory) to create and add a new account to the network.
+In our case, we can use miner's A `WalletA.txt` (i.e. copy the file to the Bazo client directory) to create and add a new account to the network.
 Using the [Bazo client](https://github.com/oigele/bazo-client/tree/ClientForIoT), we create a new committee account:
 
 ```bash
