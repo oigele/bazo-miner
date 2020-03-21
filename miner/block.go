@@ -1928,6 +1928,7 @@ func validateStateTransition(st *protocol.StateTransition) (err error) 	 {
 
 	return nil
 
+
 }
 
 func validateCommitteeCheck(cc *protocol.CommitteeCheck) (err error) {

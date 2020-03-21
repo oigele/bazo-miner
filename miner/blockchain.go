@@ -255,7 +255,6 @@ func CommitteeMining(height int) {
 	logger.Printf("Number of shards: %d\n", NumberOfShards)
 	//find out if I am the committee leader. If yes, construct the transaction assignment
 	if lastEpochBlock.CommitteeLeader == protocol.SerializeHashContent(ValidatorAccAddress) {
-		//generate sequence of all shard IDs starting from 1
 		//generating the assignment data
 
 		//Reset the map in order to start the mempool from scratch
@@ -698,7 +697,6 @@ func CommitteeMining(height int) {
 	committeeCheck := protocol.NewCommitteeCheck(storage.AssignmentHeight, protocol.SerializeHashContent(ValidatorAccAddress), committeeProof, CommitteesToBePunished, ShardsToBePunished)
 	copy(committeeCheck.CommitteeProof[0:crypto.COMM_PROOF_LENGTH], committeeProof[:])
 	storage.OwnCommitteeCheck = committeeCheck
-	//only broadcast if I am not the leader
 	broadcastCommitteeCheck(committeeCheck)
 
 	logger.Printf("Length of committees to be slashed: %d, length of shards to be slashed: %d", len(CommitteesToBePunished), len(ShardsToBePunished))
@@ -1625,7 +1623,6 @@ func ReconstructRelativeState(b *protocol.Block, accTxs []*protocol.AccTx, stake
 	var StateCopy = CopyState(storage.State)
 	var StateOld = CopyState(storage.State)
 
-	//Shard 1 has more transactions to check
 	//order matters
 	StateCopy, _ = applyAccTxFeesAndCreateAccTx(StateCopy, b.Beneficiary, accTxs)
 	StateCopy, _ = applyCommitteeTxFeesAndCreateAcc(StateCopy, b.Beneficiary, committeeTxs)
