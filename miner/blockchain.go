@@ -979,8 +979,6 @@ func epochMining(hashPrevBlock [32]byte, heightPrevBlock uint32) {
 								logger.Printf("Writing state back to stash Shard ID: %v  VS my shard ID: %v - Height: %d\n", stateTransition.ShardID, storage.ThisShardID, stateTransition.Height)
 								storage.ReceivedStateStash.Set(stateTransition.HashTransition(), stateTransition)
 
-								//Delete transactions from mempool, which were validated by the other shards
-
 								shardIDStateBoolMap[stateTransition.ShardID] = true
 
 								logger.Printf("Processed state transition of shard: %d\n", stateTransition.ShardID)
