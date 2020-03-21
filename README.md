@@ -140,7 +140,6 @@ Start miner B, using the generated `WalletB.txt` and `CommitmentB.txt` (i.e. cop
 ./bazo-miner start --database StoreB.db --address 127.0.0.1:8001 --bootstrap 127.0.0.1:8000 --wallet WalletB.txt --commitment CommitmentB.txt --rootwallet WalletA.txt --rootcommitment CommitmentA.txt
 ```
 
-Note that both files specified for `--rootwallet` and `--rootcommitment` only require to contain the wallet and commitemt public key respectively.
 
 We start miner B at address and port `127.0.0.1:8001` and connect to miner A (which is the boostrap node).
 Wallet and commitment keys are automatically created.
